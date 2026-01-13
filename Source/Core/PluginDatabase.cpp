@@ -382,64 +382,116 @@ juce::Array<PluginInfo> PluginDatabase::getByDisplayCategory(DisplayCategory cat
         const auto& info = pair.second;
         bool matches = false;
 
-        switch (category)
+        // Check if this is a brand category
+        if (isBrandCategory(category))
         {
-            case DisplayCategory::All:
-                matches = true;
-                break;
-            case DisplayCategory::EQ:
-                matches = (info.category == EffectCategory::EQ);
-                break;
-            case DisplayCategory::Dynamics:
-                matches = (info.category == EffectCategory::Compressor ||
-                          info.category == EffectCategory::Limiter ||
-                          info.category == EffectCategory::Gate ||
-                          info.category == EffectCategory::TransientShaper);
-                break;
-            case DisplayCategory::Reverb:
-                matches = (info.category == EffectCategory::Reverb);
-                break;
-            case DisplayCategory::Delay:
-                matches = (info.category == EffectCategory::Delay ||
-                          info.category == EffectCategory::Echo);
-                break;
-            case DisplayCategory::Modulation:
-                matches = (info.category == EffectCategory::Chorus ||
-                          info.category == EffectCategory::Flanger ||
-                          info.category == EffectCategory::Phaser);
-                break;
-            case DisplayCategory::Saturation:
-                matches = (info.category == EffectCategory::Saturation ||
-                          info.category == EffectCategory::TapeEmulation);
-                break;
-            case DisplayCategory::Distortion:
-                matches = (info.category == EffectCategory::Distortion);
-                break;
-            case DisplayCategory::AmpSim:
-                matches = (info.category == EffectCategory::AmpSimulator);
-                break;
-            case DisplayCategory::ChannelStrip:
-                matches = (info.category == EffectCategory::ChannelStrip);
-                break;
-            case DisplayCategory::Mastering:
-                matches = (info.category == EffectCategory::MasteringSuite ||
-                          info.category == EffectCategory::Mastering);
-                break;
-            case DisplayCategory::Vocal:
-                matches = (info.category == EffectCategory::VocalProcessing ||
-                          info.category == EffectCategory::DeEsser);
-                break;
-            case DisplayCategory::Metering:
-                matches = (info.category == EffectCategory::SpectralAnalysis);
-                break;
-            case DisplayCategory::StereoImaging:
-                matches = (info.category == EffectCategory::StereoWidth);
-                break;
-            case DisplayCategory::Favorites:
-                matches = info.isFavorite;
-                break;
-            default:
-                break;
+            matches = matchesBrand(info, category);
+        }
+        else
+        {
+            switch (category)
+            {
+                case DisplayCategory::All:
+                    matches = true;
+                    break;
+                case DisplayCategory::EQ:
+                    matches = (info.category == EffectCategory::EQ ||
+                              info.category == EffectCategory::Filter);
+                    break;
+                case DisplayCategory::Compressors:
+                    matches = (info.category == EffectCategory::Compressor ||
+                              info.category == EffectCategory::Limiter ||
+                              info.category == EffectCategory::TransientShaper);
+                    break;
+                case DisplayCategory::Expanders:
+                    matches = (info.category == EffectCategory::Expander ||
+                              info.category == EffectCategory::Gate);
+                    break;
+                case DisplayCategory::Reverb:
+                    matches = (info.category == EffectCategory::Reverb);
+                    break;
+                case DisplayCategory::Delay:
+                    matches = (info.category == EffectCategory::Delay ||
+                              info.category == EffectCategory::Echo);
+                    break;
+                case DisplayCategory::Modulation:
+                    matches = (info.category == EffectCategory::Chorus ||
+                              info.category == EffectCategory::Flanger ||
+                              info.category == EffectCategory::Phaser ||
+                              info.category == EffectCategory::Tremolo ||
+                              info.category == EffectCategory::Vibrato);
+                    break;
+                case DisplayCategory::Saturation:
+                    matches = (info.category == EffectCategory::Saturation ||
+                              info.category == EffectCategory::TapeEmulation ||
+                              info.category == EffectCategory::Exciter);
+                    break;
+                case DisplayCategory::Distortion:
+                    matches = (info.category == EffectCategory::Distortion ||
+                              info.category == EffectCategory::BitCrusher);
+                    break;
+                case DisplayCategory::AmpSim:
+                    matches = (info.category == EffectCategory::AmpSimulator ||
+                              info.category == EffectCategory::Preamp);
+                    break;
+                case DisplayCategory::ChannelStrip:
+                    matches = (info.category == EffectCategory::ChannelStrip);
+                    break;
+                case DisplayCategory::Mastering:
+                    matches = (info.category == EffectCategory::MasteringSuite ||
+                              info.category == EffectCategory::Mastering);
+                    break;
+                case DisplayCategory::Mixing:
+                    matches = (info.category == EffectCategory::DynamicsProcessor ||
+                              info.category == EffectCategory::EnvelopeShaper);
+                    break;
+                case DisplayCategory::Vocal:
+                    matches = (info.category == EffectCategory::VocalProcessing ||
+                              info.category == EffectCategory::DeEsser ||
+                              info.category == EffectCategory::Vocoder);
+                    break;
+                case DisplayCategory::Metering:
+                    matches = (info.category == EffectCategory::SpectralAnalysis);
+                    break;
+                case DisplayCategory::StereoImaging:
+                    matches = (info.category == EffectCategory::StereoWidth ||
+                              info.category == EffectCategory::SurroundTools);
+                    break;
+                case DisplayCategory::Pitch:
+                    matches = (info.category == EffectCategory::PitchShifter ||
+                              info.category == EffectCategory::Harmonizer);
+                    break;
+                case DisplayCategory::Creative:
+                    matches = (info.category == EffectCategory::GranularFX ||
+                              info.category == EffectCategory::MultiEffect ||
+                              info.category == EffectCategory::Randomiser);
+                    break;
+                case DisplayCategory::Utility:
+                    matches = (info.category == EffectCategory::DrumFX ||
+                              info.category == EffectCategory::DJTools ||
+                              info.category == EffectCategory::Sequencer ||
+                              info.category == EffectCategory::MIDIArp ||
+                              info.category == EffectCategory::Unknown);
+                    break;
+                case DisplayCategory::Synth:
+                    matches = (info.isInstrument && info.instrumentCategory == InstrumentCategory::Synth);
+                    break;
+                case DisplayCategory::Drums:
+                    matches = (info.isInstrument && (info.instrumentCategory == InstrumentCategory::DrumMachine ||
+                              info.instrumentCategory == InstrumentCategory::DrumSynth));
+                    break;
+                case DisplayCategory::Sampler:
+                    matches = (info.isInstrument && info.instrumentCategory == InstrumentCategory::Sampler);
+                    break;
+                case DisplayCategory::Favorites:
+                    matches = info.isFavorite;
+                    break;
+                case DisplayCategory::Recent:
+                    matches = (info.lastUsed > 0);
+                    break;
+                default:
+                    break;
+            }
         }
 
         if (matches)
@@ -447,6 +499,113 @@ juce::Array<PluginInfo> PluginDatabase::getByDisplayCategory(DisplayCategory cat
     }
 
     return result;
+}
+
+bool PluginDatabase::matchesBrand(const PluginInfo& info, DisplayCategory brandCategory) const
+{
+    auto mfr = info.description.manufacturerName.toLowerCase();
+    auto name = info.description.name.toLowerCase();
+    auto path = info.description.fileOrIdentifier.toLowerCase();
+
+    switch (brandCategory)
+    {
+        case DisplayCategory::Brand_ACMEAudio:
+            return mfr.contains("acme") || name.contains("acme");
+        case DisplayCategory::Brand_ADA:
+            return mfr.contains("a/da") || mfr.contains("a-da") || name.startsWith("a/da") || name.startsWith("a-da");
+        case DisplayCategory::Brand_ADPTRAudio:
+            return mfr.contains("adptr") || name.contains("adptr");
+        case DisplayCategory::Brand_AMEK:
+            return mfr.contains("amek") || name.contains("amek");
+        case DisplayCategory::Brand_Ampeg:
+            return mfr.contains("ampeg") || name.contains("ampeg");
+        case DisplayCategory::Brand_Bettermaker:
+            return mfr.contains("bettermaker") || name.contains("bettermaker");
+        case DisplayCategory::Brand_BlackBoxAnalogDesign:
+            return mfr.contains("black box") || name.contains("black box");
+        case DisplayCategory::Brand_Brainworx:
+            return mfr.contains("brainworx") || name.startsWith("bx_") || name.startsWith("bx ");
+        case DisplayCategory::Brand_ChandlerLimited:
+            return mfr.contains("chandler") || name.contains("chandler");
+        case DisplayCategory::Brand_CutClassic:
+            return mfr.contains("cut classic") || name.contains("cut classic");
+        case DisplayCategory::Brand_DangerousMusic:
+            return mfr.contains("dangerous") || name.contains("dangerous");
+        case DisplayCategory::Brand_Diezel:
+            return mfr.contains("diezel") || name.contains("diezel");
+        case DisplayCategory::Brand_DSAudio:
+            return mfr.contains("ds audio") || name.contains("ds audio") || name.contains("tantra");
+        case DisplayCategory::Brand_Elysia:
+            return mfr.contains("elysia") || name.contains("elysia");
+        case DisplayCategory::Brand_ENGL:
+            return mfr.contains("engl") || name.contains("engl ");
+        case DisplayCategory::Brand_FiedlerAudio:
+            return mfr.contains("fiedler") || name.contains("fiedler");
+        case DisplayCategory::Brand_Focusrite:
+            return mfr.contains("focusrite") || name.contains("focusrite");
+        case DisplayCategory::Brand_Friedman:
+            return mfr.contains("friedman") || name.contains("friedman");
+        case DisplayCategory::Brand_Fuchs:
+            return mfr.contains("fuchs") || name.contains("fuchs");
+        case DisplayCategory::Brand_GallienKrueger:
+            return mfr.contains("gallien") || name.contains("gallien");
+        case DisplayCategory::Brand_HarrisDoyle:
+            return mfr.contains("harris doyle") || name.contains("harris doyle");
+        case DisplayCategory::Brand_HEARS:
+            return mfr.contains("hears") || name.contains("hears");
+        case DisplayCategory::Brand_HUMAudioDevices:
+            return mfr.contains("hum audio") || name.contains("laal");
+        case DisplayCategory::Brand_KaranyiSounds:
+            return mfr.contains("karanyi") || name.contains("karanyi");
+        case DisplayCategory::Brand_KiiveAudio:
+            return mfr.contains("kiive") || name.contains("kiive");
+        case DisplayCategory::Brand_KnifAudio:
+            return mfr.contains("knif") || name.contains("knif");
+        case DisplayCategory::Brand_LindellAudio:
+            return mfr.contains("lindell") || name.contains("lindell");
+        case DisplayCategory::Brand_Looptrotter:
+            return mfr.contains("looptrotter") || name.contains("looptrotter");
+        case DisplayCategory::Brand_LouderThanLiftoff:
+            return mfr.contains("louder than liftoff") || name.contains("silver bullet");
+        case DisplayCategory::Brand_MaorAppelbaumHendyamps:
+            return mfr.contains("maor appelbaum") || mfr.contains("hendyamps");
+        case DisplayCategory::Brand_Millennia:
+            return mfr.contains("millennia") || name.contains("millennia");
+        case DisplayCategory::Brand_Mixland:
+            return mfr.contains("mixland") || name.contains("mixland");
+        case DisplayCategory::Brand_MaagAudio:
+            return mfr.contains("maag") || mfr.contains("mäag") || name.contains("maag") || name.contains("mäag");
+        case DisplayCategory::Brand_NEOLD:
+            return mfr.contains("neold") || name.contains("neold");
+        case DisplayCategory::Brand_Noveltech:
+            return mfr.contains("noveltech") || name.contains("noveltech");
+        case DisplayCategory::Brand_ProAudioDSP:
+            return mfr.contains("proaudiodsp") || mfr.contains("pro audio dsp") || name.contains("dsm v");
+        case DisplayCategory::Brand_PurpleAudio:
+            return mfr.contains("purple audio") || name.contains("purple audio") || name.contains("mc 77");
+        case DisplayCategory::Brand_ShadowHills:
+            return mfr.contains("shadow hills") || name.contains("shadow hills");
+        case DisplayCategory::Brand_SSL:
+            return mfr.contains("ssl") || mfr.contains("solid state logic") || name.contains("ssl");
+        case DisplayCategory::Brand_SPL:
+            return mfr.contains("spl") || name.startsWith("spl ");
+        case DisplayCategory::Brand_Suhr:
+            return mfr.contains("suhr") || name.contains("suhr");
+        case DisplayCategory::Brand_SwivelAudio:
+            return mfr.contains("swivel") || name.contains("swivel");
+        case DisplayCategory::Brand_ThreeBodyTechnology:
+            return mfr.contains("three-body") || mfr.contains("three body") || name.contains("kirchhoff") || name.contains("cenozoix");
+        case DisplayCategory::Brand_THX:
+            return mfr.contains("thx") || name.contains("thx");
+        case DisplayCategory::Brand_TOMOAudiolabs:
+            return mfr.contains("tomo") || name.contains("tomo") || name.contains("lisa");
+        case DisplayCategory::Brand_UnfilteredAudio:
+            return mfr.contains("unfiltered") || name.contains("unfiltered");
+        case DisplayCategory::Brand_Vertigo:
+            return mfr.contains("vertigo") || name.contains("vertigo");
+        default:
+            return false;
+    }
 }
 
 juce::Array<PluginInfo> PluginDatabase::getFavorites() const

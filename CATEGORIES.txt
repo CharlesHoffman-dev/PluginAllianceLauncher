@@ -1,0 +1,281 @@
+================================================================================
+PLUGIN ALLIANCE LAUNCHER - CATEGORIES & SUBCATEGORIES
+================================================================================
+
+This document lists all categories and subcategories used in the plugin.
+Edit this file and give it back to update the plugin.
+
+Instructions:
+- To ADD a category/subcategory: Add a new line with the name
+- To REMOVE a category/subcategory: Delete the line
+- To RENAME: Change the text
+- Lines starting with # are comments and will be ignored
+
+
+================================================================================
+MAIN SIDEBAR CATEGORIES (Display Categories)
+================================================================================
+These appear in the left sidebar of the plugin browser.
+
+# Effects (alphabetical)
+All
+Amp Simulators
+Channel Strips
+Compressors
+Creative
+Delay
+Distortion
+EQs
+Expanders
+Mastering
+Metering
+Mixing
+Modulation
+Pitch
+Reverb
+Saturation
+Stereo Imaging
+Utility
+Vocal Processing
+
+# Instruments (alphabetical)
+Drums
+Samplers
+Synths
+
+# Brands (alphabetical)
+ACME Audio
+ADA
+ADPTR AUDIO
+AMEK
+Ampeg
+Bettermaker
+Black Box Analog Design
+Brainworx
+Chandler Limited
+Cut Classic
+Dangerous Music
+Diezel
+DS Audio
+elysia
+ENGL
+fiedler audio
+Focusrite
+Friedman
+Fuchs
+Gallien-Krueger
+Harris Doyle
+HEARS
+HUM Audio Devices
+Karanyi Sounds
+Kiive Audio
+Knif Audio
+Lindell Audio
+Looptrotter
+Louder Than Liftoff
+Maor Appelbaum Mastering & Hendyamps
+Millennia
+Mixland
+Mäag Audio
+NEOLD
+Noveltech
+Pro Audio DSP
+Purple Audio
+Shadow Hills
+Solid State Logic (SSL)
+SPL
+Suhr
+Swivel Audio
+Three-Body Technology
+THX
+TOMO Audiolabs
+Unfiltered Audio
+Vertigo
+
+# Special (always keep these)
+Favorites
+Recent
+
+
+================================================================================
+ERA / DECADE FILTER
+================================================================================
+Used to filter plugins by the era of the original hardware they emulate.
+
+1920s
+1930s
+1940s
+1950s - Tube Era
+1960s - Rock Era
+1970s - Console Era
+1980s - Digital Dawn
+1990s - Modern Analog
+2000s
+2010s
+2020s
+Modern / Digital
+
+
+================================================================================
+SUBCATEGORIES
+================================================================================
+
+
+--------------------------------------------------------------------------------
+DYNAMICS / COMPRESSOR SUBCATEGORIES (alphabetical)
+--------------------------------------------------------------------------------
+Bus              # Mix bus "glue" compressors
+Digital          # Modern digital designs
+Diode            # Neve style - colorful, punchy
+FET              # 1176 style - fast attack, aggressive
+Mastering        # Designed for mastering applications
+Mixing           # General-purpose mix compression
+Multi-Band       # Frequency-selective compression
+Optical          # LA-2A style, smooth, program-dependent
+Parallel         # Designed for parallel compression
+Tube             # Variable-mu, Fairchild style - warm, musical
+VCA              # SSL, API, dbx - fast, precise, punchy
+
+
+--------------------------------------------------------------------------------
+EQ SUBCATEGORIES (alphabetical)
+--------------------------------------------------------------------------------
+Analog           # Analog-modeled EQ
+Console          # Console channel EQ
+Digital          # Modern digital design
+Dynamic          # Frequency-dependent compression/expansion
+Graphic          # Fixed frequency bands
+Linear Phase     # Linear phase EQ
+Mastering        # Mastering-focused EQ
+Mid/Side         # M/S processing capability
+Minimum Phase    # Traditional minimum phase
+Mixing           # General-purpose mix EQ
+Parametric       # Fully adjustable bands (Q, freq, gain)
+Passive          # Pultec-style passive EQ
+Semi-Parametric  # Fixed Q, adjustable freq/gain
+Shelving         # High/low shelf focused
+
+
+--------------------------------------------------------------------------------
+REVERB SUBCATEGORIES (alphabetical)
+--------------------------------------------------------------------------------
+Algorithmic      # Digital algorithmic
+Ambient          # Subtle ambient reverb
+Chamber          # Echo chamber
+Convolution      # IR-based reverb
+Gated            # Gated reverb (80s style)
+Hall             # Concert hall simulation
+Plate            # EMT-style plate reverb
+Room             # Small/medium room
+Shimmer          # Pitch-shifted reverb tails
+Spring           # Spring reverb
+
+
+--------------------------------------------------------------------------------
+DELAY SUBCATEGORIES (alphabetical)
+--------------------------------------------------------------------------------
+Analog           # BBD/analog delay
+Digital          # Clean digital delay
+Ducking          # Ducking delay
+Granular         # Granular delay
+Modulated        # Delay with modulation
+Multi-Tap        # Multiple delay taps
+Ping-Pong        # Stereo ping-pong
+Rhythmic         # Tempo-synced patterns
+Tape             # Tape echo emulation
+
+
+--------------------------------------------------------------------------------
+AMP SIMULATOR SUBCATEGORIES (alphabetical within groups)
+--------------------------------------------------------------------------------
+# By Instrument
+Bass
+Guitar
+
+# By Origin
+American         # Fender-style
+British          # Marshall/Vox style
+German           # Diezel, ENGL style
+
+# By Character
+Boutique
+Clean
+Crunch
+High Gain
+Modern
+Vintage
+
+# By Topology/Style
+Hybrid
+Solid State
+Tube
+
+
+--------------------------------------------------------------------------------
+SATURATION SUBCATEGORIES (alphabetical)
+--------------------------------------------------------------------------------
+Console          # Console/summing saturation
+Harmonic         # Harmonic enhancement
+Tape             # Tape saturation
+Transformer      # Transformer color
+Transistor       # Transistor clipping
+Tube             # Tube saturation/warmth
+
+
+--------------------------------------------------------------------------------
+CHANNEL STRIP SUBCATEGORIES (alphabetical within groups)
+--------------------------------------------------------------------------------
+# By Console Brand
+AMEK             # AMEK consoles
+API              # API consoles
+Focusrite        # Focusrite ISA series
+Neve             # Neve consoles
+SSL              # Solid State Logic
+Trident          # Trident consoles
+
+# By Era/Application
+Mastering        # Mastering-focused
+Mixing           # Mix-focused
+Modern           # Modern console designs
+Recording        # Recording-focused
+Vintage          # Vintage console emulations
+
+
+--------------------------------------------------------------------------------
+LIMITER SUBCATEGORIES (alphabetical)
+--------------------------------------------------------------------------------
+Brickwall        # True peak limiting
+FET              # FET-based limiting
+Lookahead        # Lookahead limiting
+Mastering        # Mastering limiters
+Soft             # Soft limiting/clipping
+Tube             # Tube limiting
+
+
+--------------------------------------------------------------------------------
+DISTORTION SUBCATEGORIES (alphabetical)
+--------------------------------------------------------------------------------
+Amp-in-a-Box     # Amp emulation pedals
+Bit Crusher      # Digital bit reduction
+Distortion       # Hard clipping distortion
+Fuzz             # Fuzz pedal style
+Overdrive        # Soft clipping overdrive
+Wave Shaper      # Waveshaping distortion
+
+
+--------------------------------------------------------------------------------
+MODULATION SUBCATEGORIES (alphabetical)
+--------------------------------------------------------------------------------
+Chorus           # Chorus effect
+Flanger          # Flanger effect
+Phaser           # Phaser effect
+Ring Mod         # Ring modulation
+Rotary           # Leslie/rotary speaker
+Tremolo          # Amplitude tremolo
+Uni-Vibe         # Uni-Vibe style
+Vibrato          # Pitch vibrato
+
+
+================================================================================
+END OF DOCUMENT
+================================================================================

@@ -2,7 +2,6 @@
   ==============================================================================
     PluginCategories.h
     Plugin Alliance Launcher - Category and Era Definitions
-    Based on Plugin Boutique taxonomy
   ==============================================================================
 */
 
@@ -15,7 +14,7 @@ namespace PALauncher
 {
 
 // ============================================
-// EFFECTS CATEGORIES (46 types)
+// EFFECTS CATEGORIES
 // ============================================
 enum class EffectCategory
 {
@@ -119,33 +118,84 @@ enum class InstrumentCategory
 // ============================================
 enum class DisplayCategory
 {
-    // Effects
+    // Special - Always at top
     All,
-    EQ,
-    Dynamics,
-    Reverb,
-    Delay,
-    Modulation,
-    Distortion,
-    Saturation,
+    Favorites,
+    Recent,
+
+    // Effects (alphabetical)
     AmpSim,
     ChannelStrip,
-    Mastering,
-    Pitch,
-    StereoImaging,
-    Vocal,
-    Metering,
+    Compressors,
     Creative,
+    Delay,
+    Distortion,
+    EQ,
+    Expanders,
+    Mastering,
+    Metering,
+    Mixing,
+    Modulation,
+    Pitch,
+    Reverb,
+    Saturation,
+    StereoImaging,
     Utility,
+    Vocal,
 
-    // Instruments
-    Synth,
+    // Instruments (alphabetical)
     Drums,
     Sampler,
+    Synth,
 
-    // Special
-    Favorites,
-    Recent
+    // Brands (alphabetical)
+    Brand_ACMEAudio,
+    Brand_ADA,
+    Brand_ADPTRAudio,
+    Brand_AMEK,
+    Brand_Ampeg,
+    Brand_Bettermaker,
+    Brand_BlackBoxAnalogDesign,
+    Brand_Brainworx,
+    Brand_ChandlerLimited,
+    Brand_CutClassic,
+    Brand_DangerousMusic,
+    Brand_Diezel,
+    Brand_DSAudio,
+    Brand_Elysia,
+    Brand_ENGL,
+    Brand_FiedlerAudio,
+    Brand_Focusrite,
+    Brand_Friedman,
+    Brand_Fuchs,
+    Brand_GallienKrueger,
+    Brand_HarrisDoyle,
+    Brand_HEARS,
+    Brand_HUMAudioDevices,
+    Brand_KaranyiSounds,
+    Brand_KiiveAudio,
+    Brand_KnifAudio,
+    Brand_LindellAudio,
+    Brand_Looptrotter,
+    Brand_LouderThanLiftoff,
+    Brand_MaorAppelbaumHendyamps,
+    Brand_Millennia,
+    Brand_Mixland,
+    Brand_MaagAudio,
+    Brand_NEOLD,
+    Brand_Noveltech,
+    Brand_ProAudioDSP,
+    Brand_PurpleAudio,
+    Brand_ShadowHills,
+    Brand_SSL,
+    Brand_SPL,
+    Brand_Suhr,
+    Brand_SwivelAudio,
+    Brand_ThreeBodyTechnology,
+    Brand_THX,
+    Brand_TOMOAudiolabs,
+    Brand_UnfilteredAudio,
+    Brand_Vertigo
 };
 
 // ============================================
@@ -252,32 +302,94 @@ inline juce::String getEraName(Era era)
 inline juce::String getDisplayCategoryName(DisplayCategory cat)
 {
     static const std::map<DisplayCategory, juce::String> names = {
+        // Special
         {DisplayCategory::All, "All"},
-        {DisplayCategory::EQ, "EQ"},
-        {DisplayCategory::Dynamics, "Dynamics"},
-        {DisplayCategory::Reverb, "Reverb"},
-        {DisplayCategory::Delay, "Delay"},
-        {DisplayCategory::Modulation, "Modulation"},
-        {DisplayCategory::Distortion, "Distortion"},
-        {DisplayCategory::Saturation, "Saturation"},
+        {DisplayCategory::Favorites, "Favorites"},
+        {DisplayCategory::Recent, "Recent"},
+
+        // Effects (alphabetical)
         {DisplayCategory::AmpSim, "Amp Simulators"},
         {DisplayCategory::ChannelStrip, "Channel Strips"},
-        {DisplayCategory::Mastering, "Mastering"},
-        {DisplayCategory::Pitch, "Pitch"},
-        {DisplayCategory::StereoImaging, "Stereo/Imaging"},
-        {DisplayCategory::Vocal, "Vocal"},
-        {DisplayCategory::Metering, "Metering"},
+        {DisplayCategory::Compressors, "Compressors"},
         {DisplayCategory::Creative, "Creative"},
+        {DisplayCategory::Delay, "Delay"},
+        {DisplayCategory::Distortion, "Distortion"},
+        {DisplayCategory::EQ, "EQs"},
+        {DisplayCategory::Expanders, "Expanders"},
+        {DisplayCategory::Mastering, "Mastering"},
+        {DisplayCategory::Metering, "Metering"},
+        {DisplayCategory::Mixing, "Mixing"},
+        {DisplayCategory::Modulation, "Modulation"},
+        {DisplayCategory::Pitch, "Pitch"},
+        {DisplayCategory::Reverb, "Reverb"},
+        {DisplayCategory::Saturation, "Saturation"},
+        {DisplayCategory::StereoImaging, "Stereo Imaging"},
         {DisplayCategory::Utility, "Utility"},
-        {DisplayCategory::Synth, "Synths"},
+        {DisplayCategory::Vocal, "Vocal Processing"},
+
+        // Instruments
         {DisplayCategory::Drums, "Drums"},
         {DisplayCategory::Sampler, "Samplers"},
-        {DisplayCategory::Favorites, "Favorites"},
-        {DisplayCategory::Recent, "Recent"}
+        {DisplayCategory::Synth, "Synths"},
+
+        // Brands (alphabetical)
+        {DisplayCategory::Brand_ACMEAudio, "ACME Audio"},
+        {DisplayCategory::Brand_ADA, "ADA"},
+        {DisplayCategory::Brand_ADPTRAudio, "ADPTR AUDIO"},
+        {DisplayCategory::Brand_AMEK, "AMEK"},
+        {DisplayCategory::Brand_Ampeg, "Ampeg"},
+        {DisplayCategory::Brand_Bettermaker, "Bettermaker"},
+        {DisplayCategory::Brand_BlackBoxAnalogDesign, "Black Box Analog Design"},
+        {DisplayCategory::Brand_Brainworx, "Brainworx"},
+        {DisplayCategory::Brand_ChandlerLimited, "Chandler Limited"},
+        {DisplayCategory::Brand_CutClassic, "Cut Classic"},
+        {DisplayCategory::Brand_DangerousMusic, "Dangerous Music"},
+        {DisplayCategory::Brand_Diezel, "Diezel"},
+        {DisplayCategory::Brand_DSAudio, "DS Audio"},
+        {DisplayCategory::Brand_Elysia, "elysia"},
+        {DisplayCategory::Brand_ENGL, "ENGL"},
+        {DisplayCategory::Brand_FiedlerAudio, "fiedler audio"},
+        {DisplayCategory::Brand_Focusrite, "Focusrite"},
+        {DisplayCategory::Brand_Friedman, "Friedman"},
+        {DisplayCategory::Brand_Fuchs, "Fuchs"},
+        {DisplayCategory::Brand_GallienKrueger, "Gallien-Krueger"},
+        {DisplayCategory::Brand_HarrisDoyle, "Harris Doyle"},
+        {DisplayCategory::Brand_HEARS, "HEARS"},
+        {DisplayCategory::Brand_HUMAudioDevices, "HUM Audio Devices"},
+        {DisplayCategory::Brand_KaranyiSounds, "Karanyi Sounds"},
+        {DisplayCategory::Brand_KiiveAudio, "Kiive Audio"},
+        {DisplayCategory::Brand_KnifAudio, "Knif Audio"},
+        {DisplayCategory::Brand_LindellAudio, "Lindell Audio"},
+        {DisplayCategory::Brand_Looptrotter, "Looptrotter"},
+        {DisplayCategory::Brand_LouderThanLiftoff, "Louder Than Liftoff"},
+        {DisplayCategory::Brand_MaorAppelbaumHendyamps, "Maor Appelbaum & Hendyamps"},
+        {DisplayCategory::Brand_Millennia, "Millennia"},
+        {DisplayCategory::Brand_Mixland, "Mixland"},
+        {DisplayCategory::Brand_MaagAudio, "Mäag Audio"},
+        {DisplayCategory::Brand_NEOLD, "NEOLD"},
+        {DisplayCategory::Brand_Noveltech, "Noveltech"},
+        {DisplayCategory::Brand_ProAudioDSP, "Pro Audio DSP"},
+        {DisplayCategory::Brand_PurpleAudio, "Purple Audio"},
+        {DisplayCategory::Brand_ShadowHills, "Shadow Hills"},
+        {DisplayCategory::Brand_SSL, "Solid State Logic (SSL)"},
+        {DisplayCategory::Brand_SPL, "SPL"},
+        {DisplayCategory::Brand_Suhr, "Suhr"},
+        {DisplayCategory::Brand_SwivelAudio, "Swivel Audio"},
+        {DisplayCategory::Brand_ThreeBodyTechnology, "Three-Body Technology"},
+        {DisplayCategory::Brand_THX, "THX"},
+        {DisplayCategory::Brand_TOMOAudiolabs, "TOMO Audiolabs"},
+        {DisplayCategory::Brand_UnfilteredAudio, "Unfiltered Audio"},
+        {DisplayCategory::Brand_Vertigo, "Vertigo"}
     };
 
     auto it = names.find(cat);
     return it != names.end() ? it->second : "Unknown";
+}
+
+// Helper to check if a DisplayCategory is a brand
+inline bool isBrandCategory(DisplayCategory cat)
+{
+    return cat >= DisplayCategory::Brand_ACMEAudio && cat <= DisplayCategory::Brand_Vertigo;
 }
 
 } // namespace PALauncher

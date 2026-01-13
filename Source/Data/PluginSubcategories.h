@@ -14,202 +14,209 @@ namespace PALauncher
 {
 
 // ============================================
-// COMPRESSOR SUBCATEGORIES
+// COMPRESSOR SUBCATEGORIES (alphabetical)
 // ============================================
 enum class CompressorType
 {
-    Optical,        // LA-2A style
-    VCA,            // SSL, API, dbx style
-    FET,            // 1176 style
-    Tube,           // Variable-mu, Fairchild style
-    Diode,          // Neve style
+    Bus,            // Mix bus "glue" compressors
     Digital,        // Modern digital designs
-    MultiBand,      // Frequency-selective
+    Diode,          // Neve style - colorful, punchy
+    FET,            // 1176 style - fast attack, aggressive
+    Mastering,      // Designed for mastering applications
+    Mixing,         // General-purpose mix compression
+    MultiBand,      // Frequency-selective compression
+    Optical,        // LA-2A style - smooth, program-dependent
     Parallel,       // Designed for parallel compression
-    BusGlue,        // Mix bus compressors
-    Mastering,      // Mastering applications
+    Tube,           // Variable-mu, Fairchild style - warm, musical
+    VCA,            // SSL, API, dbx - fast, precise, punchy
     Unknown
 };
 
 // ============================================
-// EQ SUBCATEGORIES
+// EQ SUBCATEGORIES (alphabetical)
 // ============================================
 enum class EQType
 {
-    Parametric,
-    SemiParametric,
-    Graphic,
-    Shelving,
-    Passive,        // Pultec-style
-    Dynamic,
-    Linear,         // Linear phase
-    MinimumPhase,
-    MidSide,
-    Analog,
-    Digital,
-    Console,
-    Mastering,
+    Analog,         // Analog-modeled EQ
+    Console,        // Console channel EQ
+    Digital,        // Modern digital design
+    Dynamic,        // Frequency-dependent compression/expansion
+    Graphic,        // Fixed frequency bands
+    Linear,         // Linear phase EQ
+    Mastering,      // Mastering-focused EQ
+    MidSide,        // M/S processing capability
+    MinimumPhase,   // Traditional minimum phase
+    Mixing,         // General-purpose mix EQ
+    Parametric,     // Fully adjustable bands (Q, freq, gain)
+    Passive,        // Pultec-style passive EQ
+    SemiParametric, // Fixed Q, adjustable freq/gain
+    Shelving,       // High/low shelf focused
     Unknown
 };
 
 // ============================================
-// REVERB SUBCATEGORIES
+// REVERB SUBCATEGORIES (alphabetical)
 // ============================================
 enum class ReverbType
 {
-    Hall,
-    Room,
-    Chamber,
-    Plate,
-    Spring,
-    Convolution,
-    Algorithmic,
-    Shimmer,
-    Gated,
-    Ambient,
+    Algorithmic,    // Digital algorithmic
+    Ambient,        // Subtle ambient reverb
+    Chamber,        // Echo chamber
+    Convolution,    // IR-based reverb
+    Gated,          // Gated reverb (80s style)
+    Hall,           // Concert hall simulation
+    Plate,          // EMT-style plate reverb
+    Room,           // Small/medium room
+    Shimmer,        // Pitch-shifted reverb tails
+    Spring,         // Spring reverb
     Unknown
 };
 
 // ============================================
-// DELAY SUBCATEGORIES
+// DELAY SUBCATEGORIES (alphabetical)
 // ============================================
 enum class DelayType
 {
-    Tape,
-    Analog,
-    Digital,
-    PingPong,
-    MultiTap,
-    Modulated,
-    Ducking,
-    Rhythmic,
-    Granular,
+    Analog,         // BBD/analog delay
+    Digital,        // Clean digital delay
+    Ducking,        // Ducking delay
+    Granular,       // Granular delay
+    Modulated,      // Delay with modulation
+    MultiTap,       // Multiple delay taps
+    PingPong,       // Stereo ping-pong
+    Rhythmic,       // Tempo-synced patterns
+    Tape,           // Tape echo emulation
     Unknown
 };
 
 // ============================================
-// AMP SIMULATOR SUBCATEGORIES
+// AMP SIMULATOR SUBCATEGORIES (alphabetical within groups)
 // ============================================
 enum class AmpType
 {
     // By Instrument
-    GuitarAmp,
     BassAmp,
+    GuitarAmp,
 
-    // By Topology
-    Tube,
-    SolidState,
-    Hybrid,
+    // By Origin
+    American,       // Fender-style
+    British,        // Marshall/Vox style
+    German,         // Diezel, ENGL style
 
     // By Character
+    Boutique,
     Clean,
     Crunch,
     HighGain,
-    Vintage,
     Modern,
-    Boutique,
+    Vintage,
 
-    // By Origin
-    American,
-    British,
-    German,
+    // By Topology
+    Hybrid,
+    SolidState,
+    Tube,
 
     Unknown
 };
 
 // ============================================
-// SATURATION SUBCATEGORIES
+// SATURATION SUBCATEGORIES (alphabetical)
 // ============================================
 enum class SaturationType
 {
-    Tube,
-    Tape,
-    Transformer,
-    Console,
-    Transistor,
-    Harmonic,
+    Console,        // Console/summing saturation
+    Harmonic,       // Harmonic enhancement
+    Tape,           // Tape saturation
+    Transformer,    // Transformer color
+    Transistor,     // Transistor clipping
+    Tube,           // Tube saturation/warmth
     Unknown
 };
 
 // ============================================
-// CHANNEL STRIP SUBCATEGORIES
+// CHANNEL STRIP SUBCATEGORIES (alphabetical within groups)
 // ============================================
 enum class ChannelStripType
 {
-    SSL,
-    Neve,
-    API,
-    AMEK,
-    Focusrite,
-    Trident,
-    Vintage,
-    Modern,
-    Recording,
-    Mixing,
-    Mastering,
+    // By Console Brand
+    AMEK,           // AMEK consoles
+    API,            // API consoles
+    Focusrite,      // Focusrite ISA series
+    Neve,           // Neve consoles
+    SSL,            // Solid State Logic
+    Trident,        // Trident consoles
+
+    // By Era/Application
+    Mastering,      // Mastering-focused
+    Mixing,         // Mix-focused
+    Modern,         // Modern console designs
+    Recording,      // Recording-focused
+    Vintage,        // Vintage console emulations
+
     Unknown
 };
 
 // ============================================
-// LIMITER SUBCATEGORIES
+// LIMITER SUBCATEGORIES (alphabetical)
 // ============================================
 enum class LimiterType
 {
-    Brickwall,
-    Soft,
-    Tube,
-    FET,
-    Lookahead,
-    Mastering,
+    Brickwall,      // True peak limiting
+    FET,            // FET-based limiting
+    Lookahead,      // Lookahead limiting
+    Mastering,      // Mastering limiters
+    Soft,           // Soft limiting/clipping
+    Tube,           // Tube limiting
     Unknown
 };
 
 // ============================================
-// DISTORTION SUBCATEGORIES
+// DISTORTION SUBCATEGORIES (alphabetical)
 // ============================================
 enum class DistortionType
 {
-    Overdrive,
-    Distortion,
-    Fuzz,
-    BitCrusher,
-    WaveShaper,
-    Amp,
+    Amp,            // Amp-in-a-Box / Amp emulation pedals
+    BitCrusher,     // Digital bit reduction
+    Distortion,     // Hard clipping distortion
+    Fuzz,           // Fuzz pedal style
+    Overdrive,      // Soft clipping overdrive
+    WaveShaper,     // Waveshaping distortion
     Unknown
 };
 
 // ============================================
-// MODULATION SUBCATEGORIES
+// MODULATION SUBCATEGORIES (alphabetical)
 // ============================================
 enum class ModulationType
 {
-    Chorus,
-    Flanger,
-    Phaser,
-    Tremolo,
-    Vibrato,
-    Rotary,
-    UniVibe,
-    RingMod,
+    Chorus,         // Chorus effect
+    Flanger,        // Flanger effect
+    Phaser,         // Phaser effect
+    RingMod,        // Ring modulation
+    Rotary,         // Leslie/rotary speaker
+    Tremolo,        // Amplitude tremolo
+    UniVibe,        // Uni-Vibe style
+    Vibrato,        // Pitch vibrato
     Unknown
 };
 
 // ============================================
-// Display Name Functions
+// Display Name Functions (alphabetical order)
 // ============================================
 inline juce::String getCompressorTypeName(CompressorType type)
 {
     static const std::map<CompressorType, juce::String> names = {
-        {CompressorType::Optical, "Optical"},
-        {CompressorType::VCA, "VCA"},
-        {CompressorType::FET, "FET"},
-        {CompressorType::Tube, "Tube"},
-        {CompressorType::Diode, "Diode"},
+        {CompressorType::Bus, "Bus"},
         {CompressorType::Digital, "Digital"},
-        {CompressorType::MultiBand, "Multi-Band"},
-        {CompressorType::Parallel, "Parallel"},
-        {CompressorType::BusGlue, "Bus Glue"},
+        {CompressorType::Diode, "Diode"},
+        {CompressorType::FET, "FET"},
         {CompressorType::Mastering, "Mastering"},
+        {CompressorType::Mixing, "Mixing"},
+        {CompressorType::MultiBand, "Multi-Band"},
+        {CompressorType::Optical, "Optical"},
+        {CompressorType::Parallel, "Parallel"},
+        {CompressorType::Tube, "Tube"},
+        {CompressorType::VCA, "VCA"},
         {CompressorType::Unknown, "Unknown"}
     };
     auto it = names.find(type);
@@ -219,78 +226,21 @@ inline juce::String getCompressorTypeName(CompressorType type)
 inline juce::String getEQTypeName(EQType type)
 {
     static const std::map<EQType, juce::String> names = {
-        {EQType::Parametric, "Parametric"},
-        {EQType::SemiParametric, "Semi-Parametric"},
-        {EQType::Graphic, "Graphic"},
-        {EQType::Shelving, "Shelving"},
-        {EQType::Passive, "Passive"},
-        {EQType::Dynamic, "Dynamic"},
-        {EQType::Linear, "Linear Phase"},
-        {EQType::MinimumPhase, "Minimum Phase"},
-        {EQType::MidSide, "Mid/Side"},
         {EQType::Analog, "Analog"},
-        {EQType::Digital, "Digital"},
         {EQType::Console, "Console"},
+        {EQType::Digital, "Digital"},
+        {EQType::Dynamic, "Dynamic"},
+        {EQType::Graphic, "Graphic"},
+        {EQType::Linear, "Linear Phase"},
         {EQType::Mastering, "Mastering"},
+        {EQType::MidSide, "Mid/Side"},
+        {EQType::MinimumPhase, "Minimum Phase"},
+        {EQType::Mixing, "Mixing"},
+        {EQType::Parametric, "Parametric"},
+        {EQType::Passive, "Passive"},
+        {EQType::SemiParametric, "Semi-Parametric"},
+        {EQType::Shelving, "Shelving"},
         {EQType::Unknown, "Unknown"}
-    };
-    auto it = names.find(type);
-    return it != names.end() ? it->second : "Unknown";
-}
-
-inline juce::String getAmpTypeName(AmpType type)
-{
-    static const std::map<AmpType, juce::String> names = {
-        {AmpType::GuitarAmp, "Guitar"},
-        {AmpType::BassAmp, "Bass"},
-        {AmpType::Tube, "Tube"},
-        {AmpType::SolidState, "Solid State"},
-        {AmpType::Hybrid, "Hybrid"},
-        {AmpType::Clean, "Clean"},
-        {AmpType::Crunch, "Crunch"},
-        {AmpType::HighGain, "High Gain"},
-        {AmpType::Vintage, "Vintage"},
-        {AmpType::Modern, "Modern"},
-        {AmpType::Boutique, "Boutique"},
-        {AmpType::American, "American"},
-        {AmpType::British, "British"},
-        {AmpType::German, "German"},
-        {AmpType::Unknown, "Unknown"}
-    };
-    auto it = names.find(type);
-    return it != names.end() ? it->second : "Unknown";
-}
-
-inline juce::String getSaturationTypeName(SaturationType type)
-{
-    static const std::map<SaturationType, juce::String> names = {
-        {SaturationType::Tube, "Tube"},
-        {SaturationType::Tape, "Tape"},
-        {SaturationType::Transformer, "Transformer"},
-        {SaturationType::Console, "Console"},
-        {SaturationType::Transistor, "Transistor"},
-        {SaturationType::Harmonic, "Harmonic"},
-        {SaturationType::Unknown, "Unknown"}
-    };
-    auto it = names.find(type);
-    return it != names.end() ? it->second : "Unknown";
-}
-
-inline juce::String getChannelStripTypeName(ChannelStripType type)
-{
-    static const std::map<ChannelStripType, juce::String> names = {
-        {ChannelStripType::SSL, "SSL"},
-        {ChannelStripType::Neve, "Neve"},
-        {ChannelStripType::API, "API"},
-        {ChannelStripType::AMEK, "AMEK"},
-        {ChannelStripType::Focusrite, "Focusrite"},
-        {ChannelStripType::Trident, "Trident"},
-        {ChannelStripType::Vintage, "Vintage"},
-        {ChannelStripType::Modern, "Modern"},
-        {ChannelStripType::Recording, "Recording"},
-        {ChannelStripType::Mixing, "Mixing"},
-        {ChannelStripType::Mastering, "Mastering"},
-        {ChannelStripType::Unknown, "Unknown"}
     };
     auto it = names.find(type);
     return it != names.end() ? it->second : "Unknown";
@@ -299,16 +249,16 @@ inline juce::String getChannelStripTypeName(ChannelStripType type)
 inline juce::String getReverbTypeName(ReverbType type)
 {
     static const std::map<ReverbType, juce::String> names = {
-        {ReverbType::Hall, "Hall"},
-        {ReverbType::Room, "Room"},
-        {ReverbType::Chamber, "Chamber"},
-        {ReverbType::Plate, "Plate"},
-        {ReverbType::Spring, "Spring"},
-        {ReverbType::Convolution, "Convolution"},
         {ReverbType::Algorithmic, "Algorithmic"},
-        {ReverbType::Shimmer, "Shimmer"},
-        {ReverbType::Gated, "Gated"},
         {ReverbType::Ambient, "Ambient"},
+        {ReverbType::Chamber, "Chamber"},
+        {ReverbType::Convolution, "Convolution"},
+        {ReverbType::Gated, "Gated"},
+        {ReverbType::Hall, "Hall"},
+        {ReverbType::Plate, "Plate"},
+        {ReverbType::Room, "Room"},
+        {ReverbType::Shimmer, "Shimmer"},
+        {ReverbType::Spring, "Spring"},
         {ReverbType::Unknown, "Unknown"}
     };
     auto it = names.find(type);
@@ -318,16 +268,74 @@ inline juce::String getReverbTypeName(ReverbType type)
 inline juce::String getDelayTypeName(DelayType type)
 {
     static const std::map<DelayType, juce::String> names = {
-        {DelayType::Tape, "Tape"},
         {DelayType::Analog, "Analog"},
         {DelayType::Digital, "Digital"},
-        {DelayType::PingPong, "Ping-Pong"},
-        {DelayType::MultiTap, "Multi-Tap"},
-        {DelayType::Modulated, "Modulated"},
         {DelayType::Ducking, "Ducking"},
-        {DelayType::Rhythmic, "Rhythmic"},
         {DelayType::Granular, "Granular"},
+        {DelayType::Modulated, "Modulated"},
+        {DelayType::MultiTap, "Multi-Tap"},
+        {DelayType::PingPong, "Ping-Pong"},
+        {DelayType::Rhythmic, "Rhythmic"},
+        {DelayType::Tape, "Tape"},
         {DelayType::Unknown, "Unknown"}
+    };
+    auto it = names.find(type);
+    return it != names.end() ? it->second : "Unknown";
+}
+
+inline juce::String getAmpTypeName(AmpType type)
+{
+    static const std::map<AmpType, juce::String> names = {
+        {AmpType::American, "American"},
+        {AmpType::BassAmp, "Bass"},
+        {AmpType::Boutique, "Boutique"},
+        {AmpType::British, "British"},
+        {AmpType::Clean, "Clean"},
+        {AmpType::Crunch, "Crunch"},
+        {AmpType::German, "German"},
+        {AmpType::GuitarAmp, "Guitar"},
+        {AmpType::HighGain, "High Gain"},
+        {AmpType::Hybrid, "Hybrid"},
+        {AmpType::Modern, "Modern"},
+        {AmpType::SolidState, "Solid State"},
+        {AmpType::Tube, "Tube"},
+        {AmpType::Vintage, "Vintage"},
+        {AmpType::Unknown, "Unknown"}
+    };
+    auto it = names.find(type);
+    return it != names.end() ? it->second : "Unknown";
+}
+
+inline juce::String getSaturationTypeName(SaturationType type)
+{
+    static const std::map<SaturationType, juce::String> names = {
+        {SaturationType::Console, "Console"},
+        {SaturationType::Harmonic, "Harmonic"},
+        {SaturationType::Tape, "Tape"},
+        {SaturationType::Transformer, "Transformer"},
+        {SaturationType::Transistor, "Transistor"},
+        {SaturationType::Tube, "Tube"},
+        {SaturationType::Unknown, "Unknown"}
+    };
+    auto it = names.find(type);
+    return it != names.end() ? it->second : "Unknown";
+}
+
+inline juce::String getChannelStripTypeName(ChannelStripType type)
+{
+    static const std::map<ChannelStripType, juce::String> names = {
+        {ChannelStripType::AMEK, "AMEK"},
+        {ChannelStripType::API, "API"},
+        {ChannelStripType::Focusrite, "Focusrite"},
+        {ChannelStripType::Mastering, "Mastering"},
+        {ChannelStripType::Mixing, "Mixing"},
+        {ChannelStripType::Modern, "Modern"},
+        {ChannelStripType::Neve, "Neve"},
+        {ChannelStripType::Recording, "Recording"},
+        {ChannelStripType::SSL, "SSL"},
+        {ChannelStripType::Trident, "Trident"},
+        {ChannelStripType::Vintage, "Vintage"},
+        {ChannelStripType::Unknown, "Unknown"}
     };
     auto it = names.find(type);
     return it != names.end() ? it->second : "Unknown";
@@ -337,11 +345,11 @@ inline juce::String getLimiterTypeName(LimiterType type)
 {
     static const std::map<LimiterType, juce::String> names = {
         {LimiterType::Brickwall, "Brickwall"},
-        {LimiterType::Soft, "Soft"},
-        {LimiterType::Tube, "Tube"},
         {LimiterType::FET, "FET"},
         {LimiterType::Lookahead, "Lookahead"},
         {LimiterType::Mastering, "Mastering"},
+        {LimiterType::Soft, "Soft"},
+        {LimiterType::Tube, "Tube"},
         {LimiterType::Unknown, "Unknown"}
     };
     auto it = names.find(type);
@@ -351,12 +359,12 @@ inline juce::String getLimiterTypeName(LimiterType type)
 inline juce::String getDistortionTypeName(DistortionType type)
 {
     static const std::map<DistortionType, juce::String> names = {
-        {DistortionType::Overdrive, "Overdrive"},
+        {DistortionType::Amp, "Amp-in-a-Box"},
+        {DistortionType::BitCrusher, "Bit Crusher"},
         {DistortionType::Distortion, "Distortion"},
         {DistortionType::Fuzz, "Fuzz"},
-        {DistortionType::BitCrusher, "Bit Crusher"},
+        {DistortionType::Overdrive, "Overdrive"},
         {DistortionType::WaveShaper, "Wave Shaper"},
-        {DistortionType::Amp, "Amp-in-a-Box"},
         {DistortionType::Unknown, "Unknown"}
     };
     auto it = names.find(type);
@@ -369,11 +377,11 @@ inline juce::String getModulationTypeName(ModulationType type)
         {ModulationType::Chorus, "Chorus"},
         {ModulationType::Flanger, "Flanger"},
         {ModulationType::Phaser, "Phaser"},
-        {ModulationType::Tremolo, "Tremolo"},
-        {ModulationType::Vibrato, "Vibrato"},
-        {ModulationType::Rotary, "Rotary"},
-        {ModulationType::UniVibe, "Uni-Vibe"},
         {ModulationType::RingMod, "Ring Mod"},
+        {ModulationType::Rotary, "Rotary"},
+        {ModulationType::Tremolo, "Tremolo"},
+        {ModulationType::UniVibe, "Uni-Vibe"},
+        {ModulationType::Vibrato, "Vibrato"},
         {ModulationType::Unknown, "Unknown"}
     };
     auto it = names.find(type);

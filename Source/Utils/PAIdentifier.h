@@ -31,71 +31,109 @@ public:
         if (paManufacturers.count(desc.manufacturerName.toLowerCase()) > 0)
             return true;
 
-        // Check plugin name for known PA prefixes/brands
+        // Check plugin name for known PA prefixes/brands (alphabetical)
         auto nameLower = desc.name.toLowerCase();
         if (nameLower.startsWith("bx_") ||
             nameLower.startsWith("bx ") ||
-            nameLower.contains("elysia") ||
-            nameLower.contains("spl ") ||
-            nameLower.contains("lindell") ||
-            nameLower.contains("shadow hills") ||
+            nameLower.contains("a/da") ||
+            nameLower.contains("acme") ||
+            nameLower.contains("adptr") ||
+            nameLower.contains("amek") ||
+            nameLower.contains("ampeg") ||
+            nameLower.contains("bettermaker") ||
+            nameLower.contains("black box") ||
+            nameLower.contains("chandler") ||
+            nameLower.contains("cut classic") ||
+            nameLower.contains("dangerous") ||
             nameLower.contains("diezel") ||
+            nameLower.contains("ds audio") ||
+            nameLower.contains("elysia") ||
             nameLower.contains("engl ") ||
+            nameLower.contains("fiedler") ||
+            nameLower.contains("focusrite") ||
             nameLower.contains("friedman") ||
             nameLower.contains("fuchs") ||
-            nameLower.contains("suhr") ||
-            nameLower.contains("ampeg") ||
-            nameLower.contains("adptr") ||
-            nameLower.contains("bettermaker") ||
-            nameLower.contains("chandler") ||
-            nameLower.contains("dangerous") ||
+            nameLower.contains("gallien") ||
+            nameLower.contains("harris doyle") ||
+            nameLower.contains("hears") ||
+            nameLower.contains("hum audio") ||
+            nameLower.contains("karanyi") ||
+            nameLower.contains("kiive") ||
+            nameLower.contains("kirchhoff") ||
+            nameLower.contains("knif") ||
+            nameLower.contains("lindell") ||
+            nameLower.contains("looptrotter") ||
+            nameLower.contains("louder than liftoff") ||
             nameLower.contains("maag") ||
+            nameLower.contains("maor appelbaum") ||
             nameLower.contains("millennia") ||
+            nameLower.contains("mixland") ||
             nameLower.contains("neold") ||
             nameLower.contains("noveltech") ||
+            nameLower.contains("pro audio dsp") ||
             nameLower.contains("purple audio") ||
-            nameLower.contains("vertigo") ||
-            nameLower.contains("looptrotter") ||
-            nameLower.contains("knif") ||
+            nameLower.contains("shadow hills") ||
+            nameLower.contains("spl ") ||
+            nameLower.contains("ssl") ||
+            nameLower.contains("suhr") ||
+            nameLower.contains("swivel") ||
+            nameLower.contains("three-body") ||
+            nameLower.contains("thx") ||
             nameLower.contains("tomo") ||
-            nameLower.contains("kirchhoff") ||
-            nameLower.contains("fiedler") ||
-            nameLower.contains("hum audio") ||
-            nameLower.contains("hears") ||
-            nameLower.contains("acme"))
+            nameLower.contains("unfiltered") ||
+            nameLower.contains("vertigo"))
             return true;
 
         // Check file path for known PA plugin filenames
         auto pathLower = desc.fileOrIdentifier.toLowerCase();
         if (pathLower.contains("bx_") ||
-            pathLower.contains("elysia") ||
-            pathLower.contains("\\spl ") || pathLower.contains("/spl ") ||
-            pathLower.contains("lindell") ||
-            pathLower.contains("shadow hills") ||
+            pathLower.contains("a-da") ||
+            pathLower.contains("acme") ||
+            pathLower.contains("adptr") ||
+            pathLower.contains("amek") ||
+            pathLower.contains("ampeg") ||
+            pathLower.contains("bettermaker") ||
+            pathLower.contains("black box") ||
+            pathLower.contains("chandler") ||
+            pathLower.contains("cut classic") ||
+            pathLower.contains("dangerous") ||
             pathLower.contains("diezel") ||
+            pathLower.contains("ds audio") ||
+            pathLower.contains("elysia") ||
             pathLower.contains("engl ") ||
+            pathLower.contains("fiedler") ||
+            pathLower.contains("focusrite") ||
             pathLower.contains("friedman") ||
             pathLower.contains("fuchs") ||
-            pathLower.contains("suhr") ||
-            pathLower.contains("ampeg") ||
-            pathLower.contains("adptr") ||
-            pathLower.contains("bettermaker") ||
-            pathLower.contains("chandler") ||
-            pathLower.contains("dangerous") ||
+            pathLower.contains("gallien") ||
+            pathLower.contains("harris doyle") ||
+            pathLower.contains("hears") ||
+            pathLower.contains("hum audio") || pathLower.contains("laal") ||
+            pathLower.contains("karanyi") ||
+            pathLower.contains("kiive") ||
+            pathLower.contains("kirchhoff") ||
+            pathLower.contains("knif") ||
+            pathLower.contains("lindell") ||
+            pathLower.contains("looptrotter") ||
+            pathLower.contains("louder than liftoff") ||
             pathLower.contains("maag") ||
+            pathLower.contains("maor appelbaum") ||
             pathLower.contains("millennia") ||
+            pathLower.contains("mixland") ||
             pathLower.contains("neold") ||
             pathLower.contains("noveltech") ||
+            pathLower.contains("pro audio dsp") ||
             pathLower.contains("purple audio") ||
-            pathLower.contains("vertigo") ||
-            pathLower.contains("looptrotter") ||
-            pathLower.contains("knif") ||
+            pathLower.contains("shadow hills") ||
+            pathLower.contains("\\spl ") || pathLower.contains("/spl ") ||
+            pathLower.contains("ssl") ||
+            pathLower.contains("suhr") ||
+            pathLower.contains("swivel") ||
+            pathLower.contains("three-body") ||
+            pathLower.contains("thx") ||
             pathLower.contains("tomo") ||
-            pathLower.contains("kirchhoff") ||
-            pathLower.contains("fiedler") ||
-            pathLower.contains("hum audio") || pathLower.contains("laal") ||
-            pathLower.contains("hears") ||
-            pathLower.contains("acme"))
+            pathLower.contains("unfiltered") ||
+            pathLower.contains("vertigo"))
             return true;
 
         return false;
@@ -109,66 +147,100 @@ public:
 private:
     void initializeManufacturers()
     {
-        // Core brands (lowercase for case-insensitive matching)
-        paManufacturers.insert("plugin alliance");
+        // All Plugin Alliance brands (alphabetical, lowercase for case-insensitive matching)
+
+        // A
+        paManufacturers.insert("a/da");
+        paManufacturers.insert("acme audio");
+        paManufacturers.insert("adptr audio");
+        paManufacturers.insert("amek");
+        paManufacturers.insert("ampeg");
+        paManufacturers.insert("ams neve");
+
+        // B
+        paManufacturers.insert("bettermaker");
+        paManufacturers.insert("black box analog design");
         paManufacturers.insert("brainworx");
         paManufacturers.insert("bx_digital");
 
-        // Partner brands
-        paManufacturers.insert("adptr audio");
-        paManufacturers.insert("unfiltered audio");
-        paManufacturers.insert("lindell audio");
-        paManufacturers.insert("elysia");
-        paManufacturers.insert("shadow hills");
-        paManufacturers.insert("shadow hills industries");
-        paManufacturers.insert("spl");
-        paManufacturers.insert("millennia");
-        paManufacturers.insert("vertigo");
-        paManufacturers.insert("vertigo sound");
-        paManufacturers.insert("black box analog design");
-        paManufacturers.insert("noveltech");
-        paManufacturers.insert("maag audio");
-        paManufacturers.insert("mäag audio");
-        paManufacturers.insert("neold");
-        paManufacturers.insert("three-body technology");
-        paManufacturers.insert("hum audio devices");
-        paManufacturers.insert("hears");
-        paManufacturers.insert("bettermaker");
-        paManufacturers.insert("proaudiodsp");
-        paManufacturers.insert("fiedler audio");
-        paManufacturers.insert("knif audio");
-        paManufacturers.insert("tomo audiolabs");
-        paManufacturers.insert("looptrotter");
-        paManufacturers.insert("acme audio");
+        // C
+        paManufacturers.insert("chandler limited");
+        paManufacturers.insert("cut classic");
 
-        // Amp brands
-        paManufacturers.insert("ampeg");
+        // D
+        paManufacturers.insert("dangerous music");
         paManufacturers.insert("diezel");
         paManufacturers.insert("diezel amplification");
-        paManufacturers.insert("fuchs");
-        paManufacturers.insert("suhr");
+        paManufacturers.insert("ds audio");
+
+        // E
+        paManufacturers.insert("elysia");
+        paManufacturers.insert("engl");
+
+        // F
+        paManufacturers.insert("fiedler audio");
+        paManufacturers.insert("focusrite");
         paManufacturers.insert("friedman");
         paManufacturers.insert("friedman amplification");
-        paManufacturers.insert("engl");
+        paManufacturers.insert("fuchs");
+
+        // G
         paManufacturers.insert("gallien krueger");
         paManufacturers.insert("gallien-krueger");
-        paManufacturers.insert("chandler limited");
-        paManufacturers.insert("a/da");
 
-        // Console/Hardware brands
-        paManufacturers.insert("amek");
-        paManufacturers.insert("dangerous music");
-        paManufacturers.insert("purple audio");
-        paManufacturers.insert("ssl");
-        paManufacturers.insert("solid state logic");
+        // H
+        paManufacturers.insert("harris doyle");
+        paManufacturers.insert("hears");
+        paManufacturers.insert("hum audio devices");
+
+        // K
+        paManufacturers.insert("karanyi sounds");
+        paManufacturers.insert("kiive audio");
+        paManufacturers.insert("knif audio");
+
+        // L
+        paManufacturers.insert("lindell audio");
+        paManufacturers.insert("looptrotter");
+        paManufacturers.insert("louder than liftoff");
+
+        // M
+        paManufacturers.insert("maag audio");
+        paManufacturers.insert("mäag audio");
+        paManufacturers.insert("maor appelbaum & hendyamps");
+        paManufacturers.insert("millennia");
+        paManufacturers.insert("mixland");
+
+        // N
+        paManufacturers.insert("neold");
         paManufacturers.insert("neve");
-        paManufacturers.insert("ams neve");
-        paManufacturers.insert("focusrite");
+        paManufacturers.insert("noveltech");
 
-        // Other
-        paManufacturers.insert("thx");
-        paManufacturers.insert("ds audio");
+        // P
+        paManufacturers.insert("plugin alliance");
+        paManufacturers.insert("pro audio dsp");
+        paManufacturers.insert("proaudiodsp");
+        paManufacturers.insert("purple audio");
+
+        // S
+        paManufacturers.insert("shadow hills");
+        paManufacturers.insert("shadow hills industries");
+        paManufacturers.insert("solid state logic");
+        paManufacturers.insert("spl");
+        paManufacturers.insert("ssl");
+        paManufacturers.insert("suhr");
         paManufacturers.insert("swivel audio");
+
+        // T
+        paManufacturers.insert("three-body technology");
+        paManufacturers.insert("thx");
+        paManufacturers.insert("tomo audiolabs");
+
+        // U
+        paManufacturers.insert("unfiltered audio");
+
+        // V
+        paManufacturers.insert("vertigo");
+        paManufacturers.insert("vertigo sound");
     }
 
     std::set<juce::String> paManufacturers;

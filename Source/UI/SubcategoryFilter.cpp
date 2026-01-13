@@ -47,7 +47,7 @@ void SubcategoryFilter::buildSubcategoryList()
 
     switch (currentCategory)
     {
-        case DisplayCategory::Dynamics:
+        case DisplayCategory::Compressors:
             subcategories.push_back({static_cast<int>(CompressorType::Optical), getCompressorTypeName(CompressorType::Optical)});
             subcategories.push_back({static_cast<int>(CompressorType::VCA), getCompressorTypeName(CompressorType::VCA)});
             subcategories.push_back({static_cast<int>(CompressorType::FET), getCompressorTypeName(CompressorType::FET)});

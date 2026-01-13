@@ -373,7 +373,7 @@ void PluginAllianceLauncherEditor::filterPlugins()
             // Check based on current category type
             switch (currentCategory)
             {
-                case DisplayCategory::Dynamics:
+                case DisplayCategory::Compressors:
                     matches = (static_cast<int>(plugin.compressorType) == currentSubcategory);
                     break;
                 case DisplayCategory::EQ:

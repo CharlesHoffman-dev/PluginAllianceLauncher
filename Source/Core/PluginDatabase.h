@@ -23,6 +23,10 @@ struct PluginInfo
     bool isFavorite = false;
     int64_t lastUsed = 0;  // Unix timestamp
 
+    // Instrument info
+    bool isInstrument = false;
+    InstrumentCategory instrumentCategory = InstrumentCategory::Synth;
+
     // Subcategory (optional, based on category)
     CompressorType compressorType = CompressorType::Unknown;
     EQType eqType = EQType::Unknown;
@@ -73,6 +77,7 @@ private:
     void categorizePlugin(PluginInfo& info);
     void assignEra(PluginInfo& info);
     void assignSubcategory(PluginInfo& info);
+    bool matchesBrand(const PluginInfo& info, DisplayCategory brandCategory) const;
     juce::String getPluginId(const juce::PluginDescription& desc) const;
 
     juce::File getDatabaseFile() const;
