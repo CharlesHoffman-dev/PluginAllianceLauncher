@@ -1,0 +1,208 @@
+/*
+  ==============================================================================
+    PluginListView.cpp
+    Plugin Alliance Launcher - Scrollable Plugin Grid View Implementation
+  ==============================================================================
+*/
+
+#include "PluginListView.h"
+
+namespace PALauncher
+{
+
+PluginListView::PluginListView()
+{
+    contentComponent.setOpaque(false);
+    addAndMakeVisible(contentComponent);
+
+    verticalScrollBar.setRangeLimits(0.0, 1.0);
+    verticalScrollBar.setAutoHide(false);
+    verticalScrollBar.addListener(this);
+    addAndMakeVisible(verticalScrollBar);
+
+    setOpaque(true);
+}
+
+PluginListView::~PluginListView()
+{
+    verticalScrollBar.removeListener(this);
+}
+
+void PluginListView::paint(juce::Graphics& g)
+{
+    g.fillAll(juce::Colour(0xff121212));
+
+    if (allPlugins.isEmpty())
+    {
+        g.setColour(juce::Colour(0xfff9f9f9).withAlpha(0.5f));
+        g.setFont(juce::Font(14.0f));
+        g.drawText("No plugins found.\nClick 'Rescan' to scan for Plugin Alliance plugins.",
+                   getLocalBounds(), juce::Justification::centred);
+    }
+}
+
+void PluginListView::resized()
+{
+    auto bounds = getLocalBounds();
+
+    // Scrollbar on right
+    verticalScrollBar.setBounds(bounds.removeFromRight(14));
+
+    contentComponent.setBounds(bounds);
+    updateLayout();
+}
+
+void PluginListView::setPlugins(const juce::Array<PluginInfo>& plugins)
+{
+    allPlugins = plugins;
+    selectedIndex = -1;
+    scrollOffset = 0;
+    updateLayout();
+}
+
+void PluginListView::updateLayout()
+{
+    numColumns = calculateNumColumns();
+
+    int numRows = (allPlugins.size() + numColumns - 1) / numColumns;
+    int totalHeight = numRows * (PluginCard::preferredHeight + cardSpacing) + cardSpacing;
+
+    int visibleHeight = contentComponent.getHeight();
+
+    // Update scrollbar
+    if (totalHeight > visibleHeight)
+    {
+        verticalScrollBar.setRangeLimits(0.0, totalHeight);
+        verticalScrollBar.setCurrentRange(scrollOffset, visibleHeight);
+        verticalScrollBar.setVisible(true);
+    }
+    else
+    {
+        verticalScrollBar.setVisible(false);
+        scrollOffset = 0;
+    }
+
+    updateVisibleCards();
+}
+
+int PluginListView::calculateNumColumns() const
+{
+    int availableWidth = contentComponent.getWidth() - cardSpacing;
+    int cardWidth = PluginCard::preferredWidth + cardSpacing;
+
+    int cols = juce::jmax(1, availableWidth / cardWidth);
+    return cols;
+}
+
+void PluginListView::updateVisibleCards()
+{
+    // Clear existing cards
+    visibleCards.clear();
+
+    if (allPlugins.isEmpty())
+        return;
+
+    int visibleHeight = contentComponent.getHeight();
+    int cardHeight = PluginCard::preferredHeight + cardSpacing;
+    int cardWidth = PluginCard::preferredWidth + cardSpacing;
+
+    // Calculate which rows are visible
+    int firstVisibleRow = juce::jmax(0, scrollOffset / cardHeight);
+    int lastVisibleRow = (scrollOffset + visibleHeight) / cardHeight + 1;
+
+    // Calculate grid position
+    int startX = cardSpacing;
+
+    for (int row = firstVisibleRow; row <= lastVisibleRow; ++row)
+    {
+        for (int col = 0; col < numColumns; ++col)
+        {
+            int pluginIndex = row * numColumns + col;
+
+            if (pluginIndex >= allPlugins.size())
+                break;
+
+            auto* card = new PluginCard();
+            card->setPluginInfo(allPlugins[pluginIndex]);
+            card->setSelected(pluginIndex == selectedIndex);
+
+            card->onSelected = [this, pluginIndex](const PluginInfo& info)
+            {
+                selectedIndex = pluginIndex;
+                for (auto* c : visibleCards)
+                    c->setSelected(false);
+
+                if (auto* selectedCard = visibleCards[pluginIndex - (scrollOffset / (PluginCard::preferredHeight + cardSpacing)) * numColumns])
+                {
+                    for (auto* c : visibleCards)
+                    {
+                        if (&c->getPluginInfo() == &info)
+                            c->setSelected(true);
+                    }
+                }
+
+                // Find and select the right card
+                for (auto* c : visibleCards)
+                {
+                    if (c->getPluginInfo().description.fileOrIdentifier == info.description.fileOrIdentifier)
+                        c->setSelected(true);
+                }
+
+                if (onPluginSelected)
+                    onPluginSelected(info);
+            };
+
+            card->onDoubleClick = [this](const PluginInfo& info)
+            {
+                if (onPluginDoubleClick)
+                    onPluginDoubleClick(info);
+            };
+
+            card->onFavoriteToggle = [this](const PluginInfo& info, bool favorite)
+            {
+                if (onFavoriteToggle)
+                    onFavoriteToggle(info, favorite);
+            };
+
+            int x = startX + col * cardWidth;
+            int y = cardSpacing + row * cardHeight - scrollOffset;
+
+            card->setBounds(x, y, PluginCard::preferredWidth, PluginCard::preferredHeight);
+            contentComponent.addAndMakeVisible(card);
+            visibleCards.add(card);
+        }
+    }
+}
+
+void PluginListView::scrollBarMoved(juce::ScrollBar*, double newRangeStart)
+{
+    scrollOffset = static_cast<int>(newRangeStart);
+    updateVisibleCards();
+}
+
+void PluginListView::mouseWheelMove(const juce::MouseEvent&, const juce::MouseWheelDetails& wheel)
+{
+    if (!verticalScrollBar.isVisible())
+        return;
+
+    float scrollAmount = wheel.deltaY * 200.0f;
+    int newOffset = juce::jlimit(0,
+                                  static_cast<int>(verticalScrollBar.getMaximumRangeLimit() - contentComponent.getHeight()),
+                                  scrollOffset - static_cast<int>(scrollAmount));
+
+    if (newOffset != scrollOffset)
+    {
+        scrollOffset = newOffset;
+        verticalScrollBar.setCurrentRangeStart(scrollOffset);
+        updateVisibleCards();
+    }
+}
+
+const PluginInfo* PluginListView::getSelectedPlugin() const
+{
+    if (selectedIndex >= 0 && selectedIndex < allPlugins.size())
+        return &allPlugins.getReference(selectedIndex);
+    return nullptr;
+}
+
+} // namespace PALauncher

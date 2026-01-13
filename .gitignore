@@ -1,0 +1,44 @@
+# Build directories
+Builds/VisualStudio2022/x64/
+Builds/MacOSX/build/
+Builds/**/Debug/
+Builds/**/Release/
+
+# IDE files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+.vs/
+*.xcuserstate
+xcuserdata/
+*.xcworkspace
+
+# JUCE generated files
+JuceLibraryCode/
+
+# Compiled files
+*.o
+*.obj
+*.dll
+*.exe
+*.lib
+*.exp
+*.pdb
+*.ilk
+*.dylib
+*.a
+*.vst3
+*.component
+*.au
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*~
+tmpclaude-*
