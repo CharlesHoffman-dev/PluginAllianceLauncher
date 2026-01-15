@@ -15,8 +15,43 @@
 namespace PALauncher
 {
 
+// Number of parameter slots to expose to the host DAW
+static constexpr int kMaxParameters = 256;
+
+// Custom parameter class that forwards to hosted plugin
+class HostedPluginParameter : public juce::AudioProcessorParameter
+{
+public:
+    HostedPluginParameter(int index);
+
+    // Link to a hosted plugin's parameter
+    void linkToParameter(juce::AudioProcessorParameter* param);
+    void unlink();
+    bool isLinked() const { return linkedParam != nullptr; }
+
+    // AudioProcessorParameter interface
+    float getValue() const override;
+    void setValue(float newValue) override;
+    float getDefaultValue() const override;
+    juce::String getName(int maximumStringLength) const override;
+    juce::String getLabel() const override;
+    float getValueForText(const juce::String& text) const override;
+    juce::String getText(float value, int maximumStringLength) const override;
+    int getNumSteps() const override;
+    bool isDiscrete() const override;
+    bool isBoolean() const override;
+    bool isAutomatable() const override { return isLinked(); }
+    bool isMetaParameter() const override { return false; }
+
+private:
+    int paramIndex;
+    juce::AudioProcessorParameter* linkedParam = nullptr;
+    float cachedValue = 0.0f;
+};
+
 class PluginAllianceLauncherProcessor : public juce::AudioProcessor,
-                                         public juce::ChangeListener
+                                         public juce::ChangeListener,
+                                         public juce::AudioProcessorParameter::Listener
 {
 public:
     PluginAllianceLauncherProcessor();
@@ -63,6 +98,14 @@ public:
     // ChangeListener
     void changeListenerCallback(juce::ChangeBroadcaster* source) override;
 
+    // AudioProcessorParameter::Listener
+    void parameterValueChanged(int parameterIndex, float newValue) override;
+    void parameterGestureChanged(int parameterIndex, bool gestureIsStarting) override;
+
+    // Parameter management
+    void syncParametersFromHostedPlugin();
+    void unlinkAllParameters();
+
 private:
     PluginHost pluginHost;
     PluginDatabase pluginDatabase;
@@ -72,6 +115,10 @@ private:
     int currentBlockSize = 512;
 
     juce::CriticalSection pluginLock;
+
+    // Parameter slots for hosted plugin parameters
+    juce::OwnedArray<HostedPluginParameter> hostedParameters;
+    bool isUpdatingParameters = false;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginAllianceLauncherProcessor)
 };

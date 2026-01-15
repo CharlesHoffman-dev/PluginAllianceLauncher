@@ -42,6 +42,10 @@ public:
     bool hasEditor() const;
     juce::AudioProcessorEditor* createEditor();
 
+    // Parameter access
+    juce::AudioPluginInstance* getLoadedPlugin() { return loadedPlugin.get(); }
+    const juce::AudioPluginInstance* getLoadedPlugin() const { return loadedPlugin.get(); }
+
 private:
     juce::AudioPluginFormatManager formatManager;
     std::unique_ptr<juce::AudioPluginInstance> loadedPlugin;
