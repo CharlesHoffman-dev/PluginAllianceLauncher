@@ -319,6 +319,7 @@ juce::Array<PluginInfo> PluginDatabase::getAllPlugins() const
     for (const auto& pair : plugins)
         result.add(pair.second);
 
+    sortPluginsByBrandAndName(result);
     return result;
 }
 
@@ -341,6 +342,7 @@ juce::Array<PluginInfo> PluginDatabase::search(const juce::String& query) const
         }
     }
 
+    sortPluginsByBrandAndName(result);
     return result;
 }
 
@@ -355,6 +357,7 @@ juce::Array<PluginInfo> PluginDatabase::getByCategory(EffectCategory category) c
             result.add(pair.second);
     }
 
+    sortPluginsByBrandAndName(result);
     return result;
 }
 
@@ -369,6 +372,7 @@ juce::Array<PluginInfo> PluginDatabase::getByEra(Era era) const
             result.add(pair.second);
     }
 
+    sortPluginsByBrandAndName(result);
     return result;
 }
 
@@ -498,6 +502,7 @@ juce::Array<PluginInfo> PluginDatabase::getByDisplayCategory(DisplayCategory cat
             result.add(info);
     }
 
+    sortPluginsByBrandAndName(result);
     return result;
 }
 
@@ -619,6 +624,7 @@ juce::Array<PluginInfo> PluginDatabase::getFavorites() const
             result.add(pair.second);
     }
 
+    sortPluginsByBrandAndName(result);
     return result;
 }
 
@@ -858,6 +864,25 @@ void PluginDatabase::loadFromDisk()
             plugins[id] = info;
         }
     }
+}
+
+void PluginDatabase::sortPluginsByBrandAndName(juce::Array<PluginInfo>& pluginList) const
+{
+    std::sort(pluginList.begin(), pluginList.end(),
+        [](const PluginInfo& a, const PluginInfo& b)
+        {
+            // Get brand names for comparison
+            auto brandA = getBrandName(a.description.name, a.description.manufacturerName);
+            auto brandB = getBrandName(b.description.name, b.description.manufacturerName);
+
+            // First sort by brand (case-insensitive)
+            int brandCompare = brandA.compareIgnoreCase(brandB);
+            if (brandCompare != 0)
+                return brandCompare < 0;
+
+            // Then sort by product name (case-insensitive)
+            return a.description.name.compareIgnoreCase(b.description.name) < 0;
+        });
 }
 
 } // namespace PALauncher

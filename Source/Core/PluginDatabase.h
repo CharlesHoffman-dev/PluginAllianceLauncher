@@ -79,6 +79,7 @@ private:
     void assignSubcategory(PluginInfo& info);
     bool matchesBrand(const PluginInfo& info, DisplayCategory brandCategory) const;
     juce::String getPluginId(const juce::PluginDescription& desc) const;
+    void sortPluginsByBrandAndName(juce::Array<PluginInfo>& pluginList) const;
 
     juce::File getDatabaseFile() const;
 
