@@ -153,6 +153,7 @@
     <ClCompile Include="..\..\Source\UI\HostedPluginView.cpp"/>
     <ClCompile Include="..\..\Source\Utils\PAIdentifier.cpp"/>
     <ClCompile Include="..\..\Source\Utils\SettingsManager.cpp"/>
+    <ClCompile Include="..\..\Source\Utils\PluginImageCache.cpp"/>
     <ClCompile Include="..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -2415,6 +2416,7 @@
     <ClInclude Include="..\..\Source\Data\PluginSubcategories.h"/>
     <ClInclude Include="..\..\Source\Utils\PAIdentifier.h"/>
     <ClInclude Include="..\..\Source\Utils\SettingsManager.h"/>
+    <ClInclude Include="..\..\Source\Utils\PluginImageCache.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_audio_basics\buffers\juce_AudioDataConverters.h"/>

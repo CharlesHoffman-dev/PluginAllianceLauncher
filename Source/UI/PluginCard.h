@@ -35,21 +35,24 @@ public:
     void setSelected(bool selected);
     bool isSelected() const { return selected; }
 
+    // Update image from cache
+    void updateImage();
+
     // Callbacks
     std::function<void(const PluginInfo&)> onSelected;
     std::function<void(const PluginInfo&)> onDoubleClick;
     std::function<void(const PluginInfo&, bool)> onFavoriteToggle;
 
-    // Preferred card size
+    // Preferred card size (increased height for image)
     static constexpr int preferredWidth = 180;
-    static constexpr int preferredHeight = 90;
+    static constexpr int preferredHeight = 160;
 
 private:
     PluginInfo pluginInfo;
     bool selected = false;
     bool hovered = false;
 
-    juce::TextButton favoriteButton;
+    juce::Image pluginImage;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginCard)
 };

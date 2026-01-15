@@ -6,6 +6,7 @@
 */
 
 #include "PluginListView.h"
+#include "../Utils/PluginImageCache.h"
 
 namespace PALauncher
 {
@@ -21,6 +22,19 @@ PluginListView::PluginListView()
     addAndMakeVisible(verticalScrollBar);
 
     setOpaque(true);
+
+    // Register for image loaded callbacks
+    PluginImageCache::getInstance().onImageLoaded = [this](const juce::String& pluginName)
+    {
+        // Update any visible cards that match this plugin
+        for (auto* card : visibleCards)
+        {
+            if (card->getPluginInfo().description.name.toLowerCase() == pluginName.toLowerCase())
+            {
+                card->updateImage();
+            }
+        }
+    };
 }
 
 PluginListView::~PluginListView()
@@ -30,13 +44,13 @@ PluginListView::~PluginListView()
 
 void PluginListView::paint(juce::Graphics& g)
 {
-    g.fillAll(juce::Colour(0xff121212));
+    g.fillAll(juce::Colour(0xfff9f9f9));
 
     if (allPlugins.isEmpty())
     {
-        g.setColour(juce::Colour(0xfff9f9f9).withAlpha(0.5f));
+        g.setColour(juce::Colour(0xff666666));
         g.setFont(juce::Font(14.0f));
-        g.drawText("No plugins found.\nClick 'Rescan' to scan for Plugin Alliance plugins.",
+        g.drawText("No plugins found.",
                    getLocalBounds(), juce::Justification::centred);
     }
 }
@@ -110,8 +124,10 @@ void PluginListView::updateVisibleCards()
     int firstVisibleRow = juce::jmax(0, scrollOffset / cardHeight);
     int lastVisibleRow = (scrollOffset + visibleHeight) / cardHeight + 1;
 
-    // Calculate grid position
-    int startX = cardSpacing;
+    // Calculate grid position - center the cards horizontally
+    int totalCardsWidth = numColumns * cardWidth;
+    int availableWidth = contentComponent.getWidth();
+    int startX = juce::jmax(cardSpacing, (availableWidth - totalCardsWidth) / 2 + cardSpacing / 2);
 
     for (int row = firstVisibleRow; row <= lastVisibleRow; ++row)
     {

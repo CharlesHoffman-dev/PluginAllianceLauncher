@@ -12,15 +12,15 @@ namespace PALauncher
 
 EraFilter::EraFilter()
 {
-    titleLabel.setText("ERA / DECADE", juce::dontSendNotification);
-    titleLabel.setFont(juce::Font(11.0f, juce::Font::bold));
+    titleLabel.setText("ERA", juce::dontSendNotification);
+    titleLabel.setFont(juce::Font(12.0f, juce::Font::bold));
     titleLabel.setColour(juce::Label::textColourId, juce::Colour(0xff888888));
     addAndMakeVisible(titleLabel);
 
     buildEraList();
 
     listBox.setModel(this);
-    listBox.setRowHeight(24);
+    listBox.setRowHeight(26);
     listBox.setColour(juce::ListBox::backgroundColourId, juce::Colours::transparentBlack);
     listBox.setColour(juce::ListBox::outlineColourId, juce::Colours::transparentBlack);
     addAndMakeVisible(listBox);
@@ -35,16 +35,18 @@ void EraFilter::buildEraList()
     // All eras option (represented by Era_Unknown as "any")
     eras.push_back({Era::Era_Unknown, "All Eras"});
 
-    // Historical eras
-    eras.push_back({Era::Era_1950s, "1950s - Tube Era"});
-    eras.push_back({Era::Era_1960s, "1960s - Rock Era"});
-    eras.push_back({Era::Era_1970s, "1970s - Console Era"});
-    eras.push_back({Era::Era_1980s, "1980s - Digital Dawn"});
-    eras.push_back({Era::Era_1990s, "1990s - Modern Analog"});
+    // Digital plugins (not based on hardware) - at top for easy access
+    eras.push_back({Era::Era_Modern, "Digital"});
+
+    // Historical eras (hardware emulations only)
+    eras.push_back({Era::Era_1950s, "1950s"});
+    eras.push_back({Era::Era_1960s, "1960s"});
+    eras.push_back({Era::Era_1970s, "1970s"});
+    eras.push_back({Era::Era_1980s, "1980s"});
+    eras.push_back({Era::Era_1990s, "1990s"});
     eras.push_back({Era::Era_2000s, "2000s"});
     eras.push_back({Era::Era_2010s, "2010s"});
     eras.push_back({Era::Era_2020s, "2020s"});
-    eras.push_back({Era::Era_Modern, "Modern / Digital"});
 }
 
 void EraFilter::paint(juce::Graphics& g)
@@ -83,7 +85,7 @@ void EraFilter::paintListBoxItem(int rowNumber, juce::Graphics& g, int width, in
     }
 
     g.setColour(rowIsSelected ? juce::Colours::white : juce::Colour(0xfff9f9f9));
-    g.setFont(juce::Font(12.0f));
+    g.setFont(juce::Font(14.0f));
     g.drawText(item.name, 8, 0, width - 16, height, juce::Justification::centredLeft);
 }
 

@@ -56,10 +56,10 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     };
     addAndMakeVisible(rescanButton);
 
-    // Set up toggle mode button
+    // Set up toggle mode button - white with black text
     toggleModeButton.setButtonText("Show Plugin");
-    toggleModeButton.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff2a2a2a));
-    toggleModeButton.setColour(juce::TextButton::textColourOffId, juce::Colour(0xfff9f9f9));
+    toggleModeButton.setColour(juce::TextButton::buttonColourId, juce::Colours::white);
+    toggleModeButton.setColour(juce::TextButton::textColourOffId, juce::Colours::black);
     toggleModeButton.onClick = [this]() { toggleBrowserMode(); };
     addAndMakeVisible(toggleModeButton);
 
@@ -69,6 +69,7 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
         currentCategory = category;
         subcategoryFilter.setCategory(category);
         filterPlugins();
+        resized();  // Update layout to show/hide subcategory filter
     };
     addAndMakeVisible(categoryFilter);
 
@@ -101,7 +102,9 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
 
     pluginListView.onFavoriteToggle = [this](const PluginInfo& info, bool favorite)
     {
-        processor.getPluginDatabase().setFavorite(info.description.fileOrIdentifier, favorite);
+        // Database key is pluginFormatName + "_" + fileOrIdentifier
+        auto pluginId = info.description.pluginFormatName + "_" + info.description.fileOrIdentifier;
+        processor.getPluginDatabase().setFavorite(pluginId, favorite);
         processor.getPluginDatabase().saveToDisk();
         filterPlugins(); // Refresh to show updated favorite status
     };
@@ -199,13 +202,13 @@ void PluginAllianceLauncherEditor::paint(juce::Graphics& g)
         g.fillRoundedRectangle(progressBounds.toFloat(), 4.0f);
     }
 
-    // Status text (always show, even if empty - shows "Ready" or similar)
-    g.setColour(juce::Colours::white);
-    g.setFont(juce::Font(11.0f));
-    if (statusMessage.isEmpty())
-        g.drawText("Click 'Rescan' to search for Plugin Alliance plugins", trackBounds.reduced(8, 0), juce::Justification::centredLeft);
-    else
+    // Status text (only show when scanning or has message)
+    if (!statusMessage.isEmpty())
+    {
+        g.setColour(juce::Colours::white);
+        g.setFont(juce::Font(11.0f));
         g.drawText(statusMessage, trackBounds.reduced(8, 0), juce::Justification::centredLeft);
+    }
 }
 
 void PluginAllianceLauncherEditor::resized()
@@ -221,8 +224,18 @@ void PluginAllianceLauncherEditor::resized()
 
     rescanButton.setBounds(topBar.removeFromRight(80));
     topBar.removeFromRight(8);
-    toggleModeButton.setBounds(topBar.removeFromRight(100));
-    topBar.removeFromRight(8);
+
+    // Only show toggle button when a plugin is loaded
+    if (processor.hasLoadedPlugin())
+    {
+        toggleModeButton.setVisible(true);
+        toggleModeButton.setBounds(topBar.removeFromRight(100));
+        topBar.removeFromRight(8);
+    }
+    else
+    {
+        toggleModeButton.setVisible(false);
+    }
 
     searchBar.setBounds(topBar.removeFromLeft(300));
 
@@ -234,19 +247,35 @@ void PluginAllianceLauncherEditor::resized()
     {
         // Show sidebar in browser mode
         categoryFilter.setVisible(true);
-        subcategoryFilter.setVisible(true);
         eraFilter.setVisible(true);
 
-        auto sidebar = bounds.removeFromLeft(sidebarWidth);
-        sidebar.reduce(0, 8);
+        // Check if current category has subcategories
+        bool hasSubcategories = (currentCategory == DisplayCategory::Compressors ||
+                                 currentCategory == DisplayCategory::EQ ||
+                                 currentCategory == DisplayCategory::Reverb ||
+                                 currentCategory == DisplayCategory::Delay ||
+                                 currentCategory == DisplayCategory::AmpSim ||
+                                 currentCategory == DisplayCategory::Saturation ||
+                                 currentCategory == DisplayCategory::ChannelStrip ||
+                                 currentCategory == DisplayCategory::Distortion ||
+                                 currentCategory == DisplayCategory::Modulation);
+        subcategoryFilter.setVisible(hasSubcategories);
 
-        // Categories take about 50% of sidebar
-        int categoryHeight = static_cast<int>(sidebar.getHeight() * 0.5);
+        auto sidebar = bounds.removeFromLeft(sidebarWidth);
+        sidebar.removeFromBottom(8);  // Only pad bottom, not top
+
+        // Categories take about 50% of sidebar (more if no subcategories)
+        int categoryHeight = hasSubcategories
+            ? static_cast<int>(sidebar.getHeight() * 0.5)
+            : static_cast<int>(sidebar.getHeight() * 0.65);
         categoryFilter.setBounds(sidebar.removeFromTop(categoryHeight));
 
-        // Subcategory filter
-        int subcategoryHeight = 150;
-        subcategoryFilter.setBounds(sidebar.removeFromTop(subcategoryHeight));
+        // Subcategory filter (only if category has subcategories)
+        if (hasSubcategories)
+        {
+            int subcategoryHeight = 150;
+            subcategoryFilter.setBounds(sidebar.removeFromTop(subcategoryHeight));
+        }
 
         // Era filter takes remaining space
         eraFilter.setBounds(sidebar);

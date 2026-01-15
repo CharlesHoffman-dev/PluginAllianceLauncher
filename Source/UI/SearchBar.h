@@ -37,7 +37,6 @@ private:
     void textEditorEscapeKeyPressed(juce::TextEditor&) override;
 
     juce::TextEditor searchField;
-    juce::Label searchIcon;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SearchBar)
 };

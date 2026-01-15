@@ -15,7 +15,7 @@ CategoryFilter::CategoryFilter()
     buildCategoryList();
 
     listBox.setModel(this);
-    listBox.setRowHeight(28);
+    listBox.setRowHeight(30);
     listBox.setColour(juce::ListBox::backgroundColourId, juce::Colours::transparentBlack);
     listBox.setColour(juce::ListBox::outlineColourId, juce::Colours::transparentBlack);
     addAndMakeVisible(listBox);
@@ -32,8 +32,8 @@ void CategoryFilter::buildCategoryList()
     categories.push_back({DisplayCategory::Favorites, "Favorites", false});
     categories.push_back({DisplayCategory::Recent, "Recent", false});
 
-    // Effects header
-    categories.push_back({DisplayCategory::All, "EFFECTS", true});
+    // Category header
+    categories.push_back({DisplayCategory::All, "CATEGORY", true});
 
     // Effect categories (alphabetical)
     categories.push_back({DisplayCategory::AmpSim, "Amp Simulators", false});
@@ -142,7 +142,7 @@ void CategoryFilter::paintListBoxItem(int rowNumber, juce::Graphics& g, int widt
     {
         // Draw header style
         g.setColour(juce::Colour(0xff888888));
-        g.setFont(juce::Font(11.0f, juce::Font::bold));
+        g.setFont(juce::Font(12.0f, juce::Font::bold));
         g.drawText(item.name, 8, 0, width - 16, height, juce::Justification::centredLeft);
 
         // Draw separator line below
@@ -159,18 +159,10 @@ void CategoryFilter::paintListBoxItem(int rowNumber, juce::Graphics& g, int widt
         }
 
         g.setColour(rowIsSelected ? juce::Colours::white : juce::Colour(0xfff9f9f9));
-        g.setFont(juce::Font(13.0f));
+        g.setFont(juce::Font(14.0f));
 
-        // Indent non-header items slightly
-        int indent = 16;
-        if (item.category == DisplayCategory::All ||
-            item.category == DisplayCategory::Favorites ||
-            item.category == DisplayCategory::Recent)
-        {
-            indent = 8;
-        }
-
-        g.drawText(item.name, indent, 0, width - indent - 8, height, juce::Justification::centredLeft);
+        // Consistent indent for all items
+        g.drawText(item.name, 8, 0, width - 16, height, juce::Justification::centredLeft);
     }
 }
 

@@ -646,6 +646,9 @@
     <ClCompile Include="..\..\Source\Utils\SettingsManager.cpp">
       <Filter>Plugin Alliance Launcher\Source\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\PluginImageCache.cpp">
+      <Filter>Plugin Alliance Launcher\Source\Utils</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.cpp">
       <Filter>JUCE Modules\juce_audio_basics\audio_play_head</Filter>
     </ClCompile>
@@ -3100,6 +3103,9 @@
       <Filter>Plugin Alliance Launcher\Source\Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Utils\SettingsManager.h">
+      <Filter>Plugin Alliance Launcher\Source\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\PluginImageCache.h">
       <Filter>Plugin Alliance Launcher\Source\Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h">

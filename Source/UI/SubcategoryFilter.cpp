@@ -6,6 +6,7 @@
 */
 
 #include "SubcategoryFilter.h"
+#include <algorithm>
 
 namespace PALauncher
 {
@@ -13,12 +14,12 @@ namespace PALauncher
 SubcategoryFilter::SubcategoryFilter()
 {
     titleLabel.setText("Subcategory", juce::dontSendNotification);
-    titleLabel.setFont(juce::Font(11.0f, juce::Font::bold));
+    titleLabel.setFont(juce::Font(12.0f, juce::Font::bold));
     titleLabel.setColour(juce::Label::textColourId, juce::Colour(0xff888888));
     addAndMakeVisible(titleLabel);
 
     listBox.setModel(this);
-    listBox.setRowHeight(24);
+    listBox.setRowHeight(26);
     listBox.setColour(juce::ListBox::backgroundColourId, juce::Colours::transparentBlack);
     listBox.setColour(juce::ListBox::outlineColourId, juce::Colours::transparentBlack);
     addAndMakeVisible(listBox);
@@ -129,6 +130,16 @@ void SubcategoryFilter::buildSubcategoryList()
             // No subcategories for other categories
             break;
     }
+
+    // Sort subcategories alphabetically (keeping "All" at the top)
+    if (subcategories.size() > 1)
+    {
+        std::sort(subcategories.begin() + 1, subcategories.end(),
+            [](const SubcategoryItem& a, const SubcategoryItem& b)
+            {
+                return a.name.compareIgnoreCase(b.name) < 0;
+            });
+    }
 }
 
 void SubcategoryFilter::paint(juce::Graphics& g)
@@ -164,7 +175,7 @@ void SubcategoryFilter::paintListBoxItem(int rowNumber, juce::Graphics& g, int w
     }
 
     g.setColour(rowIsSelected ? juce::Colours::white : juce::Colour(0xfff9f9f9));
-    g.setFont(juce::Font(12.0f));
+    g.setFont(juce::Font(14.0f));
     g.drawText(item.name, 8, 0, width - 16, height, juce::Justification::centredLeft);
 }
 

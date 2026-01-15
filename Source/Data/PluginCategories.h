@@ -283,15 +283,15 @@ inline juce::String getEraName(Era era)
         {Era::Era_1920s, "1920s"},
         {Era::Era_1930s, "1930s"},
         {Era::Era_1940s, "1940s"},
-        {Era::Era_1950s, "1950s - Tube Era"},
-        {Era::Era_1960s, "1960s - Rock Era"},
-        {Era::Era_1970s, "1970s - Console Era"},
-        {Era::Era_1980s, "1980s - Digital Dawn"},
-        {Era::Era_1990s, "1990s - Modern Analog"},
+        {Era::Era_1950s, "1950s"},
+        {Era::Era_1960s, "1960s"},
+        {Era::Era_1970s, "1970s"},
+        {Era::Era_1980s, "1980s"},
+        {Era::Era_1990s, "1990s"},
         {Era::Era_2000s, "2000s"},
         {Era::Era_2010s, "2010s"},
         {Era::Era_2020s, "2020s"},
-        {Era::Era_Modern, "Modern / Digital"},
+        {Era::Era_Modern, "Digital"},
         {Era::Era_Unknown, "Unknown Era"}
     };
 
@@ -390,6 +390,258 @@ inline juce::String getDisplayCategoryName(DisplayCategory cat)
 inline bool isBrandCategory(DisplayCategory cat)
 {
     return cat >= DisplayCategory::Brand_ACMEAudio && cat <= DisplayCategory::Brand_Vertigo;
+}
+
+// ============================================
+// Brand Detection and Name Extraction
+// ============================================
+
+// Get the brand name from a plugin's name or manufacturer
+inline juce::String getBrandName(const juce::String& pluginName, const juce::String& manufacturerName)
+{
+    auto nameLower = pluginName.toLowerCase();
+    auto mfrLower = manufacturerName.toLowerCase();
+
+    // Check for Brainworx prefix first (most common)
+    if (nameLower.startsWith("bx_") || nameLower.startsWith("bx "))
+        return "Brainworx";
+
+    // Alphabetical brand detection
+    if (mfrLower.contains("acme") || nameLower.contains("acme"))
+        return "ACME Audio";
+    if (mfrLower.contains("a/da") || mfrLower.contains("a-da") || nameLower.startsWith("a/da") || nameLower.startsWith("a-da"))
+        return "A/DA";
+    if (mfrLower.contains("adptr") || nameLower.contains("adptr"))
+        return "ADPTR AUDIO";
+    if (mfrLower.contains("amek") || nameLower.contains("amek"))
+        return "AMEK";
+    if (mfrLower.contains("ampeg") || nameLower.contains("ampeg"))
+        return "Ampeg";
+    if (mfrLower.contains("bettermaker") || nameLower.contains("bettermaker"))
+        return "Bettermaker";
+    if (mfrLower.contains("black box") || nameLower.contains("black box"))
+        return "Black Box Analog Design";
+    if (mfrLower.contains("chandler") || nameLower.contains("chandler"))
+        return "Chandler Limited";
+    if (mfrLower.contains("cut classic") || nameLower.contains("cut classic"))
+        return "Cut Classic";
+    if (mfrLower.contains("dangerous") || nameLower.contains("dangerous"))
+        return "Dangerous Music";
+    if (mfrLower.contains("diezel") || nameLower.contains("diezel"))
+        return "Diezel";
+    if (mfrLower.contains("ds audio") || nameLower.contains("ds audio") || nameLower.contains("tantra"))
+        return "DS Audio";
+    if (mfrLower.contains("elysia") || nameLower.contains("elysia"))
+        return "elysia";
+    if (mfrLower.contains("engl") || nameLower.contains("engl "))
+        return "ENGL";
+    if (mfrLower.contains("fiedler") || nameLower.contains("fiedler"))
+        return "fiedler audio";
+    if (mfrLower.contains("focusrite") || nameLower.contains("focusrite"))
+        return "Focusrite";
+    if (mfrLower.contains("friedman") || nameLower.contains("friedman"))
+        return "Friedman";
+    if (mfrLower.contains("fuchs") || nameLower.contains("fuchs"))
+        return "Fuchs";
+    if (mfrLower.contains("gallien") || nameLower.contains("gallien"))
+        return "Gallien-Krueger";
+    if (mfrLower.contains("harris doyle") || nameLower.contains("harris doyle"))
+        return "Harris Doyle";
+    if (mfrLower.contains("hears") || nameLower.contains("hears"))
+        return "HEARS";
+    if (mfrLower.contains("hum audio") || nameLower.contains("laal"))
+        return "HUM Audio Devices";
+    if (mfrLower.contains("karanyi") || nameLower.contains("karanyi"))
+        return "Karanyi Sounds";
+    if (mfrLower.contains("kiive") || nameLower.contains("kiive"))
+        return "Kiive Audio";
+    if (mfrLower.contains("knif") || nameLower.contains("knif"))
+        return "Knif Audio";
+    if (mfrLower.contains("lindell") || nameLower.contains("lindell"))
+        return "Lindell Audio";
+    if (mfrLower.contains("looptrotter") || nameLower.contains("looptrotter"))
+        return "Looptrotter";
+    if (mfrLower.contains("louder than liftoff") || nameLower.contains("silver bullet"))
+        return "Louder Than Liftoff";
+    if (mfrLower.contains("maag") || mfrLower.contains("mäag") || nameLower.contains("maag") || nameLower.contains("mäag"))
+        return "Mäag Audio";
+    if (mfrLower.contains("maor appelbaum") || mfrLower.contains("hendyamps"))
+        return "Maor Appelbaum & Hendyamps";
+    if (mfrLower.contains("millennia") || nameLower.contains("millennia"))
+        return "Millennia";
+    if (mfrLower.contains("mixland") || nameLower.contains("mixland"))
+        return "Mixland";
+    if (mfrLower.contains("neold") || nameLower.contains("neold"))
+        return "NEOLD";
+    if (mfrLower.contains("noveltech") || nameLower.contains("noveltech"))
+        return "Noveltech";
+    if (mfrLower.contains("proaudiodsp") || mfrLower.contains("pro audio dsp") || nameLower.contains("dsm v"))
+        return "Pro Audio DSP";
+    if (mfrLower.contains("purple audio") || nameLower.contains("purple audio") || nameLower.contains("mc 77"))
+        return "Purple Audio";
+    if (mfrLower.contains("shadow hills") || nameLower.contains("shadow hills"))
+        return "Shadow Hills";
+    if (mfrLower.contains("ssl") || mfrLower.contains("solid state logic") || nameLower.contains("ssl"))
+        return "SSL";
+    if (mfrLower.contains("spl") || nameLower.startsWith("spl "))
+        return "SPL";
+    if (mfrLower.contains("suhr") || nameLower.contains("suhr"))
+        return "Suhr";
+    if (mfrLower.contains("swivel") || nameLower.contains("swivel"))
+        return "Swivel Audio";
+    if (mfrLower.contains("three-body") || mfrLower.contains("three body") || nameLower.contains("kirchhoff") || nameLower.contains("cenozoix"))
+        return "Three-Body Technology";
+    if (mfrLower.contains("thx") || nameLower.contains("thx"))
+        return "THX";
+    if (mfrLower.contains("tomo") || nameLower.contains("tomo") || nameLower.contains("lisa"))
+        return "TOMO Audiolabs";
+    if (mfrLower.contains("unfiltered") || nameLower.contains("unfiltered"))
+        return "Unfiltered Audio";
+    if (mfrLower.contains("vertigo") || nameLower.contains("vertigo"))
+        return "Vertigo";
+
+    // Default to Plugin Alliance if no specific brand detected
+    return "Plugin Alliance";
+}
+
+// Get display name with brand prefix removed
+inline juce::String getDisplayName(const juce::String& pluginName, const juce::String& brandName)
+{
+    auto name = pluginName;
+
+    // Remove Brainworx prefix
+    if (name.startsWith("bx_"))
+        name = name.substring(3);
+    else if (name.startsWithIgnoreCase("bx "))
+        name = name.substring(3);
+
+    // Remove brand name prefix if present
+    if (name.startsWithIgnoreCase(brandName + " "))
+        name = name.substring(brandName.length() + 1);
+    else if (name.startsWithIgnoreCase(brandName))
+        name = name.substring(brandName.length()).trimStart();
+
+    // Handle specific brand prefixes
+    if (name.startsWithIgnoreCase("ACME Audio "))
+        name = name.substring(11);
+    else if (name.startsWithIgnoreCase("A/DA "))
+        name = name.substring(5);
+    else if (name.startsWithIgnoreCase("ADPTR AUDIO "))
+        name = name.substring(12);
+    else if (name.startsWithIgnoreCase("ADPTR "))
+        name = name.substring(6);
+    else if (name.startsWithIgnoreCase("AMEK "))
+        name = name.substring(5);
+    else if (name.startsWithIgnoreCase("Ampeg "))
+        name = name.substring(6);
+    else if (name.startsWithIgnoreCase("Bettermaker "))
+        name = name.substring(12);
+    else if (name.startsWithIgnoreCase("Black Box Analog Design "))
+        name = name.substring(24);
+    else if (name.startsWithIgnoreCase("Black Box "))
+        name = name.substring(10);
+    else if (name.startsWithIgnoreCase("Chandler Limited "))
+        name = name.substring(17);
+    else if (name.startsWithIgnoreCase("Chandler "))
+        name = name.substring(9);
+    else if (name.startsWithIgnoreCase("Dangerous Music "))
+        name = name.substring(16);
+    else if (name.startsWithIgnoreCase("Dangerous "))
+        name = name.substring(10);
+    else if (name.startsWithIgnoreCase("Diezel "))
+        name = name.substring(7);
+    else if (name.startsWithIgnoreCase("DS Audio "))
+        name = name.substring(9);
+    else if (name.startsWithIgnoreCase("elysia "))
+        name = name.substring(7);
+    else if (name.startsWithIgnoreCase("ENGL "))
+        name = name.substring(5);
+    else if (name.startsWithIgnoreCase("fiedler audio "))
+        name = name.substring(14);
+    else if (name.startsWithIgnoreCase("fiedler "))
+        name = name.substring(8);
+    else if (name.startsWithIgnoreCase("Focusrite "))
+        name = name.substring(10);
+    else if (name.startsWithIgnoreCase("Friedman "))
+        name = name.substring(9);
+    else if (name.startsWithIgnoreCase("Fuchs "))
+        name = name.substring(6);
+    else if (name.startsWithIgnoreCase("Gallien-Krueger "))
+        name = name.substring(16);
+    else if (name.startsWithIgnoreCase("Gallien Krueger "))
+        name = name.substring(16);
+    else if (name.startsWithIgnoreCase("Harris Doyle "))
+        name = name.substring(13);
+    else if (name.startsWithIgnoreCase("HEARS "))
+        name = name.substring(6);
+    else if (name.startsWithIgnoreCase("HUM Audio Devices "))
+        name = name.substring(18);
+    else if (name.startsWithIgnoreCase("HUM Audio "))
+        name = name.substring(10);
+    else if (name.startsWithIgnoreCase("Karanyi Sounds "))
+        name = name.substring(15);
+    else if (name.startsWithIgnoreCase("Karanyi "))
+        name = name.substring(8);
+    else if (name.startsWithIgnoreCase("Kiive Audio "))
+        name = name.substring(12);
+    else if (name.startsWithIgnoreCase("Kiive "))
+        name = name.substring(6);
+    else if (name.startsWithIgnoreCase("Knif Audio "))
+        name = name.substring(11);
+    else if (name.startsWithIgnoreCase("Knif "))
+        name = name.substring(5);
+    else if (name.startsWithIgnoreCase("Lindell Audio "))
+        name = name.substring(14);
+    else if (name.startsWithIgnoreCase("Lindell "))
+        name = name.substring(8);
+    else if (name.startsWithIgnoreCase("Looptrotter "))
+        name = name.substring(12);
+    else if (name.startsWithIgnoreCase("Louder Than Liftoff "))
+        name = name.substring(20);
+    else if (name.startsWithIgnoreCase("Maag Audio "))
+        name = name.substring(11);
+    else if (name.startsWithIgnoreCase("Mäag Audio "))
+        name = name.substring(11);
+    else if (name.startsWithIgnoreCase("Maag "))
+        name = name.substring(5);
+    else if (name.startsWithIgnoreCase("Mäag "))
+        name = name.substring(5);
+    else if (name.startsWithIgnoreCase("Millennia "))
+        name = name.substring(10);
+    else if (name.startsWithIgnoreCase("Mixland "))
+        name = name.substring(8);
+    else if (name.startsWithIgnoreCase("NEOLD "))
+        name = name.substring(6);
+    else if (name.startsWithIgnoreCase("Noveltech "))
+        name = name.substring(10);
+    else if (name.startsWithIgnoreCase("Pro Audio DSP "))
+        name = name.substring(14);
+    else if (name.startsWithIgnoreCase("Purple Audio "))
+        name = name.substring(13);
+    else if (name.startsWithIgnoreCase("Shadow Hills "))
+        name = name.substring(13);
+    else if (name.startsWithIgnoreCase("SSL "))
+        name = name.substring(4);
+    else if (name.startsWithIgnoreCase("SPL "))
+        name = name.substring(4);
+    else if (name.startsWithIgnoreCase("Suhr "))
+        name = name.substring(5);
+    else if (name.startsWithIgnoreCase("Swivel Audio "))
+        name = name.substring(13);
+    else if (name.startsWithIgnoreCase("THX "))
+        name = name.substring(4);
+    else if (name.startsWithIgnoreCase("TOMO Audiolabs "))
+        name = name.substring(15);
+    else if (name.startsWithIgnoreCase("TOMO "))
+        name = name.substring(5);
+    else if (name.startsWithIgnoreCase("Unfiltered Audio "))
+        name = name.substring(17);
+    else if (name.startsWithIgnoreCase("Unfiltered "))
+        name = name.substring(11);
+    else if (name.startsWithIgnoreCase("Vertigo "))
+        name = name.substring(8);
+
+    return name.trim();
 }
 
 } // namespace PALauncher
