@@ -65,6 +65,7 @@ private:
     int currentSubcategory = -1;  // -1 = all
     Era currentEra = Era::Era_Unknown;  // Unknown = all
     juce::String currentSearchText;
+    std::unique_ptr<PluginInfo> selectedPlugin;  // Currently selected plugin in browser
 
     // Logo
     std::unique_ptr<juce::Drawable> logoDrawable;

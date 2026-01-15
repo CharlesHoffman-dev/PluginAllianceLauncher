@@ -32,8 +32,8 @@ void CategoryFilter::buildCategoryList()
     categories.push_back({DisplayCategory::Favorites, "Favorites", false});
     categories.push_back({DisplayCategory::Recent, "Recent", false});
 
-    // Category header
-    categories.push_back({DisplayCategory::All, "CATEGORY", true});
+    // Effects header
+    categories.push_back({DisplayCategory::All, "EFFECTS", true});
 
     // Effect categories (alphabetical)
     categories.push_back({DisplayCategory::AmpSim, "Amp Simulators", false});

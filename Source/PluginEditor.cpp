@@ -90,9 +90,12 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     addAndMakeVisible(eraFilter);
 
     // Set up plugin list view
-    pluginListView.onPluginSelected = [this](const PluginInfo&)
+    pluginListView.onPluginSelected = [this](const PluginInfo& info)
     {
-        // Optional: could show preview or details
+        // Store the selected plugin
+        selectedPlugin = std::make_unique<PluginInfo>(info);
+        // Update button state
+        resized();
     };
 
     pluginListView.onPluginDoubleClick = [this](const PluginInfo& info)
@@ -225,11 +228,21 @@ void PluginAllianceLauncherEditor::resized()
     rescanButton.setBounds(topBar.removeFromRight(80));
     topBar.removeFromRight(8);
 
-    // Only show toggle button when a plugin is loaded
-    if (processor.hasLoadedPlugin())
+    // Button logic:
+    // - In browser mode with a selected plugin: show "Load Plugin"
+    // - In plugin mode: show "Show Browser"
+    if (browserMode && selectedPlugin != nullptr)
     {
+        toggleModeButton.setButtonText("Load Plugin");
         toggleModeButton.setVisible(true);
         toggleModeButton.setBounds(topBar.removeFromRight(100));
+        topBar.removeFromRight(8);
+    }
+    else if (!browserMode)
+    {
+        toggleModeButton.setButtonText("Show Browser");
+        toggleModeButton.setVisible(true);
+        toggleModeButton.setBounds(topBar.removeFromRight(110));
         topBar.removeFromRight(8);
     }
     else
@@ -502,28 +515,17 @@ void PluginAllianceLauncherEditor::toggleBrowserMode()
 {
     if (browserMode)
     {
-        // Switching from browser to plugin mode
-        // Store current browser size
-        defaultBrowserSize = getBounds();
-
-        browserMode = false;
-        toggleModeButton.setButtonText("Show Browser");
-        resized();
-
-        // Resize to fit plugin
-        if (processor.hasLoadedPlugin())
+        // In browser mode - if we have a selected plugin, load it
+        if (selectedPlugin != nullptr)
         {
-            juce::MessageManager::callAsync([this]()
-            {
-                resizeForPlugin();
-            });
+            loadSelectedPlugin(*selectedPlugin);
         }
     }
     else
     {
         // Switching from plugin to browser mode
         browserMode = true;
-        toggleModeButton.setButtonText("Show Plugin");
+        toggleModeButton.setButtonText("Load Plugin");
 
         // Restore browser size
         resizeForBrowser();

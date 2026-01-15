@@ -24,8 +24,14 @@ SearchBar::SearchBar()
     searchField.setColour(juce::TextEditor::textColourId, juce::Colours::white);
     searchField.setColour(juce::TextEditor::outlineColourId, juce::Colours::transparentBlack);
     searchField.setColour(juce::TextEditor::focusedOutlineColourId, juce::Colours::transparentBlack);
+    searchField.setWantsKeyboardFocus(true);
+    searchField.setMouseClickGrabsKeyboardFocus(true);  // Only grab focus when clicking directly on it
     searchField.addListener(this);
     addAndMakeVisible(searchField);
+
+    // Prevent the SearchBar component itself from grabbing focus
+    setWantsKeyboardFocus(false);
+    setMouseClickGrabsKeyboardFocus(false);
 }
 
 void SearchBar::paint(juce::Graphics& g)

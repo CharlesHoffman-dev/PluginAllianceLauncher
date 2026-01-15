@@ -13,7 +13,9 @@ namespace PALauncher
 
 PluginCard::PluginCard()
 {
-    // No longer using favoriteButton - handling clicks directly in mouseDown
+    // Prevent focus grabbing - don't steal focus from other components
+    setWantsKeyboardFocus(false);
+    setMouseClickGrabsKeyboardFocus(false);
 }
 
 void PluginCard::paint(juce::Graphics& g)

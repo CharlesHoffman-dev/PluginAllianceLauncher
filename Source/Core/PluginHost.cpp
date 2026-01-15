@@ -50,6 +50,24 @@ bool PluginHost::loadPlugin(const juce::PluginDescription& description,
     currentSampleRate = sampleRate;
     currentBlockSize = blockSize;
 
+    // Configure bus layout - try to set stereo in/out
+    auto busesLayout = loadedPlugin->getBusesLayout();
+
+    // Configure main input bus to stereo if available
+    if (loadedPlugin->getBusCount(true) > 0)
+    {
+        busesLayout.getChannelSet(true, 0) = juce::AudioChannelSet::stereo();
+    }
+
+    // Configure main output bus to stereo if available
+    if (loadedPlugin->getBusCount(false) > 0)
+    {
+        busesLayout.getChannelSet(false, 0) = juce::AudioChannelSet::stereo();
+    }
+
+    // Apply the bus layout
+    loadedPlugin->setBusesLayout(busesLayout);
+
     // Prepare the plugin
     loadedPlugin->prepareToPlay(sampleRate, blockSize);
     isPrepared = true;
@@ -101,16 +119,27 @@ void PluginHost::prepareToPlay(double sampleRate, int samplesPerBlock)
     currentSampleRate = sampleRate;
     currentBlockSize = samplesPerBlock;
 
-    if (loadedPlugin != nullptr && !isPrepared)
+    if (loadedPlugin != nullptr)
     {
+        // Ensure bus layout is stereo
+        auto busesLayout = loadedPlugin->getBusesLayout();
+
+        if (loadedPlugin->getBusCount(true) > 0)
+            busesLayout.getChannelSet(true, 0) = juce::AudioChannelSet::stereo();
+
+        if (loadedPlugin->getBusCount(false) > 0)
+            busesLayout.getChannelSet(false, 0) = juce::AudioChannelSet::stereo();
+
+        loadedPlugin->setBusesLayout(busesLayout);
+
+        if (isPrepared)
+        {
+            // Re-prepare with new settings
+            loadedPlugin->releaseResources();
+        }
+
         loadedPlugin->prepareToPlay(sampleRate, samplesPerBlock);
         isPrepared = true;
-    }
-    else if (loadedPlugin != nullptr && isPrepared)
-    {
-        // Re-prepare with new settings
-        loadedPlugin->releaseResources();
-        loadedPlugin->prepareToPlay(sampleRate, samplesPerBlock);
     }
 }
 
