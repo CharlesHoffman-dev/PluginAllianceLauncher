@@ -48,7 +48,6 @@ private:
     void buildSubcategoryList();
 
     juce::ListBox listBox;
-    juce::Label titleLabel;
     std::vector<SubcategoryItem> subcategories;
     DisplayCategory currentCategory = DisplayCategory::All;
     int selectedRow = 0;

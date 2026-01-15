@@ -140,14 +140,13 @@ void CategoryFilter::paintListBoxItem(int rowNumber, juce::Graphics& g, int widt
 
     if (item.isHeader)
     {
-        // Draw header style
-        g.setColour(juce::Colour(0xff888888));
-        g.setFont(juce::Font(12.0f, juce::Font::bold));
-        g.drawText(item.name, 8, 0, width - 16, height, juce::Justification::centredLeft);
-
-        // Draw separator line below
+        // Draw header style - grey background with white text
         g.setColour(juce::Colour(0xff2a2a2a));
-        g.drawHorizontalLine(height - 1, 8.0f, width - 8.0f);
+        g.fillRect(4, 2, width - 8, height - 4);
+
+        g.setColour(juce::Colours::white);
+        g.setFont(juce::Font(12.0f, juce::Font::bold));
+        g.drawText(item.name, 12, 0, width - 24, height, juce::Justification::centredLeft);
     }
     else
     {

@@ -12,11 +12,6 @@ namespace PALauncher
 
 EraFilter::EraFilter()
 {
-    titleLabel.setText("ERA", juce::dontSendNotification);
-    titleLabel.setFont(juce::Font(12.0f, juce::Font::bold));
-    titleLabel.setColour(juce::Label::textColourId, juce::Colour(0xff888888));
-    addAndMakeVisible(titleLabel);
-
     buildEraList();
 
     listBox.setModel(this);
@@ -52,17 +47,21 @@ void EraFilter::buildEraList()
 void EraFilter::paint(juce::Graphics& g)
 {
     g.fillAll(juce::Colour(0xff121212));
+
+    // Draw header with grey background and white text
+    auto headerBounds = getLocalBounds().reduced(4).removeFromTop(24);
+    g.setColour(juce::Colour(0xff2a2a2a));
+    g.fillRect(headerBounds);
+
+    g.setColour(juce::Colours::white);
+    g.setFont(juce::Font(12.0f, juce::Font::bold));
+    g.drawText("ERA", headerBounds.reduced(8, 0), juce::Justification::centredLeft);
 }
 
 void EraFilter::resized()
 {
     auto bounds = getLocalBounds().reduced(4);
-
-    titleLabel.setBounds(bounds.removeFromTop(20));
-
-    // Draw separator
-    bounds.removeFromTop(4);
-
+    bounds.removeFromTop(28);  // Space for header
     listBox.setBounds(bounds);
 }
 

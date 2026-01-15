@@ -44,7 +44,6 @@ private:
     void buildEraList();
 
     juce::ListBox listBox;
-    juce::Label titleLabel;
     std::vector<EraItem> eras;
     int selectedRow = 0;
 
