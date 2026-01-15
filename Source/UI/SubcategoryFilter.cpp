@@ -29,14 +29,12 @@ SubcategoryFilter::SubcategoryFilter()
 
 void SubcategoryFilter::setCategory(DisplayCategory category)
 {
-    if (currentCategory != category)
-    {
-        currentCategory = category;
-        buildSubcategoryList();
-        listBox.updateContent();
-        listBox.selectRow(0);
-        selectedRow = 0;
-    }
+    currentCategory = category;
+    buildSubcategoryList();
+    listBox.updateContent();
+    listBox.selectRow(0);
+    selectedRow = 0;
+    repaint();
 }
 
 void SubcategoryFilter::buildSubcategoryList()

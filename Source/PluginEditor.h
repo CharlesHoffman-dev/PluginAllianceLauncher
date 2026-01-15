@@ -60,6 +60,7 @@ private:
 
     // State
     bool browserMode = true;  // true = show browser, false = show hosted plugin fullscreen
+    bool wasScanning = false;  // Track scanning state for layout updates
     DisplayCategory currentCategory = DisplayCategory::All;
     int currentSubcategory = -1;  // -1 = all
     Era currentEra = Era::Era_Unknown;  // Unknown = all

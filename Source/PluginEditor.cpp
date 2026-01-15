@@ -165,49 +165,49 @@ void PluginAllianceLauncherEditor::paint(juce::Graphics& g)
     g.setColour(juce::Colour(0xff1a1a1a));
     g.fillRect(0, 0, getWidth(), topBarHeight);
 
-    // Draw logo in top-left corner
+    // Draw logo in sidebar area (fills sidebar width)
     if (logoDrawable != nullptr)
     {
-        auto logoBounds = juce::Rectangle<float>(10.0f, (topBarHeight - logoHeight) / 2.0f,
-                                                   static_cast<float>(logoWidth),
-                                                   static_cast<float>(logoHeight));
+        auto logoBounds = juce::Rectangle<float>(8.0f, 8.0f,
+                                                   static_cast<float>(sidebarWidth - 16),
+                                                   static_cast<float>(topBarHeight - 16));
         logoDrawable->drawWithin(g, logoBounds, juce::RectanglePlacement::centred, 1.0f);
     }
 
-    // Always show status area below top bar (full width)
-    int progressBarHeight = 24;
-    auto statusBounds = juce::Rectangle<int>(0, topBarHeight, getWidth(), progressBarHeight);
-
-    // Background for status area
-    g.setColour(juce::Colour(0xff1a1a1a));
-    g.fillRect(statusBounds);
-
-    // Adjust bounds for the progress bar content (to the right of where sidebar will be)
-    auto contentStatusBounds = statusBounds.withLeft(sidebarWidth);
-
-    auto statusMessage = processor.getPluginScanner().getStatusMessage();
+    // Only show status area when scanning
     bool isScanning = processor.getPluginScanner().isScanning();
-
-    // Always show the progress track area
-    auto trackBounds = contentStatusBounds.reduced(10, 6);
-    g.setColour(juce::Colour(0xff2a2a2a));
-    g.fillRoundedRectangle(trackBounds.toFloat(), 4.0f);
-
     if (isScanning)
     {
+        int progressBarHeight = 24;
+        auto statusBounds = juce::Rectangle<int>(0, topBarHeight, getWidth(), progressBarHeight);
+
+        // Background for status area
+        g.setColour(juce::Colour(0xff1a1a1a));
+        g.fillRect(statusBounds);
+
+        // Adjust bounds for the progress bar content (to the right of where sidebar will be)
+        auto contentStatusBounds = statusBounds.withLeft(sidebarWidth);
+
+        auto statusMessage = processor.getPluginScanner().getStatusMessage();
+
+        // Progress track area
+        auto trackBounds = contentStatusBounds.reduced(10, 6);
+        g.setColour(juce::Colour(0xff2a2a2a));
+        g.fillRoundedRectangle(trackBounds.toFloat(), 4.0f);
+
         // Progress bar fill
         float progress = processor.getPluginScanner().getProgress();
         auto progressBounds = trackBounds.withWidth(static_cast<int>(trackBounds.getWidth() * progress));
         g.setColour(juce::Colour(0xff0cbff2));
         g.fillRoundedRectangle(progressBounds.toFloat(), 4.0f);
-    }
 
-    // Status text (only show when scanning or has message)
-    if (!statusMessage.isEmpty())
-    {
-        g.setColour(juce::Colours::white);
-        g.setFont(juce::Font(11.0f));
-        g.drawText(statusMessage, trackBounds.reduced(8, 0), juce::Justification::centredLeft);
+        // Status text
+        if (!statusMessage.isEmpty())
+        {
+            g.setColour(juce::Colours::white);
+            g.setFont(juce::Font(11.0f));
+            g.drawText(statusMessage, trackBounds.reduced(8, 0), juce::Justification::centredLeft);
+        }
     }
 }
 
@@ -219,8 +219,8 @@ void PluginAllianceLauncherEditor::resized()
     auto topBar = bounds.removeFromTop(topBarHeight);
     topBar.reduce(10, 8);
 
-    // Skip space for logo on left
-    topBar.removeFromLeft(logoWidth + 10);
+    // Skip sidebar area (logo is there)
+    topBar.removeFromLeft(sidebarWidth - 10);  // -10 because we already reduced by 10
 
     rescanButton.setBounds(topBar.removeFromRight(80));
     topBar.removeFromRight(8);
@@ -239,9 +239,12 @@ void PluginAllianceLauncherEditor::resized()
 
     searchBar.setBounds(topBar.removeFromLeft(300));
 
-    // Reserve space for status bar (drawn in paint())
-    static constexpr int statusBarHeight = 24;
-    bounds.removeFromTop(statusBarHeight);
+    // Only reserve space for status bar when scanning
+    if (processor.getPluginScanner().isScanning())
+    {
+        static constexpr int statusBarHeight = 24;
+        bounds.removeFromTop(statusBarHeight);
+    }
 
     if (browserMode)
     {
@@ -344,8 +347,18 @@ void PluginAllianceLauncherEditor::changeListenerCallback(juce::ChangeBroadcaste
 
 void PluginAllianceLauncherEditor::timerCallback()
 {
-    // Always repaint the status area to show current status
-    repaint(sidebarWidth, topBarHeight, getWidth() - sidebarWidth, 24);
+    bool isScanning = processor.getPluginScanner().isScanning();
+
+    // Update layout when scanning state changes
+    if (isScanning != wasScanning)
+    {
+        wasScanning = isScanning;
+        resized();
+    }
+
+    // Repaint the status area when scanning
+    if (isScanning)
+        repaint(sidebarWidth, topBarHeight, getWidth() - sidebarWidth, 24);
 }
 
 void PluginAllianceLauncherEditor::updatePluginList()
