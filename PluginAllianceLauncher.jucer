@@ -4,7 +4,7 @@
               useAppConfig="0" addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1"
               pluginFormats="buildVST3,buildAU" pluginName="Plugin Alliance Launcher" pluginDesc="Search and launch Plugin Alliance plugins"
               pluginManufacturer="PALauncher" pluginManufacturerCode="PLnc"
-              pluginCode="PALn" pluginChannelConfigs="{2, 2}" pluginIsSynth="0"
+              pluginCode="PALn" pluginIsSynth="0"
               pluginWantsMidiIn="1" pluginProducesMidiOut="1" pluginIsMidiEffectPlugin="0"
               pluginEditorRequiresKeys="1" pluginAUExportPrefix="PALauncherAU"
               aaxIdentifier="com.palauncher.palauncher" pluginAAXCategory="0"
