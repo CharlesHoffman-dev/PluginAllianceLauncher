@@ -40,7 +40,7 @@ public:
     int getNumSteps() const override;
     bool isDiscrete() const override;
     bool isBoolean() const override;
-    bool isAutomatable() const override { return isLinked(); }
+    bool isAutomatable() const override { return true; }
     bool isMetaParameter() const override { return false; }
 
 private:
