@@ -120,6 +120,7 @@ bool HostedPluginParameter::isBoolean() const
 PluginAllianceLauncherProcessor::PluginAllianceLauncherProcessor()
     : AudioProcessor(BusesProperties()
                      .withInput("Input", juce::AudioChannelSet::stereo(), true)
+                     .withInput("Sidechain", juce::AudioChannelSet::stereo(), false)
                      .withOutput("Output", juce::AudioChannelSet::stereo(), true))
 {
     // Create parameter slots
@@ -160,11 +161,17 @@ void PluginAllianceLauncherProcessor::releaseResources()
 
 bool PluginAllianceLauncherProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
 {
-    // Support stereo in/out
+    // Main output must be stereo
     if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
         return false;
 
+    // Main input must be stereo
     if (layouts.getMainInputChannelSet() != juce::AudioChannelSet::stereo())
+        return false;
+
+    // Sidechain can be disabled (empty) or stereo
+    auto sidechain = layouts.getChannelSet(true, 1);
+    if (!sidechain.isDisabled() && sidechain != juce::AudioChannelSet::stereo())
         return false;
 
     return true;

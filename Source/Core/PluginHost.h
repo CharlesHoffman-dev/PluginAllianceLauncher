@@ -46,6 +46,9 @@ public:
     juce::AudioPluginInstance* getLoadedPlugin() { return loadedPlugin.get(); }
     const juce::AudioPluginInstance* getLoadedPlugin() const { return loadedPlugin.get(); }
 
+    // Sidechain support
+    bool supportsSidechain() const { return hasSidechain; }
+
 private:
     juce::AudioPluginFormatManager formatManager;
     std::unique_ptr<juce::AudioPluginInstance> loadedPlugin;
@@ -54,6 +57,7 @@ private:
     double currentSampleRate = 44100.0;
     int currentBlockSize = 512;
     bool isPrepared = false;
+    bool hasSidechain = false;
 
     juce::CriticalSection lock;
 

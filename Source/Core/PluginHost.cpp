@@ -50,13 +50,24 @@ bool PluginHost::loadPlugin(const juce::PluginDescription& description,
     currentSampleRate = sampleRate;
     currentBlockSize = blockSize;
 
-    // Configure bus layout - try to set stereo in/out
+    // Configure bus layout - try to set stereo in/out with sidechain
     auto busesLayout = loadedPlugin->getBusesLayout();
 
     // Configure main input bus to stereo if available
     if (loadedPlugin->getBusCount(true) > 0)
     {
         busesLayout.getChannelSet(true, 0) = juce::AudioChannelSet::stereo();
+    }
+
+    // Configure sidechain input bus to stereo if available (bus index 1)
+    if (loadedPlugin->getBusCount(true) > 1)
+    {
+        busesLayout.getChannelSet(true, 1) = juce::AudioChannelSet::stereo();
+        hasSidechain = true;
+    }
+    else
+    {
+        hasSidechain = false;
     }
 
     // Configure main output bus to stereo if available
@@ -121,11 +132,18 @@ void PluginHost::prepareToPlay(double sampleRate, int samplesPerBlock)
 
     if (loadedPlugin != nullptr)
     {
-        // Ensure bus layout is stereo
+        // Ensure bus layout is stereo with sidechain if supported
         auto busesLayout = loadedPlugin->getBusesLayout();
 
         if (loadedPlugin->getBusCount(true) > 0)
             busesLayout.getChannelSet(true, 0) = juce::AudioChannelSet::stereo();
+
+        // Configure sidechain if plugin supports it
+        if (loadedPlugin->getBusCount(true) > 1)
+        {
+            busesLayout.getChannelSet(true, 1) = juce::AudioChannelSet::stereo();
+            hasSidechain = true;
+        }
 
         if (loadedPlugin->getBusCount(false) > 0)
             busesLayout.getChannelSet(false, 0) = juce::AudioChannelSet::stereo();
