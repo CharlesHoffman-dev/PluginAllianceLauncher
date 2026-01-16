@@ -145,9 +145,6 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
         // Switch to plugin mode
         browserMode = false;
         toggleModeButton.setButtonText("Show Browser");
-
-        // Show the hosted plugin's editor
-        hostedPluginView.showPluginEditor();
     }
 
     // Set editor size
@@ -155,11 +152,13 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     setResizable(true, true);
     setResizeLimits(800, 600, 2000, 1500);
 
-    // If plugin is loaded, resize to fit it after initial layout
+    // Defer hosted plugin editor creation to avoid audio stutter on window open
+    // Creating the hosted plugin's GUI can be heavy, so do it after the window is shown
     if (!browserMode)
     {
         juce::MessageManager::callAsync([this]()
         {
+            hostedPluginView.showPluginEditor();
             resizeForPlugin();
         });
     }
