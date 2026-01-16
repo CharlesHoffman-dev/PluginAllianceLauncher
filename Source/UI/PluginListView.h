@@ -29,6 +29,9 @@ public:
     // Set plugins to display
     void setPlugins(const juce::Array<PluginInfo>& plugins);
 
+    // Update plugins while preserving scroll position (for favorites, etc.)
+    void updatePlugins(const juce::Array<PluginInfo>& plugins);
+
     // Get currently selected plugin
     const PluginInfo* getSelectedPlugin() const;
 

@@ -39,6 +39,7 @@ public:
 private:
     void updatePluginList();
     void filterPlugins();
+    void refreshPluginsPreservingScroll();  // For favorites toggle - doesn't reset scroll
     void loadSelectedPlugin(const PluginInfo& info);
     void toggleBrowserMode();
 

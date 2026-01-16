@@ -109,7 +109,7 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
         auto pluginId = info.description.pluginFormatName + "_" + info.description.fileOrIdentifier;
         processor.getPluginDatabase().setFavorite(pluginId, favorite);
         processor.getPluginDatabase().saveToDisk();
-        filterPlugins(); // Refresh to show updated favorite status
+        refreshPluginsPreservingScroll(); // Refresh without resetting scroll position
     };
     addAndMakeVisible(pluginListView);
 
@@ -464,6 +464,80 @@ void PluginAllianceLauncherEditor::filterPlugins()
     }
 
     pluginListView.setPlugins(filtered);
+}
+
+void PluginAllianceLauncherEditor::refreshPluginsPreservingScroll()
+{
+    // Same filtering logic as filterPlugins, but uses updatePlugins to preserve scroll position
+    juce::Array<PluginInfo> filtered;
+
+    if (currentCategory == DisplayCategory::Favorites)
+        filtered = processor.getPluginDatabase().getFavorites();
+    else if (currentCategory == DisplayCategory::Recent)
+        filtered = processor.getPluginDatabase().getRecent(20);
+    else if (!currentSearchText.isEmpty())
+        filtered = processor.getPluginDatabase().search(currentSearchText);
+    else if (currentCategory != DisplayCategory::All)
+        filtered = processor.getPluginDatabase().getByDisplayCategory(currentCategory);
+    else
+        filtered = processor.getPluginDatabase().getAllPlugins();
+
+    // Apply era filter
+    if (currentEra != Era::Era_Unknown)
+    {
+        juce::Array<PluginInfo> eraFiltered;
+        for (const auto& plugin : filtered)
+        {
+            if (plugin.era == currentEra)
+                eraFiltered.add(plugin);
+        }
+        filtered = eraFiltered;
+    }
+
+    // Apply subcategory filter
+    if (currentSubcategory >= 0)
+    {
+        juce::Array<PluginInfo> subFiltered;
+        for (const auto& plugin : filtered)
+        {
+            bool matches = false;
+            switch (currentCategory)
+            {
+                case DisplayCategory::Compressors:
+                    matches = (static_cast<int>(plugin.compressorType) == currentSubcategory);
+                    break;
+                case DisplayCategory::EQ:
+                    matches = (static_cast<int>(plugin.eqType) == currentSubcategory);
+                    break;
+                case DisplayCategory::Reverb:
+                    matches = (static_cast<int>(plugin.reverbType) == currentSubcategory);
+                    break;
+                case DisplayCategory::Delay:
+                    matches = (static_cast<int>(plugin.delayType) == currentSubcategory);
+                    break;
+                case DisplayCategory::AmpSim:
+                    matches = (static_cast<int>(plugin.ampType) == currentSubcategory);
+                    break;
+                case DisplayCategory::Saturation:
+                    matches = (static_cast<int>(plugin.saturationType) == currentSubcategory);
+                    break;
+                case DisplayCategory::ChannelStrip:
+                    matches = (static_cast<int>(plugin.channelStripType) == currentSubcategory);
+                    break;
+                case DisplayCategory::Distortion:
+                    matches = (static_cast<int>(plugin.distortionType) == currentSubcategory);
+                    break;
+                default:
+                    matches = true;
+                    break;
+            }
+            if (matches)
+                subFiltered.add(plugin);
+        }
+        filtered = subFiltered;
+    }
+
+    pluginListView.updatePlugins(filtered);
 }
 
 void PluginAllianceLauncherEditor::loadSelectedPlugin(const PluginInfo& info)

@@ -237,6 +237,11 @@ bool PluginAllianceLauncherProcessor::loadPlugin(const juce::PluginDescription& 
                 if (auto* param = params[i])
                     hostedParameters[i]->linkToParameter(param);
             }
+
+            // Notify host (e.g., Ableton) that parameter info has changed
+            // This enables Configure mode to see the new parameter names
+            updateHostDisplay(ChangeDetails()
+                .withParameterInfoChanged(true));
         }
     }
 
@@ -251,6 +256,10 @@ void PluginAllianceLauncherProcessor::unloadPlugin()
 
     juce::ScopedLock lock(pluginLock);
     pluginHost.unloadPlugin();
+
+    // Notify host that parameter info has changed (parameters are now unlinked)
+    updateHostDisplay(ChangeDetails()
+        .withParameterInfoChanged(true));
 }
 
 bool PluginAllianceLauncherProcessor::hasLoadedPlugin() const

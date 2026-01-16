@@ -74,6 +74,15 @@ void PluginListView::setPlugins(const juce::Array<PluginInfo>& plugins)
     updateLayout();
 }
 
+void PluginListView::updatePlugins(const juce::Array<PluginInfo>& plugins)
+{
+    // Update plugin list while preserving scroll position
+    // Used for favorites toggle and other updates that shouldn't reset scroll
+    allPlugins = plugins;
+    // Don't reset selectedIndex or scrollOffset
+    updateLayout();
+}
+
 void PluginListView::updateLayout()
 {
     numColumns = calculateNumColumns();
