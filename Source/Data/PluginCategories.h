@@ -499,6 +499,16 @@ inline juce::String getBrandName(const juce::String& pluginName, const juce::Str
         return "Unfiltered Audio";
     if (mfrLower.contains("vertigo") || nameLower.contains("vertigo"))
         return "Vertigo";
+    if (mfrLower.contains("wedge force") || nameLower.contains("wedge force"))
+        return "WEDGE FORCE";
+    if (mfrLower.contains("schoeps") || nameLower.contains("schoeps"))
+        return "Schoeps";
+    if (mfrLower.contains("sonible") || nameLower.contains("sonible") || nameLower.contains("smart:reverb"))
+        return "sonible";
+    if (mfrLower.contains("dear reality") || nameLower.contains("dearvr"))
+        return "Dear Reality";
+    if (mfrLower.contains("trinity") || nameLower.contains("trinity"))
+        return "Trinity";
 
     // Default to Plugin Alliance if no specific brand detected
     return "Plugin Alliance";

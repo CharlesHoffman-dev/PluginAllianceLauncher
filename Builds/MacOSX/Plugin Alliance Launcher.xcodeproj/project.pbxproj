@@ -27,6 +27,7 @@
 		0046703BDE154ADDCA2592AB /* SettingsManager.cpp */ = {isa = PBXBuildFile; fileRef = 06B27158EADB69D7FD91DF6A; };
 		00B84FF5EBD9D87D378CE8E1 /* PluginImageCache.cpp */ = {isa = PBXBuildFile; fileRef = F979079EE0F12CD3CE27CFB1; };
 		014609D32F7548DE3006D476 /* include_juce_audio_devices.mm */ = {isa = PBXBuildFile; fileRef = B49619A6FE05F4EC66E470F0; };
+		046C489827C78C55D76E855C /* BinaryData.cpp */ = {isa = PBXBuildFile; fileRef = AA618ECCF14D01ABB125FD7E; };
 		08C6E891E5B3BEE1F62FD8A6 /* include_juce_graphics.mm */ = {isa = PBXBuildFile; fileRef = D76D8DFE6A24D2CA3A4A7334; };
 		0962B294E7BDE8CD81A05879 /* AudioUnit.framework */ = {isa = PBXBuildFile; fileRef = CE62764CAE7BD74A11EA543A; };
 		1E18290A612B0F48DD3078C5 /* Foundation.framework */ = {isa = PBXBuildFile; fileRef = 3358D28D120AE87EACA39152; };
@@ -67,6 +68,7 @@
 		CB63A027FE0942D3D52FF316 /* EraFilter.cpp */ = {isa = PBXBuildFile; fileRef = F07DD7F000E0EF6828B0CE4D; };
 		CF3BD1E06AA990228E660009 /* CoreMIDI.framework */ = {isa = PBXBuildFile; fileRef = EA708692F9E4AD562B6FF3C5; };
 		CF9040C047D458462EFC4E65 /* Cocoa.framework */ = {isa = PBXBuildFile; fileRef = 879EF042F4BC49533378232A; };
+		D3D442D6FE179E6617BB5656 /* BinaryData2.cpp */ = {isa = PBXBuildFile; fileRef = 1FA01F9F1791712D176E3D71; };
 		D5EFB197A31FAA7AEEE25BBA /* PluginCard.cpp */ = {isa = PBXBuildFile; fileRef = 8D346B8C2F110B7F030FC56A; };
 		D8B5264779E2BA7BCC7495A1 /* RecentFilesMenuTemplate.nib */ = {isa = PBXBuildFile; fileRef = 84F17B5C903DD02295B84DBF; };
 		D9CDB9AF1A358EB4919A207B /* include_juce_audio_plugin_client_AU_2.mm */ = {isa = PBXBuildFile; fileRef = 842B4DC019ADE1AD54FC03E8; };
@@ -78,89 +80,245 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		02DE3F3FC2F8042E16982E81 /* friedman_be100.png */ /* friedman_be100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = friedman_be100.png; path = ../../Resources/Thumbnails/friedman_be100.png; sourceTree = SOURCE_ROOT; };
+		04443322F0F9F7A31E00BC7E /* fuchs_train_ii.png */ /* fuchs_train_ii.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fuchs_train_ii.png; path = ../../Resources/Thumbnails/fuchs_train_ii.png; sourceTree = SOURCE_ROOT; };
 		062620D115786851DFCF1B12 /* HostedPluginView.cpp */ /* HostedPluginView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = HostedPluginView.cpp; path = ../../Source/UI/HostedPluginView.cpp; sourceTree = SOURCE_ROOT; };
 		06B27158EADB69D7FD91DF6A /* SettingsManager.cpp */ /* SettingsManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SettingsManager.cpp; path = ../../Source/Utils/SettingsManager.cpp; sourceTree = SOURCE_ROOT; };
+		0746770CACF6BFC470323F5B /* lindell_254e.png */ /* lindell_254e.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lindell_254e.png; path = ../../Resources/Thumbnails/lindell_254e.png; sourceTree = SOURCE_ROOT; };
+		0AC8EDC47EBC41CCA629BAC0 /* black_box_hg2.png */ /* black_box_hg2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = black_box_hg2.png; path = ../../Resources/Thumbnails/black_box_hg2.png; sourceTree = SOURCE_ROOT; };
+		0B1EAFE47A36A7498D6C73DA /* swivel_knocktonal.png */ /* swivel_knocktonal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = swivel_knocktonal.png; path = ../../Resources/Thumbnails/swivel_knocktonal.png; sourceTree = SOURCE_ROOT; };
 		0CE89D6447A15E769617B567 /* include_juce_audio_basics.mm */ /* include_juce_audio_basics.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_basics.mm; path = ../../JuceLibraryCode/include_juce_audio_basics.mm; sourceTree = SOURCE_ROOT; };
+		0F79AD695824FE70E5F5C8E5 /* adptr_sculpt.png */ /* adptr_sculpt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = adptr_sculpt.png; path = ../../Resources/Thumbnails/adptr_sculpt.png; sourceTree = SOURCE_ROOT; };
 		116ACD7B7C0A9E68E8739CFF /* include_juce_events.mm */ /* include_juce_events.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_events.mm; path = ../../JuceLibraryCode/include_juce_events.mm; sourceTree = SOURCE_ROOT; };
+		12D07F093CED61245611DC79 /* maag_audio_magnumk.png */ /* maag_audio_magnumk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = maag_audio_magnumk.png; path = ../../Resources/Thumbnails/maag_audio_magnumk.png; sourceTree = SOURCE_ROOT; };
 		13E753984133732365CA4046 /* SettingsManager.h */ /* SettingsManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SettingsManager.h; path = ../../Source/Utils/SettingsManager.h; sourceTree = SOURCE_ROOT; };
 		143FB2E737D06B34C1FABB75 /* juce_audio_basics */ /* juce_audio_basics */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_basics; path = C:/Users/charl/JUCE/modules/juce_audio_basics; sourceTree = "<absolute>"; };
 		149708059F8441CC88F2EDCE /* PAIdentifier.h */ /* PAIdentifier.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PAIdentifier.h; path = ../../Source/Utils/PAIdentifier.h; sourceTree = SOURCE_ROOT; };
+		14A8FB3BBD147F9538B600B2 /* bx_oberhausen.png */ /* bx_oberhausen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_oberhausen.png; path = ../../Resources/Thumbnails/bx_oberhausen.png; sourceTree = SOURCE_ROOT; };
+		157E9F2ED29FA33C812DAEBD /* spl_de_esser_collection.png */ /* spl_de_esser_collection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spl_de_esser_collection.png; path = ../../Resources/Thumbnails/spl_de_esser_collection.png; sourceTree = SOURCE_ROOT; };
+		1775392DFAA0A99021543506 /* bx_dyneq_v2.png */ /* bx_dyneq_v2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_dyneq_v2.png; path = ../../Resources/Thumbnails/bx_dyneq_v2.png; sourceTree = SOURCE_ROOT; };
+		188B2A1AA568A430E97F5505 /* lindell_69_series.png */ /* lindell_69_series.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lindell_69_series.png; path = ../../Resources/Thumbnails/lindell_69_series.png; sourceTree = SOURCE_ROOT; };
 		190E9F03F011A9E2A561177E /* include_juce_audio_plugin_client_VST3.mm */ /* include_juce_audio_plugin_client_VST3.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_plugin_client_VST3.mm; path = ../../JuceLibraryCode/include_juce_audio_plugin_client_VST3.mm; sourceTree = SOURCE_ROOT; };
 		19199F055D14093B14B9DE09 /* juce_gui_extra */ /* juce_gui_extra */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_gui_extra; path = C:/Users/charl/JUCE/modules/juce_gui_extra; sourceTree = "<absolute>"; };
+		195A57BB923E83E791E9FE3B /* ampeg_b15n.png */ /* ampeg_b15n.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ampeg_b15n.png; path = ../../Resources/Thumbnails/ampeg_b15n.png; sourceTree = SOURCE_ROOT; };
+		19C701E8EE91B8F5C8175176 /* bx_console_ssl_4000_e.png */ /* bx_console_ssl_4000_e.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_console_ssl_4000_e.png; path = ../../Resources/Thumbnails/bx_console_ssl_4000_e.png; sourceTree = SOURCE_ROOT; };
+		1ECD8C26D18FBA1F2C2CA028 /* bx_cleansweep_pro.png */ /* bx_cleansweep_pro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_cleansweep_pro.png; path = ../../Resources/Thumbnails/bx_cleansweep_pro.png; sourceTree = SOURCE_ROOT; };
+		1F487FE1CCE96C5E95B31B29 /* unfiltered_tails.png */ /* unfiltered_tails.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unfiltered_tails.png; path = ../../Resources/Thumbnails/unfiltered_tails.png; sourceTree = SOURCE_ROOT; };
+		1FA01F9F1791712D176E3D71 /* BinaryData2.cpp */ /* BinaryData2.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BinaryData2.cpp; path = ../../JuceLibraryCode/BinaryData2.cpp; sourceTree = SOURCE_ROOT; };
+		203E9DDDC41D60AF8371C88A /* ds_audio_tantra_2.png */ /* ds_audio_tantra_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ds_audio_tantra_2.png; path = ../../Resources/Thumbnails/ds_audio_tantra_2.png; sourceTree = SOURCE_ROOT; };
 		21E9DAA28E5AA59C12DC945B /* PAIdentifier.cpp */ /* PAIdentifier.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PAIdentifier.cpp; path = ../../Source/Utils/PAIdentifier.cpp; sourceTree = SOURCE_ROOT; };
+		2273A0E51030E295165665A0 /* elysia_karacter.png */ /* elysia_karacter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = elysia_karacter.png; path = ../../Resources/Thumbnails/elysia_karacter.png; sourceTree = SOURCE_ROOT; };
+		22AF4224E24B0CA97C708025 /* spl_transient_designer_plus.png */ /* spl_transient_designer_plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spl_transient_designer_plus.png; path = ../../Resources/Thumbnails/spl_transient_designer_plus.png; sourceTree = SOURCE_ROOT; };
 		22C14B67FD5275C2E13E33DD /* include_juce_audio_processors_lv2_libs.cpp */ /* include_juce_audio_processors_lv2_libs.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_juce_audio_processors_lv2_libs.cpp; path = ../../JuceLibraryCode/include_juce_audio_processors_lv2_libs.cpp; sourceTree = SOURCE_ROOT; };
+		2390E5FAFAE039AFB8DF69E1 /* lindell_80_series.png */ /* lindell_80_series.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lindell_80_series.png; path = ../../Resources/Thumbnails/lindell_80_series.png; sourceTree = SOURCE_ROOT; };
 		244727D42E4B1D7E070F1D2E /* Info-VST3.plist */ /* Info-VST3.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-VST3.plist"; path = "Info-VST3.plist"; sourceTree = SOURCE_ROOT; };
+		24849F5056AC05BFECD97D66 /* lindell_channelx.png */ /* lindell_channelx.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lindell_channelx.png; path = ../../Resources/Thumbnails/lindell_channelx.png; sourceTree = SOURCE_ROOT; };
+		2498E26CA7E2DD2AAA2BB52B /* vertigo_vsc2.png */ /* vertigo_vsc2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = vertigo_vsc2.png; path = ../../Resources/Thumbnails/vertigo_vsc2.png; sourceTree = SOURCE_ROOT; };
+		24CAD25158F37B8CBD266086 /* bx_hybrid_v2.png */ /* bx_hybrid_v2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_hybrid_v2.png; path = ../../Resources/Thumbnails/bx_hybrid_v2.png; sourceTree = SOURCE_ROOT; };
+		256E183EA7262863924C24DE /* knif_soma.png */ /* knif_soma.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = knif_soma.png; path = ../../Resources/Thumbnails/knif_soma.png; sourceTree = SOURCE_ROOT; };
+		260D5E0BBA3FA6EC63CDF7E7 /* amek_eq200.png */ /* amek_eq200.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = amek_eq200.png; path = ../../Resources/Thumbnails/amek_eq200.png; sourceTree = SOURCE_ROOT; };
+		2A3A7F893E7CCAD1C1D7688D /* swivel_bde.png */ /* swivel_bde.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = swivel_bde.png; path = ../../Resources/Thumbnails/swivel_bde.png; sourceTree = SOURCE_ROOT; };
+		2AE28206BEFF486A4BB4CFF7 /* neold_u2a.png */ /* neold_u2a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = neold_u2a.png; path = ../../Resources/Thumbnails/neold_u2a.png; sourceTree = SOURCE_ROOT; };
+		2B88666C45F4F6CA94738188 /* dangerous_bax_eq.png */ /* dangerous_bax_eq.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = dangerous_bax_eq.png; path = ../../Resources/Thumbnails/dangerous_bax_eq.png; sourceTree = SOURCE_ROOT; };
 		2C0669C7CE41612C6ED83AB2 /* juce_events */ /* juce_events */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_events; path = C:/Users/charl/JUCE/modules/juce_events; sourceTree = "<absolute>"; };
 		2DC814D9038D554A8F38D396 /* VST3 */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Plugin Alliance Launcher.vst3"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2E7440D2D1EA6BC0BD04CAF1 /* spl_big.png */ /* spl_big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spl_big.png; path = ../../Resources/Thumbnails/spl_big.png; sourceTree = SOURCE_ROOT; };
+		2E79DD6A6B21824CE38D2A3E /* elysia_nvelope.png */ /* elysia_nvelope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = elysia_nvelope.png; path = ../../Resources/Thumbnails/elysia_nvelope.png; sourceTree = SOURCE_ROOT; };
+		2E9A68253F91E43260A1EB50 /* bx_enhancer.png */ /* bx_enhancer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_enhancer.png; path = ../../Resources/Thumbnails/bx_enhancer.png; sourceTree = SOURCE_ROOT; };
+		304071671F781463E5D5E78E /* mixland_the_oven.png */ /* mixland_the_oven.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mixland_the_oven.png; path = ../../Resources/Thumbnails/mixland_the_oven.png; sourceTree = SOURCE_ROOT; };
+		30A39D14AC6BD30ABA9203CF /* spl_twintube.png */ /* spl_twintube.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spl_twintube.png; path = ../../Resources/Thumbnails/spl_twintube.png; sourceTree = SOURCE_ROOT; };
+		30A5142FD23F93FF330B4B11 /* bx_console_ssl_4000_g.png */ /* bx_console_ssl_4000_g.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_console_ssl_4000_g.png; path = ../../Resources/Thumbnails/bx_console_ssl_4000_g.png; sourceTree = SOURCE_ROOT; };
+		3156EC9E3D620D97C9DF37A5 /* hum_laal.png */ /* hum_laal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hum_laal.png; path = ../../Resources/Thumbnails/hum_laal.png; sourceTree = SOURCE_ROOT; };
+		3322393934E899B876F4FF67 /* looptrotter_sa2rate_2.png */ /* looptrotter_sa2rate_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = looptrotter_sa2rate_2.png; path = ../../Resources/Thumbnails/looptrotter_sa2rate_2.png; sourceTree = SOURCE_ROOT; };
+		3346F0B92D3C5187FA2ED16B /* bx_bassdude.png */ /* bx_bassdude.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_bassdude.png; path = ../../Resources/Thumbnails/bx_bassdude.png; sourceTree = SOURCE_ROOT; };
 		3358D28D120AE87EACA39152 /* Foundation.framework */ /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		337F8E5EC8C1B13D5C059B4D /* ada_flanger.png */ /* ada_flanger.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ada_flanger.png; path = ../../Resources/Thumbnails/ada_flanger.png; sourceTree = SOURCE_ROOT; };
 		33D7C2437101F98A356BEFDC /* juce_audio_processors */ /* juce_audio_processors */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_processors; path = C:/Users/charl/JUCE/modules/juce_audio_processors; sourceTree = "<absolute>"; };
 		355A93DA6E9471DF134324BA /* CoreAudioKit.framework */ /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
+		3C37BA730059718DBA319662 /* suhr_pt100.png */ /* suhr_pt100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = suhr_pt100.png; path = ../../Resources/Thumbnails/suhr_pt100.png; sourceTree = SOURCE_ROOT; };
+		3CEE7C9AD56F8BF51C84AD50 /* bx_opto.png */ /* bx_opto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_opto.png; path = ../../Resources/Thumbnails/bx_opto.png; sourceTree = SOURCE_ROOT; };
+		3E575541C76EF830F5104A75 /* fuchs_overdrive_supreme_50.png */ /* fuchs_overdrive_supreme_50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fuchs_overdrive_supreme_50.png; path = ../../Resources/Thumbnails/fuchs_overdrive_supreme_50.png; sourceTree = SOURCE_ROOT; };
 		3EA02EC2C83AA3EF321DD391 /* JuceHeader.h */ /* JuceHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JuceHeader.h; path = ../../JuceLibraryCode/JuceHeader.h; sourceTree = SOURCE_ROOT; };
 		417B704BAC9F55053CECA514 /* AudioToolbox.framework */ /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		418EFFF6164343F4CC21E099 /* elysia_museq.png */ /* elysia_museq.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = elysia_museq.png; path = ../../Resources/Thumbnails/elysia_museq.png; sourceTree = SOURCE_ROOT; };
+		41ABEC93C4553B30629F5A27 /* diezel_herbert.png */ /* diezel_herbert.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = diezel_herbert.png; path = ../../Resources/Thumbnails/diezel_herbert.png; sourceTree = SOURCE_ROOT; };
 		423444C2EC6D9FE21ABD6F09 /* include_juce_gui_extra.mm */ /* include_juce_gui_extra.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_gui_extra.mm; path = ../../JuceLibraryCode/include_juce_gui_extra.mm; sourceTree = SOURCE_ROOT; };
 		461A4D06939C1F354044F9D5 /* include_juce_audio_plugin_client_ARA.cpp */ /* include_juce_audio_plugin_client_ARA.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_juce_audio_plugin_client_ARA.cpp; path = ../../JuceLibraryCode/include_juce_audio_plugin_client_ARA.cpp; sourceTree = SOURCE_ROOT; };
+		46221AB1848FB998AED7E1F3 /* ampeg_svtvr.png */ /* ampeg_svtvr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ampeg_svtvr.png; path = ../../Resources/Thumbnails/ampeg_svtvr.png; sourceTree = SOURCE_ROOT; };
 		468047633D441F8C040ABA94 /* PluginListView.cpp */ /* PluginListView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginListView.cpp; path = ../../Source/UI/PluginListView.cpp; sourceTree = SOURCE_ROOT; };
+		47CA9AAA4916A5EEA33EACBE /* maor_hawkeye.png */ /* maor_hawkeye.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = maor_hawkeye.png; path = ../../Resources/Thumbnails/maor_hawkeye.png; sourceTree = SOURCE_ROOT; };
 		48E5A63B60FF57ADE044B168 /* Security.framework */ /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		48EE3E1F20F42046D1AA5D9A /* PluginListView.h */ /* PluginListView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginListView.h; path = ../../Source/UI/PluginListView.h; sourceTree = SOURCE_ROOT; };
 		4A375EF873A039ACFED1E132 /* juce_audio_utils */ /* juce_audio_utils */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_utils; path = C:/Users/charl/JUCE/modules/juce_audio_utils; sourceTree = "<absolute>"; };
+		4B79D8E6DCB3FC6762CDCD2A /* spl_vitalizer_mk3t.png */ /* spl_vitalizer_mk3t.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spl_vitalizer_mk3t.png; path = ../../Resources/Thumbnails/spl_vitalizer_mk3t.png; sourceTree = SOURCE_ROOT; };
 		4BDF7A56F9D5D93D1F0B682D /* QuartzCore.framework */ /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		4CAF911BFB53BB0D82F65D50 /* unfiltered_sandman.png */ /* unfiltered_sandman.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unfiltered_sandman.png; path = ../../Resources/Thumbnails/unfiltered_sandman.png; sourceTree = SOURCE_ROOT; };
+		4CD17BDD67B480DA103A253E /* adptr_streamliner.png */ /* adptr_streamliner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = adptr_streamliner.png; path = ../../Resources/Thumbnails/adptr_streamliner.png; sourceTree = SOURCE_ROOT; };
+		4CD504C81D57B9C0E7F0D42B /* kirchhoff_eq.png */ /* kirchhoff_eq.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = kirchhoff_eq.png; path = ../../Resources/Thumbnails/kirchhoff_eq.png; sourceTree = SOURCE_ROOT; };
+		4FF75AB568DF3EFFC8198B00 /* harris_doyle_natalus.png */ /* harris_doyle_natalus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = harris_doyle_natalus.png; path = ../../Resources/Thumbnails/harris_doyle_natalus.png; sourceTree = SOURCE_ROOT; };
 		522E41602489CB06491695DD /* Info-VST3_Manifest_Helper.plist */ /* Info-VST3_Manifest_Helper.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-VST3_Manifest_Helper.plist"; path = "Info-VST3_Manifest_Helper.plist"; sourceTree = SOURCE_ROOT; };
+		52F644B26FADC5B5E2ECB540 /* unfiltered_g8.png */ /* unfiltered_g8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unfiltered_g8.png; path = ../../Resources/Thumbnails/unfiltered_g8.png; sourceTree = SOURCE_ROOT; };
+		534883DC37F189FB7F6B72FB /* tomo_lisa.png */ /* tomo_lisa.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tomo_lisa.png; path = ../../Resources/Thumbnails/tomo_lisa.png; sourceTree = SOURCE_ROOT; };
+		53E8A04677436186CB62B397 /* cenozoix_compressor.png */ /* cenozoix_compressor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cenozoix_compressor.png; path = ../../Resources/Thumbnails/cenozoix_compressor.png; sourceTree = SOURCE_ROOT; };
+		5455763E225073AF28A83458 /* pro_audio_dsp_dsm_v3.png */ /* pro_audio_dsp_dsm_v3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pro_audio_dsp_dsm_v3.png; path = ../../Resources/Thumbnails/pro_audio_dsp_dsm_v3.png; sourceTree = SOURCE_ROOT; };
 		546575EDA0BEE521B1C7C80B /* Info-AU.plist */ /* Info-AU.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-AU.plist"; path = "Info-AU.plist"; sourceTree = SOURCE_ROOT; };
+		5671C2580CC8F83E9446335E /* louder_than_liftoff_silver_bullet.png */ /* louder_than_liftoff_silver_bullet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = louder_than_liftoff_silver_bullet.png; path = ../../Resources/Thumbnails/louder_than_liftoff_silver_bullet.png; sourceTree = SOURCE_ROOT; };
+		5A787F03B5C3548E63DED998 /* bx_saturator_v2.png */ /* bx_saturator_v2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_saturator_v2.png; path = ../../Resources/Thumbnails/bx_saturator_v2.png; sourceTree = SOURCE_ROOT; };
+		5ABBAB07B93D777D8EDBC8BE /* bx_glue.png */ /* bx_glue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_glue.png; path = ../../Resources/Thumbnails/bx_glue.png; sourceTree = SOURCE_ROOT; };
+		5AE1B4D9CDA39FB960F42236 /* maag_audio_eq2.png */ /* maag_audio_eq2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = maag_audio_eq2.png; path = ../../Resources/Thumbnails/maag_audio_eq2.png; sourceTree = SOURCE_ROOT; };
 		5B9BBC6A8390F9DF9A33DC6C /* PluginHost.cpp */ /* PluginHost.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginHost.cpp; path = ../../Source/Core/PluginHost.cpp; sourceTree = SOURCE_ROOT; };
+		5CF204EB86B72D4821759CC5 /* bx_stereomaker.png */ /* bx_stereomaker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_stereomaker.png; path = ../../Resources/Thumbnails/bx_stereomaker.png; sourceTree = SOURCE_ROOT; };
+		5EBB11016BE2B1E80A2CC005 /* engl_savage_120.png */ /* engl_savage_120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = engl_savage_120.png; path = ../../Resources/Thumbnails/engl_savage_120.png; sourceTree = SOURCE_ROOT; };
+		6039E0B61CD4882047B776D3 /* friedman_ds40.png */ /* friedman_ds40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = friedman_ds40.png; path = ../../Resources/Thumbnails/friedman_ds40.png; sourceTree = SOURCE_ROOT; };
 		60B17E317E3B52D4C4E02512 /* include_juce_audio_processors_ara.cpp */ /* include_juce_audio_processors_ara.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_juce_audio_processors_ara.cpp; path = ../../JuceLibraryCode/include_juce_audio_processors_ara.cpp; sourceTree = SOURCE_ROOT; };
+		618C976F9B6FC4CD1772D9AB /* fiedler_spatial_creator.png */ /* fiedler_spatial_creator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fiedler_spatial_creator.png; path = ../../Resources/Thumbnails/fiedler_spatial_creator.png; sourceTree = SOURCE_ROOT; };
 		63128DB1968B9EDA1592EB8D /* juce_gui_basics */ /* juce_gui_basics */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_gui_basics; path = C:/Users/charl/JUCE/modules/juce_gui_basics; sourceTree = "<absolute>"; };
 		63D1253AA4903242D1730E77 /* juce_audio_devices */ /* juce_audio_devices */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_devices; path = C:/Users/charl/JUCE/modules/juce_audio_devices; sourceTree = "<absolute>"; };
+		63F6D312AB86F15BFE960DFF /* lindell_354e.png */ /* lindell_354e.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lindell_354e.png; path = ../../Resources/Thumbnails/lindell_354e.png; sourceTree = SOURCE_ROOT; };
+		6480E0F45049933AB911FFAE /* lindell_eq825.png */ /* lindell_eq825.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lindell_eq825.png; path = ../../Resources/Thumbnails/lindell_eq825.png; sourceTree = SOURCE_ROOT; };
+		6637569095F5AD32020F793C /* friedman_buxom_betty.png */ /* friedman_buxom_betty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = friedman_buxom_betty.png; path = ../../Resources/Thumbnails/friedman_buxom_betty.png; sourceTree = SOURCE_ROOT; };
+		66F516DA78BFF294BE07AE43 /* mixland_needlepoint.png */ /* mixland_needlepoint.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mixland_needlepoint.png; path = ../../Resources/Thumbnails/mixland_needlepoint.png; sourceTree = SOURCE_ROOT; };
 		674BB34FD02DD22492726171 /* include_juce_audio_formats.mm */ /* include_juce_audio_formats.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_formats.mm; path = ../../JuceLibraryCode/include_juce_audio_formats.mm; sourceTree = SOURCE_ROOT; };
 		685FD50D8D223372ED0FF28A /* PluginImageCache.h */ /* PluginImageCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginImageCache.h; path = ../../Source/Utils/PluginImageCache.h; sourceTree = SOURCE_ROOT; };
 		686AE9535C45D6241346BB54 /* CategoryFilter.h */ /* CategoryFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CategoryFilter.h; path = ../../Source/UI/CategoryFilter.h; sourceTree = SOURCE_ROOT; };
+		692B718A66DEAD36CDBDABA5 /* bettermaker_perfection.png */ /* bettermaker_perfection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bettermaker_perfection.png; path = ../../Resources/Thumbnails/bettermaker_perfection.png; sourceTree = SOURCE_ROOT; };
+		69E29D26B345D8A4E0A0BAE7 /* acme_opticom_xla3.png */ /* acme_opticom_xla3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = acme_opticom_xla3.png; path = ../../Resources/Thumbnails/acme_opticom_xla3.png; sourceTree = SOURCE_ROOT; };
+		6AA28A681CDCF9CC924BA96A /* bx_control_v2.png */ /* bx_control_v2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_control_v2.png; path = ../../Resources/Thumbnails/bx_control_v2.png; sourceTree = SOURCE_ROOT; };
+		6BC89D7323678F59BCE0659E /* unfiltered_byome.png */ /* unfiltered_byome.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unfiltered_byome.png; path = ../../Resources/Thumbnails/unfiltered_byome.png; sourceTree = SOURCE_ROOT; };
+		6D43CDF2B7DE122C2848B480 /* bx_rooms.png */ /* bx_rooms.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_rooms.png; path = ../../Resources/Thumbnails/bx_rooms.png; sourceTree = SOURCE_ROOT; };
+		6D772C8D76A486F087622F84 /* bx_crispytuner.png */ /* bx_crispytuner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_crispytuner.png; path = ../../Resources/Thumbnails/bx_crispytuner.png; sourceTree = SOURCE_ROOT; };
 		6DF4AA401B656B17A7493426 /* juce_core */ /* juce_core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_core; path = C:/Users/charl/JUCE/modules/juce_core; sourceTree = "<absolute>"; };
 		6F27E4E510B7EC9A7052D1CB /* PluginProcessor.cpp */ /* PluginProcessor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginProcessor.cpp; path = ../../Source/PluginProcessor.cpp; sourceTree = SOURCE_ROOT; };
+		70392C7768008004A1CB5BD7 /* unfiltered_indent_2.png */ /* unfiltered_indent_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unfiltered_indent_2.png; path = ../../Resources/Thumbnails/unfiltered_indent_2.png; sourceTree = SOURCE_ROOT; };
+		7123F8A4B44E6C36774CDD09 /* bx_console_focusrite_sc.png */ /* bx_console_focusrite_sc.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_console_focusrite_sc.png; path = ../../Resources/Thumbnails/bx_console_focusrite_sc.png; sourceTree = SOURCE_ROOT; };
+		71E0DFB9D1C696BC8F09A318 /* unfiltered_specops.png */ /* unfiltered_specops.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unfiltered_specops.png; path = ../../Resources/Thumbnails/unfiltered_specops.png; sourceTree = SOURCE_ROOT; };
+		72D953B738987D234B8E3948 /* bx_digital_v3.png */ /* bx_digital_v3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_digital_v3.png; path = ../../Resources/Thumbnails/bx_digital_v3.png; sourceTree = SOURCE_ROOT; };
+		73D69A501AAA034D31C1DA23 /* bx_limiter.png */ /* bx_limiter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_limiter.png; path = ../../Resources/Thumbnails/bx_limiter.png; sourceTree = SOURCE_ROOT; };
+		757E587DADA9841C13EC734A /* black_box_hg2ms.png */ /* black_box_hg2ms.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = black_box_hg2ms.png; path = ../../Resources/Thumbnails/black_box_hg2ms.png; sourceTree = SOURCE_ROOT; };
+		7651E3E7E3220F519E24F07A /* neold_warble.png */ /* neold_warble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = neold_warble.png; path = ../../Resources/Thumbnails/neold_warble.png; sourceTree = SOURCE_ROOT; };
+		766A1E5B223E68279D30B647 /* noveltech_character.png */ /* noveltech_character.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = noveltech_character.png; path = ../../Resources/Thumbnails/noveltech_character.png; sourceTree = SOURCE_ROOT; };
+		7692676EEC5D23310BC09533 /* engl_e646_vs.png */ /* engl_e646_vs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = engl_e646_vs.png; path = ../../Resources/Thumbnails/engl_e646_vs.png; sourceTree = SOURCE_ROOT; };
+		78D0B0961954498D6BF0C45B /* swivel_click_boom.png */ /* swivel_click_boom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = swivel_click_boom.png; path = ../../Resources/Thumbnails/swivel_click_boom.png; sourceTree = SOURCE_ROOT; };
 		7AF8429366B8E7F46971F8AA /* IOKit.framework */ /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		7F09B4DC32B8A568945F951B /* bettermaker_bus_compressor.png */ /* bettermaker_bus_compressor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bettermaker_bus_compressor.png; path = ../../Resources/Thumbnails/bettermaker_bus_compressor.png; sourceTree = SOURCE_ROOT; };
+		7F1D0077D3384A8435EF1B82 /* neold_oldtimer.png */ /* neold_oldtimer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = neold_oldtimer.png; path = ../../Resources/Thumbnails/neold_oldtimer.png; sourceTree = SOURCE_ROOT; };
+		7F8D49D3B8132454984AA09C /* spl_machine_head.png */ /* spl_machine_head.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spl_machine_head.png; path = ../../Resources/Thumbnails/spl_machine_head.png; sourceTree = SOURCE_ROOT; };
 		82A9ABE90B226FA1A9DB44CD /* PluginDatabase.cpp */ /* PluginDatabase.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginDatabase.cpp; path = ../../Source/Core/PluginDatabase.cpp; sourceTree = SOURCE_ROOT; };
 		8367EC1AF10837E40325CDC3 /* PluginEditor.cpp */ /* PluginEditor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginEditor.cpp; path = ../../Source/PluginEditor.cpp; sourceTree = SOURCE_ROOT; };
+		83D1E64FE843E836AF423143 /* suhr_se100.png */ /* suhr_se100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = suhr_se100.png; path = ../../Resources/Thumbnails/suhr_se100.png; sourceTree = SOURCE_ROOT; };
+		8412694156B17AB74D891A23 /* neold_u17.png */ /* neold_u17.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = neold_u17.png; path = ../../Resources/Thumbnails/neold_u17.png; sourceTree = SOURCE_ROOT; };
 		842B4DC019ADE1AD54FC03E8 /* include_juce_audio_plugin_client_AU_2.mm */ /* include_juce_audio_plugin_client_AU_2.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_plugin_client_AU_2.mm; path = ../../JuceLibraryCode/include_juce_audio_plugin_client_AU_2.mm; sourceTree = SOURCE_ROOT; };
 		84F17B5C903DD02295B84DBF /* RecentFilesMenuTemplate.nib */ /* RecentFilesMenuTemplate.nib */ = {isa = PBXFileReference; lastKnownFileType = file.nib; name = RecentFilesMenuTemplate.nib; path = RecentFilesMenuTemplate.nib; sourceTree = SOURCE_ROOT; };
+		85A21BA3559E2C3FD2D70D05 /* engl_e765_rt.png */ /* engl_e765_rt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = engl_e765_rt.png; path = ../../Resources/Thumbnails/engl_e765_rt.png; sourceTree = SOURCE_ROOT; };
+		860C2874D5871CBD9681BD47 /* neold_wunderlich.png */ /* neold_wunderlich.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = neold_wunderlich.png; path = ../../Resources/Thumbnails/neold_wunderlich.png; sourceTree = SOURCE_ROOT; };
+		869A6EC82F70E0EE379CEE42 /* bx_clipper.png */ /* bx_clipper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_clipper.png; path = ../../Resources/Thumbnails/bx_clipper.png; sourceTree = SOURCE_ROOT; };
 		879EF042F4BC49533378232A /* Cocoa.framework */ /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		884B24D7523DCB5F4B0C4C6F /* maag_audio_eq4.png */ /* maag_audio_eq4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = maag_audio_eq4.png; path = ../../Resources/Thumbnails/maag_audio_eq4.png; sourceTree = SOURCE_ROOT; };
 		896AFBC22ECCCFA0D3CE1C2D /* include_juce_core.mm */ /* include_juce_core.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_core.mm; path = ../../JuceLibraryCode/include_juce_core.mm; sourceTree = SOURCE_ROOT; };
+		8A16C9023C5E8FB8B4397CBC /* bx_masterdesk_pro.png */ /* bx_masterdesk_pro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_masterdesk_pro.png; path = ../../Resources/Thumbnails/bx_masterdesk_pro.png; sourceTree = SOURCE_ROOT; };
+		8C0FD04DAF49FA409FCF139B /* bx_subsynth.png */ /* bx_subsynth.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_subsynth.png; path = ../../Resources/Thumbnails/bx_subsynth.png; sourceTree = SOURCE_ROOT; };
+		8C31C839C380FD166D9BB5BC /* black_box_hgq.png */ /* black_box_hgq.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = black_box_hgq.png; path = ../../Resources/Thumbnails/black_box_hgq.png; sourceTree = SOURCE_ROOT; };
 		8D346B8C2F110B7F030FC56A /* PluginCard.cpp */ /* PluginCard.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginCard.cpp; path = ../../Source/UI/PluginCard.cpp; sourceTree = SOURCE_ROOT; };
 		8FE77C03D302FF7B6F8B8595 /* include_juce_gui_basics.mm */ /* include_juce_gui_basics.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_gui_basics.mm; path = ../../JuceLibraryCode/include_juce_gui_basics.mm; sourceTree = SOURCE_ROOT; };
+		914B6C251EFEEACD8341AB49 /* bx_limiter_true_peak.png */ /* bx_limiter_true_peak.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_limiter_true_peak.png; path = ../../Resources/Thumbnails/bx_limiter_true_peak.png; sourceTree = SOURCE_ROOT; };
 		9332018B78F4EB9922EA71D6 /* CategoryFilter.cpp */ /* CategoryFilter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CategoryFilter.cpp; path = ../../Source/UI/CategoryFilter.cpp; sourceTree = SOURCE_ROOT; };
 		933C3B76F1EC532F88082387 /* PluginSubcategories.h */ /* PluginSubcategories.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginSubcategories.h; path = ../../Source/Data/PluginSubcategories.h; sourceTree = SOURCE_ROOT; };
 		93A0F7C171EC7DE09DBEE214 /* EraFilter.h */ /* EraFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EraFilter.h; path = ../../Source/UI/EraFilter.h; sourceTree = SOURCE_ROOT; };
+		9544452C8007DE69B4C44F2B /* bx_console_ssl_9000_j.png */ /* bx_console_ssl_9000_j.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_console_ssl_9000_j.png; path = ../../Resources/Thumbnails/bx_console_ssl_9000_j.png; sourceTree = SOURCE_ROOT; };
+		9B0ED879ECA7AF5B6AE3E356 /* unfiltered_sandman_pro.png */ /* unfiltered_sandman_pro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unfiltered_sandman_pro.png; path = ../../Resources/Thumbnails/unfiltered_sandman_pro.png; sourceTree = SOURCE_ROOT; };
+		9B426AD65336CAFB42E8CD7F /* karanyi_triad.png */ /* karanyi_triad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = karanyi_triad.png; path = ../../Resources/Thumbnails/karanyi_triad.png; sourceTree = SOURCE_ROOT; };
+		9C1EE05A41F57E97EB3E9252 /* noveltech_vocal_enhancer.png */ /* noveltech_vocal_enhancer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = noveltech_vocal_enhancer.png; path = ../../Resources/Thumbnails/noveltech_vocal_enhancer.png; sourceTree = SOURCE_ROOT; };
 		9C9A80E94EFDECD994EE4E14 /* include_juce_audio_utils.mm */ /* include_juce_audio_utils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_utils.mm; path = ../../JuceLibraryCode/include_juce_audio_utils.mm; sourceTree = SOURCE_ROOT; };
 		9E5462A254742A573E33D6E4 /* PluginCard.h */ /* PluginCard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginCard.h; path = ../../Source/UI/PluginCard.h; sourceTree = SOURCE_ROOT; };
+		9E75FB21C90DC6A9372F4ED7 /* shadow_hills_optomax.png */ /* shadow_hills_optomax.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shadow_hills_optomax.png; path = ../../Resources/Thumbnails/shadow_hills_optomax.png; sourceTree = SOURCE_ROOT; };
+		A5A0C1E21D7CBEBBD883B240 /* bx_console_amek_200.png */ /* bx_console_amek_200.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_console_amek_200.png; path = ../../Resources/Thumbnails/bx_console_amek_200.png; sourceTree = SOURCE_ROOT; };
+		A5A8A7E79E3158E5640F6A8A /* bx_xl_v3.png */ /* bx_xl_v3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_xl_v3.png; path = ../../Resources/Thumbnails/bx_xl_v3.png; sourceTree = SOURCE_ROOT; };
 		A6B2F43F2E17D65DCB0B1CC2 /* PluginEditor.h */ /* PluginEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginEditor.h; path = ../../Source/PluginEditor.h; sourceTree = SOURCE_ROOT; };
 		A70E5B57A78C7707F4F98171 /* include_juce_audio_plugin_client_AU_1.mm */ /* include_juce_audio_plugin_client_AU_1.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_plugin_client_AU_1.mm; path = ../../JuceLibraryCode/include_juce_audio_plugin_client_AU_1.mm; sourceTree = SOURCE_ROOT; };
+		A721B7462209C5C9341217E3 /* BinaryData.h */ /* BinaryData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BinaryData.h; path = ../../JuceLibraryCode/BinaryData.h; sourceTree = SOURCE_ROOT; };
+		A7472095582DD8C4C614BD0C /* ds_audio_thorn.png */ /* ds_audio_thorn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ds_audio_thorn.png; path = ../../Resources/Thumbnails/ds_audio_thorn.png; sourceTree = SOURCE_ROOT; };
+		A846E7B6EE29AFEBDEAA2AE7 /* bx_console_amek_9099.png */ /* bx_console_amek_9099.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_console_amek_9099.png; path = ../../Resources/Thumbnails/bx_console_amek_9099.png; sourceTree = SOURCE_ROOT; };
 		A8707723E6F20233BB1B7D3C /* juce_VST3ManifestHelper.mm */ /* juce_VST3ManifestHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = juce_VST3ManifestHelper.mm; path = C:/Users/charl/JUCE/modules/juce_audio_plugin_client/VST3/juce_VST3ManifestHelper.mm; sourceTree = "<absolute>"; };
+		A95BF8BA462EF9126262A9EA /* ampeg_v4b.png */ /* ampeg_v4b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ampeg_v4b.png; path = ../../Resources/Thumbnails/ampeg_v4b.png; sourceTree = SOURCE_ROOT; };
+		A9CE15AF91DA41C630048F1D /* adptr_utopia.png */ /* adptr_utopia.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = adptr_utopia.png; path = ../../Resources/Thumbnails/adptr_utopia.png; sourceTree = SOURCE_ROOT; };
+		AA6074EBB88F69AE7D41E2AB /* diezel_vh4.png */ /* diezel_vh4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = diezel_vh4.png; path = ../../Resources/Thumbnails/diezel_vh4.png; sourceTree = SOURCE_ROOT; };
+		AA618ECCF14D01ABB125FD7E /* BinaryData.cpp */ /* BinaryData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BinaryData.cpp; path = ../../JuceLibraryCode/BinaryData.cpp; sourceTree = SOURCE_ROOT; };
+		AB2F145C6E3E62F5F8527581 /* bx_2098_eq.png */ /* bx_2098_eq.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_2098_eq.png; path = ../../Resources/Thumbnails/bx_2098_eq.png; sourceTree = SOURCE_ROOT; };
+		B197387A5BB1D48254468973 /* shadow_hills_mastering_compressor_class_a.png */ /* shadow_hills_mastering_compressor_class_a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shadow_hills_mastering_compressor_class_a.png; path = ../../Resources/Thumbnails/shadow_hills_mastering_compressor_class_a.png; sourceTree = SOURCE_ROOT; };
+		B1AE8F8F0CD8D6C0404F82DB /* swivel_the_sauce.png */ /* swivel_the_sauce.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = swivel_the_sauce.png; path = ../../Resources/Thumbnails/swivel_the_sauce.png; sourceTree = SOURCE_ROOT; };
+		B22F548706AA1CDFFB6331AB /* trinity_shaper.png */ /* trinity_shaper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = trinity_shaper.png; path = ../../Resources/Thumbnails/trinity_shaper.png; sourceTree = SOURCE_ROOT; };
+		B270F38D5C28AD49F3080353 /* lindell_50_series.png */ /* lindell_50_series.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lindell_50_series.png; path = ../../Resources/Thumbnails/lindell_50_series.png; sourceTree = SOURCE_ROOT; };
 		B49619A6FE05F4EC66E470F0 /* include_juce_audio_devices.mm */ /* include_juce_audio_devices.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_devices.mm; path = ../../JuceLibraryCode/include_juce_audio_devices.mm; sourceTree = SOURCE_ROOT; };
+		B4EA6C352F900F365F99E65A /* bx_pulsar.png */ /* bx_pulsar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_pulsar.png; path = ../../Resources/Thumbnails/bx_pulsar.png; sourceTree = SOURCE_ROOT; };
 		B7AA7C185C10D019CA71ADC9 /* PluginDatabase.h */ /* PluginDatabase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginDatabase.h; path = ../../Source/Core/PluginDatabase.h; sourceTree = SOURCE_ROOT; };
+		B8919B8BA92C7EF9F7628625 /* cut_classic_passive_eq.png */ /* cut_classic_passive_eq.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cut_classic_passive_eq.png; path = ../../Resources/Thumbnails/cut_classic_passive_eq.png; sourceTree = SOURCE_ROOT; };
+		B94BD76246254FF460F1B3B3 /* bx_megadual.png */ /* bx_megadual.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_megadual.png; path = ../../Resources/Thumbnails/bx_megadual.png; sourceTree = SOURCE_ROOT; };
 		BCD50ACFB6BC4DEEC123BB2B /* PluginHost.h */ /* PluginHost.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginHost.h; path = ../../Source/Core/PluginHost.h; sourceTree = SOURCE_ROOT; };
 		BD67120EA7D62FD4879183FC /* Accelerate.framework */ /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		BFCB03E5F0ED55841943E890 /* unfiltered_fault.png */ /* unfiltered_fault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unfiltered_fault.png; path = ../../Resources/Thumbnails/unfiltered_fault.png; sourceTree = SOURCE_ROOT; };
+		C10B502D662C8ACED9C9B889 /* unfiltered_silo.png */ /* unfiltered_silo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unfiltered_silo.png; path = ../../Resources/Thumbnails/unfiltered_silo.png; sourceTree = SOURCE_ROOT; };
+		C2070C96BC10159EA7721F3E /* bx_delay_2500.png */ /* bx_delay_2500.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_delay_2500.png; path = ../../Resources/Thumbnails/bx_delay_2500.png; sourceTree = SOURCE_ROOT; };
 		C29C817241F9DBA26753F62D /* CoreAudio.framework */ /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		C4F64E9354428C283EED6450 /* bx_aura.png */ /* bx_aura.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_aura.png; path = ../../Resources/Thumbnails/bx_aura.png; sourceTree = SOURCE_ROOT; };
+		C51D4728B704F637CABFE8C8 /* bx_refinement_v3.png */ /* bx_refinement_v3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_refinement_v3.png; path = ../../Resources/Thumbnails/bx_refinement_v3.png; sourceTree = SOURCE_ROOT; };
+		CA94E09A1B0777298BE36C96 /* bx_masterdesk.png */ /* bx_masterdesk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_masterdesk.png; path = ../../Resources/Thumbnails/bx_masterdesk.png; sourceTree = SOURCE_ROOT; };
 		CAF4FAF7AA18A2E9A2C26913 /* DiscRecording.framework */ /* DiscRecording.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiscRecording.framework; path = System/Library/Frameworks/DiscRecording.framework; sourceTree = SDKROOT; };
+		CBE459C70D245FBF6AAE3B75 /* bx_paneq.png */ /* bx_paneq.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_paneq.png; path = ../../Resources/Thumbnails/bx_paneq.png; sourceTree = SOURCE_ROOT; };
 		CC103A93F43AF1204F77923E /* WebKit.framework */ /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		CC11CA84CE061438D58CAA7B /* SubcategoryFilter.cpp */ /* SubcategoryFilter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SubcategoryFilter.cpp; path = ../../Source/UI/SubcategoryFilter.cpp; sourceTree = SOURCE_ROOT; };
 		CCF179ABD39F086DAFA889E4 /* VST3 Manifest Helper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = juce_vst3_helper; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE62764CAE7BD74A11EA543A /* AudioUnit.framework */ /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		CE75A5D6B1988CCDA3EFBF81 /* JucePluginDefines.h */ /* JucePluginDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JucePluginDefines.h; path = ../../JuceLibraryCode/JucePluginDefines.h; sourceTree = SOURCE_ROOT; };
+		CEFE062B57E83950B959430A /* spl_passeq.png */ /* spl_passeq.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spl_passeq.png; path = ../../Resources/Thumbnails/spl_passeq.png; sourceTree = SOURCE_ROOT; };
+		CF67E080C1538449EBFCBEF6 /* bx_masterdesk_true_peak.png */ /* bx_masterdesk_true_peak.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_masterdesk_true_peak.png; path = ../../Resources/Thumbnails/bx_masterdesk_true_peak.png; sourceTree = SOURCE_ROOT; };
 		D0F068038696B3074BA4B783 /* SearchBar.h */ /* SearchBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SearchBar.h; path = ../../Source/UI/SearchBar.h; sourceTree = SOURCE_ROOT; };
 		D1686EA1978461982BD95672 /* juce_audio_plugin_client */ /* juce_audio_plugin_client */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_plugin_client; path = C:/Users/charl/JUCE/modules/juce_audio_plugin_client; sourceTree = "<absolute>"; };
+		D4D2711B46EA2E9D30D80FE7 /* swivel_hitstrip.png */ /* swivel_hitstrip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = swivel_hitstrip.png; path = ../../Resources/Thumbnails/swivel_hitstrip.png; sourceTree = SOURCE_ROOT; };
+		D579FFB0CE965A53249D7B81 /* unfiltered_dent_2.png */ /* unfiltered_dent_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unfiltered_dent_2.png; path = ../../Resources/Thumbnails/unfiltered_dent_2.png; sourceTree = SOURCE_ROOT; };
 		D76D8DFE6A24D2CA3A4A7334 /* include_juce_graphics.mm */ /* include_juce_graphics.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_graphics.mm; path = ../../JuceLibraryCode/include_juce_graphics.mm; sourceTree = SOURCE_ROOT; };
+		D7E5002960EFEA8594186FA9 /* neold_v76u73.png */ /* neold_v76u73.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = neold_v76u73.png; path = ../../Resources/Thumbnails/neold_v76u73.png; sourceTree = SOURCE_ROOT; };
+		D93698E0CF40A61F1F700707 /* fiedler_stage.png */ /* fiedler_stage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fiedler_stage.png; path = ../../Resources/Thumbnails/fiedler_stage.png; sourceTree = SOURCE_ROOT; };
+		D9526DA185DDCB24DF87D60C /* hears_chop_shop.png */ /* hears_chop_shop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hears_chop_shop.png; path = ../../Resources/Thumbnails/hears_chop_shop.png; sourceTree = SOURCE_ROOT; };
 		D954F893BBDD4E4A76304157 /* SubcategoryFilter.h */ /* SubcategoryFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SubcategoryFilter.h; path = ../../Source/UI/SubcategoryFilter.h; sourceTree = SOURCE_ROOT; };
+		DC3E03CAF4CDBFF2025FEE40 /* spl_iron.png */ /* spl_iron.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spl_iron.png; path = ../../Resources/Thumbnails/spl_iron.png; sourceTree = SOURCE_ROOT; };
 		DD1563780B417159060C008C /* PluginScanner.h */ /* PluginScanner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginScanner.h; path = ../../Source/Core/PluginScanner.h; sourceTree = SOURCE_ROOT; };
 		DE18B0B67903D97286DE216D /* include_juce_audio_processors.mm */ /* include_juce_audio_processors.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_processors.mm; path = ../../JuceLibraryCode/include_juce_audio_processors.mm; sourceTree = SOURCE_ROOT; };
 		E056359A460FDB874392EE09 /* PluginProcessor.h */ /* PluginProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginProcessor.h; path = ../../Source/PluginProcessor.h; sourceTree = SOURCE_ROOT; };
+		E1476672BFDFDADCC22E4644 /* unfiltered_lion.png */ /* unfiltered_lion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unfiltered_lion.png; path = ../../Resources/Thumbnails/unfiltered_lion.png; sourceTree = SOURCE_ROOT; };
 		E15327AB1205FBA5A7A0CD13 /* SearchBar.cpp */ /* SearchBar.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SearchBar.cpp; path = ../../Source/UI/SearchBar.cpp; sourceTree = SOURCE_ROOT; };
+		E189232E68A2EED7A036608A /* neold_big_al.png */ /* neold_big_al.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = neold_big_al.png; path = ../../Resources/Thumbnails/neold_big_al.png; sourceTree = SOURCE_ROOT; };
+		E1DCFFE0D3860E8112C4B58D /* neold_rz062.png */ /* neold_rz062.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = neold_rz062.png; path = ../../Resources/Thumbnails/neold_rz062.png; sourceTree = SOURCE_ROOT; };
+		E2A999461FE7560B552B66DB /* unfiltered_zip.png */ /* unfiltered_zip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unfiltered_zip.png; path = ../../Resources/Thumbnails/unfiltered_zip.png; sourceTree = SOURCE_ROOT; };
+		E3D3397771B31508ABEC23A5 /* vertigo_vss2.png */ /* vertigo_vss2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = vertigo_vss2.png; path = ../../Resources/Thumbnails/vertigo_vss2.png; sourceTree = SOURCE_ROOT; };
+		E5533E8CFE4033493DE5C0B7 /* vertigo_vsm3.png */ /* vertigo_vsm3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = vertigo_vsm3.png; path = ../../Resources/Thumbnails/vertigo_vsm3.png; sourceTree = SOURCE_ROOT; };
 		E57E5AF67BC5BD39041D384A /* juce_audio_formats */ /* juce_audio_formats */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_formats; path = C:/Users/charl/JUCE/modules/juce_audio_formats; sourceTree = "<absolute>"; };
+		E6879E922CCFA5C5284146CC /* bx_rockrack_v3.png */ /* bx_rockrack_v3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_rockrack_v3.png; path = ../../Resources/Thumbnails/bx_rockrack_v3.png; sourceTree = SOURCE_ROOT; };
+		E68E554AE0929DFA45890EA3 /* bx_boom_v3.png */ /* bx_boom_v3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_boom_v3.png; path = ../../Resources/Thumbnails/bx_boom_v3.png; sourceTree = SOURCE_ROOT; };
+		E6B489EC1F6000F00385D1EA /* gallien_krueger_800rb.png */ /* gallien_krueger_800rb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = gallien_krueger_800rb.png; path = ../../Resources/Thumbnails/gallien_krueger_800rb.png; sourceTree = SOURCE_ROOT; };
+		E73F242C9D45CB1E4A66DEAA /* bx_console_n.png */ /* bx_console_n.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_console_n.png; path = ../../Resources/Thumbnails/bx_console_n.png; sourceTree = SOURCE_ROOT; };
+		E8310406FEAAB8624F15D84B /* amek_eq250.png */ /* amek_eq250.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = amek_eq250.png; path = ../../Resources/Thumbnails/amek_eq250.png; sourceTree = SOURCE_ROOT; };
+		E8AC73097A374A5F31FD277F /* bx_rockergain100.png */ /* bx_rockergain100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_rockergain100.png; path = ../../Resources/Thumbnails/bx_rockergain100.png; sourceTree = SOURCE_ROOT; };
 		EA068E6BA0D4389D027D37EB /* HostedPluginView.h */ /* HostedPluginView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HostedPluginView.h; path = ../../Source/UI/HostedPluginView.h; sourceTree = SOURCE_ROOT; };
 		EA708692F9E4AD562B6FF3C5 /* CoreMIDI.framework */ /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
+		EC018ACE1DBFA45F2B12F888 /* bettermaker_mastering_compressor.png */ /* bettermaker_mastering_compressor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bettermaker_mastering_compressor.png; path = ../../Resources/Thumbnails/bettermaker_mastering_compressor.png; sourceTree = SOURCE_ROOT; };
+		EEFFA6E1521C2C30217882CE /* chandler_gav19t.png */ /* chandler_gav19t.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = chandler_gav19t.png; path = ../../Resources/Thumbnails/chandler_gav19t.png; sourceTree = SOURCE_ROOT; };
 		F07DD7F000E0EF6828B0CE4D /* EraFilter.cpp */ /* EraFilter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = EraFilter.cpp; path = ../../Source/UI/EraFilter.cpp; sourceTree = SOURCE_ROOT; };
 		F0FD3C140CF3E61835BE5CF8 /* juce_graphics */ /* juce_graphics */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_graphics; path = C:/Users/charl/JUCE/modules/juce_graphics; sourceTree = "<absolute>"; };
+		F1A06FAD9345A7F530B6BE2F /* adptr_metric_ab.png */ /* adptr_metric_ab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = adptr_metric_ab.png; path = ../../Resources/Thumbnails/adptr_metric_ab.png; sourceTree = SOURCE_ROOT; };
+		F237B60D1F0A0D8EE8B8936F /* elysia_mpressor.png */ /* elysia_mpressor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = elysia_mpressor.png; path = ../../Resources/Thumbnails/elysia_mpressor.png; sourceTree = SOURCE_ROOT; };
+		F33B06D901726B41ECB2A13A /* millennia_nseq2.png */ /* millennia_nseq2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = millennia_nseq2.png; path = ../../Resources/Thumbnails/millennia_nseq2.png; sourceTree = SOURCE_ROOT; };
+		F36CA35A04A897E917D1006D /* bx_townhouse.png */ /* bx_townhouse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bx_townhouse.png; path = ../../Resources/Thumbnails/bx_townhouse.png; sourceTree = SOURCE_ROOT; };
+		F42C6FAF1D154BB42D447BC7 /* shadow_hills_mastering_compressor.png */ /* shadow_hills_mastering_compressor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shadow_hills_mastering_compressor.png; path = ../../Resources/Thumbnails/shadow_hills_mastering_compressor.png; sourceTree = SOURCE_ROOT; };
+		F4E423F32DF7E8D3B63E5514 /* knif_knifonium.png */ /* knif_knifonium.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = knif_knifonium.png; path = ../../Resources/Thumbnails/knif_knifonium.png; sourceTree = SOURCE_ROOT; };
+		F52DAA1174055BDE47AA8421 /* purple_audio_mc77.png */ /* purple_audio_mc77.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = purple_audio_mc77.png; path = ../../Resources/Thumbnails/purple_audio_mc77.png; sourceTree = SOURCE_ROOT; };
 		F55BDA618E773D4A3A2C9EF5 /* include_juce_data_structures.mm */ /* include_juce_data_structures.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_data_structures.mm; path = ../../JuceLibraryCode/include_juce_data_structures.mm; sourceTree = SOURCE_ROOT; };
 		F80309D922FB80FDF088A8E2 /* AU */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Plugin Alliance Launcher.component"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F88503C24420B39436AB4FB2 /* ampeg_svt3pro.png */ /* ampeg_svt3pro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ampeg_svt3pro.png; path = ../../Resources/Thumbnails/ampeg_svt3pro.png; sourceTree = SOURCE_ROOT; };
+		F8FF1FE1F0F56CB00B9DEDCE /* swivel_spread.png */ /* swivel_spread.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = swivel_spread.png; path = ../../Resources/Thumbnails/swivel_spread.png; sourceTree = SOURCE_ROOT; };
 		F979079EE0F12CD3CE27CFB1 /* PluginImageCache.cpp */ /* PluginImageCache.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginImageCache.cpp; path = ../../Source/Utils/PluginImageCache.cpp; sourceTree = SOURCE_ROOT; };
 		FA3C00220596BD08F940D3E2 /* PluginCategories.h */ /* PluginCategories.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginCategories.h; path = ../../Source/Data/PluginCategories.h; sourceTree = SOURCE_ROOT; };
 		FB32D07B5869D76B27FBB44D /* juce_data_structures */ /* juce_data_structures */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_data_structures; path = C:/Users/charl/JUCE/modules/juce_data_structures; sourceTree = "<absolute>"; };
+		FBECC60BE152D3D60E9ADE60 /* elysia_alpha_compressor.png */ /* elysia_alpha_compressor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = elysia_alpha_compressor.png; path = ../../Resources/Thumbnails/elysia_alpha_compressor.png; sourceTree = SOURCE_ROOT; };
 		FDC40864012244C3E0C05C71 /* PluginScanner.cpp */ /* PluginScanner.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginScanner.cpp; path = ../../Source/Core/PluginScanner.cpp; sourceTree = SOURCE_ROOT; };
 		FFCF264BAFF4602D2376B306 /* Shared Code */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPlugin Alliance Launcher.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -251,9 +409,180 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		1945D87D987BC7AEF27AED27 /* Thumbnails */ = {
+			isa = PBXGroup;
+			children = (
+				69E29D26B345D8A4E0A0BAE7,
+				337F8E5EC8C1B13D5C059B4D,
+				F1A06FAD9345A7F530B6BE2F,
+				0F79AD695824FE70E5F5C8E5,
+				4CD17BDD67B480DA103A253E,
+				A9CE15AF91DA41C630048F1D,
+				260D5E0BBA3FA6EC63CDF7E7,
+				E8310406FEAAB8624F15D84B,
+				195A57BB923E83E791E9FE3B,
+				F88503C24420B39436AB4FB2,
+				46221AB1848FB998AED7E1F3,
+				A95BF8BA462EF9126262A9EA,
+				7F09B4DC32B8A568945F951B,
+				EC018ACE1DBFA45F2B12F888,
+				692B718A66DEAD36CDBDABA5,
+				0AC8EDC47EBC41CCA629BAC0,
+				757E587DADA9841C13EC734A,
+				8C31C839C380FD166D9BB5BC,
+				AB2F145C6E3E62F5F8527581,
+				C4F64E9354428C283EED6450,
+				3346F0B92D3C5187FA2ED16B,
+				E68E554AE0929DFA45890EA3,
+				1ECD8C26D18FBA1F2C2CA028,
+				869A6EC82F70E0EE379CEE42,
+				A5A0C1E21D7CBEBBD883B240,
+				A846E7B6EE29AFEBDEAA2AE7,
+				7123F8A4B44E6C36774CDD09,
+				E73F242C9D45CB1E4A66DEAA,
+				19C701E8EE91B8F5C8175176,
+				30A5142FD23F93FF330B4B11,
+				9544452C8007DE69B4C44F2B,
+				6AA28A681CDCF9CC924BA96A,
+				6D772C8D76A486F087622F84,
+				C2070C96BC10159EA7721F3E,
+				72D953B738987D234B8E3948,
+				1775392DFAA0A99021543506,
+				2E9A68253F91E43260A1EB50,
+				5ABBAB07B93D777D8EDBC8BE,
+				24CAD25158F37B8CBD266086,
+				73D69A501AAA034D31C1DA23,
+				914B6C251EFEEACD8341AB49,
+				CA94E09A1B0777298BE36C96,
+				8A16C9023C5E8FB8B4397CBC,
+				CF67E080C1538449EBFCBEF6,
+				B94BD76246254FF460F1B3B3,
+				14A8FB3BBD147F9538B600B2,
+				3CEE7C9AD56F8BF51C84AD50,
+				CBE459C70D245FBF6AAE3B75,
+				B4EA6C352F900F365F99E65A,
+				C51D4728B704F637CABFE8C8,
+				E8AC73097A374A5F31FD277F,
+				E6879E922CCFA5C5284146CC,
+				6D43CDF2B7DE122C2848B480,
+				5A787F03B5C3548E63DED998,
+				5CF204EB86B72D4821759CC5,
+				8C0FD04DAF49FA409FCF139B,
+				F36CA35A04A897E917D1006D,
+				A5A8A7E79E3158E5640F6A8A,
+				53E8A04677436186CB62B397,
+				EEFFA6E1521C2C30217882CE,
+				B8919B8BA92C7EF9F7628625,
+				2B88666C45F4F6CA94738188,
+				41ABEC93C4553B30629F5A27,
+				AA6074EBB88F69AE7D41E2AB,
+				203E9DDDC41D60AF8371C88A,
+				A7472095582DD8C4C614BD0C,
+				FBECC60BE152D3D60E9ADE60,
+				2273A0E51030E295165665A0,
+				F237B60D1F0A0D8EE8B8936F,
+				418EFFF6164343F4CC21E099,
+				2E79DD6A6B21824CE38D2A3E,
+				7692676EEC5D23310BC09533,
+				85A21BA3559E2C3FD2D70D05,
+				5EBB11016BE2B1E80A2CC005,
+				618C976F9B6FC4CD1772D9AB,
+				D93698E0CF40A61F1F700707,
+				02DE3F3FC2F8042E16982E81,
+				6637569095F5AD32020F793C,
+				6039E0B61CD4882047B776D3,
+				3E575541C76EF830F5104A75,
+				04443322F0F9F7A31E00BC7E,
+				E6B489EC1F6000F00385D1EA,
+				4FF75AB568DF3EFFC8198B00,
+				D9526DA185DDCB24DF87D60C,
+				3156EC9E3D620D97C9DF37A5,
+				9B426AD65336CAFB42E8CD7F,
+				4CD504C81D57B9C0E7F0D42B,
+				F4E423F32DF7E8D3B63E5514,
+				256E183EA7262863924C24DE,
+				0746770CACF6BFC470323F5B,
+				63F6D312AB86F15BFE960DFF,
+				B270F38D5C28AD49F3080353,
+				188B2A1AA568A430E97F5505,
+				2390E5FAFAE039AFB8DF69E1,
+				24849F5056AC05BFECD97D66,
+				6480E0F45049933AB911FFAE,
+				3322393934E899B876F4FF67,
+				5671C2580CC8F83E9446335E,
+				5AE1B4D9CDA39FB960F42236,
+				884B24D7523DCB5F4B0C4C6F,
+				12D07F093CED61245611DC79,
+				47CA9AAA4916A5EEA33EACBE,
+				F33B06D901726B41ECB2A13A,
+				66F516DA78BFF294BE07AE43,
+				304071671F781463E5D5E78E,
+				E189232E68A2EED7A036608A,
+				7F1D0077D3384A8435EF1B82,
+				E1DCFFE0D3860E8112C4B58D,
+				8412694156B17AB74D891A23,
+				2AE28206BEFF486A4BB4CFF7,
+				D7E5002960EFEA8594186FA9,
+				7651E3E7E3220F519E24F07A,
+				860C2874D5871CBD9681BD47,
+				766A1E5B223E68279D30B647,
+				9C1EE05A41F57E97EB3E9252,
+				5455763E225073AF28A83458,
+				F52DAA1174055BDE47AA8421,
+				F42C6FAF1D154BB42D447BC7,
+				B197387A5BB1D48254468973,
+				9E75FB21C90DC6A9372F4ED7,
+				2E7440D2D1EA6BC0BD04CAF1,
+				157E9F2ED29FA33C812DAEBD,
+				DC3E03CAF4CDBFF2025FEE40,
+				7F8D49D3B8132454984AA09C,
+				CEFE062B57E83950B959430A,
+				22AF4224E24B0CA97C708025,
+				30A39D14AC6BD30ABA9203CF,
+				4B79D8E6DCB3FC6762CDCD2A,
+				3C37BA730059718DBA319662,
+				83D1E64FE843E836AF423143,
+				2A3A7F893E7CCAD1C1D7688D,
+				78D0B0961954498D6BF0C45B,
+				D4D2711B46EA2E9D30D80FE7,
+				0B1EAFE47A36A7498D6C73DA,
+				F8FF1FE1F0F56CB00B9DEDCE,
+				B1AE8F8F0CD8D6C0404F82DB,
+				534883DC37F189FB7F6B72FB,
+				B22F548706AA1CDFFB6331AB,
+				6BC89D7323678F59BCE0659E,
+				D579FFB0CE965A53249D7B81,
+				BFCB03E5F0ED55841943E890,
+				52F644B26FADC5B5E2ECB540,
+				70392C7768008004A1CB5BD7,
+				E1476672BFDFDADCC22E4644,
+				4CAF911BFB53BB0D82F65D50,
+				9B0ED879ECA7AF5B6AE3E356,
+				C10B502D662C8ACED9C9B889,
+				71E0DFB9D1C696BC8F09A318,
+				1F487FE1CCE96C5E95B31B29,
+				E2A999461FE7560B552B66DB,
+				2498E26CA7E2DD2AAA2BB52B,
+				E5533E8CFE4033493DE5C0B7,
+				E3D3397771B31508ABEC23A5,
+			);
+			name = Thumbnails;
+			sourceTree = "<group>";
+		};
+		2E3FF93FF3713F5F2E9DD104 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1945D87D987BC7AEF27AED27,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		31F5913836B67BC9D6074AD5 /* JUCE Library Code */ = {
 			isa = PBXGroup;
 			children = (
+				AA618ECCF14D01ABB125FD7E,
+				A721B7462209C5C9341217E3,
+				1FA01F9F1791712D176E3D71,
 				0CE89D6447A15E769617B567,
 				B49619A6FE05F4EC66E470F0,
 				674BB34FD02DD22492726171,
@@ -379,6 +708,7 @@
 		C2BCE2B17D04FD26A69CDCE5 /* Plugin Alliance Launcher */ = {
 			isa = PBXGroup;
 			children = (
+				2E3FF93FF3713F5F2E9DD104,
 				4D0A02BB0CEBB53B59D0736D,
 			);
 			name = "Plugin Alliance Launcher";
@@ -680,6 +1010,8 @@
 				6F693462A6AB27D722667D04,
 				0046703BDE154ADDCA2592AB,
 				00B84FF5EBD9D87D378CE8E1,
+				046C489827C78C55D76E855C,
+				D3D442D6FE179E6617BB5656,
 				C06CF62C04BE9AF2547F5D64,
 				014609D32F7548DE3006D476,
 				2A575BD21A5A368EEAC3739C,
@@ -803,7 +1135,7 @@
 					"JucePlugin_ManufacturerWebsite=\\\"\\\"",
 					"JucePlugin_ManufacturerEmail=\\\"\\\"",
 					"JucePlugin_ManufacturerCode=0x504c6e63",
-					"JucePlugin_PluginCode=0x50414c6e",
+					"JucePlugin_PluginCode=0x50414c32",
 					"JucePlugin_IsSynth=0",
 					"JucePlugin_WantsMidiInput=1",
 					"JucePlugin_ProducesMidiOutput=1",
@@ -837,9 +1169,6 @@
 					"JucePlugin_ARAFactoryID=\\\"com.PALauncher.PluginAllianceLauncher.factory\\\"",
 					"JucePlugin_ARADocumentArchiveID=\\\"com.PALauncher.PluginAllianceLauncher.aradocumentarchive.1.0.0\\\"",
 					"JucePlugin_ARACompatibleArchiveIDs=\\\"\\\"",
-					"JucePlugin_MaxNumInputChannels=2",
-					"JucePlugin_MaxNumOutputChannels=2",
-					"JucePlugin_PreferredChannelConfigurations={2,\\ 2}",
 					"JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone",
 					"JUCER_XCODE_MAC_F6D2F4CF=1",
 					"JUCE_APP_VERSION=1.0.0",
@@ -925,7 +1254,7 @@
 					"JucePlugin_ManufacturerWebsite=\\\"\\\"",
 					"JucePlugin_ManufacturerEmail=\\\"\\\"",
 					"JucePlugin_ManufacturerCode=0x504c6e63",
-					"JucePlugin_PluginCode=0x50414c6e",
+					"JucePlugin_PluginCode=0x50414c32",
 					"JucePlugin_IsSynth=0",
 					"JucePlugin_WantsMidiInput=1",
 					"JucePlugin_ProducesMidiOutput=1",
@@ -959,9 +1288,6 @@
 					"JucePlugin_ARAFactoryID=\\\"com.PALauncher.PluginAllianceLauncher.factory\\\"",
 					"JucePlugin_ARADocumentArchiveID=\\\"com.PALauncher.PluginAllianceLauncher.aradocumentarchive.1.0.0\\\"",
 					"JucePlugin_ARACompatibleArchiveIDs=\\\"\\\"",
-					"JucePlugin_MaxNumInputChannels=2",
-					"JucePlugin_MaxNumOutputChannels=2",
-					"JucePlugin_PreferredChannelConfigurations={2,\\ 2}",
 					"JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone",
 					"JUCER_XCODE_MAC_F6D2F4CF=1",
 					"JUCE_APP_VERSION=1.0.0",
@@ -1095,7 +1421,7 @@
 					"JucePlugin_ManufacturerWebsite=\\\"\\\"",
 					"JucePlugin_ManufacturerEmail=\\\"\\\"",
 					"JucePlugin_ManufacturerCode=0x504c6e63",
-					"JucePlugin_PluginCode=0x50414c6e",
+					"JucePlugin_PluginCode=0x50414c32",
 					"JucePlugin_IsSynth=0",
 					"JucePlugin_WantsMidiInput=1",
 					"JucePlugin_ProducesMidiOutput=1",
@@ -1129,9 +1455,6 @@
 					"JucePlugin_ARAFactoryID=\\\"com.PALauncher.PluginAllianceLauncher.factory\\\"",
 					"JucePlugin_ARADocumentArchiveID=\\\"com.PALauncher.PluginAllianceLauncher.aradocumentarchive.1.0.0\\\"",
 					"JucePlugin_ARACompatibleArchiveIDs=\\\"\\\"",
-					"JucePlugin_MaxNumInputChannels=2",
-					"JucePlugin_MaxNumOutputChannels=2",
-					"JucePlugin_PreferredChannelConfigurations={2,\\ 2}",
 					"JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone",
 					"JUCER_XCODE_MAC_F6D2F4CF=1",
 					"JUCE_APP_VERSION=1.0.0",
@@ -1262,7 +1585,7 @@
 					"JucePlugin_ManufacturerWebsite=\\\"\\\"",
 					"JucePlugin_ManufacturerEmail=\\\"\\\"",
 					"JucePlugin_ManufacturerCode=0x504c6e63",
-					"JucePlugin_PluginCode=0x50414c6e",
+					"JucePlugin_PluginCode=0x50414c32",
 					"JucePlugin_IsSynth=0",
 					"JucePlugin_WantsMidiInput=1",
 					"JucePlugin_ProducesMidiOutput=1",
@@ -1296,9 +1619,6 @@
 					"JucePlugin_ARAFactoryID=\\\"com.PALauncher.PluginAllianceLauncher.factory\\\"",
 					"JucePlugin_ARADocumentArchiveID=\\\"com.PALauncher.PluginAllianceLauncher.aradocumentarchive.1.0.0\\\"",
 					"JucePlugin_ARACompatibleArchiveIDs=\\\"\\\"",
-					"JucePlugin_MaxNumInputChannels=2",
-					"JucePlugin_MaxNumOutputChannels=2",
-					"JucePlugin_PreferredChannelConfigurations={2,\\ 2}",
 					"JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone",
 					"JUCER_XCODE_MAC_F6D2F4CF=1",
 					"JUCE_APP_VERSION=1.0.0",
@@ -1379,7 +1699,7 @@
 					"JucePlugin_ManufacturerWebsite=\\\"\\\"",
 					"JucePlugin_ManufacturerEmail=\\\"\\\"",
 					"JucePlugin_ManufacturerCode=0x504c6e63",
-					"JucePlugin_PluginCode=0x50414c6e",
+					"JucePlugin_PluginCode=0x50414c32",
 					"JucePlugin_IsSynth=0",
 					"JucePlugin_WantsMidiInput=1",
 					"JucePlugin_ProducesMidiOutput=1",
@@ -1413,9 +1733,6 @@
 					"JucePlugin_ARAFactoryID=\\\"com.PALauncher.PluginAllianceLauncher.factory\\\"",
 					"JucePlugin_ARADocumentArchiveID=\\\"com.PALauncher.PluginAllianceLauncher.aradocumentarchive.1.0.0\\\"",
 					"JucePlugin_ARACompatibleArchiveIDs=\\\"\\\"",
-					"JucePlugin_MaxNumInputChannels=2",
-					"JucePlugin_MaxNumOutputChannels=2",
-					"JucePlugin_PreferredChannelConfigurations={2,\\ 2}",
 					"JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone",
 					"JUCER_XCODE_MAC_F6D2F4CF=1",
 					"JUCE_APP_VERSION=1.0.0",
@@ -1502,7 +1819,7 @@
 					"JucePlugin_ManufacturerWebsite=\\\"\\\"",
 					"JucePlugin_ManufacturerEmail=\\\"\\\"",
 					"JucePlugin_ManufacturerCode=0x504c6e63",
-					"JucePlugin_PluginCode=0x50414c6e",
+					"JucePlugin_PluginCode=0x50414c32",
 					"JucePlugin_IsSynth=0",
 					"JucePlugin_WantsMidiInput=1",
 					"JucePlugin_ProducesMidiOutput=1",
@@ -1536,9 +1853,6 @@
 					"JucePlugin_ARAFactoryID=\\\"com.PALauncher.PluginAllianceLauncher.factory\\\"",
 					"JucePlugin_ARADocumentArchiveID=\\\"com.PALauncher.PluginAllianceLauncher.aradocumentarchive.1.0.0\\\"",
 					"JucePlugin_ARACompatibleArchiveIDs=\\\"\\\"",
-					"JucePlugin_MaxNumInputChannels=2",
-					"JucePlugin_MaxNumOutputChannels=2",
-					"JucePlugin_PreferredChannelConfigurations={2,\\ 2}",
 					"JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone",
 					"JUCER_XCODE_MAC_F6D2F4CF=1",
 					"JUCE_APP_VERSION=1.0.0",
@@ -1618,7 +1932,7 @@
 					"JucePlugin_ManufacturerWebsite=\\\"\\\"",
 					"JucePlugin_ManufacturerEmail=\\\"\\\"",
 					"JucePlugin_ManufacturerCode=0x504c6e63",
-					"JucePlugin_PluginCode=0x50414c6e",
+					"JucePlugin_PluginCode=0x50414c32",
 					"JucePlugin_IsSynth=0",
 					"JucePlugin_WantsMidiInput=1",
 					"JucePlugin_ProducesMidiOutput=1",
@@ -1652,9 +1966,6 @@
 					"JucePlugin_ARAFactoryID=\\\"com.PALauncher.PluginAllianceLauncher.factory\\\"",
 					"JucePlugin_ARADocumentArchiveID=\\\"com.PALauncher.PluginAllianceLauncher.aradocumentarchive.1.0.0\\\"",
 					"JucePlugin_ARACompatibleArchiveIDs=\\\"\\\"",
-					"JucePlugin_MaxNumInputChannels=2",
-					"JucePlugin_MaxNumOutputChannels=2",
-					"JucePlugin_PreferredChannelConfigurations={2,\\ 2}",
 					"JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone",
 					"JUCER_XCODE_MAC_F6D2F4CF=1",
 					"JUCE_APP_VERSION=1.0.0",
@@ -1744,7 +2055,7 @@
 					"JucePlugin_ManufacturerWebsite=\\\"\\\"",
 					"JucePlugin_ManufacturerEmail=\\\"\\\"",
 					"JucePlugin_ManufacturerCode=0x504c6e63",
-					"JucePlugin_PluginCode=0x50414c6e",
+					"JucePlugin_PluginCode=0x50414c32",
 					"JucePlugin_IsSynth=0",
 					"JucePlugin_WantsMidiInput=1",
 					"JucePlugin_ProducesMidiOutput=1",
@@ -1778,9 +2089,6 @@
 					"JucePlugin_ARAFactoryID=\\\"com.PALauncher.PluginAllianceLauncher.factory\\\"",
 					"JucePlugin_ARADocumentArchiveID=\\\"com.PALauncher.PluginAllianceLauncher.aradocumentarchive.1.0.0\\\"",
 					"JucePlugin_ARACompatibleArchiveIDs=\\\"\\\"",
-					"JucePlugin_MaxNumInputChannels=2",
-					"JucePlugin_MaxNumOutputChannels=2",
-					"JucePlugin_PreferredChannelConfigurations={2,\\ 2}",
 					"JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone",
 					"JUCER_XCODE_MAC_F6D2F4CF=1",
 					"JUCE_APP_VERSION=1.0.0",

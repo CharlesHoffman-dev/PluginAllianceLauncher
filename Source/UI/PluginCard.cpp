@@ -71,8 +71,8 @@ void PluginCard::paint(juce::Graphics& g)
 
     contentBounds.removeFromTop(8);
 
-    // Plugin image
-    auto imageBounds = contentBounds.removeFromTop(65);
+    // Plugin image - square area for better vertical thumbnail support
+    auto imageBounds = contentBounds.removeFromTop(140);
     if (pluginImage.isValid())
     {
         // Draw the image centered in the bounds

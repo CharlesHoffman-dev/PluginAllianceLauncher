@@ -6,6 +6,7 @@
 */
 
 #include "PluginDatabase.h"
+#include "../Data/PluginNameMap.h"
 #include <algorithm>
 
 namespace PALauncher
@@ -871,7 +872,7 @@ void PluginDatabase::sortPluginsByBrandAndName(juce::Array<PluginInfo>& pluginLi
     std::sort(pluginList.begin(), pluginList.end(),
         [](const PluginInfo& a, const PluginInfo& b)
         {
-            // Get brand names for comparison
+            // Get brand names for comparison using official name mapping
             auto brandA = getBrandName(a.description.name, a.description.manufacturerName);
             auto brandB = getBrandName(b.description.name, b.description.manufacturerName);
 
@@ -880,9 +881,21 @@ void PluginDatabase::sortPluginsByBrandAndName(juce::Array<PluginInfo>& pluginLi
             if (brandCompare != 0)
                 return brandCompare < 0;
 
-            // Then sort by product name (case-insensitive)
-            return a.description.name.compareIgnoreCase(b.description.name) < 0;
+            // Then sort by product name using official names (case-insensitive)
+            auto nameA = getOfficialPluginName(a.description.name);
+            auto nameB = getOfficialPluginName(b.description.name);
+            return nameA.compareIgnoreCase(nameB) < 0;
         });
+}
+
+juce::String PluginDatabase::getDisplayName(const juce::PluginDescription& desc) const
+{
+    return getOfficialPluginName(desc.name);
+}
+
+juce::String PluginDatabase::getDisplayBrand(const juce::PluginDescription& desc) const
+{
+    return getBrandName(desc.name, desc.manufacturerName);
 }
 
 } // namespace PALauncher

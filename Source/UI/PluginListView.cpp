@@ -101,11 +101,8 @@ void PluginListView::updateLayout()
 
 int PluginListView::calculateNumColumns() const
 {
-    int availableWidth = contentComponent.getWidth() - cardSpacing;
-    int cardWidth = PluginCard::preferredWidth + cardSpacing;
-
-    int cols = juce::jmax(1, availableWidth / cardWidth);
-    return cols;
+    // Fixed 4 columns for consistent layout
+    return 4;
 }
 
 void PluginListView::updateVisibleCards()

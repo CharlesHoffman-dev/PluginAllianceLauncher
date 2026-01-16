@@ -73,6 +73,10 @@ public:
     PluginInfo* findPlugin(const juce::String& pluginId);
     const PluginInfo* findPlugin(const juce::String& pluginId) const;
 
+    // Display name helpers - returns official plugin names
+    juce::String getDisplayName(const juce::PluginDescription& desc) const;
+    juce::String getDisplayBrand(const juce::PluginDescription& desc) const;
+
 private:
     void categorizePlugin(PluginInfo& info);
     void assignEra(PluginInfo& info);

@@ -303,11 +303,11 @@ void PluginImageCache::initializeThumbnailFilenames()
 
     // Bettermaker
     thumbnailFilenames["bettermaker mastering compressor"] = "bettermaker_mastering_compressor";
-    thumbnailFilenames["bettermaker perfection"] = "bettermaker_perfection";
     thumbnailFilenames["bettermaker bus compressor"] = "bettermaker_bus_compressor";
     thumbnailFilenames["bettermaker c502v"] = "bettermaker_c502v";
     thumbnailFilenames["bettermaker bm60"] = "bettermaker_bm60";
     thumbnailFilenames["bettermaker eq232d"] = "bettermaker_eq232d";
+    thumbnailFilenames["bettermaker passive equalizer"] = "bettermaker_passive_equalizer";
 
     // Knif Audio
     thumbnailFilenames["knif audio soma"] = "knif_soma";
@@ -367,7 +367,6 @@ void PluginImageCache::initializeThumbnailFilenames()
     thumbnailFilenames["karanyi sounds wavesurfer"] = "karanyi_wavesurfer";
 
     // HEARS
-    thumbnailFilenames["hears chop shop"] = "hears_chop_shop";
     thumbnailFilenames["hears perfection"] = "hears_perfection";
 
     // Kiive Audio
@@ -390,7 +389,7 @@ void PluginImageCache::initializeThumbnailFilenames()
     thumbnailFilenames["maor appelbaum hawkeye"] = "maor_hawkeye";
 
     // Cut Classic
-    thumbnailFilenames["cut classic passive equalizer"] = "cut_classic_passive_eq";
+    thumbnailFilenames["cut classic high flyer"] = "cut_classic_high_flyer";
 }
 
 PluginImageCache::~PluginImageCache()
@@ -606,8 +605,11 @@ void PluginImageCache::initializeImageUrls()
 
     // Bettermaker
     imageUrls["bettermaker mastering compressor"] = baseUrl + "productimage-301237.png";
-    imageUrls["bettermaker perfection"] = baseUrl + "productimage-301331.png";
     imageUrls["bettermaker bus compressor"] = baseUrl + "productimage-300973_b69e8739-4394-49f1-bb2d-c4df85dd2bcb.png";
+    imageUrls["bettermaker c502v"] = baseUrl + "productimage-301146_2bdf41cf-d9d8-4294-8d8a-270560c4cc74.png";
+    imageUrls["bettermaker bm60"] = baseUrl + "productimage-301030_a53ec7b3-bdb8-4f9f-847c-c4ae1c766f78.png";
+    imageUrls["bettermaker eq232d"] = baseUrl + "productimage-300421_fef58d06-aa5f-4482-8b6a-58c56f82a79a.png";
+    imageUrls["bettermaker passive equalizer"] = baseUrl + "productimage-301098.png";
 
     // Knif Audio
     imageUrls["knif audio soma"] = baseUrl + "productimage-300517_d93d3d4e-3d3c-42e4-9694-c3bea8252618.png";
@@ -674,13 +676,13 @@ void PluginImageCache::initializeImageUrls()
     imageUrls["karanyi sounds triad"] = baseUrl + "productimage-300393_2300346d-45cc-4bd1-997d-10b1946db4e8.png";
 
     // HEARS
-    imageUrls["hears chop shop"] = baseUrl + "productimage-300389_fe0214bf-29af-44d3-b929-cfcd64b7e1de.png";
+    imageUrls["hears perfection"] = baseUrl + "productimage-301331.png";
 
     // Maor Appelbaum & Hendyamps
     imageUrls["maor appelbaum hawkeye"] = baseUrl + "productimage-300400_d705cd7c-7087-4680-914b-646d0b0fe801.png";
 
     // Cut Classic
-    imageUrls["cut classic passive equalizer"] = baseUrl + "productimage-301098.png";
+    imageUrls["cut classic high flyer"] = baseUrl + "productimage-301210.png";
 
     // Other
     imageUrls["phil's cascade"] = baseUrl + "productimage-300369_a8076339-2084-4197-a944-dbbf15f01efd.png";

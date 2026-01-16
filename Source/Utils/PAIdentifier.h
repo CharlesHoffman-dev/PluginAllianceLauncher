@@ -42,9 +42,12 @@ public:
             nameLower.contains("ampeg") ||
             nameLower.contains("bettermaker") ||
             nameLower.contains("black box") ||
+            nameLower.contains("cenozoix") ||
             nameLower.contains("chandler") ||
             nameLower.contains("cut classic") ||
             nameLower.contains("dangerous") ||
+            nameLower.contains("dearvr") ||
+            nameLower.contains("dear reality") ||
             nameLower.contains("diezel") ||
             nameLower.contains("ds audio") ||
             nameLower.contains("elysia") ||
@@ -72,7 +75,9 @@ public:
             nameLower.contains("noveltech") ||
             nameLower.contains("pro audio dsp") ||
             nameLower.contains("purple audio") ||
+            nameLower.contains("schoeps") ||
             nameLower.contains("shadow hills") ||
+            nameLower.contains("sonible") ||
             nameLower.contains("spl ") ||
             nameLower.contains("ssl") ||
             nameLower.contains("suhr") ||
@@ -80,8 +85,10 @@ public:
             nameLower.contains("three-body") ||
             nameLower.contains("thx") ||
             nameLower.contains("tomo") ||
+            nameLower.contains("trinity") ||
             nameLower.contains("unfiltered") ||
-            nameLower.contains("vertigo"))
+            nameLower.contains("vertigo") ||
+            nameLower.contains("wedge force"))
             return true;
 
         // Check file path for known PA plugin filenames
@@ -94,9 +101,12 @@ public:
             pathLower.contains("ampeg") ||
             pathLower.contains("bettermaker") ||
             pathLower.contains("black box") ||
+            pathLower.contains("cenozoix") ||
             pathLower.contains("chandler") ||
             pathLower.contains("cut classic") ||
             pathLower.contains("dangerous") ||
+            pathLower.contains("dearvr") ||
+            pathLower.contains("dear reality") ||
             pathLower.contains("diezel") ||
             pathLower.contains("ds audio") ||
             pathLower.contains("elysia") ||
@@ -124,7 +134,9 @@ public:
             pathLower.contains("noveltech") ||
             pathLower.contains("pro audio dsp") ||
             pathLower.contains("purple audio") ||
+            pathLower.contains("schoeps") ||
             pathLower.contains("shadow hills") ||
+            pathLower.contains("sonible") ||
             pathLower.contains("\\spl ") || pathLower.contains("/spl ") ||
             pathLower.contains("ssl") ||
             pathLower.contains("suhr") ||
@@ -132,8 +144,10 @@ public:
             pathLower.contains("three-body") ||
             pathLower.contains("thx") ||
             pathLower.contains("tomo") ||
+            pathLower.contains("trinity") ||
             pathLower.contains("unfiltered") ||
-            pathLower.contains("vertigo"))
+            pathLower.contains("vertigo") ||
+            pathLower.contains("wedge force"))
             return true;
 
         return false;
@@ -164,11 +178,13 @@ private:
         paManufacturers.insert("bx_digital");
 
         // C
+        paManufacturers.insert("cenozoix");
         paManufacturers.insert("chandler limited");
         paManufacturers.insert("cut classic");
 
         // D
         paManufacturers.insert("dangerous music");
+        paManufacturers.insert("dear reality");
         paManufacturers.insert("diezel");
         paManufacturers.insert("diezel amplification");
         paManufacturers.insert("ds audio");
@@ -222,9 +238,11 @@ private:
         paManufacturers.insert("purple audio");
 
         // S
+        paManufacturers.insert("schoeps");
         paManufacturers.insert("shadow hills");
         paManufacturers.insert("shadow hills industries");
         paManufacturers.insert("solid state logic");
+        paManufacturers.insert("sonible");
         paManufacturers.insert("spl");
         paManufacturers.insert("ssl");
         paManufacturers.insert("suhr");
@@ -234,6 +252,7 @@ private:
         paManufacturers.insert("three-body technology");
         paManufacturers.insert("thx");
         paManufacturers.insert("tomo audiolabs");
+        paManufacturers.insert("trinity");
 
         // U
         paManufacturers.insert("unfiltered audio");
@@ -241,6 +260,9 @@ private:
         // V
         paManufacturers.insert("vertigo");
         paManufacturers.insert("vertigo sound");
+
+        // W
+        paManufacturers.insert("wedge force");
     }
 
     std::set<juce::String> paManufacturers;

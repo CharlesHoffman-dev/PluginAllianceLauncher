@@ -64,7 +64,7 @@
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalIncludeDirectories>C:\Users\charl\JUCE\modules\juce_audio_processors\format_types\VST3_SDK;..\..\JuceLibraryCode;C:\Users\charl\JUCE\modules;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;DEBUG;_DEBUG;JUCE_DISPLAY_SPLASH_SCREEN=0;JUCE_USE_DARK_SPLASH_SCREEN=1;JUCE_PROJUCER_VERSION=0x70007;JUCE_MODULE_AVAILABLE_juce_audio_basics=1;JUCE_MODULE_AVAILABLE_juce_audio_devices=1;JUCE_MODULE_AVAILABLE_juce_audio_formats=1;JUCE_MODULE_AVAILABLE_juce_audio_plugin_client=1;JUCE_MODULE_AVAILABLE_juce_audio_processors=1;JUCE_MODULE_AVAILABLE_juce_audio_utils=1;JUCE_MODULE_AVAILABLE_juce_core=1;JUCE_MODULE_AVAILABLE_juce_data_structures=1;JUCE_MODULE_AVAILABLE_juce_events=1;JUCE_MODULE_AVAILABLE_juce_graphics=1;JUCE_MODULE_AVAILABLE_juce_gui_basics=1;JUCE_MODULE_AVAILABLE_juce_gui_extra=1;JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1;JUCE_VST3_CAN_REPLACE_VST2=0;JUCE_PLUGINHOST_VST=0;JUCE_PLUGINHOST_VST3=1;JUCE_PLUGINHOST_AU=0;JUCE_STRICT_REFCOUNTEDPOINTER=1;JucePlugin_Build_VST=0;JucePlugin_Build_VST3=1;JucePlugin_Build_AU=0;JucePlugin_Build_AUv3=0;JucePlugin_Build_AAX=0;JucePlugin_Build_Standalone=0;JucePlugin_Build_Unity=0;JucePlugin_Build_LV2=0;JucePlugin_Enable_IAA=0;JucePlugin_Enable_ARA=0;JucePlugin_Name=&quot;Plugin Alliance Launcher&quot;;JucePlugin_Desc=&quot;Search and launch Plugin Alliance plugins&quot;;JucePlugin_Manufacturer=&quot;PALauncher&quot;;JucePlugin_ManufacturerWebsite=&quot;&quot;;JucePlugin_ManufacturerEmail=&quot;&quot;;JucePlugin_ManufacturerCode=0x504c6e63;JucePlugin_PluginCode=0x50414c6e;JucePlugin_IsSynth=0;JucePlugin_WantsMidiInput=1;JucePlugin_ProducesMidiOutput=1;JucePlugin_IsMidiEffect=0;JucePlugin_EditorRequiresKeyboardFocus=1;JucePlugin_Version=1.0.0;JucePlugin_VersionCode=0x10000;JucePlugin_VersionString=&quot;1.0.0&quot;;JucePlugin_VSTUniqueID=JucePlugin_PluginCode;JucePlugin_VSTCategory=kPlugCategEffect;JucePlugin_Vst3Category=&quot;Fx&quot;;JucePlugin_AUMainType='aumf';JucePlugin_AUSubType=JucePlugin_PluginCode;JucePlugin_AUExportPrefix=PALauncherAU;JucePlugin_AUExportPrefixQuoted=&quot;PALauncherAU&quot;;JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode;JucePlugin_CFBundleIdentifier=com.palauncher.palauncher;JucePlugin_AAXIdentifier=com.palauncher.palauncher;JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode;JucePlugin_AAXProductId=JucePlugin_PluginCode;JucePlugin_AAXCategory=0;JucePlugin_AAXDisableBypass=0;JucePlugin_AAXDisableMultiMono=0;JucePlugin_IAAType=0x6175726d;JucePlugin_IAASubType=JucePlugin_PluginCode;JucePlugin_IAAName=&quot;PALauncher: Plugin Alliance Launcher&quot;;JucePlugin_VSTNumMidiInputs=16;JucePlugin_VSTNumMidiOutputs=16;JucePlugin_ARAContentTypes=0;JucePlugin_ARATransformationFlags=0;JucePlugin_ARAFactoryID=&quot;com.PALauncher.PluginAllianceLauncher.factory&quot;;JucePlugin_ARADocumentArchiveID=&quot;com.PALauncher.PluginAllianceLauncher.aradocumentarchive.1.0.0&quot;;JucePlugin_ARACompatibleArchiveIDs=&quot;&quot;;JucePlugin_MaxNumInputChannels=2;JucePlugin_MaxNumOutputChannels=2;JucePlugin_PreferredChannelConfigurations={2, 2};JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone;JUCER_VS2022_78A503E=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;JUCE_SHARED_CODE=1;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;DEBUG;_DEBUG;JUCE_DISPLAY_SPLASH_SCREEN=0;JUCE_USE_DARK_SPLASH_SCREEN=1;JUCE_PROJUCER_VERSION=0x70007;JUCE_MODULE_AVAILABLE_juce_audio_basics=1;JUCE_MODULE_AVAILABLE_juce_audio_devices=1;JUCE_MODULE_AVAILABLE_juce_audio_formats=1;JUCE_MODULE_AVAILABLE_juce_audio_plugin_client=1;JUCE_MODULE_AVAILABLE_juce_audio_processors=1;JUCE_MODULE_AVAILABLE_juce_audio_utils=1;JUCE_MODULE_AVAILABLE_juce_core=1;JUCE_MODULE_AVAILABLE_juce_data_structures=1;JUCE_MODULE_AVAILABLE_juce_events=1;JUCE_MODULE_AVAILABLE_juce_graphics=1;JUCE_MODULE_AVAILABLE_juce_gui_basics=1;JUCE_MODULE_AVAILABLE_juce_gui_extra=1;JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1;JUCE_VST3_CAN_REPLACE_VST2=0;JUCE_PLUGINHOST_VST=0;JUCE_PLUGINHOST_VST3=1;JUCE_PLUGINHOST_AU=0;JUCE_STRICT_REFCOUNTEDPOINTER=1;JucePlugin_Build_VST=0;JucePlugin_Build_VST3=1;JucePlugin_Build_AU=0;JucePlugin_Build_AUv3=0;JucePlugin_Build_AAX=0;JucePlugin_Build_Standalone=0;JucePlugin_Build_Unity=0;JucePlugin_Build_LV2=0;JucePlugin_Enable_IAA=0;JucePlugin_Enable_ARA=0;JucePlugin_Name=&quot;Plugin Alliance Launcher&quot;;JucePlugin_Desc=&quot;Search and launch Plugin Alliance plugins&quot;;JucePlugin_Manufacturer=&quot;PALauncher&quot;;JucePlugin_ManufacturerWebsite=&quot;&quot;;JucePlugin_ManufacturerEmail=&quot;&quot;;JucePlugin_ManufacturerCode=0x504c6e63;JucePlugin_PluginCode=0x50414c32;JucePlugin_IsSynth=0;JucePlugin_WantsMidiInput=1;JucePlugin_ProducesMidiOutput=1;JucePlugin_IsMidiEffect=0;JucePlugin_EditorRequiresKeyboardFocus=1;JucePlugin_Version=1.0.0;JucePlugin_VersionCode=0x10000;JucePlugin_VersionString=&quot;1.0.0&quot;;JucePlugin_VSTUniqueID=JucePlugin_PluginCode;JucePlugin_VSTCategory=kPlugCategEffect;JucePlugin_Vst3Category=&quot;Fx&quot;;JucePlugin_AUMainType='aumf';JucePlugin_AUSubType=JucePlugin_PluginCode;JucePlugin_AUExportPrefix=PALauncherAU;JucePlugin_AUExportPrefixQuoted=&quot;PALauncherAU&quot;;JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode;JucePlugin_CFBundleIdentifier=com.palauncher.palauncher;JucePlugin_AAXIdentifier=com.palauncher.palauncher;JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode;JucePlugin_AAXProductId=JucePlugin_PluginCode;JucePlugin_AAXCategory=0;JucePlugin_AAXDisableBypass=0;JucePlugin_AAXDisableMultiMono=0;JucePlugin_IAAType=0x6175726d;JucePlugin_IAASubType=JucePlugin_PluginCode;JucePlugin_IAAName=&quot;PALauncher: Plugin Alliance Launcher&quot;;JucePlugin_VSTNumMidiInputs=16;JucePlugin_VSTNumMidiOutputs=16;JucePlugin_ARAContentTypes=0;JucePlugin_ARATransformationFlags=0;JucePlugin_ARAFactoryID=&quot;com.PALauncher.PluginAllianceLauncher.factory&quot;;JucePlugin_ARADocumentArchiveID=&quot;com.PALauncher.PluginAllianceLauncher.aradocumentarchive.1.0.0&quot;;JucePlugin_ARACompatibleArchiveIDs=&quot;&quot;;JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone;JUCER_VS2022_78A503E=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;JUCE_SHARED_CODE=1;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -78,7 +78,7 @@
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>C:\Users\charl\JUCE\modules\juce_audio_processors\format_types\VST3_SDK;..\..\JuceLibraryCode;C:\Users\charl\JUCE\modules;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;DEBUG;_DEBUG;JUCE_DISPLAY_SPLASH_SCREEN=0;JUCE_USE_DARK_SPLASH_SCREEN=1;JUCE_PROJUCER_VERSION=0x70007;JUCE_MODULE_AVAILABLE_juce_audio_basics=1;JUCE_MODULE_AVAILABLE_juce_audio_devices=1;JUCE_MODULE_AVAILABLE_juce_audio_formats=1;JUCE_MODULE_AVAILABLE_juce_audio_plugin_client=1;JUCE_MODULE_AVAILABLE_juce_audio_processors=1;JUCE_MODULE_AVAILABLE_juce_audio_utils=1;JUCE_MODULE_AVAILABLE_juce_core=1;JUCE_MODULE_AVAILABLE_juce_data_structures=1;JUCE_MODULE_AVAILABLE_juce_events=1;JUCE_MODULE_AVAILABLE_juce_graphics=1;JUCE_MODULE_AVAILABLE_juce_gui_basics=1;JUCE_MODULE_AVAILABLE_juce_gui_extra=1;JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1;JUCE_VST3_CAN_REPLACE_VST2=0;JUCE_PLUGINHOST_VST=0;JUCE_PLUGINHOST_VST3=1;JUCE_PLUGINHOST_AU=0;JUCE_STRICT_REFCOUNTEDPOINTER=1;JucePlugin_Build_VST=0;JucePlugin_Build_VST3=1;JucePlugin_Build_AU=0;JucePlugin_Build_AUv3=0;JucePlugin_Build_AAX=0;JucePlugin_Build_Standalone=0;JucePlugin_Build_Unity=0;JucePlugin_Build_LV2=0;JucePlugin_Enable_IAA=0;JucePlugin_Enable_ARA=0;JucePlugin_Name=\&quot;Plugin Alliance Launcher\&quot;;JucePlugin_Desc=\&quot;Search and launch Plugin Alliance plugins\&quot;;JucePlugin_Manufacturer=\&quot;PALauncher\&quot;;JucePlugin_ManufacturerWebsite=\&quot;\&quot;;JucePlugin_ManufacturerEmail=\&quot;\&quot;;JucePlugin_ManufacturerCode=0x504c6e63;JucePlugin_PluginCode=0x50414c6e;JucePlugin_IsSynth=0;JucePlugin_WantsMidiInput=1;JucePlugin_ProducesMidiOutput=1;JucePlugin_IsMidiEffect=0;JucePlugin_EditorRequiresKeyboardFocus=1;JucePlugin_Version=1.0.0;JucePlugin_VersionCode=0x10000;JucePlugin_VersionString=\&quot;1.0.0\&quot;;JucePlugin_VSTUniqueID=JucePlugin_PluginCode;JucePlugin_VSTCategory=kPlugCategEffect;JucePlugin_Vst3Category=\&quot;Fx\&quot;;JucePlugin_AUMainType='aumf';JucePlugin_AUSubType=JucePlugin_PluginCode;JucePlugin_AUExportPrefix=PALauncherAU;JucePlugin_AUExportPrefixQuoted=\&quot;PALauncherAU\&quot;;JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode;JucePlugin_CFBundleIdentifier=com.palauncher.palauncher;JucePlugin_AAXIdentifier=com.palauncher.palauncher;JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode;JucePlugin_AAXProductId=JucePlugin_PluginCode;JucePlugin_AAXCategory=0;JucePlugin_AAXDisableBypass=0;JucePlugin_AAXDisableMultiMono=0;JucePlugin_IAAType=0x6175726d;JucePlugin_IAASubType=JucePlugin_PluginCode;JucePlugin_IAAName=\&quot;PALauncher: Plugin Alliance Launcher\&quot;;JucePlugin_VSTNumMidiInputs=16;JucePlugin_VSTNumMidiOutputs=16;JucePlugin_ARAContentTypes=0;JucePlugin_ARATransformationFlags=0;JucePlugin_ARAFactoryID=\&quot;com.PALauncher.PluginAllianceLauncher.factory\&quot;;JucePlugin_ARADocumentArchiveID=\&quot;com.PALauncher.PluginAllianceLauncher.aradocumentarchive.1.0.0\&quot;;JucePlugin_ARACompatibleArchiveIDs=\&quot;\&quot;;JucePlugin_MaxNumInputChannels=2;JucePlugin_MaxNumOutputChannels=2;JucePlugin_PreferredChannelConfigurations={2, 2};JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone;JUCER_VS2022_78A503E=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;JUCE_SHARED_CODE=1;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;DEBUG;_DEBUG;JUCE_DISPLAY_SPLASH_SCREEN=0;JUCE_USE_DARK_SPLASH_SCREEN=1;JUCE_PROJUCER_VERSION=0x70007;JUCE_MODULE_AVAILABLE_juce_audio_basics=1;JUCE_MODULE_AVAILABLE_juce_audio_devices=1;JUCE_MODULE_AVAILABLE_juce_audio_formats=1;JUCE_MODULE_AVAILABLE_juce_audio_plugin_client=1;JUCE_MODULE_AVAILABLE_juce_audio_processors=1;JUCE_MODULE_AVAILABLE_juce_audio_utils=1;JUCE_MODULE_AVAILABLE_juce_core=1;JUCE_MODULE_AVAILABLE_juce_data_structures=1;JUCE_MODULE_AVAILABLE_juce_events=1;JUCE_MODULE_AVAILABLE_juce_graphics=1;JUCE_MODULE_AVAILABLE_juce_gui_basics=1;JUCE_MODULE_AVAILABLE_juce_gui_extra=1;JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1;JUCE_VST3_CAN_REPLACE_VST2=0;JUCE_PLUGINHOST_VST=0;JUCE_PLUGINHOST_VST3=1;JUCE_PLUGINHOST_AU=0;JUCE_STRICT_REFCOUNTEDPOINTER=1;JucePlugin_Build_VST=0;JucePlugin_Build_VST3=1;JucePlugin_Build_AU=0;JucePlugin_Build_AUv3=0;JucePlugin_Build_AAX=0;JucePlugin_Build_Standalone=0;JucePlugin_Build_Unity=0;JucePlugin_Build_LV2=0;JucePlugin_Enable_IAA=0;JucePlugin_Enable_ARA=0;JucePlugin_Name=\&quot;Plugin Alliance Launcher\&quot;;JucePlugin_Desc=\&quot;Search and launch Plugin Alliance plugins\&quot;;JucePlugin_Manufacturer=\&quot;PALauncher\&quot;;JucePlugin_ManufacturerWebsite=\&quot;\&quot;;JucePlugin_ManufacturerEmail=\&quot;\&quot;;JucePlugin_ManufacturerCode=0x504c6e63;JucePlugin_PluginCode=0x50414c32;JucePlugin_IsSynth=0;JucePlugin_WantsMidiInput=1;JucePlugin_ProducesMidiOutput=1;JucePlugin_IsMidiEffect=0;JucePlugin_EditorRequiresKeyboardFocus=1;JucePlugin_Version=1.0.0;JucePlugin_VersionCode=0x10000;JucePlugin_VersionString=\&quot;1.0.0\&quot;;JucePlugin_VSTUniqueID=JucePlugin_PluginCode;JucePlugin_VSTCategory=kPlugCategEffect;JucePlugin_Vst3Category=\&quot;Fx\&quot;;JucePlugin_AUMainType='aumf';JucePlugin_AUSubType=JucePlugin_PluginCode;JucePlugin_AUExportPrefix=PALauncherAU;JucePlugin_AUExportPrefixQuoted=\&quot;PALauncherAU\&quot;;JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode;JucePlugin_CFBundleIdentifier=com.palauncher.palauncher;JucePlugin_AAXIdentifier=com.palauncher.palauncher;JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode;JucePlugin_AAXProductId=JucePlugin_PluginCode;JucePlugin_AAXCategory=0;JucePlugin_AAXDisableBypass=0;JucePlugin_AAXDisableMultiMono=0;JucePlugin_IAAType=0x6175726d;JucePlugin_IAASubType=JucePlugin_PluginCode;JucePlugin_IAAName=\&quot;PALauncher: Plugin Alliance Launcher\&quot;;JucePlugin_VSTNumMidiInputs=16;JucePlugin_VSTNumMidiOutputs=16;JucePlugin_ARAContentTypes=0;JucePlugin_ARATransformationFlags=0;JucePlugin_ARAFactoryID=\&quot;com.PALauncher.PluginAllianceLauncher.factory\&quot;;JucePlugin_ARADocumentArchiveID=\&quot;com.PALauncher.PluginAllianceLauncher.aradocumentarchive.1.0.0\&quot;;JucePlugin_ARACompatibleArchiveIDs=\&quot;\&quot;;JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone;JUCER_VS2022_78A503E=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;JUCE_SHARED_CODE=1;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
       <OutputFile>$(OutDir)\Plugin Alliance Launcher.lib</OutputFile>
@@ -105,7 +105,7 @@
     <ClCompile>
       <Optimization>Full</Optimization>
       <AdditionalIncludeDirectories>C:\Users\charl\JUCE\modules\juce_audio_processors\format_types\VST3_SDK;..\..\JuceLibraryCode;C:\Users\charl\JUCE\modules;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;NDEBUG;JUCE_DISPLAY_SPLASH_SCREEN=0;JUCE_USE_DARK_SPLASH_SCREEN=1;JUCE_PROJUCER_VERSION=0x70007;JUCE_MODULE_AVAILABLE_juce_audio_basics=1;JUCE_MODULE_AVAILABLE_juce_audio_devices=1;JUCE_MODULE_AVAILABLE_juce_audio_formats=1;JUCE_MODULE_AVAILABLE_juce_audio_plugin_client=1;JUCE_MODULE_AVAILABLE_juce_audio_processors=1;JUCE_MODULE_AVAILABLE_juce_audio_utils=1;JUCE_MODULE_AVAILABLE_juce_core=1;JUCE_MODULE_AVAILABLE_juce_data_structures=1;JUCE_MODULE_AVAILABLE_juce_events=1;JUCE_MODULE_AVAILABLE_juce_graphics=1;JUCE_MODULE_AVAILABLE_juce_gui_basics=1;JUCE_MODULE_AVAILABLE_juce_gui_extra=1;JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1;JUCE_VST3_CAN_REPLACE_VST2=0;JUCE_PLUGINHOST_VST=0;JUCE_PLUGINHOST_VST3=1;JUCE_PLUGINHOST_AU=0;JUCE_STRICT_REFCOUNTEDPOINTER=1;JucePlugin_Build_VST=0;JucePlugin_Build_VST3=1;JucePlugin_Build_AU=0;JucePlugin_Build_AUv3=0;JucePlugin_Build_AAX=0;JucePlugin_Build_Standalone=0;JucePlugin_Build_Unity=0;JucePlugin_Build_LV2=0;JucePlugin_Enable_IAA=0;JucePlugin_Enable_ARA=0;JucePlugin_Name=&quot;Plugin Alliance Launcher&quot;;JucePlugin_Desc=&quot;Search and launch Plugin Alliance plugins&quot;;JucePlugin_Manufacturer=&quot;PALauncher&quot;;JucePlugin_ManufacturerWebsite=&quot;&quot;;JucePlugin_ManufacturerEmail=&quot;&quot;;JucePlugin_ManufacturerCode=0x504c6e63;JucePlugin_PluginCode=0x50414c6e;JucePlugin_IsSynth=0;JucePlugin_WantsMidiInput=1;JucePlugin_ProducesMidiOutput=1;JucePlugin_IsMidiEffect=0;JucePlugin_EditorRequiresKeyboardFocus=1;JucePlugin_Version=1.0.0;JucePlugin_VersionCode=0x10000;JucePlugin_VersionString=&quot;1.0.0&quot;;JucePlugin_VSTUniqueID=JucePlugin_PluginCode;JucePlugin_VSTCategory=kPlugCategEffect;JucePlugin_Vst3Category=&quot;Fx&quot;;JucePlugin_AUMainType='aumf';JucePlugin_AUSubType=JucePlugin_PluginCode;JucePlugin_AUExportPrefix=PALauncherAU;JucePlugin_AUExportPrefixQuoted=&quot;PALauncherAU&quot;;JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode;JucePlugin_CFBundleIdentifier=com.palauncher.palauncher;JucePlugin_AAXIdentifier=com.palauncher.palauncher;JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode;JucePlugin_AAXProductId=JucePlugin_PluginCode;JucePlugin_AAXCategory=0;JucePlugin_AAXDisableBypass=0;JucePlugin_AAXDisableMultiMono=0;JucePlugin_IAAType=0x6175726d;JucePlugin_IAASubType=JucePlugin_PluginCode;JucePlugin_IAAName=&quot;PALauncher: Plugin Alliance Launcher&quot;;JucePlugin_VSTNumMidiInputs=16;JucePlugin_VSTNumMidiOutputs=16;JucePlugin_ARAContentTypes=0;JucePlugin_ARATransformationFlags=0;JucePlugin_ARAFactoryID=&quot;com.PALauncher.PluginAllianceLauncher.factory&quot;;JucePlugin_ARADocumentArchiveID=&quot;com.PALauncher.PluginAllianceLauncher.aradocumentarchive.1.0.0&quot;;JucePlugin_ARACompatibleArchiveIDs=&quot;&quot;;JucePlugin_MaxNumInputChannels=2;JucePlugin_MaxNumOutputChannels=2;JucePlugin_PreferredChannelConfigurations={2, 2};JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone;JUCER_VS2022_78A503E=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;JUCE_SHARED_CODE=1;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;NDEBUG;JUCE_DISPLAY_SPLASH_SCREEN=0;JUCE_USE_DARK_SPLASH_SCREEN=1;JUCE_PROJUCER_VERSION=0x70007;JUCE_MODULE_AVAILABLE_juce_audio_basics=1;JUCE_MODULE_AVAILABLE_juce_audio_devices=1;JUCE_MODULE_AVAILABLE_juce_audio_formats=1;JUCE_MODULE_AVAILABLE_juce_audio_plugin_client=1;JUCE_MODULE_AVAILABLE_juce_audio_processors=1;JUCE_MODULE_AVAILABLE_juce_audio_utils=1;JUCE_MODULE_AVAILABLE_juce_core=1;JUCE_MODULE_AVAILABLE_juce_data_structures=1;JUCE_MODULE_AVAILABLE_juce_events=1;JUCE_MODULE_AVAILABLE_juce_graphics=1;JUCE_MODULE_AVAILABLE_juce_gui_basics=1;JUCE_MODULE_AVAILABLE_juce_gui_extra=1;JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1;JUCE_VST3_CAN_REPLACE_VST2=0;JUCE_PLUGINHOST_VST=0;JUCE_PLUGINHOST_VST3=1;JUCE_PLUGINHOST_AU=0;JUCE_STRICT_REFCOUNTEDPOINTER=1;JucePlugin_Build_VST=0;JucePlugin_Build_VST3=1;JucePlugin_Build_AU=0;JucePlugin_Build_AUv3=0;JucePlugin_Build_AAX=0;JucePlugin_Build_Standalone=0;JucePlugin_Build_Unity=0;JucePlugin_Build_LV2=0;JucePlugin_Enable_IAA=0;JucePlugin_Enable_ARA=0;JucePlugin_Name=&quot;Plugin Alliance Launcher&quot;;JucePlugin_Desc=&quot;Search and launch Plugin Alliance plugins&quot;;JucePlugin_Manufacturer=&quot;PALauncher&quot;;JucePlugin_ManufacturerWebsite=&quot;&quot;;JucePlugin_ManufacturerEmail=&quot;&quot;;JucePlugin_ManufacturerCode=0x504c6e63;JucePlugin_PluginCode=0x50414c32;JucePlugin_IsSynth=0;JucePlugin_WantsMidiInput=1;JucePlugin_ProducesMidiOutput=1;JucePlugin_IsMidiEffect=0;JucePlugin_EditorRequiresKeyboardFocus=1;JucePlugin_Version=1.0.0;JucePlugin_VersionCode=0x10000;JucePlugin_VersionString=&quot;1.0.0&quot;;JucePlugin_VSTUniqueID=JucePlugin_PluginCode;JucePlugin_VSTCategory=kPlugCategEffect;JucePlugin_Vst3Category=&quot;Fx&quot;;JucePlugin_AUMainType='aumf';JucePlugin_AUSubType=JucePlugin_PluginCode;JucePlugin_AUExportPrefix=PALauncherAU;JucePlugin_AUExportPrefixQuoted=&quot;PALauncherAU&quot;;JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode;JucePlugin_CFBundleIdentifier=com.palauncher.palauncher;JucePlugin_AAXIdentifier=com.palauncher.palauncher;JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode;JucePlugin_AAXProductId=JucePlugin_PluginCode;JucePlugin_AAXCategory=0;JucePlugin_AAXDisableBypass=0;JucePlugin_AAXDisableMultiMono=0;JucePlugin_IAAType=0x6175726d;JucePlugin_IAASubType=JucePlugin_PluginCode;JucePlugin_IAAName=&quot;PALauncher: Plugin Alliance Launcher&quot;;JucePlugin_VSTNumMidiInputs=16;JucePlugin_VSTNumMidiOutputs=16;JucePlugin_ARAContentTypes=0;JucePlugin_ARATransformationFlags=0;JucePlugin_ARAFactoryID=&quot;com.PALauncher.PluginAllianceLauncher.factory&quot;;JucePlugin_ARADocumentArchiveID=&quot;com.PALauncher.PluginAllianceLauncher.aradocumentarchive.1.0.0&quot;;JucePlugin_ARACompatibleArchiveIDs=&quot;&quot;;JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone;JUCER_VS2022_78A503E=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;JUCE_SHARED_CODE=1;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -119,7 +119,7 @@
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>C:\Users\charl\JUCE\modules\juce_audio_processors\format_types\VST3_SDK;..\..\JuceLibraryCode;C:\Users\charl\JUCE\modules;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;NDEBUG;JUCE_DISPLAY_SPLASH_SCREEN=0;JUCE_USE_DARK_SPLASH_SCREEN=1;JUCE_PROJUCER_VERSION=0x70007;JUCE_MODULE_AVAILABLE_juce_audio_basics=1;JUCE_MODULE_AVAILABLE_juce_audio_devices=1;JUCE_MODULE_AVAILABLE_juce_audio_formats=1;JUCE_MODULE_AVAILABLE_juce_audio_plugin_client=1;JUCE_MODULE_AVAILABLE_juce_audio_processors=1;JUCE_MODULE_AVAILABLE_juce_audio_utils=1;JUCE_MODULE_AVAILABLE_juce_core=1;JUCE_MODULE_AVAILABLE_juce_data_structures=1;JUCE_MODULE_AVAILABLE_juce_events=1;JUCE_MODULE_AVAILABLE_juce_graphics=1;JUCE_MODULE_AVAILABLE_juce_gui_basics=1;JUCE_MODULE_AVAILABLE_juce_gui_extra=1;JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1;JUCE_VST3_CAN_REPLACE_VST2=0;JUCE_PLUGINHOST_VST=0;JUCE_PLUGINHOST_VST3=1;JUCE_PLUGINHOST_AU=0;JUCE_STRICT_REFCOUNTEDPOINTER=1;JucePlugin_Build_VST=0;JucePlugin_Build_VST3=1;JucePlugin_Build_AU=0;JucePlugin_Build_AUv3=0;JucePlugin_Build_AAX=0;JucePlugin_Build_Standalone=0;JucePlugin_Build_Unity=0;JucePlugin_Build_LV2=0;JucePlugin_Enable_IAA=0;JucePlugin_Enable_ARA=0;JucePlugin_Name=\&quot;Plugin Alliance Launcher\&quot;;JucePlugin_Desc=\&quot;Search and launch Plugin Alliance plugins\&quot;;JucePlugin_Manufacturer=\&quot;PALauncher\&quot;;JucePlugin_ManufacturerWebsite=\&quot;\&quot;;JucePlugin_ManufacturerEmail=\&quot;\&quot;;JucePlugin_ManufacturerCode=0x504c6e63;JucePlugin_PluginCode=0x50414c6e;JucePlugin_IsSynth=0;JucePlugin_WantsMidiInput=1;JucePlugin_ProducesMidiOutput=1;JucePlugin_IsMidiEffect=0;JucePlugin_EditorRequiresKeyboardFocus=1;JucePlugin_Version=1.0.0;JucePlugin_VersionCode=0x10000;JucePlugin_VersionString=\&quot;1.0.0\&quot;;JucePlugin_VSTUniqueID=JucePlugin_PluginCode;JucePlugin_VSTCategory=kPlugCategEffect;JucePlugin_Vst3Category=\&quot;Fx\&quot;;JucePlugin_AUMainType='aumf';JucePlugin_AUSubType=JucePlugin_PluginCode;JucePlugin_AUExportPrefix=PALauncherAU;JucePlugin_AUExportPrefixQuoted=\&quot;PALauncherAU\&quot;;JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode;JucePlugin_CFBundleIdentifier=com.palauncher.palauncher;JucePlugin_AAXIdentifier=com.palauncher.palauncher;JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode;JucePlugin_AAXProductId=JucePlugin_PluginCode;JucePlugin_AAXCategory=0;JucePlugin_AAXDisableBypass=0;JucePlugin_AAXDisableMultiMono=0;JucePlugin_IAAType=0x6175726d;JucePlugin_IAASubType=JucePlugin_PluginCode;JucePlugin_IAAName=\&quot;PALauncher: Plugin Alliance Launcher\&quot;;JucePlugin_VSTNumMidiInputs=16;JucePlugin_VSTNumMidiOutputs=16;JucePlugin_ARAContentTypes=0;JucePlugin_ARATransformationFlags=0;JucePlugin_ARAFactoryID=\&quot;com.PALauncher.PluginAllianceLauncher.factory\&quot;;JucePlugin_ARADocumentArchiveID=\&quot;com.PALauncher.PluginAllianceLauncher.aradocumentarchive.1.0.0\&quot;;JucePlugin_ARACompatibleArchiveIDs=\&quot;\&quot;;JucePlugin_MaxNumInputChannels=2;JucePlugin_MaxNumOutputChannels=2;JucePlugin_PreferredChannelConfigurations={2, 2};JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone;JUCER_VS2022_78A503E=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;JUCE_SHARED_CODE=1;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;NDEBUG;JUCE_DISPLAY_SPLASH_SCREEN=0;JUCE_USE_DARK_SPLASH_SCREEN=1;JUCE_PROJUCER_VERSION=0x70007;JUCE_MODULE_AVAILABLE_juce_audio_basics=1;JUCE_MODULE_AVAILABLE_juce_audio_devices=1;JUCE_MODULE_AVAILABLE_juce_audio_formats=1;JUCE_MODULE_AVAILABLE_juce_audio_plugin_client=1;JUCE_MODULE_AVAILABLE_juce_audio_processors=1;JUCE_MODULE_AVAILABLE_juce_audio_utils=1;JUCE_MODULE_AVAILABLE_juce_core=1;JUCE_MODULE_AVAILABLE_juce_data_structures=1;JUCE_MODULE_AVAILABLE_juce_events=1;JUCE_MODULE_AVAILABLE_juce_graphics=1;JUCE_MODULE_AVAILABLE_juce_gui_basics=1;JUCE_MODULE_AVAILABLE_juce_gui_extra=1;JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1;JUCE_VST3_CAN_REPLACE_VST2=0;JUCE_PLUGINHOST_VST=0;JUCE_PLUGINHOST_VST3=1;JUCE_PLUGINHOST_AU=0;JUCE_STRICT_REFCOUNTEDPOINTER=1;JucePlugin_Build_VST=0;JucePlugin_Build_VST3=1;JucePlugin_Build_AU=0;JucePlugin_Build_AUv3=0;JucePlugin_Build_AAX=0;JucePlugin_Build_Standalone=0;JucePlugin_Build_Unity=0;JucePlugin_Build_LV2=0;JucePlugin_Enable_IAA=0;JucePlugin_Enable_ARA=0;JucePlugin_Name=\&quot;Plugin Alliance Launcher\&quot;;JucePlugin_Desc=\&quot;Search and launch Plugin Alliance plugins\&quot;;JucePlugin_Manufacturer=\&quot;PALauncher\&quot;;JucePlugin_ManufacturerWebsite=\&quot;\&quot;;JucePlugin_ManufacturerEmail=\&quot;\&quot;;JucePlugin_ManufacturerCode=0x504c6e63;JucePlugin_PluginCode=0x50414c32;JucePlugin_IsSynth=0;JucePlugin_WantsMidiInput=1;JucePlugin_ProducesMidiOutput=1;JucePlugin_IsMidiEffect=0;JucePlugin_EditorRequiresKeyboardFocus=1;JucePlugin_Version=1.0.0;JucePlugin_VersionCode=0x10000;JucePlugin_VersionString=\&quot;1.0.0\&quot;;JucePlugin_VSTUniqueID=JucePlugin_PluginCode;JucePlugin_VSTCategory=kPlugCategEffect;JucePlugin_Vst3Category=\&quot;Fx\&quot;;JucePlugin_AUMainType='aumf';JucePlugin_AUSubType=JucePlugin_PluginCode;JucePlugin_AUExportPrefix=PALauncherAU;JucePlugin_AUExportPrefixQuoted=\&quot;PALauncherAU\&quot;;JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode;JucePlugin_CFBundleIdentifier=com.palauncher.palauncher;JucePlugin_AAXIdentifier=com.palauncher.palauncher;JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode;JucePlugin_AAXProductId=JucePlugin_PluginCode;JucePlugin_AAXCategory=0;JucePlugin_AAXDisableBypass=0;JucePlugin_AAXDisableMultiMono=0;JucePlugin_IAAType=0x6175726d;JucePlugin_IAASubType=JucePlugin_PluginCode;JucePlugin_IAAName=\&quot;PALauncher: Plugin Alliance Launcher\&quot;;JucePlugin_VSTNumMidiInputs=16;JucePlugin_VSTNumMidiOutputs=16;JucePlugin_ARAContentTypes=0;JucePlugin_ARATransformationFlags=0;JucePlugin_ARAFactoryID=\&quot;com.PALauncher.PluginAllianceLauncher.factory\&quot;;JucePlugin_ARADocumentArchiveID=\&quot;com.PALauncher.PluginAllianceLauncher.aradocumentarchive.1.0.0\&quot;;JucePlugin_ARACompatibleArchiveIDs=\&quot;\&quot;;JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone;JUCER_VS2022_78A503E=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;JUCE_SHARED_CODE=1;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
       <OutputFile>$(OutDir)\Plugin Alliance Launcher.lib</OutputFile>
@@ -2380,6 +2380,8 @@
     <ClCompile Include="..\..\..\JUCE\modules\juce_gui_extra\juce_gui_extra.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\JuceLibraryCode\BinaryData.cpp"/>
+    <ClCompile Include="..\..\JuceLibraryCode\BinaryData2.cpp"/>
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_audio_basics.cpp"/>
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_audio_devices.cpp"/>
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_audio_formats.cpp"/>
@@ -3357,10 +3359,164 @@
     <ClInclude Include="..\..\..\JUCE\modules\juce_gui_extra\misc\juce_WebBrowserComponent.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_gui_extra\native\juce_NSViewFrameWatcher_mac.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_gui_extra\juce_gui_extra.h"/>
+    <ClInclude Include="..\..\JuceLibraryCode\BinaryData.h"/>
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h"/>
     <ClInclude Include="..\..\JuceLibraryCode\JucePluginDefines.h"/>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Resources\Thumbnails\acme_opticom_xla3.png"/>
+    <None Include="..\..\Resources\Thumbnails\ada_flanger.png"/>
+    <None Include="..\..\Resources\Thumbnails\adptr_metric_ab.png"/>
+    <None Include="..\..\Resources\Thumbnails\adptr_sculpt.png"/>
+    <None Include="..\..\Resources\Thumbnails\adptr_streamliner.png"/>
+    <None Include="..\..\Resources\Thumbnails\adptr_utopia.png"/>
+    <None Include="..\..\Resources\Thumbnails\amek_eq200.png"/>
+    <None Include="..\..\Resources\Thumbnails\amek_eq250.png"/>
+    <None Include="..\..\Resources\Thumbnails\ampeg_b15n.png"/>
+    <None Include="..\..\Resources\Thumbnails\ampeg_svt3pro.png"/>
+    <None Include="..\..\Resources\Thumbnails\ampeg_svtvr.png"/>
+    <None Include="..\..\Resources\Thumbnails\ampeg_v4b.png"/>
+    <None Include="..\..\Resources\Thumbnails\bettermaker_bus_compressor.png"/>
+    <None Include="..\..\Resources\Thumbnails\bettermaker_mastering_compressor.png"/>
+    <None Include="..\..\Resources\Thumbnails\bettermaker_perfection.png"/>
+    <None Include="..\..\Resources\Thumbnails\black_box_hg2.png"/>
+    <None Include="..\..\Resources\Thumbnails\black_box_hg2ms.png"/>
+    <None Include="..\..\Resources\Thumbnails\black_box_hgq.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_2098_eq.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_aura.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_bassdude.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_boom_v3.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_cleansweep_pro.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_clipper.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_console_amek_200.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_console_amek_9099.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_console_focusrite_sc.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_console_n.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_console_ssl_4000_e.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_console_ssl_4000_g.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_console_ssl_9000_j.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_control_v2.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_crispytuner.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_delay_2500.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_digital_v3.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_dyneq_v2.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_enhancer.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_glue.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_hybrid_v2.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_limiter.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_limiter_true_peak.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_masterdesk.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_masterdesk_pro.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_masterdesk_true_peak.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_megadual.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_oberhausen.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_opto.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_paneq.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_pulsar.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_refinement_v3.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_rockergain100.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_rockrack_v3.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_rooms.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_saturator_v2.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_stereomaker.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_subsynth.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_townhouse.png"/>
+    <None Include="..\..\Resources\Thumbnails\bx_xl_v3.png"/>
+    <None Include="..\..\Resources\Thumbnails\cenozoix_compressor.png"/>
+    <None Include="..\..\Resources\Thumbnails\chandler_gav19t.png"/>
+    <None Include="..\..\Resources\Thumbnails\cut_classic_passive_eq.png"/>
+    <None Include="..\..\Resources\Thumbnails\dangerous_bax_eq.png"/>
+    <None Include="..\..\Resources\Thumbnails\diezel_herbert.png"/>
+    <None Include="..\..\Resources\Thumbnails\diezel_vh4.png"/>
+    <None Include="..\..\Resources\Thumbnails\ds_audio_tantra_2.png"/>
+    <None Include="..\..\Resources\Thumbnails\ds_audio_thorn.png"/>
+    <None Include="..\..\Resources\Thumbnails\elysia_alpha_compressor.png"/>
+    <None Include="..\..\Resources\Thumbnails\elysia_karacter.png"/>
+    <None Include="..\..\Resources\Thumbnails\elysia_mpressor.png"/>
+    <None Include="..\..\Resources\Thumbnails\elysia_museq.png"/>
+    <None Include="..\..\Resources\Thumbnails\elysia_nvelope.png"/>
+    <None Include="..\..\Resources\Thumbnails\engl_e646_vs.png"/>
+    <None Include="..\..\Resources\Thumbnails\engl_e765_rt.png"/>
+    <None Include="..\..\Resources\Thumbnails\engl_savage_120.png"/>
+    <None Include="..\..\Resources\Thumbnails\fiedler_spatial_creator.png"/>
+    <None Include="..\..\Resources\Thumbnails\fiedler_stage.png"/>
+    <None Include="..\..\Resources\Thumbnails\friedman_be100.png"/>
+    <None Include="..\..\Resources\Thumbnails\friedman_buxom_betty.png"/>
+    <None Include="..\..\Resources\Thumbnails\friedman_ds40.png"/>
+    <None Include="..\..\Resources\Thumbnails\fuchs_overdrive_supreme_50.png"/>
+    <None Include="..\..\Resources\Thumbnails\fuchs_train_ii.png"/>
+    <None Include="..\..\Resources\Thumbnails\gallien_krueger_800rb.png"/>
+    <None Include="..\..\Resources\Thumbnails\harris_doyle_natalus.png"/>
+    <None Include="..\..\Resources\Thumbnails\hears_chop_shop.png"/>
+    <None Include="..\..\Resources\Thumbnails\hum_laal.png"/>
+    <None Include="..\..\Resources\Thumbnails\karanyi_triad.png"/>
+    <None Include="..\..\Resources\Thumbnails\kirchhoff_eq.png"/>
+    <None Include="..\..\Resources\Thumbnails\knif_knifonium.png"/>
+    <None Include="..\..\Resources\Thumbnails\knif_soma.png"/>
+    <None Include="..\..\Resources\Thumbnails\lindell_254e.png"/>
+    <None Include="..\..\Resources\Thumbnails\lindell_354e.png"/>
+    <None Include="..\..\Resources\Thumbnails\lindell_50_series.png"/>
+    <None Include="..\..\Resources\Thumbnails\lindell_69_series.png"/>
+    <None Include="..\..\Resources\Thumbnails\lindell_80_series.png"/>
+    <None Include="..\..\Resources\Thumbnails\lindell_channelx.png"/>
+    <None Include="..\..\Resources\Thumbnails\lindell_eq825.png"/>
+    <None Include="..\..\Resources\Thumbnails\looptrotter_sa2rate_2.png"/>
+    <None Include="..\..\Resources\Thumbnails\louder_than_liftoff_silver_bullet.png"/>
+    <None Include="..\..\Resources\Thumbnails\maag_audio_eq2.png"/>
+    <None Include="..\..\Resources\Thumbnails\maag_audio_eq4.png"/>
+    <None Include="..\..\Resources\Thumbnails\maag_audio_magnumk.png"/>
+    <None Include="..\..\Resources\Thumbnails\maor_hawkeye.png"/>
+    <None Include="..\..\Resources\Thumbnails\millennia_nseq2.png"/>
+    <None Include="..\..\Resources\Thumbnails\mixland_needlepoint.png"/>
+    <None Include="..\..\Resources\Thumbnails\mixland_the_oven.png"/>
+    <None Include="..\..\Resources\Thumbnails\neold_big_al.png"/>
+    <None Include="..\..\Resources\Thumbnails\neold_oldtimer.png"/>
+    <None Include="..\..\Resources\Thumbnails\neold_rz062.png"/>
+    <None Include="..\..\Resources\Thumbnails\neold_u17.png"/>
+    <None Include="..\..\Resources\Thumbnails\neold_u2a.png"/>
+    <None Include="..\..\Resources\Thumbnails\neold_v76u73.png"/>
+    <None Include="..\..\Resources\Thumbnails\neold_warble.png"/>
+    <None Include="..\..\Resources\Thumbnails\neold_wunderlich.png"/>
+    <None Include="..\..\Resources\Thumbnails\noveltech_character.png"/>
+    <None Include="..\..\Resources\Thumbnails\noveltech_vocal_enhancer.png"/>
+    <None Include="..\..\Resources\Thumbnails\pro_audio_dsp_dsm_v3.png"/>
+    <None Include="..\..\Resources\Thumbnails\purple_audio_mc77.png"/>
+    <None Include="..\..\Resources\Thumbnails\shadow_hills_mastering_compressor.png"/>
+    <None Include="..\..\Resources\Thumbnails\shadow_hills_mastering_compressor_class_a.png"/>
+    <None Include="..\..\Resources\Thumbnails\shadow_hills_optomax.png"/>
+    <None Include="..\..\Resources\Thumbnails\spl_big.png"/>
+    <None Include="..\..\Resources\Thumbnails\spl_de_esser_collection.png"/>
+    <None Include="..\..\Resources\Thumbnails\spl_iron.png"/>
+    <None Include="..\..\Resources\Thumbnails\spl_machine_head.png"/>
+    <None Include="..\..\Resources\Thumbnails\spl_passeq.png"/>
+    <None Include="..\..\Resources\Thumbnails\spl_transient_designer_plus.png"/>
+    <None Include="..\..\Resources\Thumbnails\spl_twintube.png"/>
+    <None Include="..\..\Resources\Thumbnails\spl_vitalizer_mk3t.png"/>
+    <None Include="..\..\Resources\Thumbnails\suhr_pt100.png"/>
+    <None Include="..\..\Resources\Thumbnails\suhr_se100.png"/>
+    <None Include="..\..\Resources\Thumbnails\swivel_bde.png"/>
+    <None Include="..\..\Resources\Thumbnails\swivel_click_boom.png"/>
+    <None Include="..\..\Resources\Thumbnails\swivel_hitstrip.png"/>
+    <None Include="..\..\Resources\Thumbnails\swivel_knocktonal.png"/>
+    <None Include="..\..\Resources\Thumbnails\swivel_spread.png"/>
+    <None Include="..\..\Resources\Thumbnails\swivel_the_sauce.png"/>
+    <None Include="..\..\Resources\Thumbnails\tomo_lisa.png"/>
+    <None Include="..\..\Resources\Thumbnails\trinity_shaper.png"/>
+    <None Include="..\..\Resources\Thumbnails\unfiltered_byome.png"/>
+    <None Include="..\..\Resources\Thumbnails\unfiltered_dent_2.png"/>
+    <None Include="..\..\Resources\Thumbnails\unfiltered_fault.png"/>
+    <None Include="..\..\Resources\Thumbnails\unfiltered_g8.png"/>
+    <None Include="..\..\Resources\Thumbnails\unfiltered_indent_2.png"/>
+    <None Include="..\..\Resources\Thumbnails\unfiltered_lion.png"/>
+    <None Include="..\..\Resources\Thumbnails\unfiltered_sandman.png"/>
+    <None Include="..\..\Resources\Thumbnails\unfiltered_sandman_pro.png"/>
+    <None Include="..\..\Resources\Thumbnails\unfiltered_silo.png"/>
+    <None Include="..\..\Resources\Thumbnails\unfiltered_specops.png"/>
+    <None Include="..\..\Resources\Thumbnails\unfiltered_tails.png"/>
+    <None Include="..\..\Resources\Thumbnails\unfiltered_zip.png"/>
+    <None Include="..\..\Resources\Thumbnails\vertigo_vsc2.png"/>
+    <None Include="..\..\Resources\Thumbnails\vertigo_vsm3.png"/>
+    <None Include="..\..\Resources\Thumbnails\vertigo_vss2.png"/>
     <None Include="..\..\..\JUCE\modules\juce_audio_devices\native\oboe\CMakeLists.txt"/>
     <None Include="..\..\..\JUCE\modules\juce_audio_devices\native\oboe\README.md"/>
     <None Include="..\..\..\JUCE\modules\juce_audio_formats\codecs\flac\Flac Licence.txt"/>
