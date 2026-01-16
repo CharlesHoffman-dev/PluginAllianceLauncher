@@ -27,6 +27,11 @@ public:
         if (desc.name.containsIgnoreCase("Plugin Alliance Launcher"))
             return false;
 
+        // Exclude discontinued/unavailable plugins
+        if (desc.name.containsIgnoreCase("Spacelab Beam") ||
+            desc.name.containsIgnoreCase("Spacelab Ignition"))
+            return false;
+
         // Check manufacturer name
         if (paManufacturers.count(desc.manufacturerName.toLowerCase()) > 0)
             return true;

@@ -44,8 +44,8 @@ public:
     std::function<void(const PluginInfo&, bool)> onFavoriteToggle;
 
     // Preferred card size - square thumbnail area with room for text
-    static constexpr int preferredWidth = 200;
-    static constexpr int preferredHeight = 240;
+    static constexpr int preferredWidth = 220;
+    static constexpr int preferredHeight = 255;
 
 private:
     PluginInfo pluginInfo;

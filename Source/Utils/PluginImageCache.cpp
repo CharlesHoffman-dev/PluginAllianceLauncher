@@ -116,8 +116,13 @@ void PluginImageCache::initializeThumbnailFilenames()
 
     // Maag Audio
     thumbnailFilenames["maag audio eq4"] = "maag_audio_eq4";
+    thumbnailFilenames["mäag audio eq4"] = "maag_audio_eq4";
+    thumbnailFilenames["maag audio eq4 ms"] = "maag_audio_eq4_ms";
+    thumbnailFilenames["mäag audio eq4 ms"] = "maag_audio_eq4_ms";
     thumbnailFilenames["maag audio eq2"] = "maag_audio_eq2";
-    thumbnailFilenames["maag audio magnum-k"] = "maag_audio_magnumk";
+    thumbnailFilenames["mäag audio eq2"] = "maag_audio_eq2";
+    thumbnailFilenames["maag audio magnum-k"] = "maag_audio_magnum_k";
+    thumbnailFilenames["mäag audio magnum-k"] = "maag_audio_magnum_k";
 
     // ADPTR AUDIO
     thumbnailFilenames["adptr audio metric ab"] = "adptr_metric_ab";
@@ -155,7 +160,8 @@ void PluginImageCache::initializeThumbnailFilenames()
     thumbnailFilenames["bx_masterdesk true peak"] = "bx_masterdesk_true_peak";
     thumbnailFilenames["bx_cleansweep pro"] = "bx_cleansweep_pro";
     thumbnailFilenames["bx_control v2"] = "bx_control_v2";
-    thumbnailFilenames["bx_delay 2500"] = "bx_delay_2500";
+    thumbnailFilenames["bx_delay 2500"] = "bx_delay2500";
+    thumbnailFilenames["bx_delay2500"] = "bx_delay2500";
     thumbnailFilenames["bx_rockergain100"] = "bx_rockergain100";
     thumbnailFilenames["bx_subsynth"] = "bx_subsynth";
     thumbnailFilenames["bx_roooms"] = "bx_rooms";
@@ -175,6 +181,7 @@ void PluginImageCache::initializeThumbnailFilenames()
     thumbnailFilenames["bx_bassdude"] = "bx_bassdude";
     thumbnailFilenames["bx_rockrack v3"] = "bx_rockrack_v3";
     thumbnailFilenames["bx_crispytuner"] = "bx_crispytuner";
+    thumbnailFilenames["bx_crispyscale"] = "bx_crispyscale";
     thumbnailFilenames["bx_glue"] = "bx_glue";
     thumbnailFilenames["bx_enhancer"] = "bx_enhancer";
     thumbnailFilenames["bx_boom v3"] = "bx_boom_v3";
@@ -235,6 +242,7 @@ void PluginImageCache::initializeThumbnailFilenames()
     // AMEK
     thumbnailFilenames["amek eq 200"] = "amek_eq200";
     thumbnailFilenames["amek eq 250"] = "amek_eq250";
+    thumbnailFilenames["amek mastering compressor"] = "amek_mastering_compressor";
 
     // Ampeg (note: plugin names may or may not have hyphens)
     thumbnailFilenames["ampeg b-15n"] = "ampeg_b15n";
@@ -510,6 +518,7 @@ void PluginImageCache::initializeImageUrls()
     imageUrls["bx_bassdude"] = baseUrl + "productimage-300170_153cebea-6b47-432d-90b6-f4623bcd49e3.png";
     imageUrls["bx_rockrack v3"] = baseUrl + "productimage-300244_20a2ee7e-c696-432e-ae2f-641cd41b7723.png";
     imageUrls["bx_crispytuner"] = baseUrl + "productimage-300564_0f72ee8a-9c4f-43b7-9916-c4e1feca8f07.png";
+    imageUrls["bx_crispyscale"] = baseUrl + "productimage-300564_0f72ee8a-9c4f-43b7-9916-c4e1feca8f07.png";
     imageUrls["bx_glue"] = baseUrl + "productimage-300988_dbbe8b26-3676-473a-8766-8a51308d591f.png";
     imageUrls["bx_enhancer"] = baseUrl + "productimage-300927_483a3bdf-0d3a-4970-a5b7-d0b6b37ba07c.png";
     imageUrls["bx_boom v3"] = baseUrl + "productimage-301127_e9ace067-330a-4797-9b22-85b8cb2bf870.png";
@@ -545,6 +554,7 @@ void PluginImageCache::initializeImageUrls()
     // AMEK
     imageUrls["amek eq 200"] = baseUrl + "productimage-300489_6767f358-fdda-4c8c-a54e-da06e303f0ef.png";
     imageUrls["amek eq 250"] = baseUrl + "productimage-300661_afa25549-2347-4ed7-9321-d48f261fc6ee.png";
+    imageUrls["amek mastering compressor"] = baseUrl + "productimage-300733_8559dc19-253d-4547-a89c-f15db5e971ac.png";
 
     // Ampeg
     imageUrls["ampeg b-15n"] = baseUrl + "productimage-300233_b83aba8c-07b2-4ef5-90dd-472408ab5951.png";

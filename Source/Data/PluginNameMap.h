@@ -299,17 +299,20 @@ inline const std::map<juce::String, juce::String>& getPluginNameMap()
         {"louder than liftoff chop shop", "Louder Than Liftoff Chop Shop"},
         {"chop shop", "Louder Than Liftoff Chop Shop"},
 
-        // Maag Audio
-        {"maag audio eq2", "Maag EQ2"},
-        {"maag eq2", "Maag EQ2"},
-        {"mäag audio eq2", "Maag EQ2"},
+        // Mäag Audio
+        {"maag audio eq2", "Mäag Audio EQ2"},
+        {"maag eq2", "Mäag Audio EQ2"},
+        {"mäag audio eq2", "Mäag Audio EQ2"},
         {"maag audio eq4", "Mäag Audio EQ4"},
         {"maag eq4", "Mäag Audio EQ4"},
         {"mäag audio eq4", "Mäag Audio EQ4"},
-        {"maag audio magnum-k", "Maag Magnum-K"},
-        {"maag audio magnumk", "Maag Magnum-K"},
-        {"maag magnum-k", "Maag Magnum-K"},
-        {"mäag audio magnum-k", "Maag Magnum-K"},
+        {"maag audio eq4 ms", "Mäag Audio EQ4 MS"},
+        {"maag eq4 ms", "Mäag Audio EQ4 MS"},
+        {"mäag audio eq4 ms", "Mäag Audio EQ4 MS"},
+        {"maag audio magnum-k", "Mäag Audio MAGNUM-K"},
+        {"maag audio magnumk", "Mäag Audio MAGNUM-K"},
+        {"maag magnum-k", "Mäag Audio MAGNUM-K"},
+        {"mäag audio magnum-k", "Mäag Audio MAGNUM-K"},
 
         // Maor Appelbaum & Hendyamps
         {"maor appelbaum mastering & hendyamps the oven", "Maor Appelbaum Mastering & Hendyamps THE OVEN"},

@@ -110,7 +110,7 @@ void PluginCard::paint(juce::Graphics& g)
         g.drawText("Loading...", imageBounds, juce::Justification::centred);
     }
 
-    contentBounds.removeFromTop(8);
+    contentBounds.removeFromTop(14);
 
     // Category and Era tags row
     auto tagRow = contentBounds.removeFromTop(20);
