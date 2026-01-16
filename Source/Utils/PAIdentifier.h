@@ -24,12 +24,13 @@ public:
     bool isPluginAlliancePlugin(const juce::PluginDescription& desc) const
     {
         // Exclude our own launcher plugin
-        if (desc.name.containsIgnoreCase("Plugin Alliance Launcher"))
+        if (desc.name.containsIgnoreCase("Plugin Alliance Launcher") ||
+            desc.name.containsIgnoreCase("PA Launcher") ||
+            desc.name.containsIgnoreCase("PALauncher"))
             return false;
 
         // Exclude discontinued/unavailable plugins
-        if (desc.name.containsIgnoreCase("Spacelab Beam") ||
-            desc.name.containsIgnoreCase("Spacelab Ignition"))
+        if (desc.name.containsIgnoreCase("Spacelab"))
             return false;
 
         // Check manufacturer name

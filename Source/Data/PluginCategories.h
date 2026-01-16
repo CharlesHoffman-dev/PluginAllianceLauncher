@@ -514,16 +514,12 @@ inline juce::String getBrandName(const juce::String& pluginName, const juce::Str
     return "Plugin Alliance";
 }
 
-// Get display name with brand prefix removed
+// Get display name with brand prefix removed (but keep bx_ prefix for Brainworx products)
 inline juce::String getDisplayName(const juce::String& pluginName, const juce::String& brandName)
 {
     auto name = pluginName;
 
-    // Remove Brainworx prefix
-    if (name.startsWith("bx_"))
-        name = name.substring(3);
-    else if (name.startsWithIgnoreCase("bx "))
-        name = name.substring(3);
+    // Keep bx_ prefix for Brainworx products - it's part of the product name
 
     // Remove brand name prefix if present
     if (name.startsWithIgnoreCase(brandName + " "))
