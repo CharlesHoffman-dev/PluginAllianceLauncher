@@ -11,16 +11,42 @@
 namespace PALauncher
 {
 
+// Custom LookAndFeel for Load button - no outline, 4px radius
+class CardButtonLookAndFeel : public juce::LookAndFeel_V4
+{
+public:
+    void drawButtonBackground(juce::Graphics& g, juce::Button& button,
+                              const juce::Colour& backgroundColour,
+                              bool isMouseOverButton, bool isButtonDown) override
+    {
+        auto bounds = button.getLocalBounds().toFloat().reduced(0.5f);
+        auto baseColour = backgroundColour;
+
+        if (isButtonDown)
+            baseColour = baseColour.darker(0.2f);
+        else if (isMouseOverButton)
+            baseColour = baseColour.brighter(0.1f);
+
+        g.setColour(baseColour);
+        g.fillRoundedRectangle(bounds, 4.0f);
+    }
+};
+
+// Static instance shared by all cards
+static CardButtonLookAndFeel cardButtonLookAndFeel;
+
 PluginCard::PluginCard()
 {
     // Prevent focus grabbing - don't steal focus from other components
     setWantsKeyboardFocus(false);
     setMouseClickGrabsKeyboardFocus(false);
 
-    // Set up Load button - white with black text
+    // Set up Load button - white with black text, pointer cursor, no outline
     loadButton.setButtonText("Load");
     loadButton.setColour(juce::TextButton::buttonColourId, juce::Colours::white);
     loadButton.setColour(juce::TextButton::textColourOffId, juce::Colours::black);
+    loadButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
+    loadButton.setLookAndFeel(&cardButtonLookAndFeel);
     loadButton.onClick = [this]()
     {
         if (onDoubleClick)
@@ -28,9 +54,6 @@ PluginCard::PluginCard()
     };
     loadButton.setVisible(false);
     addAndMakeVisible(loadButton);
-
-    // Set pointer cursor for the card
-    setMouseCursor(juce::MouseCursor::PointingHandCursor);
 }
 
 void PluginCard::paint(juce::Graphics& g)
@@ -115,13 +138,6 @@ void PluginCard::paint(juce::Graphics& g)
         }
 
         g.drawImage(pluginImage, drawBounds, juce::RectanglePlacement::centred);
-
-        // Darken image area on hover (but button stays white)
-        if (hovered)
-        {
-            g.setColour(juce::Colour(0x99000000));  // Semi-transparent black overlay
-            g.fillRect(imageBounds);
-        }
     }
     else
     {
@@ -132,13 +148,6 @@ void PluginCard::paint(juce::Graphics& g)
         g.setColour(juce::Colour(0xff999999));
         g.setFont(juce::Font(12.0f));
         g.drawText("Loading...", imageBounds, juce::Justification::centred);
-
-        // Darken placeholder on hover
-        if (hovered)
-        {
-            g.setColour(juce::Colour(0x99000000));
-            g.fillRoundedRectangle(imageBounds.toFloat(), 4.0f);
-        }
     }
 
     contentBounds.removeFromTop(14);
@@ -210,6 +219,13 @@ void PluginCard::paint(juce::Graphics& g)
         g.setColour(juce::Colour(0xffcccccc));  // Light gray outline
         g.strokePath(heartPath, juce::PathStrokeType(1.5f));
     }
+
+    // Darken entire card on hover (drawn last, button is a child component so stays bright)
+    if (hovered)
+    {
+        g.setColour(juce::Colour(0x40000000));  // Subtle semi-transparent black overlay
+        g.fillRoundedRectangle(bounds, 6.0f);
+    }
 }
 
 void PluginCard::resized()
@@ -223,9 +239,9 @@ void PluginCard::resized()
     contentBounds.removeFromTop(8);   // Spacing
     auto imageBounds = contentBounds.removeFromTop(140);
 
-    // Center a 70x28 button in the image area
-    int buttonWidth = 70;
-    int buttonHeight = 28;
+    // Center a larger button in the image area
+    int buttonWidth = 100;
+    int buttonHeight = 36;
     int buttonX = imageBounds.getCentreX() - buttonWidth / 2;
     int buttonY = imageBounds.getCentreY() - buttonHeight / 2;
     loadButton.setBounds(buttonX, buttonY, buttonWidth, buttonHeight);
@@ -238,11 +254,15 @@ void PluginCard::mouseEnter(const juce::MouseEvent&)
     repaint();
 }
 
-void PluginCard::mouseExit(const juce::MouseEvent&)
+void PluginCard::mouseExit(const juce::MouseEvent& e)
 {
-    hovered = false;
-    loadButton.setVisible(false);
-    repaint();
+    // Only hide if mouse actually left the card (not just moved to a child component like the button)
+    if (!getLocalBounds().contains(e.getPosition()))
+    {
+        hovered = false;
+        loadButton.setVisible(false);
+        repaint();
+    }
 }
 
 void PluginCard::mouseDown(const juce::MouseEvent& e)
@@ -270,6 +290,10 @@ void PluginCard::mouseDoubleClick(const juce::MouseEvent&)
 void PluginCard::setPluginInfo(const PluginInfo& info)
 {
     pluginInfo = info;
+
+    // Reset hover state and hide button when card is assigned new plugin
+    hovered = false;
+    loadButton.setVisible(false);
 
     // Try to get image from cache
     updateImage();

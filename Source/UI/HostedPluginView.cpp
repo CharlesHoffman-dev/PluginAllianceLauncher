@@ -10,6 +10,29 @@
 namespace PALauncher
 {
 
+// Custom LookAndFeel for buttons - no outline, 4px radius
+class HostedViewButtonLookAndFeel : public juce::LookAndFeel_V4
+{
+public:
+    void drawButtonBackground(juce::Graphics& g, juce::Button& button,
+                              const juce::Colour& backgroundColour,
+                              bool isMouseOverButton, bool isButtonDown) override
+    {
+        auto bounds = button.getLocalBounds().toFloat().reduced(0.5f);
+        auto baseColour = backgroundColour;
+
+        if (isButtonDown)
+            baseColour = baseColour.darker(0.2f);
+        else if (isMouseOverButton)
+            baseColour = baseColour.brighter(0.1f);
+
+        g.setColour(baseColour);
+        g.fillRoundedRectangle(bounds, 4.0f);
+    }
+};
+
+static HostedViewButtonLookAndFeel hostedViewButtonLookAndFeel;
+
 HostedPluginView::HostedPluginView()
 {
     pluginNameLabel.setFont(juce::Font(14.0f, juce::Font::bold));
@@ -20,6 +43,7 @@ HostedPluginView::HostedPluginView()
     unloadButton.setButtonText("Unload");
     unloadButton.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff2a2a2a));
     unloadButton.setColour(juce::TextButton::textColourOffId, juce::Colour(0xfff9f9f9));
+    unloadButton.setLookAndFeel(&hostedViewButtonLookAndFeel);
     unloadButton.onClick = [this]()
     {
         if (onUnloadClicked)

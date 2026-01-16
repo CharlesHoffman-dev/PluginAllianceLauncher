@@ -37,16 +37,17 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     // Load logo
     loadLogo();
 
-    // Set up subscription banner
+    // Set up subscription banner (sticky at bottom of plugin list)
     subscriptionLabel.setText("Access all plugins for $14.99/month", juce::dontSendNotification);
-    subscriptionLabel.setFont(juce::Font(13.0f));
+    subscriptionLabel.setFont(juce::Font(16.0f, juce::Font::bold));
     subscriptionLabel.setColour(juce::Label::textColourId, juce::Colours::white);
-    subscriptionLabel.setJustificationType(juce::Justification::centredRight);
+    subscriptionLabel.setJustificationType(juce::Justification::centred);
     addAndMakeVisible(subscriptionLabel);
 
     subscribeButton.setButtonText("Subscribe");
-    subscribeButton.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff0cbff2));
-    subscribeButton.setColour(juce::TextButton::textColourOffId, juce::Colours::white);
+    subscribeButton.setColour(juce::TextButton::buttonColourId, juce::Colours::white);
+    subscribeButton.setColour(juce::TextButton::textColourOffId, juce::Colours::black);
+    subscribeButton.setLookAndFeel(&buttonLookAndFeel);
     subscribeButton.onClick = []()
     {
         juce::URL("https://www.plugin-alliance.com/pages/subscriptions").launchInDefaultBrowser();
@@ -65,6 +66,7 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     rescanButton.setButtonText("Rescan");
     rescanButton.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff0cbff2));
     rescanButton.setColour(juce::TextButton::textColourOffId, juce::Colours::white);
+    rescanButton.setLookAndFeel(&buttonLookAndFeel);
     rescanButton.onClick = [this]()
     {
         processor.getPluginScanner().startScan();
@@ -76,6 +78,7 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     toggleModeButton.setButtonText("Show Plugin");
     toggleModeButton.setColour(juce::TextButton::buttonColourId, juce::Colours::white);
     toggleModeButton.setColour(juce::TextButton::textColourOffId, juce::Colours::black);
+    toggleModeButton.setLookAndFeel(&buttonLookAndFeel);
     toggleModeButton.onClick = [this]() { toggleBrowserMode(); };
     addAndMakeVisible(toggleModeButton);
 
@@ -199,21 +202,26 @@ void PluginAllianceLauncherEditor::paint(juce::Graphics& g)
 {
     g.fillAll(juce::Colour(0xff121212));
 
-    // Subscription banner background
-    g.setColour(juce::Colour(0xff0a0a0a));
-    g.fillRect(0, 0, getWidth(), bannerHeight);
-
     // Top bar background
     g.setColour(juce::Colour(0xff1a1a1a));
-    g.fillRect(0, bannerHeight, getWidth(), topBarHeight);
+    g.fillRect(0, 0, getWidth(), topBarHeight);
 
     // Draw logo in sidebar area (fills sidebar width)
     if (logoDrawable != nullptr)
     {
-        auto logoBounds = juce::Rectangle<float>(8.0f, static_cast<float>(bannerHeight) + 8.0f,
+        auto logoBounds = juce::Rectangle<float>(8.0f, 8.0f,
                                                    static_cast<float>(sidebarWidth - 16),
                                                    static_cast<float>(topBarHeight - 16));
         logoDrawable->drawWithin(g, logoBounds, juce::RectanglePlacement::centred, 1.0f);
+    }
+
+    // Subscription banner at bottom of content area (in browser mode only)
+    if (browserMode)
+    {
+        auto bannerBounds = juce::Rectangle<int>(sidebarWidth, getHeight() - bannerHeight,
+                                                  getWidth() - sidebarWidth, bannerHeight);
+        g.setColour(juce::Colour(0xff0cbff2));  // Brand cyan
+        g.fillRect(bannerBounds);
     }
 
     // Only show status area when scanning
@@ -221,7 +229,7 @@ void PluginAllianceLauncherEditor::paint(juce::Graphics& g)
     if (isScanning)
     {
         int progressBarHeight = 24;
-        auto statusBounds = juce::Rectangle<int>(0, bannerHeight + topBarHeight, getWidth(), progressBarHeight);
+        auto statusBounds = juce::Rectangle<int>(0, topBarHeight, getWidth(), progressBarHeight);
 
         // Background for status area
         g.setColour(juce::Colour(0xff1a1a1a));
@@ -256,13 +264,6 @@ void PluginAllianceLauncherEditor::paint(juce::Graphics& g)
 void PluginAllianceLauncherEditor::resized()
 {
     auto bounds = getLocalBounds();
-
-    // Subscription banner - always visible at very top
-    auto banner = bounds.removeFromTop(bannerHeight);
-    banner.reduce(10, 4);
-    subscribeButton.setBounds(banner.removeFromRight(80));
-    banner.removeFromRight(10);
-    subscriptionLabel.setBounds(banner);
 
     // Top bar - always visible
     auto topBar = bounds.removeFromTop(topBarHeight);
@@ -307,9 +308,11 @@ void PluginAllianceLauncherEditor::resized()
 
     if (browserMode)
     {
-        // Show sidebar in browser mode
+        // Show sidebar and subscription banner in browser mode
         categoryFilter.setVisible(true);
         eraFilter.setVisible(true);
+        subscriptionLabel.setVisible(true);
+        subscribeButton.setVisible(true);
 
         // Check if current category has subcategories
         bool hasSubcategories = (currentCategory == DisplayCategory::Compressors ||
@@ -342,18 +345,30 @@ void PluginAllianceLauncherEditor::resized()
         // Era filter takes remaining space
         eraFilter.setBounds(sidebar);
 
-        // Plugin list takes the main content area
+        // Subscription banner at bottom of content area (sticky)
+        auto bannerArea = bounds.removeFromBottom(bannerHeight);
+        // Center the label and button within the banner
+        int buttonWidth = 90;
+        int labelWidth = 280;
+        int totalWidth = labelWidth + 12 + buttonWidth;  // label + gap + button
+        int startX = bannerArea.getCentreX() - totalWidth / 2;
+        subscriptionLabel.setBounds(startX, bannerArea.getY() + (bannerHeight - 24) / 2, labelWidth, 24);
+        subscribeButton.setBounds(startX + labelWidth + 12, bannerArea.getY() + (bannerHeight - 28) / 2, buttonWidth, 28);
+
+        // Plugin list takes the main content area (above the banner)
         pluginListView.setBounds(bounds);
         pluginListView.setVisible(true);
         hostedPluginView.setVisible(false);
     }
     else
     {
-        // Hide sidebar in plugin mode - plugin takes over entire area below top bar
+        // Hide sidebar and subscription banner in plugin mode - plugin takes over entire area below top bar
         categoryFilter.setVisible(false);
         subcategoryFilter.setVisible(false);
         eraFilter.setVisible(false);
         pluginListView.setVisible(false);
+        subscriptionLabel.setVisible(false);
+        subscribeButton.setVisible(false);
 
         // Hosted plugin view takes the full area below top bar
         hostedPluginView.setBounds(bounds);
@@ -417,7 +432,7 @@ void PluginAllianceLauncherEditor::timerCallback()
 
     // Repaint the status area when scanning
     if (isScanning)
-        repaint(sidebarWidth, bannerHeight + topBarHeight, getWidth() - sidebarWidth, 24);
+        repaint(sidebarWidth, topBarHeight, getWidth() - sidebarWidth, 24);
 }
 
 void PluginAllianceLauncherEditor::updatePluginList()

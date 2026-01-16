@@ -19,6 +19,27 @@
 namespace PALauncher
 {
 
+// Custom LookAndFeel for buttons - no outline, 4px radius
+class ButtonLookAndFeel : public juce::LookAndFeel_V4
+{
+public:
+    void drawButtonBackground(juce::Graphics& g, juce::Button& button,
+                              const juce::Colour& backgroundColour,
+                              bool isMouseOverButton, bool isButtonDown) override
+    {
+        auto bounds = button.getLocalBounds().toFloat().reduced(0.5f);
+        auto baseColour = backgroundColour;
+
+        if (isButtonDown)
+            baseColour = baseColour.darker(0.2f);
+        else if (isMouseOverButton)
+            baseColour = baseColour.brighter(0.1f);
+
+        g.setColour(baseColour);
+        g.fillRoundedRectangle(bounds, 4.0f);
+    }
+};
+
 class PluginAllianceLauncherEditor : public juce::AudioProcessorEditor,
                                       public juce::ChangeListener,
                                       public juce::Timer
@@ -83,12 +104,15 @@ private:
 
     // Layout
     static constexpr int sidebarWidth = 180;
-    static constexpr int bannerHeight = 32;
+    static constexpr int bannerHeight = 50;
     static constexpr int topBarHeight = 48;
     static constexpr int hostedPluginMinHeight = 300;
     static constexpr int logoWidth = 140;
     static constexpr int logoHeight = 26;
     static constexpr int hostedPluginHeaderHeight = 36;
+
+    // Custom look and feel for buttons
+    ButtonLookAndFeel buttonLookAndFeel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginAllianceLauncherEditor)
 };
