@@ -20,15 +20,35 @@ HostedPluginParameter::HostedPluginParameter(int index)
 {
 }
 
+HostedPluginParameter::~HostedPluginParameter()
+{
+    // Make sure we're removed as a listener
+    if (linkedParam != nullptr)
+        linkedParam->removeListener(this);
+}
+
 void HostedPluginParameter::linkToParameter(juce::AudioProcessorParameter* param)
 {
-    linkedParam = param;
+    // Remove listener from old parameter
     if (linkedParam != nullptr)
+        linkedParam->removeListener(this);
+
+    linkedParam = param;
+
+    if (linkedParam != nullptr)
+    {
         cachedValue = linkedParam->getValue();
+        // Add ourselves as listener to get notified of changes
+        linkedParam->addListener(this);
+    }
 }
 
 void HostedPluginParameter::unlink()
 {
+    // Remove listener before unlinking
+    if (linkedParam != nullptr)
+        linkedParam->removeListener(this);
+
     linkedParam = nullptr;
     cachedValue = 0.0f;
 }
@@ -45,8 +65,13 @@ void HostedPluginParameter::setValue(float newValue)
 {
     cachedValue = newValue;
     auto* param = linkedParam;  // Local copy for thread safety
-    if (param != nullptr)
+    if (param != nullptr && !isForwardingChange)
+    {
+        // Prevent feedback: when DAW sets value, don't re-notify DAW
+        isForwardingChange = true;
         param->setValue(newValue);
+        isForwardingChange = false;
+    }
 }
 
 float HostedPluginParameter::getDefaultValue() const
@@ -111,6 +136,29 @@ bool HostedPluginParameter::isBoolean() const
     if (param != nullptr)
         return param->isBoolean();
     return false;
+}
+
+void HostedPluginParameter::parameterValueChanged(int /*parameterIndex*/, float newValue)
+{
+    // Called when the hosted plugin's parameter changes (e.g., user clicks in plugin GUI)
+    // Forward this change to our listeners (including the DAW like Ableton)
+    if (!isForwardingChange)
+    {
+        isForwardingChange = true;
+        cachedValue = newValue;
+        // This notifies Ableton that this parameter changed - essential for Configure mode
+        sendValueChangedMessageToListeners(newValue);
+        isForwardingChange = false;
+    }
+}
+
+void HostedPluginParameter::parameterGestureChanged(int /*parameterIndex*/, bool gestureIsStarting)
+{
+    // Forward gesture changes to DAW (for automation recording)
+    if (gestureIsStarting)
+        beginChangeGesture();
+    else
+        endChangeGesture();
 }
 
 //==============================================================================

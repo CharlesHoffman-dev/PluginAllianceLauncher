@@ -19,10 +19,12 @@ namespace PALauncher
 static constexpr int kMaxParameters = 256;
 
 // Custom parameter class that forwards to hosted plugin
-class HostedPluginParameter : public juce::AudioProcessorParameter
+class HostedPluginParameter : public juce::AudioProcessorParameter,
+                               public juce::AudioProcessorParameter::Listener
 {
 public:
     HostedPluginParameter(int index);
+    ~HostedPluginParameter() override;
 
     // Link to a hosted plugin's parameter
     void linkToParameter(juce::AudioProcessorParameter* param);
@@ -43,10 +45,15 @@ public:
     bool isAutomatable() const override { return true; }
     bool isMetaParameter() const override { return false; }
 
+    // AudioProcessorParameter::Listener - forward changes from hosted plugin to DAW
+    void parameterValueChanged(int parameterIndex, float newValue) override;
+    void parameterGestureChanged(int parameterIndex, bool gestureIsStarting) override;
+
 private:
     int paramIndex;
     juce::AudioProcessorParameter* linkedParam = nullptr;
     float cachedValue = 0.0f;
+    bool isForwardingChange = false;  // Prevent feedback loops
 };
 
 class PluginAllianceLauncherProcessor : public juce::AudioProcessor,
