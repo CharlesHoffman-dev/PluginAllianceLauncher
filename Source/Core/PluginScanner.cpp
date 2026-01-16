@@ -257,7 +257,19 @@ void PluginScanner::targetedScan()
 
     for (const auto& file : allVst3Files)
     {
-        if (matchesPAPattern(file.getFileNameWithoutExtension()))
+        auto filename = file.getFileNameWithoutExtension();
+
+        // IMPORTANT: Skip our own launcher plugin to avoid recursive loading crash
+        if (filename.containsIgnoreCase("Plugin Alliance Launcher") ||
+            filename.containsIgnoreCase("PALauncher") ||
+            filename.containsIgnoreCase("PA Launcher"))
+            continue;
+
+        // Also skip Spacelab plugins (discontinued)
+        if (filename.containsIgnoreCase("Spacelab"))
+            continue;
+
+        if (matchesPAPattern(filename))
             paPlugins.add(file);
     }
 
