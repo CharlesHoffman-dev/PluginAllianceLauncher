@@ -45,6 +45,10 @@ private:
 
     PluginAllianceLauncherProcessor& processor;
 
+    // Subscription banner
+    juce::Label subscriptionLabel;
+    juce::TextButton subscribeButton;
+
     // Top bar components
     SearchBar searchBar;
     juce::TextButton rescanButton;
@@ -79,6 +83,7 @@ private:
 
     // Layout
     static constexpr int sidebarWidth = 180;
+    static constexpr int bannerHeight = 32;
     static constexpr int topBarHeight = 48;
     static constexpr int hostedPluginMinHeight = 300;
     static constexpr int logoWidth = 140;

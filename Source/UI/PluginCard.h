@@ -53,6 +53,8 @@ private:
     bool hovered = false;
 
     juce::Image pluginImage;
+    juce::TextButton loadButton;
+    juce::Rectangle<int> imageBoundsCache;  // Cached for hit testing
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginCard)
 };

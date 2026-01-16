@@ -37,6 +37,22 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     // Load logo
     loadLogo();
 
+    // Set up subscription banner
+    subscriptionLabel.setText("Access all plugins for $14.99/month", juce::dontSendNotification);
+    subscriptionLabel.setFont(juce::Font(13.0f));
+    subscriptionLabel.setColour(juce::Label::textColourId, juce::Colours::white);
+    subscriptionLabel.setJustificationType(juce::Justification::centredRight);
+    addAndMakeVisible(subscriptionLabel);
+
+    subscribeButton.setButtonText("Subscribe");
+    subscribeButton.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff0cbff2));
+    subscribeButton.setColour(juce::TextButton::textColourOffId, juce::Colours::white);
+    subscribeButton.onClick = []()
+    {
+        juce::URL("https://www.plugin-alliance.com/pages/subscriptions").launchInDefaultBrowser();
+    };
+    addAndMakeVisible(subscribeButton);
+
     // Set up search bar
     searchBar.onSearchChanged = [this](const juce::String& text)
     {
@@ -183,14 +199,18 @@ void PluginAllianceLauncherEditor::paint(juce::Graphics& g)
 {
     g.fillAll(juce::Colour(0xff121212));
 
+    // Subscription banner background
+    g.setColour(juce::Colour(0xff0a0a0a));
+    g.fillRect(0, 0, getWidth(), bannerHeight);
+
     // Top bar background
     g.setColour(juce::Colour(0xff1a1a1a));
-    g.fillRect(0, 0, getWidth(), topBarHeight);
+    g.fillRect(0, bannerHeight, getWidth(), topBarHeight);
 
     // Draw logo in sidebar area (fills sidebar width)
     if (logoDrawable != nullptr)
     {
-        auto logoBounds = juce::Rectangle<float>(8.0f, 8.0f,
+        auto logoBounds = juce::Rectangle<float>(8.0f, static_cast<float>(bannerHeight) + 8.0f,
                                                    static_cast<float>(sidebarWidth - 16),
                                                    static_cast<float>(topBarHeight - 16));
         logoDrawable->drawWithin(g, logoBounds, juce::RectanglePlacement::centred, 1.0f);
@@ -201,7 +221,7 @@ void PluginAllianceLauncherEditor::paint(juce::Graphics& g)
     if (isScanning)
     {
         int progressBarHeight = 24;
-        auto statusBounds = juce::Rectangle<int>(0, topBarHeight, getWidth(), progressBarHeight);
+        auto statusBounds = juce::Rectangle<int>(0, bannerHeight + topBarHeight, getWidth(), progressBarHeight);
 
         // Background for status area
         g.setColour(juce::Colour(0xff1a1a1a));
@@ -236,6 +256,13 @@ void PluginAllianceLauncherEditor::paint(juce::Graphics& g)
 void PluginAllianceLauncherEditor::resized()
 {
     auto bounds = getLocalBounds();
+
+    // Subscription banner - always visible at very top
+    auto banner = bounds.removeFromTop(bannerHeight);
+    banner.reduce(10, 4);
+    subscribeButton.setBounds(banner.removeFromRight(80));
+    banner.removeFromRight(10);
+    subscriptionLabel.setBounds(banner);
 
     // Top bar - always visible
     auto topBar = bounds.removeFromTop(topBarHeight);
@@ -390,7 +417,7 @@ void PluginAllianceLauncherEditor::timerCallback()
 
     // Repaint the status area when scanning
     if (isScanning)
-        repaint(sidebarWidth, topBarHeight, getWidth() - sidebarWidth, 24);
+        repaint(sidebarWidth, bannerHeight + topBarHeight, getWidth() - sidebarWidth, 24);
 }
 
 void PluginAllianceLauncherEditor::updatePluginList()

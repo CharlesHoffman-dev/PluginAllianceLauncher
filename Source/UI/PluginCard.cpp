@@ -16,6 +16,21 @@ PluginCard::PluginCard()
     // Prevent focus grabbing - don't steal focus from other components
     setWantsKeyboardFocus(false);
     setMouseClickGrabsKeyboardFocus(false);
+
+    // Set up Load button - white with black text
+    loadButton.setButtonText("Load");
+    loadButton.setColour(juce::TextButton::buttonColourId, juce::Colours::white);
+    loadButton.setColour(juce::TextButton::textColourOffId, juce::Colours::black);
+    loadButton.onClick = [this]()
+    {
+        if (onDoubleClick)
+            onDoubleClick(pluginInfo);
+    };
+    loadButton.setVisible(false);
+    addAndMakeVisible(loadButton);
+
+    // Set pointer cursor for the card
+    setMouseCursor(juce::MouseCursor::PointingHandCursor);
 }
 
 void PluginCard::paint(juce::Graphics& g)
@@ -73,6 +88,8 @@ void PluginCard::paint(juce::Graphics& g)
 
     // Plugin image - square area for better vertical thumbnail support
     auto imageBounds = contentBounds.removeFromTop(140);
+    imageBoundsCache = imageBounds;  // Cache for button positioning
+
     if (pluginImage.isValid())
     {
         // Draw the image centered in the bounds
@@ -98,6 +115,13 @@ void PluginCard::paint(juce::Graphics& g)
         }
 
         g.drawImage(pluginImage, drawBounds, juce::RectanglePlacement::centred);
+
+        // Darken image area on hover (but button stays white)
+        if (hovered)
+        {
+            g.setColour(juce::Colour(0x99000000));  // Semi-transparent black overlay
+            g.fillRect(imageBounds);
+        }
     }
     else
     {
@@ -108,6 +132,13 @@ void PluginCard::paint(juce::Graphics& g)
         g.setColour(juce::Colour(0xff999999));
         g.setFont(juce::Font(12.0f));
         g.drawText("Loading...", imageBounds, juce::Justification::centred);
+
+        // Darken placeholder on hover
+        if (hovered)
+        {
+            g.setColour(juce::Colour(0x99000000));
+            g.fillRoundedRectangle(imageBounds.toFloat(), 4.0f);
+        }
     }
 
     contentBounds.removeFromTop(14);
@@ -183,18 +214,34 @@ void PluginCard::paint(juce::Graphics& g)
 
 void PluginCard::resized()
 {
-    // Nothing to position - heart is drawn directly in paint()
+    // Position the Load button in center of image area
+    // Image area starts at y=58 (10 padding + 18 brand + 24 name + 8 spacing - 2 reduced)
+    // and is 140px tall
+    auto contentBounds = getLocalBounds().reduced(10, 8);
+    contentBounds.removeFromTop(18);  // Brand name
+    contentBounds.removeFromTop(24);  // Plugin name
+    contentBounds.removeFromTop(8);   // Spacing
+    auto imageBounds = contentBounds.removeFromTop(140);
+
+    // Center a 70x28 button in the image area
+    int buttonWidth = 70;
+    int buttonHeight = 28;
+    int buttonX = imageBounds.getCentreX() - buttonWidth / 2;
+    int buttonY = imageBounds.getCentreY() - buttonHeight / 2;
+    loadButton.setBounds(buttonX, buttonY, buttonWidth, buttonHeight);
 }
 
 void PluginCard::mouseEnter(const juce::MouseEvent&)
 {
     hovered = true;
+    loadButton.setVisible(true);
     repaint();
 }
 
 void PluginCard::mouseExit(const juce::MouseEvent&)
 {
     hovered = false;
+    loadButton.setVisible(false);
     repaint();
 }
 
