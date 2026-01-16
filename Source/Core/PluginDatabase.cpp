@@ -115,7 +115,7 @@ namespace CategoryMaps
         {"bx_pulsar", EffectCategory::Delay},
 
         // Reverb (moved from Delay - Utopia is primarily a reverb)
-        {"ADPTR AUDIO Utopia", EffectCategory::Reverb},
+        {"ADPTR Utopia", EffectCategory::Reverb},
 
         // Modulation
         {"A/DA Flanger", EffectCategory::Flanger},

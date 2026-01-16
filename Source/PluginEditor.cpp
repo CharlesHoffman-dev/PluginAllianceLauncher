@@ -246,15 +246,15 @@ void PluginAllianceLauncherEditor::paint(juce::Graphics& g)
     bool isScanning = processor.getPluginScanner().isScanning();
     if (isScanning)
     {
-        int progressBarHeight = 24;
-        auto statusBounds = juce::Rectangle<int>(0, topBarHeight, getWidth(), progressBarHeight);
+        int progressBarHeight = 28;
+        auto statusBounds = juce::Rectangle<int>(sidebarWidth, topBarHeight, getWidth() - sidebarWidth, progressBarHeight);
 
         // Background for status area
         g.setColour(juce::Colour(0xff1a1a1a));
         g.fillRect(statusBounds);
 
-        // Adjust bounds for the progress bar content (to the right of where sidebar will be)
-        auto contentStatusBounds = statusBounds.withLeft(sidebarWidth);
+        // Use statusBounds directly since it's already positioned correctly
+        auto contentStatusBounds = statusBounds;
 
         auto statusMessage = processor.getPluginScanner().getStatusMessage();
 
@@ -338,7 +338,7 @@ void PluginAllianceLauncherEditor::resized()
     // Only reserve space for status bar when scanning
     if (processor.getPluginScanner().isScanning())
     {
-        static constexpr int statusBarHeight = 24;
+        static constexpr int statusBarHeight = 28;
         bounds.removeFromTop(statusBarHeight);
     }
 
