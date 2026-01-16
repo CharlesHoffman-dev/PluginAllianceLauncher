@@ -56,17 +56,17 @@ void PluginCard::paint(juce::Graphics& g)
     auto brandName = getBrandName(pluginInfo.description.name, pluginInfo.description.manufacturerName);
     auto displayName = getDisplayName(pluginInfo.description.name, brandName);
 
-    // Plugin name (with brand removed) - dark text, larger font
-    g.setColour(juce::Colour(0xff1a1a1a));
-    g.setFont(juce::Font(16.0f, juce::Font::bold));
-    auto nameBounds = contentBounds.removeFromTop(24);
-    nameBounds.removeFromRight(26); // Space for favorite button
-    g.drawText(displayName, nameBounds, juce::Justification::centredLeft, true);
-
-    // Brand name - gray text, larger font
+    // Brand name - gray text, in line with star
     g.setColour(juce::Colour(0xff666666));
     g.setFont(juce::Font(13.0f));
-    g.drawText(brandName, contentBounds.removeFromTop(18),
+    auto brandBounds = contentBounds.removeFromTop(18);
+    brandBounds.removeFromRight(26); // Space for favorite button
+    g.drawText(brandName, brandBounds, juce::Justification::centredLeft, true);
+
+    // Plugin name (with brand removed) - dark text, larger bold font
+    g.setColour(juce::Colour(0xff1a1a1a));
+    g.setFont(juce::Font(16.0f, juce::Font::bold));
+    g.drawText(displayName, contentBounds.removeFromTop(24),
                juce::Justification::centredLeft, true);
 
     contentBounds.removeFromTop(8);
