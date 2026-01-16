@@ -35,6 +35,10 @@ public:
     void setSelected(bool selected);
     bool isSelected() const { return selected; }
 
+    // Loaded state - shows as hovered with "View" button
+    void setLoaded(bool loaded);
+    bool isLoaded() const { return isLoadedPlugin; }
+
     // Update image from cache
     void updateImage();
 
@@ -51,6 +55,7 @@ private:
     PluginInfo pluginInfo;
     bool selected = false;
     bool hovered = false;
+    bool isLoadedPlugin = false;
 
     juce::Image pluginImage;
     juce::TextButton loadButton;

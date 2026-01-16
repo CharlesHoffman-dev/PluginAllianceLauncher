@@ -19,7 +19,7 @@
 namespace PALauncher
 {
 
-// Custom LookAndFeel for buttons - no outline, 4px radius
+// Custom LookAndFeel for buttons - no outline, 4px radius, bold text
 class ButtonLookAndFeel : public juce::LookAndFeel_V4
 {
 public:
@@ -37,6 +37,19 @@ public:
 
         g.setColour(baseColour);
         g.fillRoundedRectangle(bounds, 4.0f);
+    }
+
+    void drawButtonText(juce::Graphics& g, juce::TextButton& button,
+                        bool /*isMouseOverButton*/, bool isButtonDown) override
+    {
+        auto font = juce::Font(button.getHeight() * 0.48f, juce::Font::bold);
+        g.setFont(font);
+        g.setColour(button.findColour(isButtonDown ? juce::TextButton::textColourOnId
+                                                    : juce::TextButton::textColourOffId)
+                        .withMultipliedAlpha(button.isEnabled() ? 1.0f : 0.5f));
+
+        auto bounds = button.getLocalBounds();
+        g.drawText(button.getButtonText(), bounds, juce::Justification::centred, true);
     }
 };
 
@@ -87,6 +100,8 @@ private:
     // State
     bool browserMode = true;  // true = show browser, false = show hosted plugin fullscreen
     bool wasScanning = false;  // Track scanning state for layout updates
+    bool isLoadingPlugin = false;  // True while a plugin is being loaded
+    juce::String loadingPluginName;  // Name of plugin being loaded
     DisplayCategory currentCategory = DisplayCategory::All;
     int currentSubcategory = -1;  // -1 = all
     Era currentEra = Era::Era_Unknown;  // Unknown = all

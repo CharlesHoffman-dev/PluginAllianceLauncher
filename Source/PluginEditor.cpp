@@ -58,6 +58,16 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     searchBar.onSearchChanged = [this](const juce::String& text)
     {
         currentSearchText = text;
+
+        // Switch to browser mode if user starts typing while viewing a plugin
+        if (!browserMode && text.isNotEmpty())
+        {
+            browserMode = true;
+            toggleModeButton.setButtonText("Show Plugin");
+            resizeForBrowser();
+            resized();
+        }
+
         filterPlugins();
     };
     addAndMakeVisible(searchBar);
@@ -140,6 +150,9 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
         hostedPluginView.hidePluginEditor();
         processor.unloadPlugin();
 
+        // Clear the loaded plugin indicator
+        pluginListView.setLoadedPluginId({});
+
         // Switch back to browser mode
         browserMode = true;
         toggleModeButton.setButtonText("Show Plugin");
@@ -164,6 +177,11 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
         // Switch to plugin mode
         browserMode = false;
         toggleModeButton.setButtonText("Show Browser");
+
+        // Set the loaded plugin ID so it shows as loaded in the browser
+        auto* desc = processor.getPluginHost().getLoadedPluginDescription();
+        if (desc != nullptr)
+            pluginListView.setLoadedPluginId(desc->fileOrIdentifier);
     }
 
     // Set editor size
@@ -258,6 +276,24 @@ void PluginAllianceLauncherEditor::paint(juce::Graphics& g)
             g.setFont(juce::Font(11.0f));
             g.drawText(statusMessage, trackBounds.reduced(8, 0), juce::Justification::centredLeft);
         }
+    }
+
+    // Loading overlay - shown when loading a plugin
+    if (isLoadingPlugin)
+    {
+        // Semi-transparent overlay over the content area
+        auto overlayBounds = getLocalBounds().withTop(topBarHeight);
+        g.setColour(juce::Colour(0xdd121212));  // Dark semi-transparent
+        g.fillRect(overlayBounds);
+
+        // Loading text
+        g.setColour(juce::Colours::white);
+        g.setFont(juce::Font(18.0f, juce::Font::bold));
+
+        juce::String loadingText = "Loading " + loadingPluginName + "...";
+        g.drawText(loadingText, overlayBounds, juce::Justification::centred);
+
+        // Animated dots would require timer-based repainting, so keep it simple
     }
 }
 
@@ -603,47 +639,69 @@ void PluginAllianceLauncherEditor::refreshPluginsPreservingScroll()
 
 void PluginAllianceLauncherEditor::loadSelectedPlugin(const PluginInfo& info)
 {
-    // IMPORTANT: Hide the current editor BEFORE loading a new plugin
-    // The editor holds a reference to the AudioPluginInstance, so it must be
-    // destroyed before we unload/replace the plugin instance
-    hostedPluginView.hidePluginEditor();
+    // Show loading indicator immediately
+    isLoadingPlugin = true;
+    loadingPluginName = info.description.name;
+    repaint();
 
-    if (processor.loadPlugin(info.description))
+    // Store the plugin info for the async load
+    auto pluginToLoad = info;
+
+    // Defer the actual loading to allow the UI to update with the loading indicator
+    juce::MessageManager::callAsync([this, pluginToLoad]()
     {
-        hostedPluginView.showPluginEditor();
+        // IMPORTANT: Hide the current editor BEFORE loading a new plugin
+        // The editor holds a reference to the AudioPluginInstance, so it must be
+        // destroyed before we unload/replace the plugin instance
+        hostedPluginView.hidePluginEditor();
 
-        // Add to recent
-        processor.getPluginDatabase().addToRecent(info.description);
-        processor.getPluginDatabase().saveToDisk();
+        bool success = processor.loadPlugin(pluginToLoad.description);
 
-        // Store current browser size before switching
-        if (browserMode)
+        // Clear loading state
+        isLoadingPlugin = false;
+        loadingPluginName.clear();
+
+        if (success)
         {
-            defaultBrowserSize = getBounds();
+            hostedPluginView.showPluginEditor();
+
+            // Add to recent
+            processor.getPluginDatabase().addToRecent(pluginToLoad.description);
+            processor.getPluginDatabase().saveToDisk();
+
+            // Update the plugin list to show this plugin as loaded
+            pluginListView.setLoadedPluginId(pluginToLoad.description.fileOrIdentifier);
+
+            // Store current browser size before switching
+            if (browserMode)
+            {
+                defaultBrowserSize = getBounds();
+            }
+
+            // Switch to plugin mode
+            browserMode = false;
+            toggleModeButton.setButtonText("Show Browser");
+
+            // Update layout first, then resize to fit plugin
+            resized();
+
+            // Resize window to fit the loaded plugin
+            juce::MessageManager::callAsync([this]()
+            {
+                resizeForPlugin();
+            });
         }
-
-        // Switch to plugin mode
-        browserMode = false;
-        toggleModeButton.setButtonText("Show Browser");
-
-        // Update layout first, then resize to fit plugin
-        resized();
-
-        // Resize window to fit the loaded plugin
-        juce::MessageManager::callAsync([this]()
+        else
         {
-            resizeForPlugin();
-        });
-    }
-    else
-    {
-        juce::AlertWindow::showMessageBoxAsync(
-            juce::AlertWindow::WarningIcon,
-            "Failed to Load Plugin",
-            "Could not load the selected plugin.\nIt may be damaged or incompatible.",
-            "OK"
-        );
-    }
+            repaint();  // Clear the loading overlay
+            juce::AlertWindow::showMessageBoxAsync(
+                juce::AlertWindow::WarningIcon,
+                "Failed to Load Plugin",
+                "Could not load the selected plugin.\nIt may be damaged or incompatible.",
+                "OK"
+            );
+        }
+    });
 }
 
 void PluginAllianceLauncherEditor::toggleBrowserMode()

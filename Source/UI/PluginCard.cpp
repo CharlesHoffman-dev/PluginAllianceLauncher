@@ -11,7 +11,7 @@
 namespace PALauncher
 {
 
-// Custom LookAndFeel for Load button - no outline, 4px radius
+// Custom LookAndFeel for Load button - no outline, 4px radius, bold text
 class CardButtonLookAndFeel : public juce::LookAndFeel_V4
 {
 public:
@@ -29,6 +29,19 @@ public:
 
         g.setColour(baseColour);
         g.fillRoundedRectangle(bounds, 4.0f);
+    }
+
+    void drawButtonText(juce::Graphics& g, juce::TextButton& button,
+                        bool /*isMouseOverButton*/, bool isButtonDown) override
+    {
+        auto font = juce::Font(button.getHeight() * 0.48f, juce::Font::bold);
+        g.setFont(font);
+        g.setColour(button.findColour(isButtonDown ? juce::TextButton::textColourOnId
+                                                    : juce::TextButton::textColourOffId)
+                        .withMultipliedAlpha(button.isEnabled() ? 1.0f : 0.5f));
+
+        auto bounds = button.getLocalBounds();
+        g.drawText(button.getButtonText(), bounds, juce::Justification::centred, true);
     }
 };
 
@@ -97,7 +110,7 @@ void PluginCard::paint(juce::Graphics& g)
     // Brand name - gray text, in line with star
     g.setColour(juce::Colour(0xff666666));
     g.setFont(juce::Font(13.0f));
-    auto brandBounds = contentBounds.removeFromTop(18);
+    auto brandBounds = contentBounds.removeFromTop(12);
     brandBounds.removeFromRight(26); // Space for favorite button
     g.drawText(brandName, brandBounds, juce::Justification::centredLeft, true);
 
@@ -187,8 +200,8 @@ void PluginCard::paint(juce::Graphics& g)
     auto heartBounds = getLocalBounds().reduced(8).removeFromTop(24).removeFromRight(24);
     float cx = static_cast<float>(heartBounds.getCentreX());
     float cy = static_cast<float>(heartBounds.getCentreY()) + 1.0f;  // Shift down slightly
-    float w = 9.0f;   // Half width
-    float h = 10.0f;  // Height
+    float w = 11.0f;   // Half width
+    float h = 13.0f;   // Height
 
     // Create heart path using bezier curves
     juce::Path heartPath;
@@ -220,8 +233,8 @@ void PluginCard::paint(juce::Graphics& g)
         g.strokePath(heartPath, juce::PathStrokeType(1.5f));
     }
 
-    // Darken entire card on hover (drawn last, button is a child component so stays bright)
-    if (hovered)
+    // Darken entire card on hover or when loaded (drawn last, button is a child component so stays bright)
+    if (hovered || isLoadedPlugin)
     {
         g.setColour(juce::Colour(0x40000000));  // Subtle semi-transparent black overlay
         g.fillRoundedRectangle(bounds, 6.0f);
@@ -291,8 +304,10 @@ void PluginCard::setPluginInfo(const PluginInfo& info)
 {
     pluginInfo = info;
 
-    // Reset hover state and hide button when card is assigned new plugin
+    // Reset hover and loaded state when card is assigned new plugin
     hovered = false;
+    isLoadedPlugin = false;
+    loadButton.setButtonText("Load");
     loadButton.setVisible(false);
 
     // Try to get image from cache
@@ -315,6 +330,17 @@ void PluginCard::setSelected(bool sel)
     if (selected != sel)
     {
         selected = sel;
+        repaint();
+    }
+}
+
+void PluginCard::setLoaded(bool loaded)
+{
+    if (isLoadedPlugin != loaded)
+    {
+        isLoadedPlugin = loaded;
+        loadButton.setButtonText(loaded ? "View" : "Load");
+        loadButton.setVisible(loaded);  // Always show button when loaded
         repaint();
     }
 }

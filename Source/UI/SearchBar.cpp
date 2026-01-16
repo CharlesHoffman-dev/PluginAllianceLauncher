@@ -46,23 +46,35 @@ void SearchBar::paint(juce::Graphics& g)
     g.setColour(juce::Colours::white);
     g.drawRoundedRectangle(bounds.reduced(0.5f), 6.0f, 1.0f);
 
-    // Draw magnifying glass icon on right side
+    // Draw icon on right side - X if has text, magnifying glass otherwise
     auto iconBounds = getLocalBounds().removeFromRight(36).reduced(10).toFloat();
     float cx = iconBounds.getCentreX();
     float cy = iconBounds.getCentreY();
-    float radius = 6.0f;
 
-    g.setColour(juce::Colour(0xff888888));
+    if (hasText)
+    {
+        // Draw X (clear button)
+        g.setColour(juce::Colour(0xffcccccc));
+        float size = 6.0f;
+        g.drawLine(cx - size, cy - size, cx + size, cy + size, 2.0f);
+        g.drawLine(cx + size, cy - size, cx - size, cy + size, 2.0f);
+    }
+    else
+    {
+        // Draw magnifying glass icon
+        float radius = 6.0f;
+        g.setColour(juce::Colour(0xff888888));
 
-    // Draw circle (lens)
-    g.drawEllipse(cx - radius - 2, cy - radius - 2, radius * 2, radius * 2, 2.0f);
+        // Draw circle (lens)
+        g.drawEllipse(cx - radius - 2, cy - radius - 2, radius * 2, radius * 2, 2.0f);
 
-    // Draw handle
-    float handleStartX = cx + radius * 0.4f;
-    float handleStartY = cy + radius * 0.4f;
-    float handleEndX = cx + radius + 4;
-    float handleEndY = cy + radius + 4;
-    g.drawLine(handleStartX, handleStartY, handleEndX, handleEndY, 2.0f);
+        // Draw handle
+        float handleStartX = cx + radius * 0.4f;
+        float handleStartY = cy + radius * 0.4f;
+        float handleEndX = cx + radius + 4;
+        float handleEndY = cy + radius + 4;
+        g.drawLine(handleStartX, handleStartY, handleEndX, handleEndY, 2.0f);
+    }
 }
 
 void SearchBar::resized()
@@ -80,10 +92,18 @@ juce::String SearchBar::getSearchText() const
 void SearchBar::clear()
 {
     searchField.clear();
+    hasText = false;
+    repaint();
 }
 
 void SearchBar::textEditorTextChanged(juce::TextEditor&)
 {
+    bool hadText = hasText;
+    hasText = searchField.getText().isNotEmpty();
+
+    if (hadText != hasText)
+        repaint();  // Redraw icon
+
     if (onSearchChanged)
         onSearchChanged(searchField.getText());
 }
@@ -100,6 +120,30 @@ void SearchBar::textEditorEscapeKeyPressed(juce::TextEditor&)
     clear();
     if (onSearchChanged)
         onSearchChanged("");
+}
+
+bool SearchBar::isOverClearButton(const juce::Point<int>& pos) const
+{
+    auto iconBounds = getLocalBounds().removeFromRight(36);
+    return iconBounds.contains(pos);
+}
+
+void SearchBar::mouseDown(const juce::MouseEvent& e)
+{
+    if (hasText && isOverClearButton(e.getPosition()))
+    {
+        clear();
+        if (onSearchChanged)
+            onSearchChanged("");
+    }
+}
+
+void SearchBar::mouseMove(const juce::MouseEvent& e)
+{
+    if (hasText && isOverClearButton(e.getPosition()))
+        setMouseCursor(juce::MouseCursor::PointingHandCursor);
+    else
+        setMouseCursor(juce::MouseCursor::IBeamCursor);
 }
 
 } // namespace PALauncher

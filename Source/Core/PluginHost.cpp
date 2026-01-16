@@ -177,9 +177,63 @@ void PluginHost::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer
 {
     juce::ScopedLock scopedLock(lock);
 
-    if (loadedPlugin != nullptr && isPrepared)
+    if (loadedPlugin == nullptr || !isPrepared)
+        return;
+
+    // Get the hosted plugin's channel requirements
+    int pluginInputChannels = loadedPlugin->getTotalNumInputChannels();
+    int pluginOutputChannels = loadedPlugin->getTotalNumOutputChannels();
+    int bufferChannels = buffer.getNumChannels();
+    int numSamples = buffer.getNumSamples();
+
+    // If channel counts match, process directly
+    if (pluginInputChannels <= bufferChannels && pluginOutputChannels <= bufferChannels)
     {
         loadedPlugin->processBlock(buffer, midiMessages);
+        return;
+    }
+
+    // Channel count mismatch - need to use a temporary buffer
+    int maxChannels = juce::jmax(pluginInputChannels, pluginOutputChannels, bufferChannels);
+
+    // Create or resize temporary buffer if needed
+    if (tempBuffer.getNumChannels() < maxChannels || tempBuffer.getNumSamples() < numSamples)
+    {
+        tempBuffer.setSize(maxChannels, numSamples, false, false, true);
+    }
+
+    // Clear the temp buffer
+    tempBuffer.clear();
+
+    // Copy input channels from our buffer to temp buffer
+    int channelsToCopy = juce::jmin(bufferChannels, pluginInputChannels);
+    for (int ch = 0; ch < channelsToCopy; ++ch)
+    {
+        tempBuffer.copyFrom(ch, 0, buffer, ch, 0, numSamples);
+    }
+
+    // If plugin expects more input channels, duplicate the last channel or leave as silence
+    // (Some plugins expect stereo pairs, so duplicate channel 1 to fill remaining)
+    if (pluginInputChannels > bufferChannels && bufferChannels > 0)
+    {
+        int srcChannel = bufferChannels - 1;
+        for (int ch = bufferChannels; ch < pluginInputChannels; ++ch)
+        {
+            tempBuffer.copyFrom(ch, 0, buffer, srcChannel, 0, numSamples);
+        }
+    }
+
+    // Create a sub-buffer view with the correct channel count for the plugin
+    juce::AudioBuffer<float> pluginBuffer(tempBuffer.getArrayOfWritePointers(), maxChannels, numSamples);
+
+    // Process through the hosted plugin
+    loadedPlugin->processBlock(pluginBuffer, midiMessages);
+
+    // Copy output channels back to our buffer
+    channelsToCopy = juce::jmin(bufferChannels, pluginOutputChannels);
+    for (int ch = 0; ch < channelsToCopy; ++ch)
+    {
+        buffer.copyFrom(ch, 0, pluginBuffer, ch, 0, numSamples);
     }
 }
 

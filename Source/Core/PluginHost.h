@@ -59,6 +59,9 @@ private:
     bool isPrepared = false;
     bool hasSidechain = false;
 
+    // Temporary buffer for channel count adaptation
+    juce::AudioBuffer<float> tempBuffer;
+
     juce::CriticalSection lock;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginHost)

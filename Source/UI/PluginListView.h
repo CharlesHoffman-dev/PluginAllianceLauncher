@@ -22,6 +22,7 @@ public:
     ~PluginListView() override;
 
     void paint(juce::Graphics& g) override;
+    void paintOverChildren(juce::Graphics& g) override;
     void resized() override;
 
     void mouseWheelMove(const juce::MouseEvent& e, const juce::MouseWheelDetails& wheel) override;
@@ -31,6 +32,9 @@ public:
 
     // Update plugins while preserving scroll position (for favorites, etc.)
     void updatePlugins(const juce::Array<PluginInfo>& plugins);
+
+    // Set the currently loaded plugin (shown with "View" button)
+    void setLoadedPluginId(const juce::String& pluginId);
 
     // Get currently selected plugin
     const PluginInfo* getSelectedPlugin() const;
@@ -56,6 +60,7 @@ private:
     int scrollOffset = 0;
     int numColumns = 4;
     int cardSpacing = 8;
+    juce::String loadedPluginId;  // fileOrIdentifier of currently loaded plugin
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginListView)
 };

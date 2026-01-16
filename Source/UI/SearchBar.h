@@ -21,6 +21,8 @@ public:
 
     void paint(juce::Graphics& g) override;
     void resized() override;
+    void mouseDown(const juce::MouseEvent& e) override;
+    void mouseMove(const juce::MouseEvent& e) override;
 
     // Get current search text
     juce::String getSearchText() const;
@@ -36,7 +38,10 @@ private:
     void textEditorReturnKeyPressed(juce::TextEditor&) override;
     void textEditorEscapeKeyPressed(juce::TextEditor&) override;
 
+    bool isOverClearButton(const juce::Point<int>& pos) const;
+
     juce::TextEditor searchField;
+    bool hasText = false;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SearchBar)
 };

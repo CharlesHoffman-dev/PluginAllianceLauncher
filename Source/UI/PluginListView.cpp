@@ -45,13 +45,17 @@ PluginListView::~PluginListView()
 void PluginListView::paint(juce::Graphics& g)
 {
     g.fillAll(juce::Colour(0xfff9f9f9));
+}
 
+void PluginListView::paintOverChildren(juce::Graphics& g)
+{
+    // Draw "No plugins found" on top of everything so it's not obscured
     if (allPlugins.isEmpty())
     {
+        auto textBounds = getLocalBounds().withTrimmedRight(14);
         g.setColour(juce::Colour(0xff666666));
         g.setFont(juce::Font(14.0f));
-        g.drawText("No plugins found.",
-                   getLocalBounds(), juce::Justification::centred);
+        g.drawText("No plugins found.", textBounds, juce::Justification::centred);
     }
 }
 
@@ -81,6 +85,15 @@ void PluginListView::updatePlugins(const juce::Array<PluginInfo>& plugins)
     allPlugins = plugins;
     // Don't reset selectedIndex or scrollOffset
     updateLayout();
+}
+
+void PluginListView::setLoadedPluginId(const juce::String& pluginId)
+{
+    if (loadedPluginId != pluginId)
+    {
+        loadedPluginId = pluginId;
+        updateVisibleCards();  // Refresh cards to update loaded state
+    }
 }
 
 void PluginListView::updateLayout()
@@ -147,6 +160,11 @@ void PluginListView::updateVisibleCards()
             auto* card = new PluginCard();
             card->setPluginInfo(allPlugins[pluginIndex]);
             card->setSelected(pluginIndex == selectedIndex);
+
+            // Check if this is the currently loaded plugin
+            bool isLoaded = loadedPluginId.isNotEmpty() &&
+                           allPlugins[pluginIndex].description.fileOrIdentifier == loadedPluginId;
+            card->setLoaded(isLoaded);
 
             card->onSelected = [this, pluginIndex](const PluginInfo& info)
             {
