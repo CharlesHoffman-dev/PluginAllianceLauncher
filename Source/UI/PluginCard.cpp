@@ -143,48 +143,40 @@ void PluginCard::paint(juce::Graphics& g)
         g.drawText(eraTag, eraBounds, juce::Justification::centred);
     }
 
-    // Favorite star - yellow when active, gray outline when inactive
-    auto starBounds = getLocalBounds().reduced(8).removeFromTop(24).removeFromRight(24);
-    float starCx = starBounds.getCentreX();
-    float starCy = starBounds.getCentreY();
-    float starRadius = 10.0f;
+    // Favorite heart - red when active, gray outline when inactive
+    auto heartBounds = getLocalBounds().reduced(8).removeFromTop(24).removeFromRight(24);
+    float cx = static_cast<float>(heartBounds.getCentreX());
+    float cy = static_cast<float>(heartBounds.getCentreY());
+    float size = 10.0f;
 
-    // Create 5-pointed star path
-    juce::Path starPath;
-    for (int i = 0; i < 5; ++i)
-    {
-        float outerAngle = juce::MathConstants<float>::pi * 2.0f * i / 5.0f - juce::MathConstants<float>::halfPi;
-        float innerAngle = outerAngle + juce::MathConstants<float>::pi / 5.0f;
-
-        float outerX = starCx + starRadius * std::cos(outerAngle);
-        float outerY = starCy + starRadius * std::sin(outerAngle);
-        float innerX = starCx + starRadius * 0.4f * std::cos(innerAngle);
-        float innerY = starCy + starRadius * 0.4f * std::sin(innerAngle);
-
-        if (i == 0)
-            starPath.startNewSubPath(outerX, outerY);
-        else
-            starPath.lineTo(outerX, outerY);
-
-        starPath.lineTo(innerX, innerY);
-    }
-    starPath.closeSubPath();
+    // Create heart path using bezier curves
+    juce::Path heartPath;
+    heartPath.startNewSubPath(cx, cy + size * 0.7f);  // Bottom point
+    // Left curve
+    heartPath.cubicTo(cx - size * 1.2f, cy + size * 0.2f,   // Control point 1
+                      cx - size * 1.2f, cy - size * 0.5f,   // Control point 2
+                      cx, cy - size * 0.2f);                 // End at top center dip
+    // Right curve
+    heartPath.cubicTo(cx + size * 1.2f, cy - size * 0.5f,   // Control point 1
+                      cx + size * 1.2f, cy + size * 0.2f,   // Control point 2
+                      cx, cy + size * 0.7f);                 // Back to bottom point
+    heartPath.closeSubPath();
 
     if (pluginInfo.isFavorite)
     {
-        g.setColour(juce::Colour(0xffffc107));  // Yellow/gold color
-        g.fillPath(starPath);
+        g.setColour(juce::Colour(0xffff4d6a));  // Pink/red color
+        g.fillPath(heartPath);
     }
     else
     {
         g.setColour(juce::Colour(0xffcccccc));  // Light gray outline
-        g.strokePath(starPath, juce::PathStrokeType(1.5f));
+        g.strokePath(heartPath, juce::PathStrokeType(1.5f));
     }
 }
 
 void PluginCard::resized()
 {
-    // Nothing to position - star is drawn directly in paint()
+    // Nothing to position - heart is drawn directly in paint()
 }
 
 void PluginCard::mouseEnter(const juce::MouseEvent&)
@@ -201,9 +193,9 @@ void PluginCard::mouseExit(const juce::MouseEvent&)
 
 void PluginCard::mouseDown(const juce::MouseEvent& e)
 {
-    // Check if click is on the star area (with expanded hit area for easier clicking)
-    auto starBounds = getLocalBounds().reduced(4).removeFromTop(28).removeFromRight(28);
-    if (starBounds.contains(e.getPosition()))
+    // Check if click is on the heart area (with expanded hit area for easier clicking)
+    auto heartBounds = getLocalBounds().reduced(4).removeFromTop(28).removeFromRight(28);
+    if (heartBounds.contains(e.getPosition()))
     {
         // Toggle favorite
         if (onFavoriteToggle)
