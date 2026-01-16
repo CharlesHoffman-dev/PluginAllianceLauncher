@@ -237,14 +237,17 @@ void PluginAllianceLauncherProcessor::processBlock(juce::AudioBuffer<float>& buf
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear(i, 0, buffer.getNumSamples());
 
-    // Process through hosted plugin if loaded
-    juce::ScopedLock lock(pluginLock);
-
-    if (pluginHost.hasLoadedPlugin())
+    // Try to acquire lock without blocking - if we can't get it (plugin is loading),
+    // just pass audio through unchanged to avoid glitches
+    if (pluginLock.tryEnter())
     {
-        pluginHost.processBlock(buffer, midiMessages);
+        if (pluginHost.hasLoadedPlugin())
+        {
+            pluginHost.processBlock(buffer, midiMessages);
+        }
+        pluginLock.exit();
     }
-    // If no plugin loaded, audio passes through unchanged
+    // If lock not acquired or no plugin loaded, audio passes through unchanged
 }
 
 double PluginAllianceLauncherProcessor::getTailLengthSeconds() const

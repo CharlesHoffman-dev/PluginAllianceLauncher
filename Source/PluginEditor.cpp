@@ -139,10 +139,30 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     // Timer for scan progress updates
     startTimer(100);
 
+    // Check if a plugin is already loaded (e.g., when reopening the editor or restoring state)
+    if (processor.hasLoadedPlugin())
+    {
+        // Switch to plugin mode
+        browserMode = false;
+        toggleModeButton.setButtonText("Show Browser");
+
+        // Show the hosted plugin's editor
+        hostedPluginView.showPluginEditor();
+    }
+
     // Set editor size
     setSize(1200, 800);
     setResizable(true, true);
     setResizeLimits(800, 600, 2000, 1500);
+
+    // If plugin is loaded, resize to fit it after initial layout
+    if (!browserMode)
+    {
+        juce::MessageManager::callAsync([this]()
+        {
+            resizeForPlugin();
+        });
+    }
 }
 
 PluginAllianceLauncherEditor::~PluginAllianceLauncherEditor()
