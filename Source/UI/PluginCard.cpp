@@ -146,20 +146,27 @@ void PluginCard::paint(juce::Graphics& g)
     // Favorite heart - red when active, gray outline when inactive
     auto heartBounds = getLocalBounds().reduced(8).removeFromTop(24).removeFromRight(24);
     float cx = static_cast<float>(heartBounds.getCentreX());
-    float cy = static_cast<float>(heartBounds.getCentreY());
-    float size = 10.0f;
+    float cy = static_cast<float>(heartBounds.getCentreY()) + 1.0f;  // Shift down slightly
+    float w = 9.0f;   // Half width
+    float h = 10.0f;  // Height
 
     // Create heart path using bezier curves
     juce::Path heartPath;
-    heartPath.startNewSubPath(cx, cy + size * 0.7f);  // Bottom point
-    // Left curve
-    heartPath.cubicTo(cx - size * 1.2f, cy + size * 0.2f,   // Control point 1
-                      cx - size * 1.2f, cy - size * 0.5f,   // Control point 2
-                      cx, cy - size * 0.2f);                 // End at top center dip
-    // Right curve
-    heartPath.cubicTo(cx + size * 1.2f, cy - size * 0.5f,   // Control point 1
-                      cx + size * 1.2f, cy + size * 0.2f,   // Control point 2
-                      cx, cy + size * 0.7f);                 // Back to bottom point
+    heartPath.startNewSubPath(cx, cy + h * 0.5f);  // Bottom point
+    // Left side
+    heartPath.cubicTo(cx - w * 0.8f, cy + h * 0.1f,    // Control point 1
+                      cx - w, cy - h * 0.25f,           // Control point 2
+                      cx - w * 0.5f, cy - h * 0.45f);   // Top of left lobe
+    heartPath.cubicTo(cx - w * 0.1f, cy - h * 0.55f,   // Control point 1
+                      cx, cy - h * 0.35f,               // Control point 2
+                      cx, cy - h * 0.2f);               // Center dip
+    // Right side
+    heartPath.cubicTo(cx, cy - h * 0.35f,               // Control point 1
+                      cx + w * 0.1f, cy - h * 0.55f,   // Control point 2
+                      cx + w * 0.5f, cy - h * 0.45f);   // Top of right lobe
+    heartPath.cubicTo(cx + w, cy - h * 0.25f,           // Control point 1
+                      cx + w * 0.8f, cy + h * 0.1f,    // Control point 2
+                      cx, cy + h * 0.5f);               // Back to bottom
     heartPath.closeSubPath();
 
     if (pluginInfo.isFavorite)
