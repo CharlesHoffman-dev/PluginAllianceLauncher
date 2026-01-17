@@ -42,6 +42,7 @@ void SubcategoryFilter::buildSubcategoryList()
     switch (currentCategory)
     {
         case DisplayCategory::Dynamics:
+            subcategories.push_back({static_cast<int>(CompressorType::Bus), getCompressorTypeName(CompressorType::Bus)});
             subcategories.push_back({static_cast<int>(CompressorType::Optical), getCompressorTypeName(CompressorType::Optical)});
             subcategories.push_back({static_cast<int>(CompressorType::VCA), getCompressorTypeName(CompressorType::VCA)});
             subcategories.push_back({static_cast<int>(CompressorType::FET), getCompressorTypeName(CompressorType::FET)});
@@ -55,19 +56,8 @@ void SubcategoryFilter::buildSubcategoryList()
             subcategories.push_back({static_cast<int>(EQType::Parametric), getEQTypeName(EQType::Parametric)});
             subcategories.push_back({static_cast<int>(EQType::Dynamic), getEQTypeName(EQType::Dynamic)});
             subcategories.push_back({static_cast<int>(EQType::Passive), getEQTypeName(EQType::Passive)});
-            subcategories.push_back({static_cast<int>(EQType::Console), getEQTypeName(EQType::Console)});
-            subcategories.push_back({static_cast<int>(EQType::Analog), getEQTypeName(EQType::Analog)});
             subcategories.push_back({static_cast<int>(EQType::Mastering), getEQTypeName(EQType::Mastering)});
             subcategories.push_back({static_cast<int>(EQType::MidSide), getEQTypeName(EQType::MidSide)});
-            break;
-
-        case DisplayCategory::Reverbs:
-            subcategories.push_back({static_cast<int>(ReverbType::Hall), getReverbTypeName(ReverbType::Hall)});
-            subcategories.push_back({static_cast<int>(ReverbType::Room), getReverbTypeName(ReverbType::Room)});
-            subcategories.push_back({static_cast<int>(ReverbType::Plate), getReverbTypeName(ReverbType::Plate)});
-            subcategories.push_back({static_cast<int>(ReverbType::Spring), getReverbTypeName(ReverbType::Spring)});
-            subcategories.push_back({static_cast<int>(ReverbType::Algorithmic), getReverbTypeName(ReverbType::Algorithmic)});
-            subcategories.push_back({static_cast<int>(ReverbType::Convolution), getReverbTypeName(ReverbType::Convolution)});
             break;
 
         case DisplayCategory::GuitarBass:
@@ -78,15 +68,9 @@ void SubcategoryFilter::buildSubcategoryList()
             subcategories.push_back({static_cast<int>(GuitarBassType::Suite), getGuitarBassTypeName(GuitarBassType::Suite)});
             break;
 
-        case DisplayCategory::Saturation:
-            subcategories.push_back({static_cast<int>(SaturationType::Tube), getSaturationTypeName(SaturationType::Tube)});
-            subcategories.push_back({static_cast<int>(SaturationType::Tape), getSaturationTypeName(SaturationType::Tape)});
-            subcategories.push_back({static_cast<int>(SaturationType::Transformer), getSaturationTypeName(SaturationType::Transformer)});
-            subcategories.push_back({static_cast<int>(SaturationType::Console), getSaturationTypeName(SaturationType::Console)});
-            break;
-
         case DisplayCategory::SpecialProcessing:
             subcategories.push_back({static_cast<int>(SpecialProcessingType::ThreeDAudio), getSpecialProcessingTypeName(SpecialProcessingType::ThreeDAudio)});
+            subcategories.push_back({static_cast<int>(SpecialProcessingType::Gate), getSpecialProcessingTypeName(SpecialProcessingType::Gate)});
             subcategories.push_back({static_cast<int>(SpecialProcessingType::Imagers), getSpecialProcessingTypeName(SpecialProcessingType::Imagers)});
             subcategories.push_back({static_cast<int>(SpecialProcessingType::LoFi), getSpecialProcessingTypeName(SpecialProcessingType::LoFi)});
             subcategories.push_back({static_cast<int>(SpecialProcessingType::Modulation), getSpecialProcessingTypeName(SpecialProcessingType::Modulation)});
@@ -94,6 +78,7 @@ void SubcategoryFilter::buildSubcategoryList()
             subcategories.push_back({static_cast<int>(SpecialProcessingType::Pitch), getSpecialProcessingTypeName(SpecialProcessingType::Pitch)});
             subcategories.push_back({static_cast<int>(SpecialProcessingType::Restoration), getSpecialProcessingTypeName(SpecialProcessingType::Restoration)});
             subcategories.push_back({static_cast<int>(SpecialProcessingType::SurroundSound), getSpecialProcessingTypeName(SpecialProcessingType::SurroundSound)});
+            subcategories.push_back({static_cast<int>(SpecialProcessingType::TransientShaper), getSpecialProcessingTypeName(SpecialProcessingType::TransientShaper)});
             subcategories.push_back({static_cast<int>(SpecialProcessingType::Utility), getSpecialProcessingTypeName(SpecialProcessingType::Utility)});
             break;
 

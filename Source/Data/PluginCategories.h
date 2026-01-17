@@ -229,10 +229,10 @@ inline juce::String getEffectCategoryName(EffectCategory cat)
     static const std::map<EffectCategory, juce::String> names = {
         {EffectCategory::Compressor, "Compressor"},
         {EffectCategory::Limiter, "Limiter"},
-        {EffectCategory::Gate, "Gate"},
-        {EffectCategory::Expander, "Expander"},
+        {EffectCategory::Gate, "Other"},
+        {EffectCategory::Expander, "Compressor"},
         {EffectCategory::DynamicsProcessor, "Compressor"},
-        {EffectCategory::TransientShaper, "Compressor"},
+        {EffectCategory::TransientShaper, "Other"},
         {EffectCategory::EnvelopeShaper, "Compressor"},
         {EffectCategory::DeEsser, "Compressor"},
         {EffectCategory::EQ, "Equalizer"},
@@ -247,7 +247,7 @@ inline juce::String getEffectCategoryName(EffectCategory cat)
         {EffectCategory::Tremolo, "Other"},
         {EffectCategory::Vibrato, "Other"},
         {EffectCategory::Modulator, "Other"},
-        {EffectCategory::Distortion, "Saturator"},
+        {EffectCategory::Distortion, "Amp Simulator"},
         {EffectCategory::Saturation, "Saturator"},
         {EffectCategory::BitCrusher, "Saturator"},
         {EffectCategory::Exciter, "Saturator"},
@@ -255,8 +255,8 @@ inline juce::String getEffectCategoryName(EffectCategory cat)
         {EffectCategory::AmpSimulator, "Amp Simulator"},
         {EffectCategory::Preamp, "Amp Simulator"},
         {EffectCategory::ChannelStrip, "Channel Strip"},
-        {EffectCategory::MasteringSuite, "Channel Strip"},
-        {EffectCategory::Mastering, "Channel Strip"},
+        {EffectCategory::MasteringSuite, "Mastering"},
+        {EffectCategory::Mastering, "Mastering"},
         {EffectCategory::PitchShifter, "Other"},
         {EffectCategory::Harmonizer, "Other"},
         {EffectCategory::StereoWidth, "Other"},
@@ -269,15 +269,15 @@ inline juce::String getEffectCategoryName(EffectCategory cat)
         {EffectCategory::Randomiser, "Other"},
         {EffectCategory::DrumFX, "Other"},
         {EffectCategory::DJTools, "Other"},
-        {EffectCategory::Enhancer, "Other"},
+        {EffectCategory::Enhancer, "Saturator"},
         {EffectCategory::Sequencer, "Other"},
         {EffectCategory::MIDIArp, "Other"},
         {EffectCategory::ExpansionPack, "Other"},
-        {EffectCategory::Unknown, ""}
+        {EffectCategory::Unknown, "Other"}
     };
 
     auto it = names.find(cat);
-    return it != names.end() ? it->second : "";
+    return it != names.end() ? it->second : "Other";
 }
 
 inline juce::String getEraName(Era era)

@@ -233,6 +233,7 @@ enum class MasteringType
 // ============================================
 enum class SpecialProcessingType
 {
+    Gate,           // Dynamic gates
     Imagers,        // Stereo imaging/widening
     LoFi,           // Lo-fi/vintage effects
     Modulation,     // Chorus, Flanger, Phaser, Tremolo, etc.
@@ -241,6 +242,7 @@ enum class SpecialProcessingType
     Restoration,    // Noise reduction, de-click, etc.
     SurroundSound,  // Surround/immersive audio
     ThreeDAudio,    // 3D Audio / Spatial audio
+    TransientShaper,// Transient shapers/designers
     Utility,        // Gain, phase, routing tools
     Unknown
 };
@@ -466,6 +468,7 @@ inline juce::String getMasteringTypeName(MasteringType type)
 inline juce::String getSpecialProcessingTypeName(SpecialProcessingType type)
 {
     static const std::map<SpecialProcessingType, juce::String> names = {
+        {SpecialProcessingType::Gate, "Gate"},
         {SpecialProcessingType::Imagers, "Imagers"},
         {SpecialProcessingType::LoFi, "Lo-Fi"},
         {SpecialProcessingType::Modulation, "Modulation"},
@@ -474,6 +477,7 @@ inline juce::String getSpecialProcessingTypeName(SpecialProcessingType type)
         {SpecialProcessingType::Restoration, "Restoration"},
         {SpecialProcessingType::SurroundSound, "Surround Sound"},
         {SpecialProcessingType::ThreeDAudio, "3D Audio"},
+        {SpecialProcessingType::TransientShaper, "Transient Shaper"},
         {SpecialProcessingType::Utility, "Utility"},
         {SpecialProcessingType::Unknown, "Unknown"}
     };

@@ -50,6 +50,7 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     subscribeButton.setColour(juce::TextButton::buttonColourId, juce::Colours::white);
     subscribeButton.setColour(juce::TextButton::textColourOffId, juce::Colours::black);
     subscribeButton.setLookAndFeel(&buttonLookAndFeel);
+    subscribeButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
     subscribeButton.onClick = []()
     {
         juce::URL("https://www.plugin-alliance.com/pages/subscriptions").launchInDefaultBrowser();
@@ -79,6 +80,7 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     rescanButton.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff0cbff2));
     rescanButton.setColour(juce::TextButton::textColourOffId, juce::Colours::white);
     rescanButton.setLookAndFeel(&buttonLookAndFeel);
+    rescanButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
     rescanButton.onClick = [this]()
     {
         processor.getPluginScanner().startScan();
@@ -91,6 +93,7 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     toggleModeButton.setColour(juce::TextButton::buttonColourId, juce::Colours::white);
     toggleModeButton.setColour(juce::TextButton::textColourOffId, juce::Colours::black);
     toggleModeButton.setLookAndFeel(&buttonLookAndFeel);
+    toggleModeButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
     toggleModeButton.onClick = [this]() { toggleBrowserMode(); };
     addAndMakeVisible(toggleModeButton);
 
@@ -237,6 +240,7 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     detailsLoadButton.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff2a2a2a));  // Dark charcoal
     detailsLoadButton.setColour(juce::TextButton::textColourOffId, juce::Colours::white);
     detailsLoadButton.setLookAndFeel(&buttonLookAndFeel);
+    detailsLoadButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
     detailsLoadButton.onClick = [this]()
     {
         if (selectedPlugin != nullptr)
@@ -401,8 +405,8 @@ void PluginAllianceLauncherEditor::paint(juce::Graphics& g)
 
         auto statusMessage = processor.getPluginScanner().getStatusMessage();
 
-        // Progress track area
-        auto trackBounds = contentStatusBounds.reduced(10, 6);
+        // Progress track area - align left edge with search bar (no left padding)
+        auto trackBounds = contentStatusBounds.withTrimmedTop(6).withTrimmedBottom(6).withTrimmedRight(10);
         g.setColour(juce::Colour(0xff2a2a2a));
         g.fillRoundedRectangle(trackBounds.toFloat(), 4.0f);
 
@@ -471,15 +475,15 @@ void PluginAllianceLauncherEditor::resized()
 
     searchBar.setBounds(topBar.removeFromLeft(300));
 
-    // Brand, Sort, and Era dropdowns in top bar (right of search, in browser mode)
+    // Era, Brand, and Sort dropdowns in top bar (right of search, in browser mode)
     if (browserMode)
     {
         topBar.removeFromLeft(12);  // Gap after search
+        eraComboBox.setBounds(topBar.removeFromLeft(100));
+        topBar.removeFromLeft(8);
         brandComboBox.setBounds(topBar.removeFromLeft(160));
         topBar.removeFromLeft(8);
         sortComboBox.setBounds(topBar.removeFromLeft(100));
-        topBar.removeFromLeft(8);
-        eraComboBox.setBounds(topBar.removeFromLeft(100));
     }
 
     // Only reserve space for status bar when scanning
@@ -502,9 +506,7 @@ void PluginAllianceLauncherEditor::resized()
         // Check if current category has subcategories
         bool hasSubcategories = (currentCategory == DisplayCategory::Dynamics ||
                                  currentCategory == DisplayCategory::Equalization ||
-                                 currentCategory == DisplayCategory::Reverbs ||
                                  currentCategory == DisplayCategory::GuitarBass ||
-                                 currentCategory == DisplayCategory::Saturation ||
                                  currentCategory == DisplayCategory::SpecialProcessing);
         subcategoryFilter.setVisible(hasSubcategories);
 
@@ -537,8 +539,10 @@ void PluginAllianceLauncherEditor::resized()
         {
             auto detailsPanel = bounds.removeFromRight(detailsPanelWidth);
             detailsLoadButton.setVisible(true);
-            // Position load button at bottom of details panel
-            detailsLoadButton.setBounds(detailsPanel.getX() + 20, detailsPanel.getBottom() - 50, detailsPanelWidth - 40, 36);
+            // Position load button below content area (brand + name + image + tags + description)
+            // Content starts at Y+16, then: brand(18) + gap(4) + name(24) + gap(16) + image(180) + gap(12) + tags(22) + gap(8) + description(~120) = ~420px
+            int buttonY = detailsPanel.getY() + 16 + 18 + 4 + 24 + 16 + 180 + 12 + 22 + 8 + 130;  // After description area
+            detailsLoadButton.setBounds(detailsPanel.getX() + 20, buttonY, detailsPanelWidth - 40, 36);
         }
         else
         {
