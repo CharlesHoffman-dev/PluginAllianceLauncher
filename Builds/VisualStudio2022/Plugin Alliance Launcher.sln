@@ -2,6 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio Version 17
 
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Plugin Alliance Launcher - Standalone Plugin", "Plugin Alliance Launcher_StandalonePlugin.vcxproj", "{B3CCFE59-AB85-5A29-B630-54695D9296B8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FA5D7B3E-B5FB-3F85-45E9-BA763AF35D91} = {FA5D7B3E-B5FB-3F85-45E9-BA763AF35D91}
+	EndProjectSection
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Plugin Alliance Launcher - VST3", "Plugin Alliance Launcher_VST3.vcxproj", "{D8CAAA50-45C2-9F6E-6482-34874FBAED5D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{FA5D7B3E-B5FB-3F85-45E9-BA763AF35D91} = {FA5D7B3E-B5FB-3F85-45E9-BA763AF35D91}
@@ -22,6 +27,10 @@ Global
 		{D8CAAA50-45C2-9F6E-6482-34874FBAED5D}.Debug|x64.Build.0 = Debug|x64
 		{D8CAAA50-45C2-9F6E-6482-34874FBAED5D}.Release|x64.ActiveCfg = Release|x64
 		{D8CAAA50-45C2-9F6E-6482-34874FBAED5D}.Release|x64.Build.0 = Release|x64
+		{B3CCFE59-AB85-5A29-B630-54695D9296B8}.Debug|x64.ActiveCfg = Debug|x64
+		{B3CCFE59-AB85-5A29-B630-54695D9296B8}.Debug|x64.Build.0 = Debug|x64
+		{B3CCFE59-AB85-5A29-B630-54695D9296B8}.Release|x64.ActiveCfg = Release|x64
+		{B3CCFE59-AB85-5A29-B630-54695D9296B8}.Release|x64.Build.0 = Release|x64
 		{FA5D7B3E-B5FB-3F85-45E9-BA763AF35D91}.Debug|x64.ActiveCfg = Debug|x64
 		{FA5D7B3E-B5FB-3F85-45E9-BA763AF35D91}.Debug|x64.Build.0 = Debug|x64
 		{FA5D7B3E-B5FB-3F85-45E9-BA763AF35D91}.Release|x64.ActiveCfg = Release|x64

@@ -201,6 +201,51 @@ enum class ModulationType
 };
 
 // ============================================
+// GUITAR & BASS SUBCATEGORIES (alphabetical)
+// ============================================
+enum class GuitarBassType
+{
+    Amp,            // Amp simulators
+    Cabinet,        // Cabinet/IR loaders
+    Pedal,          // Pedal effects (overdrive, distortion)
+    Preamp,         // Preamp/DI boxes
+    Suite,          // Complete amp suites
+    Unknown
+};
+
+// ============================================
+// MASTERING SUBCATEGORIES (alphabetical)
+// ============================================
+enum class MasteringType
+{
+    Clipper,        // Soft/hard clippers
+    Compressor,     // Mastering compressors
+    EQ,             // Mastering EQ
+    Limiter,        // Mastering limiters
+    Loudness,       // Loudness metering/matching
+    Metering,       // Metering tools
+    Suite,          // Complete mastering suites
+    Unknown
+};
+
+// ============================================
+// SPECIAL PROCESSING (OTHER) SUBCATEGORIES (alphabetical)
+// ============================================
+enum class SpecialProcessingType
+{
+    Imagers,        // Stereo imaging/widening
+    LoFi,           // Lo-fi/vintage effects
+    Modulation,     // Chorus, Flanger, Phaser, Tremolo, etc.
+    MultiFX,        // Multi-effects processors
+    Pitch,          // Pitch correction, harmonizers
+    Restoration,    // Noise reduction, de-click, etc.
+    SurroundSound,  // Surround/immersive audio
+    ThreeDAudio,    // 3D Audio / Spatial audio
+    Utility,        // Gain, phase, routing tools
+    Unknown
+};
+
+// ============================================
 // Display Name Functions (alphabetical order)
 // ============================================
 inline juce::String getCompressorTypeName(CompressorType type)
@@ -383,6 +428,54 @@ inline juce::String getModulationTypeName(ModulationType type)
         {ModulationType::UniVibe, "Uni-Vibe"},
         {ModulationType::Vibrato, "Vibrato"},
         {ModulationType::Unknown, "Unknown"}
+    };
+    auto it = names.find(type);
+    return it != names.end() ? it->second : "Unknown";
+}
+
+inline juce::String getGuitarBassTypeName(GuitarBassType type)
+{
+    static const std::map<GuitarBassType, juce::String> names = {
+        {GuitarBassType::Amp, "Amp"},
+        {GuitarBassType::Cabinet, "Cabinet"},
+        {GuitarBassType::Pedal, "Pedal"},
+        {GuitarBassType::Preamp, "Preamp"},
+        {GuitarBassType::Suite, "Suite"},
+        {GuitarBassType::Unknown, "Unknown"}
+    };
+    auto it = names.find(type);
+    return it != names.end() ? it->second : "Unknown";
+}
+
+inline juce::String getMasteringTypeName(MasteringType type)
+{
+    static const std::map<MasteringType, juce::String> names = {
+        {MasteringType::Clipper, "Clipper"},
+        {MasteringType::Compressor, "Compressor"},
+        {MasteringType::EQ, "EQ"},
+        {MasteringType::Limiter, "Limiter"},
+        {MasteringType::Loudness, "Loudness"},
+        {MasteringType::Metering, "Metering"},
+        {MasteringType::Suite, "Suite"},
+        {MasteringType::Unknown, "Unknown"}
+    };
+    auto it = names.find(type);
+    return it != names.end() ? it->second : "Unknown";
+}
+
+inline juce::String getSpecialProcessingTypeName(SpecialProcessingType type)
+{
+    static const std::map<SpecialProcessingType, juce::String> names = {
+        {SpecialProcessingType::Imagers, "Imagers"},
+        {SpecialProcessingType::LoFi, "Lo-Fi"},
+        {SpecialProcessingType::Modulation, "Modulation"},
+        {SpecialProcessingType::MultiFX, "Multi-FX"},
+        {SpecialProcessingType::Pitch, "Pitch"},
+        {SpecialProcessingType::Restoration, "Restoration"},
+        {SpecialProcessingType::SurroundSound, "Surround Sound"},
+        {SpecialProcessingType::ThreeDAudio, "3D Audio"},
+        {SpecialProcessingType::Utility, "Utility"},
+        {SpecialProcessingType::Unknown, "Unknown"}
     };
     auto it = names.find(type);
     return it != names.end() ? it->second : "Unknown";

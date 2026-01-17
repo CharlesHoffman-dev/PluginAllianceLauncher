@@ -709,11 +709,304 @@ void PluginImageCache::initializeImageUrls()
     imageUrls["wavesurfer"] = baseUrl + "productimage-301155_0af05e64-9d77-47bb-a38f-51bca26c4045.png";
     imageUrls["tape face"] = baseUrl + "productimage-300883_ea7d242f-aca6-4785-8ee4-155cbfbd9fd2.png";
     imageUrls["te-100"] = baseUrl + "productimage-300236_5566d6a5-698c-439c-82d1-35e8137524b4.png";
+
+    // Short name aliases for better matching
+    imageUrls["lion"] = baseUrl + "productimage-300413_87e9ac60-f714-4a6d-9e6a-7e6cd43a070f.png";
+    imageUrls["knifonium"] = baseUrl + "productimage-300471_d66727a9-586b-47d0-97ed-9f176c296269.png";
+    imageUrls["thorn"] = baseUrl + "productimage-300401_98febeee-bda8-4fe9-b1c6-ba8fa2d7eff9.png";
+    imageUrls["oberhausen"] = baseUrl + "productimage-300404_8690b6b0-99e3-4490-91e0-4dbb9fd154ca.png";
+    imageUrls["silo"] = baseUrl + "productimage-300512_2269d8cb-2801-4e4d-915c-7ad722d6d4a8.png";
+    imageUrls["byome"] = baseUrl + "productimage-300378_43bef938-0ea5-4f09-ad46-0b34c751df83.png";
+    imageUrls["g8"] = baseUrl + "productimage-300183_d5aedd52-8194-49bd-b280-24160da8aed4.png";
+    imageUrls["tails"] = baseUrl + "productimage-300493_90634ade-c965-41fd-a5fe-ed40d14cec59.png";
+    imageUrls["sandman"] = baseUrl + "productimage-300184_2882f84c-ac87-4aaa-aaaa-965d00bfe8b9.png";
+    imageUrls["specops"] = baseUrl + "productimage-300263_cda3010b-a419-4289-8245-3481b6409d10.png";
+    imageUrls["fault"] = baseUrl + "productimage-300235_426efe25-abe9-4c9d-95d2-542c264e1dfa.png";
+    imageUrls["zip"] = baseUrl + "productimage-300357_6d1acfe7-c862-4f57-aeeb-d9fe37986420.png";
+    imageUrls["indent 2"] = baseUrl + "productimage-300343_766af22f-b8ac-43e8-b214-e6c3f008677a.png";
+    imageUrls["dent 2"] = baseUrl + "productimage-300342_49bc2c9c-005d-4e8a-a7ae-f2b85de716c1.png";
+    imageUrls["instant delay"] = baseUrl + "productimage-300316_ce1f07a0-722d-4d3a-a1bf-b43231b62808.png";
+    imageUrls["bass-mint"] = baseUrl + "productimage-300490_3df7645c-3a98-4c49-93be-3d4a9700d3e5.png";
+    imageUrls["lo-fi-af"] = baseUrl + "productimage-300492_3815c462-512d-438e-a1f7-9796ef5e7296.png";
+    imageUrls["needlepoint"] = baseUrl + "productimage-300663_e9b251cc-820d-41e8-86e9-f487dd48e022.png";
+
+    // More Brainworx short names
+    imageUrls["masterdesk"] = baseUrl + "productimage-300383_a2601b0c-d04f-4feb-9a7c-5af3dbf5d472.png";
+    imageUrls["masterdesk pro"] = baseUrl + "productimage-300899_7d13d505-a4ec-4fd8-ac5b-bee1432f5ddc.png";
+    imageUrls["townhouse"] = baseUrl + "productimage-300365_671a1cf2-d3e3-4a18-a54a-0fe613fbd987.png";
+    imageUrls["digital v3"] = baseUrl + "productimage-300214_d6cd321d-80bd-4c41-bd6a-4b05198f3e30.png";
+    imageUrls["rooms"] = baseUrl + "productimage-300218_b3b1d5e1-dcb0-4b24-a58a-3db127e0e259.png";
+    imageUrls["roooms"] = baseUrl + "productimage-300218_b3b1d5e1-dcb0-4b24-a58a-3db127e0e259.png";
+    imageUrls["aura"] = baseUrl + "productimage-301029_e4a95235-3c07-4ddf-a316-956492d2217d.png";
+    imageUrls["pulsar"] = baseUrl + "productimage-301279_2.png";
+    imageUrls["clipper"] = baseUrl + "productimage-300897_8836b232-ad58-4b7b-84ad-b3ecb5454842.png";
+    imageUrls["saturator v2"] = baseUrl + "productimage-300129_803f3461-6ee8-423c-840c-3569bca891c0.png";
+    imageUrls["hybrid v2"] = baseUrl + "productimage-300097_74b90f56-7fc4-4c94-86f1-cdbb4ad2d724.png";
+    imageUrls["opto"] = baseUrl + "productimage-300149_0a8c4324-5cc3-45e3-b62e-9bea84ff8323.png";
+    imageUrls["dyneq v2"] = baseUrl + "productimage-300008_23571076-2caa-4b69-809a-1d234d32eb18.png";
+    imageUrls["xl v2"] = baseUrl + "productimage-300918_98828b43-9284-415c-bb93-6f0c88322ce4.png";
+    imageUrls["xl v3"] = baseUrl + "productimage-300918_98828b43-9284-415c-bb93-6f0c88322ce4.png";
+    imageUrls["crispytuner"] = baseUrl + "productimage-300564_0f72ee8a-9c4f-43b7-9916-c4e1feca8f07.png";
+    imageUrls["glue"] = baseUrl + "productimage-300988_dbbe8b26-3676-473a-8766-8a51308d591f.png";
+    imageUrls["limiter true peak"] = baseUrl + "productimage-300552_1d635dc7-5e4a-4717-8b41-3706351c5683.png";
+    imageUrls["limiter"] = baseUrl + "productimage-300085_6cee96b9-0f1f-4499-9d6d-81bea3ca9da3.png";
+    imageUrls["boom"] = baseUrl + "productimage-301127_e9ace067-330a-4797-9b22-85b8cb2bf870.png";
+    imageUrls["boom v3"] = baseUrl + "productimage-301127_e9ace067-330a-4797-9b22-85b8cb2bf870.png";
+    imageUrls["control v2"] = baseUrl + "productimage-300039_3f18bdee-2603-4bf6-902e-927155d0aad6.png";
+    imageUrls["delay 2500"] = baseUrl + "productimage-300340_a4f01894-db7b-4d8a-93f4-3ada49c34241.png";
+    imageUrls["cleansweep pro"] = baseUrl + "productimage-300199_3640d2e9-1a04-4c7d-bc8e-6b03588f4b6b.png";
+    imageUrls["stereomaker"] = baseUrl + "productimage-300079_46914425-b10e-404b-b628-f16b93987535.png";
+    imageUrls["subsynth"] = baseUrl + "productimage-300257_ba2617f8-37e4-45c9-881c-6dab16468e30.png";
+    imageUrls["paneq"] = baseUrl + "productimage-300195_d89137fd-0dc4-467f-a63f-0bf16a73f309.png";
+    imageUrls["shredspread"] = baseUrl + "productimage-300201_8a82a31c-3b25-4a5e-b0c5-d6c5be0a7fb1.png";
+    imageUrls["refinement"] = baseUrl + "productimage-301160.png";
+    imageUrls["refinement v3"] = baseUrl + "productimage-301160.png";
+    imageUrls["meter"] = baseUrl + "productimage-300066_cf4b5c96-4b4d-4c04-8aa7-9a57c5f5af7a.png";
+    imageUrls["tuner"] = baseUrl + "productimage-300199_3640d2e9-1a04-4c7d-bc8e-6b03588f4b6b.png";
+    imageUrls["solo"] = baseUrl + "productimage-300200_a0f5e7c1-0e45-4e6c-97e7-8aaa2c6be4d5.png";
+    imageUrls["enhancer"] = baseUrl + "productimage-300927_483a3bdf-0d3a-4970-a5b7-d0b6b37ba07c.png";
+
+    // Guitar/bass amp short names
+    imageUrls["megadual"] = baseUrl + "productimage-300160_cf331a7a-0d2e-4d93-a0e8-ca026d93f930.png";
+    imageUrls["megasingle"] = baseUrl + "productimage-300161_a82bfe24-b69c-4b8e-8ed8-c48dcca7c8b5.png";
+    imageUrls["bassdude"] = baseUrl + "productimage-300170_153cebea-6b47-432d-90b6-f4623bcd49e3.png";
+    imageUrls["rockrack v3"] = baseUrl + "productimage-300244_20a2ee7e-c696-432e-ae2f-641cd41b7723.png";
+    imageUrls["rockergain100"] = baseUrl + "productimage-300464_722b950c-c750-41b2-b860-a90fdb759f0b.png";
+
+    // Pedal short names
+    imageUrls["greenscreamer"] = baseUrl + "productimage-300172_bb27f44e-bd5f-4f1b-b09c-63d91e4c68cd.png";
+    imageUrls["bluechorus2"] = baseUrl + "productimage-300169_ae1fbff4-c4dc-4e67-bb66-e6b3e1e4f14b.png";
+    imageUrls["blackdist2"] = baseUrl + "productimage-300168_91e0b0b2-39b7-4cff-b3c5-c8f3a7bea723.png";
+    imageUrls["distorange"] = baseUrl + "productimage-300171_05bf7a66-2b37-4a3e-8c2d-19e13a22e83c.png";
+    imageUrls["yellowdrive"] = baseUrl + "productimage-300174_b4c8c2a8-b7e2-4b3b-a8e2-5f0e8e9c7d12.png";
+    imageUrls["metal2"] = baseUrl + "productimage-300173_8b0e9e0c-7e2b-4c0b-b0e0-8c7e5e8c8d45.png";
+
+    // elysia short names
+    imageUrls["alpha compressor"] = baseUrl + "productimage-301253.png";
+    imageUrls["mpressor"] = baseUrl + "productimage-300018_1635b21e-7b69-439c-ba1b-37ce6236bbfc.png";
+    imageUrls["museq"] = baseUrl + "productimage-300055_aa4bc727-7c4a-4c2c-839e-af90427a44eb.png";
+    imageUrls["karacter"] = baseUrl + "productimage-300256_1b500d94-b2ab-4d3d-8537-32ac61b673c9.png";
+    imageUrls["nvelope"] = baseUrl + "productimage-300145_9163302c-3621-412f-b57b-86b466130f7a.png";
+    imageUrls["niveau filter"] = baseUrl + "productimage-300146_28c03de7-f9ca-42d6-8dc3-7cc60a8f2e54.png";
+
+    // SPL short names
+    imageUrls["iron"] = baseUrl + "productimage-300386_5a609eb0-4eb3-4780-82b2-2bc2077c677b.png";
+    imageUrls["passeq"] = baseUrl + "productimage-300014_41e6334f-ea81-4115-bcb2-ce021a984aae.png";
+    imageUrls["vitalizer"] = baseUrl + "productimage-301205.png";
+    imageUrls["twintube"] = baseUrl + "productimage-300025_b2bd856a-47b9-433c-b622-31dd8c2d61a0.png";
+    imageUrls["transient designer plus"] = baseUrl + "productimage-300187_f60f1190-959c-48af-b3e7-0d907bc344e9.png";
+    imageUrls["transient designer"] = baseUrl + "productimage-300187_f60f1190-959c-48af-b3e7-0d907bc344e9.png";
+    imageUrls["de-esser"] = baseUrl + "productimage-300027_ae01dbce-8b31-49cf-b644-e973cca25fa1.png";
+    imageUrls["de-verb plus"] = baseUrl + "productimage-300305_8082d009-6270-4264-84f8-5801a3dad97e.png";
+    imageUrls["mo-verb plus"] = baseUrl + "productimage-300307_b8dc9794-488c-4ffc-af14-deaa77633c9e.png";
+    imageUrls["attacker plus"] = baseUrl + "productimage-300303_cf082f7d-27b1-4317-874f-3732caec074d.png";
+    imageUrls["drumxchanger"] = baseUrl + "productimage-300020_b30bc9e9-b50a-4559-9e06-353e837f36fd.png";
+    imageUrls["eq ranger plus"] = baseUrl + "productimage-300186_672ca1e9-1e63-43ec-9c48-8a7cdb66b8d0.png";
+    imageUrls["machine head"] = baseUrl + "productimage-301150_00d7f9ee-0334-4ad6-9ae3-24c4567bf255.png";
+    imageUrls["big"] = baseUrl + "productimage-301157_b5d6244c-127c-4e2c-8a42-d30e5886b545.png";
+    imageUrls["hawkeye"] = baseUrl + "productimage-300400_d705cd7c-7087-4680-914b-646d0b0fe801.png";
+
+    // Shadow Hills short names
+    imageUrls["mastering compressor"] = baseUrl + "productimage-300733_8559dc19-253d-4547-a89c-f15db5e971ac.png";
+    imageUrls["optomax"] = baseUrl + "productimage-301332.jpg";
+
+    // NEOLD short names
+    imageUrls["u2a"] = baseUrl + "U2A_GUI.png";
+    imageUrls["u17"] = baseUrl + "U17_GUI.png";
+    imageUrls["warble"] = baseUrl + "WARBLE_GUI.png";
+    imageUrls["big al"] = baseUrl + "BIG_AL_GUI.png";
+    imageUrls["v76u73"] = baseUrl + "V76U73_GUI.png";
+    imageUrls["oldtimer"] = baseUrl + "OLDTIMER_GUI.png";
+    imageUrls["wunderlich"] = baseUrl + "WUNDERLICH_GUI.png";
+    imageUrls["rz062"] = baseUrl + "NEOLD_RZ062_GUI.jpg";
+
+    // Vertigo short names
+    imageUrls["vsc-2"] = baseUrl + "productimage-300016_b2d9cdc4-0a57-4ea9-ac82-c9be994d59a3.png";
+    imageUrls["vss-2"] = baseUrl + "productimage-301211_c9e80b87-6931-49a0-a3f3-c4bf0558adbc.png";
+    imageUrls["vsm-3"] = baseUrl + "productimage-300100_481634f1-902d-46ca-9da7-bbe7f2b83313.png";
+
+    // Maag Audio short names
+    imageUrls["eq4"] = baseUrl + "productimage-300035_428da437-d6de-412d-bbb1-9f804df6f30f.png";
+    imageUrls["eq4 ms"] = baseUrl + "productimage-301107_7eb64f8c-bf0d-4ee7-9460-10e01a67a783.png";
+    imageUrls["eq2"] = baseUrl + "productimage-300117_4ea7b383-e026-40eb-ad25-72287bdcd42e.png";
+    imageUrls["magnum-k"] = baseUrl + "productimage-300396_1fab8194-5ca3-4b6d-99b1-0e53a025bcb9.png";
+
+    // Console short names
+    imageUrls["console ssl 4000 e"] = baseUrl + "productimage-300373_f5942771-0897-4d7f-8955-7795f96295a3.png";
+    imageUrls["console ssl 4000 g"] = baseUrl + "productimage-300374_b2b44f03-8e78-4736-a7b6-ef8820665d5b.png";
+    imageUrls["console ssl 9000 j"] = baseUrl + "productimage-300478_3bcb16b8-3645-45f3-9b99-4d738a5a344e.png";
+    imageUrls["console amek 9099"] = baseUrl + "productimage-300556_e7ec008e-826c-4aaf-86d3-fa8cc6b0ab20.png";
+    imageUrls["console amek 200"] = baseUrl + "productimage-300865_2bacbf1b-2cdf-4ab8-b1c6-59d6bc227cc4.png";
+    imageUrls["console focusrite sc"] = baseUrl + "productimage-300402_e0b1d7b5-7b9b-466c-a224-1547f722b0f0.png";
+    imageUrls["console n"] = baseUrl + "productimage-300345_47021cba-5c15-4974-aa89-ff492a889fed.png";
+
+    // Black Box short names
+    imageUrls["hg-2"] = baseUrl + "productimage-300259_1e8913ea-66da-4ac3-aee0-171e176dfa13.png";
+    imageUrls["hg-2ms"] = baseUrl + "productimage-300541_892dac09-0f4a-4c59-ac02-2419b76d461c.png";
+    imageUrls["hg-q"] = baseUrl + "productimage-300902_7f6334fb-d403-47bc-baae-18a9cd266cf3.png";
+
+    // ADPTR short names
+    imageUrls["metric ab"] = baseUrl + "productimage-300370_51fdb784-eaec-48b3-8609-4fccc7196d68.png";
+    imageUrls["streamliner"] = baseUrl + "productimage-300537_a0567c85-b2b2-4bd1-9f46-8f546e962030.png";
+    imageUrls["sculpt"] = baseUrl + "productimage-300570_a644e64a-2d6e-4492-a71a-2139f7043502.png";
+    imageUrls["utopia"] = baseUrl + "productimage-301236.png";
+
+    // Kirchhoff short names
+    imageUrls["kirchhoff-eq"] = baseUrl + "productimage-300781_6b333574-9e0f-4247-9d6a-81a75d11eadd.png";
+    imageUrls["kirchhoff eq"] = baseUrl + "productimage-300781_6b333574-9e0f-4247-9d6a-81a75d11eadd.png";
+
+    // Cenozoix and Trinity
+    imageUrls["cenozoix"] = baseUrl + "productimage-300982_3397fcd0-2e7b-4b96-b08b-5d82fa4c3528.png";
+    imageUrls["trinity"] = baseUrl + "productimage-301099_9368cf32-6c6e-4541-ad84-f96fb8bcddbb.png";
+
+    // Lindell short names
+    imageUrls["80 series"] = baseUrl + "productimage-300475_de30a79f-c507-4963-9d9f-b09b50e2b91b.png";
+    imageUrls["69 series"] = baseUrl + "productimage-300738_552e118f-280c-45c0-bb35-df6d7492b686.png";
+    imageUrls["50 series"] = baseUrl + "productimage-300543_18e03db2-391e-4555-ba69-376b1cc1842a.png";
+    imageUrls["354e"] = baseUrl + "productimage-300289_fadcef28-689f-493c-b1ae-a695928bf0a1.png";
+    imageUrls["254e"] = baseUrl + "productimage-300150_4690a068-d00e-43e6-acf0-2f61f40d890e.png";
+    imageUrls["902 de-esser"] = baseUrl + "productimage-300626_a2edb61f-a1c5-400e-96cb-656bbbda8fa9.png";
+    imageUrls["7x-500"] = baseUrl + "productimage-300178_8bb5104f-8127-409a-89ec-25840ed22e19.png";
+    imageUrls["6x-500"] = baseUrl + "productimage-300177_c6d72330-7dee-4c62-8c18-e10eb82e96ee.png";
+    imageUrls["pex-500"] = baseUrl + "productimage-300179_fa86a3d6-3911-480f-9f7d-85737184eaca.png";
+    imageUrls["channelx"] = baseUrl + "productimage-300175_b9f47d8b-15a3-4c65-9299-4baa15ee39cf.png";
+    imageUrls["eq825"] = baseUrl + "productimage-301272.jpg";
+    imageUrls["mbc"] = baseUrl + "productimage-300737_d0202dc3-2fc5-432e-b972-f3b6edc13dbd.png";
+    imageUrls["sbc"] = baseUrl + "productimage-300627_3efa1f27-cc48-46d3-a800-a417c51b1e5c.png";
+
+    // Bettermaker short names
+    imageUrls["mastering compressor"] = baseUrl + "productimage-301237.png";
+    imageUrls["bus compressor"] = baseUrl + "productimage-300973_b69e8739-4394-49f1-bb2d-c4df85dd2bcb.png";
+    imageUrls["passive equalizer"] = baseUrl + "productimage-301098.png";
+
+    // HUM short names
+    imageUrls["laal"] = baseUrl + "productimage-301243_6f932fc9-447c-45be-86e4-699151db7721.png";
+
+    // Millennia short names
+    imageUrls["nseq-2"] = baseUrl + "productimage-300033_a9be6950-3a74-433a-bda2-fd86035e4ef3.png";
+
+    // A/DA short names
+    imageUrls["flanger"] = baseUrl + "productimage-300356_b75930af-e197-461f-a776-d0b40f6fbfd7.png";
+    imageUrls["std-1"] = baseUrl + "productimage-300258_e4416d1c-8f75-4683-8195-cc03447e59a0.png";
+
+    // Swivel short names
+    imageUrls["spread"] = baseUrl + "productimage-301296.png";
+    imageUrls["the sauce"] = baseUrl + "productimage-301290.png";
+    imageUrls["sauce"] = baseUrl + "productimage-301290.png";
+    imageUrls["knocktonal"] = baseUrl + "productimage-301298.png";
+    imageUrls["click boom"] = baseUrl + "productimage-301299.png";
+    imageUrls["bde"] = baseUrl + "productimage-301297.png";
+    imageUrls["hitstrip"] = baseUrl + "productimage-301300.png";
+
+    // Noveltech short names
+    imageUrls["character"] = baseUrl + "productimage-300068_1e2c9ec6-8b04-49e6-ac20-bfbc963d0481.png";
+    imageUrls["vocal enhancer"] = baseUrl + "productimage-300088_7acfec5d-912a-48ca-9ebd-fe07e741e6e1.png";
+
+    // Knif short names
+    imageUrls["soma"] = baseUrl + "productimage-300517_d93d3d4e-3d3c-42e4-9694-c3bea8252618.png";
+    imageUrls["soma eq"] = baseUrl + "productimage-300517_d93d3d4e-3d3c-42e4-9694-c3bea8252618.png";
+
+    // Fiedler short names
+    imageUrls["stage"] = baseUrl + "productimage-300309_43e9ff7b-b505-4425-8a9d-c4b6954b2b06.png";
+    imageUrls["spatial creator"] = baseUrl + "productimage-300904_d1c9b86a-5c99-4a62-b809-5790a753b57b.png";
+
+    // DS Audio short names
+    imageUrls["tantra 2"] = baseUrl + "productimage-300554_8ace881a-39b6-471d-9a28-fe0cf0673018.png";
+    imageUrls["tantra"] = baseUrl + "productimage-300554_8ace881a-39b6-471d-9a28-fe0cf0673018.png";
+
+    // Misc short names
+    imageUrls["mc77"] = baseUrl + "productimage-300417_8eceb4b6-1550-4496-aa2a-45aadb2e1c92.png";
+    imageUrls["mc 77"] = baseUrl + "productimage-300417_8eceb4b6-1550-4496-aa2a-45aadb2e1c92.png";
+    imageUrls["dsm v3"] = baseUrl + "productimage-300403_9bb5d6c3-5d94-46d0-86c4-f8c86bd9a7c3.png";
+    imageUrls["sa2rate"] = baseUrl + "productimage-300629_fe5b41c8-37fd-4fa6-a20e-831a09f0f481.png";
+    imageUrls["sa2rate 2"] = baseUrl + "productimage-300629_fe5b41c8-37fd-4fa6-a20e-831a09f0f481.png";
+    imageUrls["bax eq"] = baseUrl + "productimage-300095_e8339764-5fb2-4554-b4d2-14fee7d1b140.png";
+    imageUrls["gav19t"] = baseUrl + "productimage-300114_a26c0820-3eb1-42f1-b72c-81005a988f27.png";
+    imageUrls["silver bullet"] = baseUrl + "productimage-300952_ae72f079-fed9-499f-a15f-c00e2d9fe988.png";
+    imageUrls["silver bullet mk2"] = baseUrl + "productimage-300952_ae72f079-fed9-499f-a15f-c00e2d9fe988.png";
+    imageUrls["lisa"] = baseUrl + "productimage-300635_b22c3561-6e15-4c4d-ad52-4ac96b0e9d92.png";
+    imageUrls["natalus"] = baseUrl + "productimage-300852_e65cdbad-a648-40b8-88e6-4fb77bb3a976.png";
+    imageUrls["the oven"] = baseUrl + "productimage-300653_a16226c9-f5b9-4820-92c2-4240b4adfa66.png";
+    imageUrls["oven"] = baseUrl + "productimage-300653_a16226c9-f5b9-4820-92c2-4240b4adfa66.png";
+    imageUrls["opticom xla-3"] = baseUrl + "productimage-300211_137be455-e2d4-4035-9eee-f1ef6d7a3a15.png";
+    imageUrls["xla-3"] = baseUrl + "productimage-300211_137be455-e2d4-4035-9eee-f1ef6d7a3a15.png";
+    imageUrls["triad"] = baseUrl + "productimage-300393_2300346d-45cc-4bd1-997d-10b1946db4e8.png";
+    imageUrls["perfection"] = baseUrl + "productimage-301331.png";
+    imageUrls["xtcomp"] = baseUrl + "productimage-300998.png";
+    imageUrls["xtressor"] = baseUrl + "productimage-300800_d2c32a9b-7c2a-4b1e-8a89-4c3a7c8d9e12.png";
 }
 
 juce::String PluginImageCache::normalizePluginName(const juce::String& name) const
 {
     return name.toLowerCase().trim();
+}
+
+// Generate alternative name variants for lookup
+juce::StringArray PluginImageCache::getNameVariants(const juce::String& normalizedName) const
+{
+    juce::StringArray variants;
+    variants.add(normalizedName);
+
+    // Common brand prefixes to try removing
+    juce::StringArray brandPrefixes = {
+        "unfiltered audio ", "brainworx ", "plugin alliance ", "ds audio ",
+        "knif audio ", "lindell audio ", "maag audio ", "mäag audio ",
+        "shadow hills ", "black box analog design ", "black box ",
+        "three-body technology ", "fiedler audio ", "adptr audio ",
+        "swivel audio ", "kiive audio ", "tomo audiolabs ", "hum audio devices ",
+        "louder than liftoff ", "pro audio dsp ", "purple audio ",
+        "dangerous music ", "chandler limited ", "harris doyle ",
+        "karanyi sounds ", "cut classic ", "acme audio ", "mixland ",
+        "maor appelbaum ", "noveltech ", "bettermaker ", "looptrotter ",
+        "millennia ", "vertigo ", "elysia ", "spl ", "neold ", "amek ",
+        "ampeg ", "diezel ", "engl ", "friedman ", "fuchs ", "suhr ",
+        "gallien-krueger ", "gallien krueger "
+    };
+
+    // Try removing brand prefixes
+    for (const auto& prefix : brandPrefixes)
+    {
+        if (normalizedName.startsWith(prefix))
+        {
+            auto withoutPrefix = normalizedName.substring(prefix.length()).trim();
+            if (withoutPrefix.isNotEmpty() && !variants.contains(withoutPrefix))
+                variants.add(withoutPrefix);
+        }
+    }
+
+    // Also try adding common brand prefixes if we have a short name
+    if (!normalizedName.contains(" ") || normalizedName.length() < 15)
+    {
+        // Try with common prefixes for known product names
+        juce::StringArray prefixesToTry = {
+            "unfiltered audio ", "brainworx ", "ds audio ", "knif audio ",
+            "lindell audio ", "spl ", "neold ", "elysia ", "bettermaker "
+        };
+
+        for (const auto& prefix : prefixesToTry)
+        {
+            auto withPrefix = prefix + normalizedName;
+            if (!variants.contains(withPrefix))
+                variants.add(withPrefix);
+        }
+    }
+
+    return variants;
+}
+
+juce::String PluginImageCache::findImageUrl(const juce::String& normalizedName) const
+{
+    // Try to find URL using multiple name variants
+    auto variants = getNameVariants(normalizedName);
+
+    for (const auto& variant : variants)
+    {
+        auto it = imageUrls.find(variant);
+        if (it != imageUrls.end() && it->second.isNotEmpty())
+            return it->second;
+    }
+
+    return juce::String();
 }
 
 juce::File PluginImageCache::getCacheDirectory() const
@@ -741,29 +1034,34 @@ juce::File PluginImageCache::getBundledImageFile(const juce::String& pluginName)
     // Normalize the plugin name for lookup (lowercase, trimmed)
     auto normalizedName = pluginName.toLowerCase().trim();
 
-    // Look up the thumbnail filename from our mapping
-    auto it = thumbnailFilenames.find(normalizedName);
-    if (it != thumbnailFilenames.end())
+    // Try multiple name variants
+    auto variants = getNameVariants(normalizedName);
+
+    for (const auto& variant : variants)
     {
-        auto file = bundledImagesPath.getChildFile(it->second + ".png");
-        if (file.existsAsFile())
-            return file;
+        // Look up the thumbnail filename from our mapping
+        auto it = thumbnailFilenames.find(variant);
+        if (it != thumbnailFilenames.end())
+        {
+            auto file = bundledImagesPath.getChildFile(it->second + ".png");
+            if (file.existsAsFile())
+                return file;
+        }
+
+        // Also try deriving filename programmatically for each variant
+        auto safeName = variant
+            .replaceCharacter(' ', '_')
+            .replaceCharacter('/', '_')
+            .replaceCharacter('-', '_')
+            .retainCharacters("abcdefghijklmnopqrstuvwxyz0123456789_");
+
+        auto derivedFile = bundledImagesPath.getChildFile(safeName + ".png");
+        if (derivedFile.existsAsFile())
+            return derivedFile;
     }
 
-    // Fallback: try to derive the filename programmatically
-    auto safeName = normalizedName
-        .replaceCharacter(' ', '_')
-        .replaceCharacter('/', '_')
-        .replaceCharacter('-', '_')
-        .retainCharacters("abcdefghijklmnopqrstuvwxyz0123456789_");
-
-    auto derivedFile = bundledImagesPath.getChildFile(safeName + ".png");
-    if (derivedFile.existsAsFile())
-        return derivedFile;
-
-    // Second fallback: search for files containing key parts of the plugin name
-    // Extract the main identifier (e.g., "bx_console" from "bx_console ssl 4000 e")
-    auto searchPattern = pluginName.toLowerCase()
+    // Fallback: search for files containing key parts of the plugin name
+    auto searchPattern = normalizedName
         .replaceCharacter(' ', '_')
         .replaceCharacter('-', '_')
         .retainCharacters("abcdefghijklmnopqrstuvwxyz0123456789_");
@@ -931,9 +1229,8 @@ void PluginImageCache::run()
                 pluginToLoad = *pendingRequests.begin();
                 pendingRequests.erase(pendingRequests.begin());
 
-                auto it = imageUrls.find(pluginToLoad);
-                if (it != imageUrls.end())
-                    urlToLoad = it->second;
+                // Use name variants to find URL
+                urlToLoad = findImageUrl(pluginToLoad);
             }
         }
 

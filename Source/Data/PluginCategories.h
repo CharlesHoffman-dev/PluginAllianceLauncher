@@ -114,7 +114,7 @@ enum class InstrumentCategory
 };
 
 // ============================================
-// DISPLAY CATEGORY (Simplified for UI)
+// DISPLAY CATEGORY (Simplified for UI - 12 Categories)
 // ============================================
 enum class DisplayCategory
 {
@@ -124,29 +124,30 @@ enum class DisplayCategory
     Recent,
 
     // Effects (alphabetical)
-    AmpSim,
-    ChannelStrip,
-    Compressors,
-    Creative,
-    Delay,
-    Distortion,
-    EQ,
-    Expanders,
-    Mastering,
-    Metering,
-    Mixing,
-    Modulation,
-    Pitch,
-    Reverb,
-    Saturation,
-    StereoImaging,
-    Utility,
-    Vocal,
+    ChannelStrip,       // Console emulations (SSL, Neve, API, etc.)
+    Delays,             // Analog, Digital, Granular, Tape, etc.
+    Dynamics,           // Compressors, Limiters, Gates, Transient Shapers, De-Essers
+    Equalization,       // Parametric, Passive, Dynamic, Filters, etc.
+    GuitarBass,         // Amps, Pedals, Cabinets
+    Mastering,          // Mastering Suites, Limiters, Metering (legacy)
+    Meters,             // Spectrum analyzers, loudness meters, phase meters
+    Modulation,         // Chorus, Flanger, Phaser, Tremolo, Vibrato (legacy)
+    PitchCorrection,    // Vocal Tuners, Pitch Shifters, Harmonizers (legacy)
+    Reverbs,            // Algorithmic, Plate, Hall, Room, Chamber, etc.
+    Saturation,         // Distortion, Tube, Tape, Transformer, Harmonic
+    SpecialProcessing,  // Multi-FX, Lo-Fi, Stereo Wideners, 3D Audio, etc.
 
-    // Instruments (alphabetical)
-    Drums,
-    Sampler,
-    Synth,
+    // Instruments - subcategories (alphabetical)
+    Inst_Bass,          // Bass instruments
+    Inst_Drums,         // Drum machines, drum synths
+    Inst_Guitars,       // Guitar instruments
+    Inst_Keys,          // Keyboard instruments (pianos, etc.)
+    Inst_Organs,        // Organ instruments
+    Inst_Strings,       // String instruments
+    Inst_Synths,        // Synthesizers
+
+    // Legacy (keep for compatibility)
+    VirtualInstruments, // All virtual instruments
 
     // Brands (alphabetical)
     Brand_ACMEAudio,
@@ -308,29 +309,28 @@ inline juce::String getDisplayCategoryName(DisplayCategory cat)
         {DisplayCategory::Recent, "Recent"},
 
         // Effects (alphabetical)
-        {DisplayCategory::AmpSim, "Amp Simulators"},
         {DisplayCategory::ChannelStrip, "Channel Strips"},
-        {DisplayCategory::Compressors, "Compressors"},
-        {DisplayCategory::Creative, "Creative"},
-        {DisplayCategory::Delay, "Delay"},
-        {DisplayCategory::Distortion, "Distortion"},
-        {DisplayCategory::EQ, "EQs"},
-        {DisplayCategory::Expanders, "Expanders"},
+        {DisplayCategory::Delays, "Delays"},
+        {DisplayCategory::Dynamics, "Dynamics"},
+        {DisplayCategory::Equalization, "Equalizers"},
+        {DisplayCategory::GuitarBass, "Amp Simulators"},
         {DisplayCategory::Mastering, "Mastering"},
-        {DisplayCategory::Metering, "Metering"},
-        {DisplayCategory::Mixing, "Mixing"},
+        {DisplayCategory::Meters, "Meters"},
         {DisplayCategory::Modulation, "Modulation"},
-        {DisplayCategory::Pitch, "Pitch"},
-        {DisplayCategory::Reverb, "Reverb"},
-        {DisplayCategory::Saturation, "Saturation"},
-        {DisplayCategory::StereoImaging, "Stereo Imaging"},
-        {DisplayCategory::Utility, "Utility"},
-        {DisplayCategory::Vocal, "Vocal Processing"},
+        {DisplayCategory::PitchCorrection, "Pitch Correction"},
+        {DisplayCategory::Reverbs, "Reverbs"},
+        {DisplayCategory::Saturation, "Saturators"},
+        {DisplayCategory::SpecialProcessing, "Other"},
 
-        // Instruments
-        {DisplayCategory::Drums, "Drums"},
-        {DisplayCategory::Sampler, "Samplers"},
-        {DisplayCategory::Synth, "Synths"},
+        // Instruments - subcategories
+        {DisplayCategory::Inst_Bass, "Bass"},
+        {DisplayCategory::Inst_Drums, "Drums"},
+        {DisplayCategory::Inst_Guitars, "Guitars"},
+        {DisplayCategory::Inst_Keys, "Keys"},
+        {DisplayCategory::Inst_Organs, "Organs"},
+        {DisplayCategory::Inst_Strings, "Strings"},
+        {DisplayCategory::Inst_Synths, "Synths"},
+        {DisplayCategory::VirtualInstruments, "Virtual Instruments"},
 
         // Brands (alphabetical)
         {DisplayCategory::Brand_ACMEAudio, "ACME Audio"},
@@ -389,7 +389,7 @@ inline juce::String getDisplayCategoryName(DisplayCategory cat)
 // Helper to check if a DisplayCategory is a brand
 inline bool isBrandCategory(DisplayCategory cat)
 {
-    return cat >= DisplayCategory::Brand_ACMEAudio && cat <= DisplayCategory::Brand_Vertigo;
+    return static_cast<int>(cat) >= static_cast<int>(DisplayCategory::Brand_ACMEAudio);
 }
 
 // ============================================

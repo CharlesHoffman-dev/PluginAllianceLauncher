@@ -37,6 +37,10 @@ struct PluginInfo
     ChannelStripType channelStripType = ChannelStripType::Unknown;
     LimiterType limiterType = LimiterType::Unknown;
     DistortionType distortionType = DistortionType::Unknown;
+    ModulationType modulationType = ModulationType::Unknown;
+    GuitarBassType guitarBassType = GuitarBassType::Unknown;
+    MasteringType masteringType = MasteringType::Unknown;
+    SpecialProcessingType specialProcessingType = SpecialProcessingType::Unknown;
 };
 
 class PluginDatabase

@@ -6,6 +6,7 @@
 */
 
 #include "PluginEditor.h"
+#include "Utils/PluginImageCache.h"
 
 namespace PALauncher
 {
@@ -110,21 +111,148 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     };
     addAndMakeVisible(subcategoryFilter);
 
-    // Set up era filter
-    eraFilter.onEraChanged = [this](Era era)
+    // Set up sort combo box
+    sortComboBox.addItem("Brand A-Z", 1);
+    sortComboBox.addItem("Brand Z-A", 2);
+    sortComboBox.addItem("Name A-Z", 3);
+    sortComboBox.addItem("Name Z-A", 4);
+    sortComboBox.setSelectedId(1, juce::dontSendNotification);
+    sortComboBox.setColour(juce::ComboBox::backgroundColourId, juce::Colour(0xff2a2a2a));
+    sortComboBox.setColour(juce::ComboBox::textColourId, juce::Colours::white);
+    sortComboBox.setColour(juce::ComboBox::outlineColourId, juce::Colour(0xff3a3a3a));
+    sortComboBox.setColour(juce::ComboBox::arrowColourId, juce::Colours::white);
+    sortComboBox.onChange = [this]()
     {
-        currentEra = era;
+        currentSortOrder = sortComboBox.getSelectedId() - 1;  // 0-indexed
         filterPlugins();
     };
-    addAndMakeVisible(eraFilter);
+    addAndMakeVisible(sortComboBox);
+
+    // Set up era combo box
+    eraComboBox.addItem("All Eras", 1);
+    eraComboBox.addItem("1950s", 2);
+    eraComboBox.addItem("1960s", 3);
+    eraComboBox.addItem("1970s", 4);
+    eraComboBox.addItem("1980s", 5);
+    eraComboBox.addItem("1990s", 6);
+    eraComboBox.addItem("2000s", 7);
+    eraComboBox.addItem("2010s", 8);
+    eraComboBox.addItem("2020s", 9);
+    eraComboBox.addItem("Digital", 10);
+    eraComboBox.setSelectedId(1, juce::dontSendNotification);
+    eraComboBox.setColour(juce::ComboBox::backgroundColourId, juce::Colour(0xff2a2a2a));
+    eraComboBox.setColour(juce::ComboBox::textColourId, juce::Colours::white);
+    eraComboBox.setColour(juce::ComboBox::outlineColourId, juce::Colour(0xff3a3a3a));
+    eraComboBox.setColour(juce::ComboBox::arrowColourId, juce::Colours::white);
+    eraComboBox.onChange = [this]()
+    {
+        int selected = eraComboBox.getSelectedId();
+        switch (selected)
+        {
+            case 1: currentEra = Era::Era_Unknown; break;  // All
+            case 2: currentEra = Era::Era_1950s; break;
+            case 3: currentEra = Era::Era_1960s; break;
+            case 4: currentEra = Era::Era_1970s; break;
+            case 5: currentEra = Era::Era_1980s; break;
+            case 6: currentEra = Era::Era_1990s; break;
+            case 7: currentEra = Era::Era_2000s; break;
+            case 8: currentEra = Era::Era_2010s; break;
+            case 9: currentEra = Era::Era_2020s; break;
+            case 10: currentEra = Era::Era_Modern; break;
+            default: currentEra = Era::Era_Unknown; break;
+        }
+        filterPlugins();
+    };
+    addAndMakeVisible(eraComboBox);
+
+    // Set up brand combo box
+    brandComboBox.addItem("All Brands", 1);
+    brandComboBox.addItem("ACME Audio", 2);
+    brandComboBox.addItem("ADA", 3);
+    brandComboBox.addItem("ADPTR AUDIO", 4);
+    brandComboBox.addItem("AMEK", 5);
+    brandComboBox.addItem("Ampeg", 6);
+    brandComboBox.addItem("Bettermaker", 7);
+    brandComboBox.addItem("Black Box Analog Design", 8);
+    brandComboBox.addItem("Brainworx", 9);
+    brandComboBox.addItem("Chandler Limited", 10);
+    brandComboBox.addItem("Cut Classic", 11);
+    brandComboBox.addItem("Dangerous Music", 12);
+    brandComboBox.addItem("Diezel", 13);
+    brandComboBox.addItem("DS Audio", 14);
+    brandComboBox.addItem("elysia", 15);
+    brandComboBox.addItem("ENGL", 16);
+    brandComboBox.addItem("fiedler audio", 17);
+    brandComboBox.addItem("Focusrite", 18);
+    brandComboBox.addItem("Friedman", 19);
+    brandComboBox.addItem("Fuchs", 20);
+    brandComboBox.addItem("Gallien-Krueger", 21);
+    brandComboBox.addItem("Harris Doyle", 22);
+    brandComboBox.addItem("HEARS", 23);
+    brandComboBox.addItem("HUM Audio Devices", 24);
+    brandComboBox.addItem("Karanyi Sounds", 25);
+    brandComboBox.addItem("Kiive Audio", 26);
+    brandComboBox.addItem("Knif Audio", 27);
+    brandComboBox.addItem("Lindell Audio", 28);
+    brandComboBox.addItem("Looptrotter", 29);
+    brandComboBox.addItem("Louder Than Liftoff", 30);
+    brandComboBox.addItem("Maor Appelbaum & Hendyamps", 31);
+    brandComboBox.addItem("Millennia", 32);
+    brandComboBox.addItem("Mixland", 33);
+    brandComboBox.addItem("Mäag Audio", 34);
+    brandComboBox.addItem("NEOLD", 35);
+    brandComboBox.addItem("Noveltech", 36);
+    brandComboBox.addItem("Plugin Alliance", 37);
+    brandComboBox.addItem("Pro Audio DSP", 38);
+    brandComboBox.addItem("Purple Audio", 39);
+    brandComboBox.addItem("Shadow Hills", 40);
+    brandComboBox.addItem("Solid State Logic (SSL)", 41);
+    brandComboBox.addItem("SPL", 42);
+    brandComboBox.addItem("Suhr", 43);
+    brandComboBox.addItem("Swivel Audio", 44);
+    brandComboBox.addItem("Three-Body Technology", 45);
+    brandComboBox.addItem("THX", 46);
+    brandComboBox.addItem("TOMO Audiolabs", 47);
+    brandComboBox.addItem("Unfiltered Audio", 48);
+    brandComboBox.addItem("Vertigo", 49);
+    brandComboBox.setSelectedId(1, juce::dontSendNotification);
+    brandComboBox.setColour(juce::ComboBox::backgroundColourId, juce::Colour(0xff2a2a2a));
+    brandComboBox.setColour(juce::ComboBox::textColourId, juce::Colours::white);
+    brandComboBox.setColour(juce::ComboBox::outlineColourId, juce::Colour(0xff3a3a3a));
+    brandComboBox.setColour(juce::ComboBox::arrowColourId, juce::Colours::white);
+    brandComboBox.setLookAndFeel(&brandComboBoxLookAndFeel);
+    brandComboBox.onChange = [this]()
+    {
+        if (brandComboBox.getSelectedId() == 1)
+            currentBrandFilter = "";
+        else
+            currentBrandFilter = brandComboBox.getText();
+        filterPlugins();
+    };
+    addAndMakeVisible(brandComboBox);
+
+    // Set up details panel load button
+    detailsLoadButton.setButtonText("Load Plugin");
+    detailsLoadButton.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff0cbff2));
+    detailsLoadButton.setColour(juce::TextButton::textColourOffId, juce::Colours::white);
+    detailsLoadButton.setLookAndFeel(&buttonLookAndFeel);
+    detailsLoadButton.onClick = [this]()
+    {
+        if (selectedPlugin != nullptr)
+            loadSelectedPlugin(*selectedPlugin);
+    };
+    addAndMakeVisible(detailsLoadButton);
 
     // Set up plugin list view
     pluginListView.onPluginSelected = [this](const PluginInfo& info)
     {
         // Store the selected plugin
         selectedPlugin = std::make_unique<PluginInfo>(info);
-        // Update button state
+        // Update details panel image
+        detailsPluginImage = PluginImageCache::getInstance().getImage(info.description.name);
+        // Update button state and repaint details panel
         resized();
+        repaint();
     };
 
     pluginListView.onPluginDoubleClick = [this](const PluginInfo& info)
@@ -184,10 +312,10 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
             pluginListView.setLoadedPluginId(desc->fileOrIdentifier);
     }
 
-    // Set editor size
-    setSize(1200, 800);
+    // Set editor size - wider to accommodate details panel
+    setSize(1400, 800);
     setResizable(true, true);
-    setResizeLimits(800, 600, 2000, 1500);
+    setResizeLimits(1000, 600, 2200, 1500);
 
     // Defer hosted plugin editor creation to avoid audio stutter on window open
     // Creating the hosted plugin's GUI can be heavy, so do it after the window is shown
@@ -233,13 +361,24 @@ void PluginAllianceLauncherEditor::paint(juce::Graphics& g)
         logoDrawable->drawWithin(g, logoBounds, juce::RectanglePlacement::centred, 1.0f);
     }
 
-    // Subscription banner at bottom of content area (in browser mode only)
+    // Browser mode UI elements
     if (browserMode)
     {
+        // Subscription banner at bottom
         auto bannerBounds = juce::Rectangle<int>(sidebarWidth, getHeight() - bannerHeight,
                                                   getWidth() - sidebarWidth, bannerHeight);
         g.setColour(juce::Colour(0xff0cbff2));  // Brand cyan
         g.fillRect(bannerBounds);
+
+        // Details panel on the right - show if we have plugins
+        bool hasPlugins = !currentFilteredPlugins.isEmpty();
+        if (hasPlugins && selectedPlugin != nullptr)
+        {
+            int statusOffset = processor.getPluginScanner().isScanning() ? 28 : 0;
+            auto detailsBounds = juce::Rectangle<int>(getWidth() - detailsPanelWidth, topBarHeight + statusOffset,
+                                                       detailsPanelWidth, getHeight() - topBarHeight - bannerHeight - statusOffset);
+            paintDetailsPanel(g, detailsBounds);
+        }
     }
 
     // Only show status area when scanning
@@ -335,6 +474,17 @@ void PluginAllianceLauncherEditor::resized()
 
     searchBar.setBounds(topBar.removeFromLeft(300));
 
+    // Sort, Era and Brand dropdowns in top bar (right of search, in browser mode)
+    if (browserMode)
+    {
+        topBar.removeFromLeft(12);  // Gap after search
+        sortComboBox.setBounds(topBar.removeFromLeft(100));
+        topBar.removeFromLeft(8);
+        eraComboBox.setBounds(topBar.removeFromLeft(100));
+        topBar.removeFromLeft(8);
+        brandComboBox.setBounds(topBar.removeFromLeft(160));
+    }
+
     // Only reserve space for status bar when scanning
     if (processor.getPluginScanner().isScanning())
     {
@@ -346,40 +496,35 @@ void PluginAllianceLauncherEditor::resized()
     {
         // Show sidebar and subscription banner in browser mode
         categoryFilter.setVisible(true);
-        eraFilter.setVisible(true);
+        sortComboBox.setVisible(true);
+        eraComboBox.setVisible(true);
+        brandComboBox.setVisible(true);
         subscriptionLabel.setVisible(true);
         subscribeButton.setVisible(true);
 
         // Check if current category has subcategories
-        bool hasSubcategories = (currentCategory == DisplayCategory::Compressors ||
-                                 currentCategory == DisplayCategory::EQ ||
-                                 currentCategory == DisplayCategory::Reverb ||
-                                 currentCategory == DisplayCategory::Delay ||
-                                 currentCategory == DisplayCategory::AmpSim ||
+        bool hasSubcategories = (currentCategory == DisplayCategory::Dynamics ||
+                                 currentCategory == DisplayCategory::Equalization ||
+                                 currentCategory == DisplayCategory::Reverbs ||
+                                 currentCategory == DisplayCategory::GuitarBass ||
                                  currentCategory == DisplayCategory::Saturation ||
-                                 currentCategory == DisplayCategory::ChannelStrip ||
-                                 currentCategory == DisplayCategory::Distortion ||
-                                 currentCategory == DisplayCategory::Modulation);
+                                 currentCategory == DisplayCategory::SpecialProcessing);
         subcategoryFilter.setVisible(hasSubcategories);
 
         auto sidebar = bounds.removeFromLeft(sidebarWidth);
         sidebar.removeFromBottom(8);  // Only pad bottom, not top
 
-        // Categories take about 50% of sidebar (more if no subcategories)
+        // Categories take most of the sidebar (more space now that era is removed)
         int categoryHeight = hasSubcategories
-            ? static_cast<int>(sidebar.getHeight() * 0.5)
-            : static_cast<int>(sidebar.getHeight() * 0.65);
+            ? static_cast<int>(sidebar.getHeight() * 0.6)
+            : sidebar.getHeight();
         categoryFilter.setBounds(sidebar.removeFromTop(categoryHeight));
 
         // Subcategory filter (only if category has subcategories)
         if (hasSubcategories)
         {
-            int subcategoryHeight = 150;
-            subcategoryFilter.setBounds(sidebar.removeFromTop(subcategoryHeight));
+            subcategoryFilter.setBounds(sidebar);
         }
-
-        // Era filter takes remaining space
-        eraFilter.setBounds(sidebar);
 
         // Subscription banner at bottom of content area (sticky)
         auto bannerArea = bounds.removeFromBottom(bannerHeight);
@@ -391,7 +536,29 @@ void PluginAllianceLauncherEditor::resized()
         subscriptionLabel.setBounds(startX, bannerArea.getY() + (bannerHeight - 24) / 2, labelWidth, 24);
         subscribeButton.setBounds(startX + labelWidth + 12, bannerArea.getY() + (bannerHeight - 28) / 2, buttonWidth, 28);
 
-        // Plugin list takes the main content area (above the banner)
+        // Details panel on the right - show if we have plugins
+        // If no selection but we have plugins, auto-select the first one
+        if (selectedPlugin == nullptr && !currentFilteredPlugins.isEmpty())
+        {
+            selectedPlugin = std::make_unique<PluginInfo>(currentFilteredPlugins[0]);
+            detailsPluginImage = PluginImageCache::getInstance().getImage(currentFilteredPlugins[0].description.name);
+            pluginListView.selectPluginAtIndex(0);  // Also select in list view for visual feedback
+        }
+
+        bool hasPlugins = !currentFilteredPlugins.isEmpty();
+        if (hasPlugins && selectedPlugin != nullptr)
+        {
+            auto detailsPanel = bounds.removeFromRight(detailsPanelWidth);
+            detailsLoadButton.setVisible(true);
+            // Position load button at bottom of details panel
+            detailsLoadButton.setBounds(detailsPanel.getX() + 20, detailsPanel.getBottom() - 50, detailsPanelWidth - 40, 36);
+        }
+        else
+        {
+            detailsLoadButton.setVisible(false);
+        }
+
+        // Plugin list takes the remaining content area
         pluginListView.setBounds(bounds);
         pluginListView.setVisible(true);
         hostedPluginView.setVisible(false);
@@ -401,10 +568,13 @@ void PluginAllianceLauncherEditor::resized()
         // Hide sidebar and subscription banner in plugin mode - plugin takes over entire area below top bar
         categoryFilter.setVisible(false);
         subcategoryFilter.setVisible(false);
-        eraFilter.setVisible(false);
+        sortComboBox.setVisible(false);
+        eraComboBox.setVisible(false);
+        brandComboBox.setVisible(false);
         pluginListView.setVisible(false);
         subscriptionLabel.setVisible(false);
         subscribeButton.setVisible(false);
+        detailsLoadButton.setVisible(false);
 
         // Hosted plugin view takes the full area below top bar
         hostedPluginView.setBounds(bounds);
@@ -525,29 +695,23 @@ void PluginAllianceLauncherEditor::filterPlugins()
             // Check based on current category type
             switch (currentCategory)
             {
-                case DisplayCategory::Compressors:
+                case DisplayCategory::Dynamics:
                     matches = (static_cast<int>(plugin.compressorType) == currentSubcategory);
                     break;
-                case DisplayCategory::EQ:
+                case DisplayCategory::Equalization:
                     matches = (static_cast<int>(plugin.eqType) == currentSubcategory);
                     break;
-                case DisplayCategory::Reverb:
+                case DisplayCategory::Reverbs:
                     matches = (static_cast<int>(plugin.reverbType) == currentSubcategory);
                     break;
-                case DisplayCategory::Delay:
-                    matches = (static_cast<int>(plugin.delayType) == currentSubcategory);
-                    break;
-                case DisplayCategory::AmpSim:
-                    matches = (static_cast<int>(plugin.ampType) == currentSubcategory);
+                case DisplayCategory::GuitarBass:
+                    matches = (static_cast<int>(plugin.guitarBassType) == currentSubcategory);
                     break;
                 case DisplayCategory::Saturation:
                     matches = (static_cast<int>(plugin.saturationType) == currentSubcategory);
                     break;
-                case DisplayCategory::ChannelStrip:
-                    matches = (static_cast<int>(plugin.channelStripType) == currentSubcategory);
-                    break;
-                case DisplayCategory::Distortion:
-                    matches = (static_cast<int>(plugin.distortionType) == currentSubcategory);
+                case DisplayCategory::SpecialProcessing:
+                    matches = (static_cast<int>(plugin.specialProcessingType) == currentSubcategory);
                     break;
                 default:
                     matches = true;
@@ -560,7 +724,69 @@ void PluginAllianceLauncherEditor::filterPlugins()
         filtered = subFiltered;
     }
 
+    // Apply brand filter if set
+    if (currentBrandFilter.isNotEmpty())
+    {
+        juce::Array<PluginInfo> brandFiltered;
+        for (const auto& plugin : filtered)
+        {
+            auto pluginBrand = getBrandName(plugin.description.name, plugin.description.manufacturerName);
+            if (pluginBrand.equalsIgnoreCase(currentBrandFilter) ||
+                pluginBrand == currentBrandFilter)
+                brandFiltered.add(plugin);
+        }
+        filtered = brandFiltered;
+    }
+
+    // Apply sorting
+    std::sort(filtered.begin(), filtered.end(), [this](const PluginInfo& a, const PluginInfo& b)
+    {
+        auto brandA = getBrandName(a.description.name, a.description.manufacturerName);
+        auto brandB = getBrandName(b.description.name, b.description.manufacturerName);
+        auto nameA = getDisplayName(a.description.name, brandA);
+        auto nameB = getDisplayName(b.description.name, brandB);
+
+        switch (currentSortOrder)
+        {
+            case 0:  // Brand A-Z
+                if (brandA.compareIgnoreCase(brandB) != 0)
+                    return brandA.compareIgnoreCase(brandB) < 0;
+                return nameA.compareIgnoreCase(nameB) < 0;
+            case 1:  // Brand Z-A
+                if (brandA.compareIgnoreCase(brandB) != 0)
+                    return brandA.compareIgnoreCase(brandB) > 0;
+                return nameA.compareIgnoreCase(nameB) < 0;
+            case 2:  // Name A-Z
+                return nameA.compareIgnoreCase(nameB) < 0;
+            case 3:  // Name Z-A
+                return nameA.compareIgnoreCase(nameB) > 0;
+            default:
+                return brandA.compareIgnoreCase(brandB) < 0;
+        }
+    });
+
     pluginListView.setPlugins(filtered);
+
+    // Store the current filtered list for auto-selection
+    currentFilteredPlugins = filtered;
+
+    // Auto-select the first plugin if we have plugins but nothing selected
+    if (!filtered.isEmpty() && selectedPlugin == nullptr)
+    {
+        selectedPlugin = std::make_unique<PluginInfo>(filtered[0]);
+        detailsPluginImage = PluginImageCache::getInstance().getImage(filtered[0].description.name);
+        pluginListView.selectPluginAtIndex(0);  // Also select in list view for visual feedback
+    }
+    // Clear selection if no plugins
+    else if (filtered.isEmpty())
+    {
+        selectedPlugin.reset();
+        detailsPluginImage = juce::Image();
+    }
+
+    // Always trigger layout update
+    resized();
+    repaint();
 }
 
 void PluginAllianceLauncherEditor::refreshPluginsPreservingScroll()
@@ -600,29 +826,23 @@ void PluginAllianceLauncherEditor::refreshPluginsPreservingScroll()
             bool matches = false;
             switch (currentCategory)
             {
-                case DisplayCategory::Compressors:
+                case DisplayCategory::Dynamics:
                     matches = (static_cast<int>(plugin.compressorType) == currentSubcategory);
                     break;
-                case DisplayCategory::EQ:
+                case DisplayCategory::Equalization:
                     matches = (static_cast<int>(plugin.eqType) == currentSubcategory);
                     break;
-                case DisplayCategory::Reverb:
+                case DisplayCategory::Reverbs:
                     matches = (static_cast<int>(plugin.reverbType) == currentSubcategory);
                     break;
-                case DisplayCategory::Delay:
-                    matches = (static_cast<int>(plugin.delayType) == currentSubcategory);
-                    break;
-                case DisplayCategory::AmpSim:
-                    matches = (static_cast<int>(plugin.ampType) == currentSubcategory);
+                case DisplayCategory::GuitarBass:
+                    matches = (static_cast<int>(plugin.guitarBassType) == currentSubcategory);
                     break;
                 case DisplayCategory::Saturation:
                     matches = (static_cast<int>(plugin.saturationType) == currentSubcategory);
                     break;
-                case DisplayCategory::ChannelStrip:
-                    matches = (static_cast<int>(plugin.channelStripType) == currentSubcategory);
-                    break;
-                case DisplayCategory::Distortion:
-                    matches = (static_cast<int>(plugin.distortionType) == currentSubcategory);
+                case DisplayCategory::SpecialProcessing:
+                    matches = (static_cast<int>(plugin.specialProcessingType) == currentSubcategory);
                     break;
                 default:
                     matches = true;
@@ -633,6 +853,47 @@ void PluginAllianceLauncherEditor::refreshPluginsPreservingScroll()
         }
         filtered = subFiltered;
     }
+
+    // Apply brand filter if set
+    if (currentBrandFilter.isNotEmpty())
+    {
+        juce::Array<PluginInfo> brandFiltered;
+        for (const auto& plugin : filtered)
+        {
+            auto pluginBrand = getBrandName(plugin.description.name, plugin.description.manufacturerName);
+            if (pluginBrand.equalsIgnoreCase(currentBrandFilter) ||
+                pluginBrand == currentBrandFilter)
+                brandFiltered.add(plugin);
+        }
+        filtered = brandFiltered;
+    }
+
+    // Apply sorting (same as filterPlugins)
+    std::sort(filtered.begin(), filtered.end(), [this](const PluginInfo& a, const PluginInfo& b)
+    {
+        auto brandA = getBrandName(a.description.name, a.description.manufacturerName);
+        auto brandB = getBrandName(b.description.name, b.description.manufacturerName);
+        auto nameA = getDisplayName(a.description.name, brandA);
+        auto nameB = getDisplayName(b.description.name, brandB);
+
+        switch (currentSortOrder)
+        {
+            case 0:  // Brand A-Z
+                if (brandA.compareIgnoreCase(brandB) != 0)
+                    return brandA.compareIgnoreCase(brandB) < 0;
+                return nameA.compareIgnoreCase(nameB) < 0;
+            case 1:  // Brand Z-A
+                if (brandA.compareIgnoreCase(brandB) != 0)
+                    return brandA.compareIgnoreCase(brandB) > 0;
+                return nameA.compareIgnoreCase(nameB) < 0;
+            case 2:  // Name A-Z
+                return nameA.compareIgnoreCase(nameB) < 0;
+            case 3:  // Name Z-A
+                return nameA.compareIgnoreCase(nameB) > 0;
+            default:
+                return brandA.compareIgnoreCase(brandB) < 0;
+        }
+    });
 
     pluginListView.updatePlugins(filtered);
 }
@@ -724,6 +985,120 @@ void PluginAllianceLauncherEditor::toggleBrowserMode()
         resizeForBrowser();
         resized();
     }
+}
+
+void PluginAllianceLauncherEditor::paintDetailsPanel(juce::Graphics& g, juce::Rectangle<int> bounds)
+{
+    if (selectedPlugin == nullptr)
+        return;
+
+    // Background
+    g.setColour(juce::Colour(0xff1a1a1a));
+    g.fillRect(bounds);
+
+    // Left border line
+    g.setColour(juce::Colour(0xff2a2a2a));
+    g.fillRect(bounds.getX(), bounds.getY(), 1, bounds.getHeight());
+
+    auto contentBounds = bounds.reduced(20, 16);
+
+    // Get brand and display name
+    auto brandName = getBrandName(selectedPlugin->description.name, selectedPlugin->description.manufacturerName);
+    auto displayName = getDisplayName(selectedPlugin->description.name, brandName);
+
+    // Brand name
+    g.setColour(juce::Colour(0xff888888));
+    g.setFont(juce::Font(13.0f));
+    g.drawText(brandName, contentBounds.removeFromTop(18), juce::Justification::centredLeft);
+
+    contentBounds.removeFromTop(4);
+
+    // Plugin name
+    g.setColour(juce::Colours::white);
+    g.setFont(juce::Font(18.0f, juce::Font::bold));
+    g.drawText(displayName, contentBounds.removeFromTop(24), juce::Justification::centredLeft);
+
+    contentBounds.removeFromTop(16);
+
+    // Plugin image - larger display
+    auto imageBounds = contentBounds.removeFromTop(180);
+    if (detailsPluginImage.isValid())
+    {
+        float imageAspect = (float)detailsPluginImage.getWidth() / (float)detailsPluginImage.getHeight();
+        float boundsAspect = (float)imageBounds.getWidth() / (float)imageBounds.getHeight();
+
+        juce::Rectangle<float> drawBounds;
+        if (imageAspect > boundsAspect)
+        {
+            float drawWidth = (float)imageBounds.getWidth();
+            float drawHeight = drawWidth / imageAspect;
+            float y = imageBounds.getY() + (imageBounds.getHeight() - drawHeight) / 2.0f;
+            drawBounds = juce::Rectangle<float>((float)imageBounds.getX(), y, drawWidth, drawHeight);
+        }
+        else
+        {
+            float drawHeight = (float)imageBounds.getHeight();
+            float drawWidth = drawHeight * imageAspect;
+            float x = imageBounds.getX() + (imageBounds.getWidth() - drawWidth) / 2.0f;
+            drawBounds = juce::Rectangle<float>(x, (float)imageBounds.getY(), drawWidth, drawHeight);
+        }
+
+        g.drawImage(detailsPluginImage, drawBounds, juce::RectanglePlacement::centred);
+    }
+    else
+    {
+        // Placeholder
+        g.setColour(juce::Colour(0xff2a2a2a));
+        g.fillRoundedRectangle(imageBounds.toFloat(), 6.0f);
+        g.setColour(juce::Colour(0xff666666));
+        g.setFont(juce::Font(12.0f));
+        g.drawText("No image", imageBounds, juce::Justification::centred);
+    }
+
+    contentBounds.removeFromTop(16);
+
+    // Category tag
+    juce::String categoryTag = getEffectCategoryName(selectedPlugin->category);
+    if (!categoryTag.isEmpty() && selectedPlugin->category != EffectCategory::Unknown)
+    {
+        g.setColour(juce::Colour(0xff0cbff2).withAlpha(0.2f));
+        auto tagBounds = contentBounds.removeFromTop(24).removeFromLeft(100);
+        g.fillRoundedRectangle(tagBounds.toFloat(), 4.0f);
+
+        g.setColour(juce::Colour(0xff0cbff2));
+        g.setFont(juce::Font(12.0f));
+        g.drawText(categoryTag, tagBounds, juce::Justification::centred);
+
+        contentBounds.removeFromTop(8);
+    }
+
+    // Era tag
+    if (selectedPlugin->era != Era::Era_Unknown)
+    {
+        juce::String eraTag = getEraName(selectedPlugin->era);
+        g.setColour(juce::Colour(0xff888888).withAlpha(0.2f));
+        auto eraBounds = contentBounds.removeFromTop(24).removeFromLeft(70);
+        g.fillRoundedRectangle(eraBounds.toFloat(), 4.0f);
+
+        g.setColour(juce::Colour(0xff888888));
+        g.setFont(juce::Font(12.0f));
+        g.drawText(eraTag, eraBounds, juce::Justification::centred);
+
+        contentBounds.removeFromTop(12);
+    }
+
+    // Description (plugin format info as placeholder)
+    g.setColour(juce::Colour(0xffaaaaaa));
+    g.setFont(juce::Font(12.0f));
+    juce::String description = selectedPlugin->description.pluginFormatName + " Plugin";
+    if (selectedPlugin->description.isInstrument)
+        description = "Virtual Instrument - " + description;
+    g.drawText(description, contentBounds.removeFromTop(20), juce::Justification::centredLeft);
+
+    // Manufacturer
+    g.setColour(juce::Colour(0xff666666));
+    g.setFont(juce::Font(11.0f));
+    g.drawText("by " + selectedPlugin->description.manufacturerName, contentBounds.removeFromTop(16), juce::Justification::centredLeft);
 }
 
 } // namespace PALauncher

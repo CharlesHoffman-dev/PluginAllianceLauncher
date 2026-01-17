@@ -12,7 +12,6 @@
 #include "UI/SearchBar.h"
 #include "UI/CategoryFilter.h"
 #include "UI/SubcategoryFilter.h"
-#include "UI/EraFilter.h"
 #include "UI/PluginListView.h"
 #include "UI/HostedPluginView.h"
 
@@ -50,6 +49,28 @@ public:
 
         auto bounds = button.getLocalBounds();
         g.drawText(button.getButtonText(), bounds, juce::Justification::centred, true);
+    }
+};
+
+// Custom LookAndFeel for brand combo box with reduced popup height
+class BrandComboBoxLookAndFeel : public juce::LookAndFeel_V4
+{
+public:
+    juce::PopupMenu::Options getOptionsForComboBoxPopupMenu(juce::ComboBox& box, juce::Label&) override
+    {
+        return juce::PopupMenu::Options()
+            .withTargetComponent(&box)
+            .withMaximumNumColumns(1)
+            .withMinimumNumColumns(1)
+            .withStandardItemHeight(20)
+            .withItemThatMustBeVisible(box.getSelectedId());
+    }
+
+    void getIdealPopupMenuItemSize(const juce::String& text, bool isSeparator, int standardMenuItemHeight,
+                                   int& idealWidth, int& idealHeight) override
+    {
+        juce::LookAndFeel_V4::getIdealPopupMenuItemSize(text, isSeparator, standardMenuItemHeight, idealWidth, idealHeight);
+        idealHeight = 20;  // Smaller row height
     }
 };
 
@@ -91,7 +112,19 @@ private:
     // Sidebar components
     CategoryFilter categoryFilter;
     SubcategoryFilter subcategoryFilter;
-    EraFilter eraFilter;
+
+    // Filter dropdowns (in top bar)
+    juce::ComboBox sortComboBox;
+    juce::ComboBox eraComboBox;
+    juce::ComboBox brandComboBox;
+    juce::String currentBrandFilter;  // Empty = all brands
+    int currentSortOrder = 0;  // 0=Brand A-Z, 1=Brand Z-A, 2=Name A-Z, 3=Name Z-A
+
+    // Plugin details panel (right side)
+    void paintDetailsPanel(juce::Graphics& g, juce::Rectangle<int> bounds);
+    juce::TextButton detailsLoadButton;
+    juce::Image detailsPluginImage;
+    static constexpr int detailsPanelWidth = 280;
 
     // Main content area
     PluginListView pluginListView;
@@ -107,6 +140,7 @@ private:
     Era currentEra = Era::Era_Unknown;  // Unknown = all
     juce::String currentSearchText;
     std::unique_ptr<PluginInfo> selectedPlugin;  // Currently selected plugin in browser
+    juce::Array<PluginInfo> currentFilteredPlugins;  // Current filtered plugin list for auto-selection
 
     // Logo
     std::unique_ptr<juce::Drawable> logoDrawable;
@@ -128,6 +162,7 @@ private:
 
     // Custom look and feel for buttons
     ButtonLookAndFeel buttonLookAndFeel;
+    BrandComboBoxLookAndFeel brandComboBoxLookAndFeel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginAllianceLauncherEditor)
 };

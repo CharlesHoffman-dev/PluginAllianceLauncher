@@ -243,6 +243,11 @@ void PluginAllianceLauncherProcessor::processBlock(juce::AudioBuffer<float>& buf
     {
         if (pluginHost.hasLoadedPlugin())
         {
+            // Forward playhead/transport info to hosted plugin
+            // This is essential for plugins like MetricAB that have internal playback
+            if (auto* hostedPlugin = pluginHost.getLoadedPlugin())
+                hostedPlugin->setPlayHead(getPlayHead());
+
             pluginHost.processBlock(buffer, midiMessages);
         }
         pluginLock.exit();

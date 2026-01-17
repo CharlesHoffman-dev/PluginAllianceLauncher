@@ -100,8 +100,8 @@ void PluginCard::paint(juce::Graphics& g)
         g.drawRoundedRectangle(bounds, 6.0f, 1.0f);
     }
 
-    // Content area
-    auto contentBounds = getLocalBounds().reduced(10, 8);
+    // Content area - tighter padding
+    auto contentBounds = getLocalBounds().reduced(8, 6);
 
     // Get brand name and display name (with brand removed)
     auto brandName = getBrandName(pluginInfo.description.name, pluginInfo.description.manufacturerName);
@@ -120,10 +120,10 @@ void PluginCard::paint(juce::Graphics& g)
     g.drawText(displayName, contentBounds.removeFromTop(24),
                juce::Justification::centredLeft, true);
 
-    contentBounds.removeFromTop(8);
+    contentBounds.removeFromTop(6);
 
     // Plugin image - square area for better vertical thumbnail support
-    auto imageBounds = contentBounds.removeFromTop(140);
+    auto imageBounds = contentBounds.removeFromTop(125);
     imageBoundsCache = imageBounds;  // Cache for button positioning
 
     if (pluginImage.isValid())
@@ -163,7 +163,7 @@ void PluginCard::paint(juce::Graphics& g)
         g.drawText("Loading...", imageBounds, juce::Justification::centred);
     }
 
-    contentBounds.removeFromTop(14);
+    contentBounds.removeFromTop(4);
 
     // Category and Era tags row
     auto tagRow = contentBounds.removeFromTop(20);
@@ -244,13 +244,11 @@ void PluginCard::paint(juce::Graphics& g)
 void PluginCard::resized()
 {
     // Position the Load button in center of image area
-    // Image area starts at y=58 (10 padding + 18 brand + 24 name + 8 spacing - 2 reduced)
-    // and is 140px tall
-    auto contentBounds = getLocalBounds().reduced(10, 8);
-    contentBounds.removeFromTop(18);  // Brand name
+    auto contentBounds = getLocalBounds().reduced(8, 6);
+    contentBounds.removeFromTop(12);  // Brand name
     contentBounds.removeFromTop(24);  // Plugin name
-    contentBounds.removeFromTop(8);   // Spacing
-    auto imageBounds = contentBounds.removeFromTop(140);
+    contentBounds.removeFromTop(6);   // Spacing
+    auto imageBounds = contentBounds.removeFromTop(125);
 
     // Center a larger button in the image area
     int buttonWidth = 100;

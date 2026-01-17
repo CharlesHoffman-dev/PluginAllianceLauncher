@@ -41,6 +41,8 @@ private:
     void initializeThumbnailFilenames();
     void initializeBundledImagesPath();
     juce::String normalizePluginName(const juce::String& name) const;
+    juce::StringArray getNameVariants(const juce::String& normalizedName) const;
+    juce::String findImageUrl(const juce::String& normalizedName) const;
     juce::File getCacheDirectory() const;
     juce::File getCacheFile(const juce::String& pluginName) const;
     juce::File getBundledImageFile(const juce::String& pluginName) const;

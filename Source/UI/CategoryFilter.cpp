@@ -32,88 +32,25 @@ void CategoryFilter::buildCategoryList()
     categories.push_back({DisplayCategory::Favorites, "Favorites", false});
     categories.push_back({DisplayCategory::Recent, "Recent", false});
 
+    // Instruments header (above Effects)
+    categories.push_back({DisplayCategory::All, "INSTRUMENTS", true});
+
+    // Only Synths - Plugin Alliance only has synth instruments
+    categories.push_back({DisplayCategory::Inst_Synths, "Synthesizers", false});
+
     // Effects header
     categories.push_back({DisplayCategory::All, "EFFECTS", true});
 
-    // Effect categories (alphabetical)
-    categories.push_back({DisplayCategory::AmpSim, "Amp Simulators", false});
+    // Effect categories (alphabetical, with Other at bottom)
+    categories.push_back({DisplayCategory::GuitarBass, "Amp Simulators", false});
     categories.push_back({DisplayCategory::ChannelStrip, "Channel Strips", false});
-    categories.push_back({DisplayCategory::Compressors, "Compressors", false});
-    categories.push_back({DisplayCategory::Creative, "Creative", false});
-    categories.push_back({DisplayCategory::Delay, "Delay", false});
-    categories.push_back({DisplayCategory::Distortion, "Distortion", false});
-    categories.push_back({DisplayCategory::EQ, "EQs", false});
-    categories.push_back({DisplayCategory::Expanders, "Expanders", false});
-    categories.push_back({DisplayCategory::Mastering, "Mastering", false});
-    categories.push_back({DisplayCategory::Metering, "Metering", false});
-    categories.push_back({DisplayCategory::Mixing, "Mixing", false});
-    categories.push_back({DisplayCategory::Modulation, "Modulation", false});
-    categories.push_back({DisplayCategory::Pitch, "Pitch", false});
-    categories.push_back({DisplayCategory::Reverb, "Reverb", false});
-    categories.push_back({DisplayCategory::Saturation, "Saturation", false});
-    categories.push_back({DisplayCategory::StereoImaging, "Stereo Imaging", false});
-    categories.push_back({DisplayCategory::Utility, "Utility", false});
-    categories.push_back({DisplayCategory::Vocal, "Vocal Processing", false});
-
-    // Instruments header
-    categories.push_back({DisplayCategory::All, "INSTRUMENTS", true});
-
-    // Instrument categories (alphabetical)
-    categories.push_back({DisplayCategory::Drums, "Drums", false});
-    categories.push_back({DisplayCategory::Sampler, "Samplers", false});
-    categories.push_back({DisplayCategory::Synth, "Synths", false});
-
-    // Brands header
-    categories.push_back({DisplayCategory::All, "BRANDS", true});
-
-    // Brand categories (alphabetical)
-    categories.push_back({DisplayCategory::Brand_ACMEAudio, "ACME Audio", false});
-    categories.push_back({DisplayCategory::Brand_ADA, "ADA", false});
-    categories.push_back({DisplayCategory::Brand_ADPTRAudio, "ADPTR AUDIO", false});
-    categories.push_back({DisplayCategory::Brand_AMEK, "AMEK", false});
-    categories.push_back({DisplayCategory::Brand_Ampeg, "Ampeg", false});
-    categories.push_back({DisplayCategory::Brand_Bettermaker, "Bettermaker", false});
-    categories.push_back({DisplayCategory::Brand_BlackBoxAnalogDesign, "Black Box Analog Design", false});
-    categories.push_back({DisplayCategory::Brand_Brainworx, "Brainworx", false});
-    categories.push_back({DisplayCategory::Brand_ChandlerLimited, "Chandler Limited", false});
-    categories.push_back({DisplayCategory::Brand_CutClassic, "Cut Classic", false});
-    categories.push_back({DisplayCategory::Brand_DangerousMusic, "Dangerous Music", false});
-    categories.push_back({DisplayCategory::Brand_Diezel, "Diezel", false});
-    categories.push_back({DisplayCategory::Brand_DSAudio, "DS Audio", false});
-    categories.push_back({DisplayCategory::Brand_Elysia, "elysia", false});
-    categories.push_back({DisplayCategory::Brand_ENGL, "ENGL", false});
-    categories.push_back({DisplayCategory::Brand_FiedlerAudio, "fiedler audio", false});
-    categories.push_back({DisplayCategory::Brand_Focusrite, "Focusrite", false});
-    categories.push_back({DisplayCategory::Brand_Friedman, "Friedman", false});
-    categories.push_back({DisplayCategory::Brand_Fuchs, "Fuchs", false});
-    categories.push_back({DisplayCategory::Brand_GallienKrueger, "Gallien-Krueger", false});
-    categories.push_back({DisplayCategory::Brand_HarrisDoyle, "Harris Doyle", false});
-    categories.push_back({DisplayCategory::Brand_HEARS, "HEARS", false});
-    categories.push_back({DisplayCategory::Brand_HUMAudioDevices, "HUM Audio Devices", false});
-    categories.push_back({DisplayCategory::Brand_KaranyiSounds, "Karanyi Sounds", false});
-    categories.push_back({DisplayCategory::Brand_KiiveAudio, "Kiive Audio", false});
-    categories.push_back({DisplayCategory::Brand_KnifAudio, "Knif Audio", false});
-    categories.push_back({DisplayCategory::Brand_LindellAudio, "Lindell Audio", false});
-    categories.push_back({DisplayCategory::Brand_Looptrotter, "Looptrotter", false});
-    categories.push_back({DisplayCategory::Brand_LouderThanLiftoff, "Louder Than Liftoff", false});
-    categories.push_back({DisplayCategory::Brand_MaorAppelbaumHendyamps, "Maor Appelbaum & Hendyamps", false});
-    categories.push_back({DisplayCategory::Brand_Millennia, "Millennia", false});
-    categories.push_back({DisplayCategory::Brand_Mixland, "Mixland", false});
-    categories.push_back({DisplayCategory::Brand_MaagAudio, "Mäag Audio", false});
-    categories.push_back({DisplayCategory::Brand_NEOLD, "NEOLD", false});
-    categories.push_back({DisplayCategory::Brand_Noveltech, "Noveltech", false});
-    categories.push_back({DisplayCategory::Brand_ProAudioDSP, "Pro Audio DSP", false});
-    categories.push_back({DisplayCategory::Brand_PurpleAudio, "Purple Audio", false});
-    categories.push_back({DisplayCategory::Brand_ShadowHills, "Shadow Hills", false});
-    categories.push_back({DisplayCategory::Brand_SSL, "Solid State Logic (SSL)", false});
-    categories.push_back({DisplayCategory::Brand_SPL, "SPL", false});
-    categories.push_back({DisplayCategory::Brand_Suhr, "Suhr", false});
-    categories.push_back({DisplayCategory::Brand_SwivelAudio, "Swivel Audio", false});
-    categories.push_back({DisplayCategory::Brand_ThreeBodyTechnology, "Three-Body Technology", false});
-    categories.push_back({DisplayCategory::Brand_THX, "THX", false});
-    categories.push_back({DisplayCategory::Brand_TOMOAudiolabs, "TOMO Audiolabs", false});
-    categories.push_back({DisplayCategory::Brand_UnfilteredAudio, "Unfiltered Audio", false});
-    categories.push_back({DisplayCategory::Brand_Vertigo, "Vertigo", false});
+    categories.push_back({DisplayCategory::Delays, "Delays", false});
+    categories.push_back({DisplayCategory::Dynamics, "Dynamics", false});
+    categories.push_back({DisplayCategory::Equalization, "Equalizers", false});
+    categories.push_back({DisplayCategory::Meters, "Meters", false});
+    categories.push_back({DisplayCategory::Reverbs, "Reverbs", false});
+    categories.push_back({DisplayCategory::Saturation, "Saturators", false});
+    categories.push_back({DisplayCategory::SpecialProcessing, "Other", false});
 }
 
 void CategoryFilter::paint(juce::Graphics& g)

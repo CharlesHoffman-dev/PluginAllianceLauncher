@@ -148,6 +148,8 @@ namespace CategoryMaps
         {"bx_crispytuner", EffectCategory::VocalProcessing},
         {"Noveltech Vocal Enhancer", EffectCategory::VocalProcessing},
 
+        // Note: Synths are handled separately via isInstrument flag
+
         // Distortion
         {"bx_yellowdrive", EffectCategory::Distortion},
         {"bx_greenscreamer", EffectCategory::Distortion},
@@ -403,95 +405,130 @@ juce::Array<PluginInfo> PluginDatabase::getByDisplayCategory(DisplayCategory cat
                 case DisplayCategory::All:
                     matches = true;
                     break;
-                case DisplayCategory::EQ:
-                    matches = (info.category == EffectCategory::EQ ||
-                              info.category == EffectCategory::Filter);
+
+                // 11 Effects Categories
+                case DisplayCategory::ChannelStrip:
+                    matches = (info.category == EffectCategory::ChannelStrip);
                     break;
-                case DisplayCategory::Compressors:
-                    matches = (info.category == EffectCategory::Compressor ||
-                              info.category == EffectCategory::Limiter ||
-                              info.category == EffectCategory::TransientShaper);
-                    break;
-                case DisplayCategory::Expanders:
-                    matches = (info.category == EffectCategory::Expander ||
-                              info.category == EffectCategory::Gate);
-                    break;
-                case DisplayCategory::Reverb:
-                    matches = (info.category == EffectCategory::Reverb);
-                    break;
-                case DisplayCategory::Delay:
+
+                case DisplayCategory::Delays:
                     matches = (info.category == EffectCategory::Delay ||
                               info.category == EffectCategory::Echo);
                     break;
+
+                case DisplayCategory::Dynamics:
+                    matches = (info.category == EffectCategory::Compressor ||
+                              info.category == EffectCategory::Limiter ||
+                              info.category == EffectCategory::Gate ||
+                              info.category == EffectCategory::Expander ||
+                              info.category == EffectCategory::DynamicsProcessor ||
+                              info.category == EffectCategory::TransientShaper ||
+                              info.category == EffectCategory::EnvelopeShaper ||
+                              info.category == EffectCategory::DeEsser);
+                    break;
+
+                case DisplayCategory::Equalization:
+                    matches = (info.category == EffectCategory::EQ ||
+                              info.category == EffectCategory::Filter ||
+                              info.category == EffectCategory::FrequencyShifter);
+                    break;
+
+                case DisplayCategory::GuitarBass:
+                    matches = (info.category == EffectCategory::AmpSimulator ||
+                              info.category == EffectCategory::Preamp ||
+                              info.category == EffectCategory::Distortion);
+                    break;
+
+                case DisplayCategory::Mastering:
+                    matches = (info.category == EffectCategory::MasteringSuite ||
+                              info.category == EffectCategory::Mastering);
+                    break;
+
+                case DisplayCategory::Meters:
+                    matches = (info.category == EffectCategory::SpectralAnalysis);
+                    break;
+
                 case DisplayCategory::Modulation:
                     matches = (info.category == EffectCategory::Chorus ||
                               info.category == EffectCategory::Flanger ||
                               info.category == EffectCategory::Phaser ||
                               info.category == EffectCategory::Tremolo ||
-                              info.category == EffectCategory::Vibrato);
+                              info.category == EffectCategory::Vibrato ||
+                              info.category == EffectCategory::Modulator);
                     break;
+
+                case DisplayCategory::PitchCorrection:
+                    matches = (info.category == EffectCategory::PitchShifter ||
+                              info.category == EffectCategory::Harmonizer ||
+                              info.category == EffectCategory::VocalProcessing);
+                    break;
+
+                case DisplayCategory::Reverbs:
+                    matches = (info.category == EffectCategory::Reverb);
+                    break;
+
                 case DisplayCategory::Saturation:
                     matches = (info.category == EffectCategory::Saturation ||
                               info.category == EffectCategory::TapeEmulation ||
-                              info.category == EffectCategory::Exciter);
-                    break;
-                case DisplayCategory::Distortion:
-                    matches = (info.category == EffectCategory::Distortion ||
+                              info.category == EffectCategory::Exciter ||
                               info.category == EffectCategory::BitCrusher);
                     break;
-                case DisplayCategory::AmpSim:
-                    matches = (info.category == EffectCategory::AmpSimulator ||
-                              info.category == EffectCategory::Preamp);
-                    break;
-                case DisplayCategory::ChannelStrip:
-                    matches = (info.category == EffectCategory::ChannelStrip);
-                    break;
-                case DisplayCategory::Mastering:
-                    matches = (info.category == EffectCategory::MasteringSuite ||
-                              info.category == EffectCategory::Mastering);
-                    break;
-                case DisplayCategory::Mixing:
-                    matches = (info.category == EffectCategory::DynamicsProcessor ||
-                              info.category == EffectCategory::EnvelopeShaper);
-                    break;
-                case DisplayCategory::Vocal:
-                    matches = (info.category == EffectCategory::VocalProcessing ||
-                              info.category == EffectCategory::DeEsser ||
-                              info.category == EffectCategory::Vocoder);
-                    break;
-                case DisplayCategory::Metering:
-                    matches = (info.category == EffectCategory::SpectralAnalysis);
-                    break;
-                case DisplayCategory::StereoImaging:
+
+                case DisplayCategory::SpecialProcessing:
                     matches = (info.category == EffectCategory::StereoWidth ||
-                              info.category == EffectCategory::SurroundTools);
-                    break;
-                case DisplayCategory::Pitch:
-                    matches = (info.category == EffectCategory::PitchShifter ||
-                              info.category == EffectCategory::Harmonizer);
-                    break;
-                case DisplayCategory::Creative:
-                    matches = (info.category == EffectCategory::GranularFX ||
+                              info.category == EffectCategory::SurroundTools ||
+                              info.category == EffectCategory::GranularFX ||
                               info.category == EffectCategory::MultiEffect ||
-                              info.category == EffectCategory::Randomiser);
-                    break;
-                case DisplayCategory::Utility:
-                    matches = (info.category == EffectCategory::DrumFX ||
+                              info.category == EffectCategory::Vocoder ||
+                              info.category == EffectCategory::Randomiser ||
+                              info.category == EffectCategory::DrumFX ||
                               info.category == EffectCategory::DJTools ||
+                              info.category == EffectCategory::Enhancer ||
                               info.category == EffectCategory::Sequencer ||
                               info.category == EffectCategory::MIDIArp ||
                               info.category == EffectCategory::Unknown);
                     break;
-                case DisplayCategory::Synth:
-                    matches = (info.isInstrument && info.instrumentCategory == InstrumentCategory::Synth);
+
+                // Instrument Subcategories
+                case DisplayCategory::VirtualInstruments:
+                    matches = info.isInstrument;
                     break;
-                case DisplayCategory::Drums:
-                    matches = (info.isInstrument && (info.instrumentCategory == InstrumentCategory::DrumMachine ||
-                              info.instrumentCategory == InstrumentCategory::DrumSynth));
+                case DisplayCategory::Inst_Bass:
+                    matches = info.isInstrument &&
+                              (info.instrumentCategory == InstrumentCategory::Sampler ||
+                               info.description.name.toLowerCase().contains("bass"));
                     break;
-                case DisplayCategory::Sampler:
-                    matches = (info.isInstrument && info.instrumentCategory == InstrumentCategory::Sampler);
+                case DisplayCategory::Inst_Drums:
+                    matches = info.isInstrument &&
+                              (info.instrumentCategory == InstrumentCategory::DrumMachine ||
+                               info.instrumentCategory == InstrumentCategory::DrumSynth ||
+                               info.description.name.toLowerCase().contains("drum"));
                     break;
+                case DisplayCategory::Inst_Guitars:
+                    matches = info.isInstrument &&
+                              info.description.name.toLowerCase().contains("guitar");
+                    break;
+                case DisplayCategory::Inst_Keys:
+                    matches = info.isInstrument &&
+                              (info.description.name.toLowerCase().contains("piano") ||
+                               info.description.name.toLowerCase().contains("keys") ||
+                               info.description.name.toLowerCase().contains("keyboard"));
+                    break;
+                case DisplayCategory::Inst_Organs:
+                    matches = info.isInstrument &&
+                              info.description.name.toLowerCase().contains("organ");
+                    break;
+                case DisplayCategory::Inst_Strings:
+                    matches = info.isInstrument &&
+                              info.description.name.toLowerCase().contains("string");
+                    break;
+                case DisplayCategory::Inst_Synths:
+                    matches = info.isInstrument &&
+                              (info.instrumentCategory == InstrumentCategory::Synth ||
+                               info.instrumentCategory == InstrumentCategory::VocalSynth ||
+                               info.description.name.toLowerCase().contains("synth"));
+                    break;
+
                 case DisplayCategory::Favorites:
                     matches = info.isFavorite;
                     break;
@@ -716,7 +753,30 @@ const PluginInfo* PluginDatabase::findPlugin(const juce::String& pluginId) const
 
 void PluginDatabase::categorizePlugin(PluginInfo& info)
 {
-    // Check explicit mapping first
+    auto nameLower = info.description.name.toLowerCase();
+
+    // Check for Plugin Alliance synths/instruments first
+    // These are the PA virtual instruments: Knifonium, LION, Battalion, bx_oberhausen, Thorn
+    if (nameLower.contains("knifonium") ||
+        nameLower.contains("bx_oberhausen") ||
+        nameLower.contains("thorn") ||
+        (nameLower.contains("lion") && !nameLower.contains("battalion")) ||
+        nameLower.contains("battalion"))
+    {
+        info.isInstrument = true;
+        info.instrumentCategory = InstrumentCategory::Synth;
+        return;
+    }
+
+    // Also check if plugin is categorized as an instrument by the host
+    if (info.description.isInstrument)
+    {
+        info.isInstrument = true;
+        info.instrumentCategory = InstrumentCategory::Synth;
+        return;
+    }
+
+    // Check explicit mapping for effects
     auto it = CategoryMaps::pluginCategories.find(info.description.name);
     if (it != CategoryMaps::pluginCategories.end())
     {
@@ -724,9 +784,7 @@ void PluginDatabase::categorizePlugin(PluginInfo& info)
         return;
     }
 
-    // Fallback: keyword-based categorization
-    auto nameLower = info.description.name.toLowerCase();
-
+    // Fallback: keyword-based categorization for effects
     if (nameLower.contains("eq") || nameLower.contains("equalizer"))
         info.category = EffectCategory::EQ;
     else if (nameLower.contains("comp") || nameLower.contains("compressor"))

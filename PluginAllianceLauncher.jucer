@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="PALnchr" name="Plugin Alliance Launcher" projectType="audioplug"
               useAppConfig="0" addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1"
-              pluginFormats="buildVST3,buildAU" pluginName="Plugin Alliance Launcher" pluginDesc="Search and launch Plugin Alliance plugins"
+              pluginFormats="buildVST3,buildAU,buildStandalone" pluginName="Plugin Alliance Launcher" pluginDesc="Search and launch Plugin Alliance plugins"
               pluginManufacturer="PALauncher" pluginManufacturerCode="PLnc"
               pluginCode="PAL3" pluginIsSynth="0" pluginVST3Category="Fx,Dynamics"
               pluginWantsMidiIn="1" pluginProducesMidiOut="1" pluginIsMidiEffectPlugin="0"

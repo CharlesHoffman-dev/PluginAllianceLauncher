@@ -143,10 +143,10 @@ void PluginListView::updateVisibleCards()
     int firstVisibleRow = juce::jmax(0, scrollOffset / cardHeight);
     int lastVisibleRow = (scrollOffset + visibleHeight) / cardHeight + 1;
 
-    // Calculate grid position - center the cards horizontally
+    // Calculate grid position - align cards to left with minimal padding
     int totalCardsWidth = numColumns * cardWidth;
     int availableWidth = contentComponent.getWidth();
-    int startX = juce::jmax(cardSpacing, (availableWidth - totalCardsWidth) / 2 + cardSpacing / 2);
+    int startX = juce::jmax(4, (availableWidth - totalCardsWidth) / 2);
 
     for (int row = firstVisibleRow; row <= lastVisibleRow; ++row)
     {
@@ -243,6 +243,15 @@ const PluginInfo* PluginListView::getSelectedPlugin() const
     if (selectedIndex >= 0 && selectedIndex < allPlugins.size())
         return &allPlugins.getReference(selectedIndex);
     return nullptr;
+}
+
+void PluginListView::selectPluginAtIndex(int index)
+{
+    if (index >= 0 && index < allPlugins.size())
+    {
+        selectedIndex = index;
+        updateVisibleCards();  // Refresh to show selection
+    }
 }
 
 } // namespace PALauncher

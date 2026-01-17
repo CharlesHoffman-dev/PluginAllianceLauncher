@@ -39,6 +39,9 @@ public:
     // Get currently selected plugin
     const PluginInfo* getSelectedPlugin() const;
 
+    // Select a plugin by index (for auto-selection)
+    void selectPluginAtIndex(int index);
+
     // Callbacks
     std::function<void(const PluginInfo&)> onPluginSelected;
     std::function<void(const PluginInfo&)> onPluginDoubleClick;
@@ -59,7 +62,7 @@ private:
     int selectedIndex = -1;
     int scrollOffset = 0;
     int numColumns = 4;
-    int cardSpacing = 8;
+    int cardSpacing = 6;
     juce::String loadedPluginId;  // fileOrIdentifier of currently loaded plugin
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginListView)
