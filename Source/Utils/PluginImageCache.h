@@ -49,6 +49,8 @@ private:
     bool loadFromBundled(const juce::String& pluginName);
     bool loadFromCache(const juce::String& pluginName);
     bool downloadImage(const juce::String& pluginName, const juce::String& url);
+    juce::String generateProductPageUrl(const juce::String& pluginName) const;
+    juce::String fetchImageUrlFromProductPage(const juce::String& pluginName);
 
     // Plugin name -> image URL mapping
     std::map<juce::String, juce::String> imageUrls;

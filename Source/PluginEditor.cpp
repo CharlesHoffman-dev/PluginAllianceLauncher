@@ -7,6 +7,7 @@
 
 #include "PluginEditor.h"
 #include "Utils/PluginImageCache.h"
+#include "Data/PluginDescriptions.h"
 
 namespace PALauncher
 {
@@ -233,7 +234,7 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
 
     // Set up details panel load button
     detailsLoadButton.setButtonText("Load Plugin");
-    detailsLoadButton.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff0cbff2));
+    detailsLoadButton.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff2a2a2a));  // Dark charcoal
     detailsLoadButton.setColour(juce::TextButton::textColourOffId, juce::Colours::white);
     detailsLoadButton.setLookAndFeel(&buttonLookAndFeel);
     detailsLoadButton.onClick = [this]()
@@ -364,19 +365,22 @@ void PluginAllianceLauncherEditor::paint(juce::Graphics& g)
     // Browser mode UI elements
     if (browserMode)
     {
-        // Subscription banner at bottom
+        // Details panel on the right - show if we have plugins
+        bool hasPlugins = !currentFilteredPlugins.isEmpty();
+
+        // Subscription banner at bottom - only over plugin list area, not details panel
+        int bannerWidth = getWidth() - sidebarWidth - (hasPlugins ? detailsPanelWidth : 0);
         auto bannerBounds = juce::Rectangle<int>(sidebarWidth, getHeight() - bannerHeight,
-                                                  getWidth() - sidebarWidth, bannerHeight);
+                                                  bannerWidth, bannerHeight);
         g.setColour(juce::Colour(0xff0cbff2));  // Brand cyan
         g.fillRect(bannerBounds);
 
-        // Details panel on the right - show if we have plugins
-        bool hasPlugins = !currentFilteredPlugins.isEmpty();
         if (hasPlugins && selectedPlugin != nullptr)
         {
             int statusOffset = processor.getPluginScanner().isScanning() ? 28 : 0;
+            // Paint full details column white (including area that aligns with banner)
             auto detailsBounds = juce::Rectangle<int>(getWidth() - detailsPanelWidth, topBarHeight + statusOffset,
-                                                       detailsPanelWidth, getHeight() - topBarHeight - bannerHeight - statusOffset);
+                                                       detailsPanelWidth, getHeight() - topBarHeight - statusOffset);
             paintDetailsPanel(g, detailsBounds);
         }
     }
@@ -451,16 +455,9 @@ void PluginAllianceLauncherEditor::resized()
     topBar.removeFromRight(8);
 
     // Button logic:
-    // - In browser mode with a selected plugin: show "Load Plugin"
     // - In plugin mode: show "Show Browser"
-    if (browserMode && selectedPlugin != nullptr)
-    {
-        toggleModeButton.setButtonText("Load Plugin");
-        toggleModeButton.setVisible(true);
-        toggleModeButton.setBounds(topBar.removeFromRight(100));
-        topBar.removeFromRight(8);
-    }
-    else if (!browserMode)
+    // - In browser mode: hide (Load Plugin button is in the details panel)
+    if (!browserMode)
     {
         toggleModeButton.setButtonText("Show Browser");
         toggleModeButton.setVisible(true);
@@ -526,16 +523,6 @@ void PluginAllianceLauncherEditor::resized()
             subcategoryFilter.setBounds(sidebar);
         }
 
-        // Subscription banner at bottom of content area (sticky)
-        auto bannerArea = bounds.removeFromBottom(bannerHeight);
-        // Center the label and button within the banner
-        int buttonWidth = 90;
-        int labelWidth = 280;
-        int totalWidth = labelWidth + 12 + buttonWidth;  // label + gap + button
-        int startX = bannerArea.getCentreX() - totalWidth / 2;
-        subscriptionLabel.setBounds(startX, bannerArea.getY() + (bannerHeight - 24) / 2, labelWidth, 24);
-        subscribeButton.setBounds(startX + labelWidth + 12, bannerArea.getY() + (bannerHeight - 28) / 2, buttonWidth, 28);
-
         // Details panel on the right - show if we have plugins
         // If no selection but we have plugins, auto-select the first one
         if (selectedPlugin == nullptr && !currentFilteredPlugins.isEmpty())
@@ -557,6 +544,16 @@ void PluginAllianceLauncherEditor::resized()
         {
             detailsLoadButton.setVisible(false);
         }
+
+        // Subscription banner at bottom of plugin list area (not over details panel)
+        auto bannerArea = bounds.removeFromBottom(bannerHeight);
+        // Center the label and button within the banner area
+        int buttonWidth = 90;
+        int labelWidth = 280;
+        int totalWidth = labelWidth + 12 + buttonWidth;  // label + gap + button
+        int startX = bannerArea.getX() + (bannerArea.getWidth() - totalWidth) / 2;
+        subscriptionLabel.setBounds(startX, bannerArea.getY() + (bannerHeight - 24) / 2, labelWidth, 24);
+        subscribeButton.setBounds(startX + labelWidth + 12, bannerArea.getY() + (bannerHeight - 28) / 2, buttonWidth, 28);
 
         // Plugin list takes the remaining content area
         pluginListView.setBounds(bounds);
@@ -992,12 +989,12 @@ void PluginAllianceLauncherEditor::paintDetailsPanel(juce::Graphics& g, juce::Re
     if (selectedPlugin == nullptr)
         return;
 
-    // Background
-    g.setColour(juce::Colour(0xff1a1a1a));
+    // Background - white
+    g.setColour(juce::Colours::white);
     g.fillRect(bounds);
 
     // Left border line
-    g.setColour(juce::Colour(0xff2a2a2a));
+    g.setColour(juce::Colour(0xffe0e0e0));
     g.fillRect(bounds.getX(), bounds.getY(), 1, bounds.getHeight());
 
     auto contentBounds = bounds.reduced(20, 16);
@@ -1007,98 +1004,100 @@ void PluginAllianceLauncherEditor::paintDetailsPanel(juce::Graphics& g, juce::Re
     auto displayName = getDisplayName(selectedPlugin->description.name, brandName);
 
     // Brand name
-    g.setColour(juce::Colour(0xff888888));
+    g.setColour(juce::Colour(0xff666666));
     g.setFont(juce::Font(13.0f));
     g.drawText(brandName, contentBounds.removeFromTop(18), juce::Justification::centredLeft);
 
     contentBounds.removeFromTop(4);
 
     // Plugin name
-    g.setColour(juce::Colours::white);
+    g.setColour(juce::Colour(0xff1a1a1a));
     g.setFont(juce::Font(18.0f, juce::Font::bold));
     g.drawText(displayName, contentBounds.removeFromTop(24), juce::Justification::centredLeft);
 
     contentBounds.removeFromTop(16);
 
-    // Plugin image - larger display
+    // Plugin image - larger display, get fresh from cache
     auto imageBounds = contentBounds.removeFromTop(180);
-    if (detailsPluginImage.isValid())
+    auto currentImage = PluginImageCache::getInstance().getImage(selectedPlugin->description.name);
+    if (currentImage.isValid())
     {
-        float imageAspect = (float)detailsPluginImage.getWidth() / (float)detailsPluginImage.getHeight();
-        float boundsAspect = (float)imageBounds.getWidth() / (float)imageBounds.getHeight();
-
-        juce::Rectangle<float> drawBounds;
-        if (imageAspect > boundsAspect)
-        {
-            float drawWidth = (float)imageBounds.getWidth();
-            float drawHeight = drawWidth / imageAspect;
-            float y = imageBounds.getY() + (imageBounds.getHeight() - drawHeight) / 2.0f;
-            drawBounds = juce::Rectangle<float>((float)imageBounds.getX(), y, drawWidth, drawHeight);
-        }
-        else
-        {
-            float drawHeight = (float)imageBounds.getHeight();
-            float drawWidth = drawHeight * imageAspect;
-            float x = imageBounds.getX() + (imageBounds.getWidth() - drawWidth) / 2.0f;
-            drawBounds = juce::Rectangle<float>(x, (float)imageBounds.getY(), drawWidth, drawHeight);
-        }
-
-        g.drawImage(detailsPluginImage, drawBounds, juce::RectanglePlacement::centred);
+        // Draw the image centered, maintaining aspect ratio, not stretching
+        g.drawImageWithin(currentImage,
+                          imageBounds.getX(), imageBounds.getY(),
+                          imageBounds.getWidth(), imageBounds.getHeight(),
+                          juce::RectanglePlacement::centred | juce::RectanglePlacement::onlyReduceInSize);
     }
     else
     {
         // Placeholder
-        g.setColour(juce::Colour(0xff2a2a2a));
+        g.setColour(juce::Colour(0xfff0f0f0));
         g.fillRoundedRectangle(imageBounds.toFloat(), 6.0f);
-        g.setColour(juce::Colour(0xff666666));
+        g.setColour(juce::Colour(0xff999999));
         g.setFont(juce::Font(12.0f));
-        g.drawText("No image", imageBounds, juce::Justification::centred);
+        g.drawText("Loading...", imageBounds, juce::Justification::centred);
     }
 
-    contentBounds.removeFromTop(16);
+    contentBounds.removeFromTop(12);
+
+    // Category and Era tags row (same as plugin card)
+    auto tagRow = contentBounds.removeFromTop(22);
+    int tagX = tagRow.getX();
 
     // Category tag
     juce::String categoryTag = getEffectCategoryName(selectedPlugin->category);
     if (!categoryTag.isEmpty() && selectedPlugin->category != EffectCategory::Unknown)
     {
-        g.setColour(juce::Colour(0xff0cbff2).withAlpha(0.2f));
-        auto tagBounds = contentBounds.removeFromTop(24).removeFromLeft(100);
-        g.fillRoundedRectangle(tagBounds.toFloat(), 4.0f);
+        g.setColour(juce::Colour(0xff0cbff2).withAlpha(0.15f));
+        int tagWidth = juce::jmax(70, static_cast<int>(g.getCurrentFont().getStringWidthFloat(categoryTag) + 16));
+        auto tagBounds = juce::Rectangle<int>(tagX, tagRow.getY(), tagWidth, 20);
+        g.fillRoundedRectangle(tagBounds.toFloat(), 3.0f);
 
-        g.setColour(juce::Colour(0xff0cbff2));
+        g.setColour(juce::Colour(0xff0099cc));
         g.setFont(juce::Font(12.0f));
         g.drawText(categoryTag, tagBounds, juce::Justification::centred);
-
-        contentBounds.removeFromTop(8);
+        tagX += tagWidth + 6;
     }
 
     // Era tag
     if (selectedPlugin->era != Era::Era_Unknown)
     {
         juce::String eraTag = getEraName(selectedPlugin->era);
-        g.setColour(juce::Colour(0xff888888).withAlpha(0.2f));
-        auto eraBounds = contentBounds.removeFromTop(24).removeFromLeft(70);
-        g.fillRoundedRectangle(eraBounds.toFloat(), 4.0f);
+        g.setColour(juce::Colour(0xff888888).withAlpha(0.15f));
+        int eraWidth = juce::jmax(50, static_cast<int>(g.getCurrentFont().getStringWidthFloat(eraTag) + 16));
+        auto eraBounds = juce::Rectangle<int>(tagX, tagRow.getY(), eraWidth, 20);
+        g.fillRoundedRectangle(eraBounds.toFloat(), 3.0f);
 
-        g.setColour(juce::Colour(0xff888888));
+        g.setColour(juce::Colour(0xff666666));
         g.setFont(juce::Font(12.0f));
         g.drawText(eraTag, eraBounds, juce::Justification::centred);
-
-        contentBounds.removeFromTop(12);
     }
 
-    // Description (plugin format info as placeholder)
-    g.setColour(juce::Colour(0xffaaaaaa));
-    g.setFont(juce::Font(12.0f));
-    juce::String description = selectedPlugin->description.pluginFormatName + " Plugin";
-    if (selectedPlugin->description.isInstrument)
-        description = "Virtual Instrument - " + description;
-    g.drawText(description, contentBounds.removeFromTop(20), juce::Justification::centredLeft);
+    contentBounds.removeFromTop(8);
 
-    // Manufacturer
-    g.setColour(juce::Colour(0xff666666));
-    g.setFont(juce::Font(11.0f));
-    g.drawText("by " + selectedPlugin->description.manufacturerName, contentBounds.removeFromTop(16), juce::Justification::centredLeft);
+    // Plugin description
+    auto descriptionText = getPluginDescription(selectedPlugin->description.name);
+
+    // Fallback description if none found
+    if (descriptionText.isEmpty())
+    {
+        juce::String pluginType = selectedPlugin->description.isInstrument ? "virtual instrument" : "audio effect";
+        descriptionText = "A professional " + pluginType + " from Plugin Alliance. ";
+        descriptionText += "Part of the extensive Plugin Alliance catalog of high-quality audio processing tools. ";
+        descriptionText += "Visit plugin-alliance.com for more information about this product.";
+    }
+
+    g.setColour(juce::Colour(0xff444444));
+    g.setFont(juce::Font(13.0f));
+
+    // Draw multi-line description with word wrap
+    juce::AttributedString attrStr;
+    attrStr.append(descriptionText, juce::Font(13.0f), juce::Colour(0xff444444));
+    attrStr.setLineSpacing(1.2f);
+
+    juce::TextLayout textLayout;
+    textLayout.createLayout(attrStr, static_cast<float>(contentBounds.getWidth()));
+    textLayout.draw(g, contentBounds.toFloat());
 }
 
 } // namespace PALauncher

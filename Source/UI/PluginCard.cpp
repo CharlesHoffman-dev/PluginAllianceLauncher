@@ -128,29 +128,11 @@ void PluginCard::paint(juce::Graphics& g)
 
     if (pluginImage.isValid())
     {
-        // Draw the image centered in the bounds
-        float imageAspect = (float)pluginImage.getWidth() / (float)pluginImage.getHeight();
-        float boundsAspect = (float)imageBounds.getWidth() / (float)imageBounds.getHeight();
-
-        juce::Rectangle<float> drawBounds;
-        if (imageAspect > boundsAspect)
-        {
-            // Image is wider - fit to width
-            float drawWidth = (float)imageBounds.getWidth();
-            float drawHeight = drawWidth / imageAspect;
-            float y = imageBounds.getY() + (imageBounds.getHeight() - drawHeight) / 2.0f;
-            drawBounds = juce::Rectangle<float>((float)imageBounds.getX(), y, drawWidth, drawHeight);
-        }
-        else
-        {
-            // Image is taller - fit to height
-            float drawHeight = (float)imageBounds.getHeight();
-            float drawWidth = drawHeight * imageAspect;
-            float x = imageBounds.getX() + (imageBounds.getWidth() - drawWidth) / 2.0f;
-            drawBounds = juce::Rectangle<float>(x, (float)imageBounds.getY(), drawWidth, drawHeight);
-        }
-
-        g.drawImage(pluginImage, drawBounds, juce::RectanglePlacement::centred);
+        // Draw the image centered, maintaining aspect ratio, not stretching
+        g.drawImageWithin(pluginImage,
+                          imageBounds.getX(), imageBounds.getY(),
+                          imageBounds.getWidth(), imageBounds.getHeight(),
+                          juce::RectanglePlacement::centred | juce::RectanglePlacement::onlyReduceInSize);
     }
     else
     {
@@ -163,10 +145,10 @@ void PluginCard::paint(juce::Graphics& g)
         g.drawText("Loading...", imageBounds, juce::Justification::centred);
     }
 
-    contentBounds.removeFromTop(4);
+    contentBounds.removeFromTop(10);  // Increased spacing below thumbnail
 
     // Category and Era tags row
-    auto tagRow = contentBounds.removeFromTop(20);
+    auto tagRow = contentBounds.removeFromTop(18);
 
     // Category tag
     juce::String categoryTag = getEffectCategoryName(pluginInfo.category);
@@ -196,41 +178,38 @@ void PluginCard::paint(juce::Graphics& g)
         g.drawText(eraTag, eraBounds, juce::Justification::centred);
     }
 
-    // Favorite heart - red when active, gray outline when inactive
-    auto heartBounds = getLocalBounds().reduced(8).removeFromTop(24).removeFromRight(24);
-    float cx = static_cast<float>(heartBounds.getCentreX());
-    float cy = static_cast<float>(heartBounds.getCentreY()) + 1.0f;  // Shift down slightly
-    float w = 11.0f;   // Half width
-    float h = 13.0f;   // Height
+    // Favorite star - yellow when active, gray outline when inactive
+    auto starBounds = getLocalBounds().reduced(8).removeFromTop(24).removeFromRight(24);
+    float cx = static_cast<float>(starBounds.getCentreX());
+    float cy = static_cast<float>(starBounds.getCentreY());
+    float outerRadius = 10.0f;
+    float innerRadius = 4.5f;
 
-    // Create heart path using bezier curves
-    juce::Path heartPath;
-    heartPath.startNewSubPath(cx, cy + h * 0.5f);  // Bottom point
-    // Left side
-    heartPath.cubicTo(cx - w * 0.8f, cy + h * 0.1f,    // Control point 1
-                      cx - w, cy - h * 0.25f,           // Control point 2
-                      cx - w * 0.5f, cy - h * 0.45f);   // Top of left lobe
-    heartPath.cubicTo(cx - w * 0.1f, cy - h * 0.55f,   // Control point 1
-                      cx, cy - h * 0.35f,               // Control point 2
-                      cx, cy - h * 0.2f);               // Center dip
-    // Right side
-    heartPath.cubicTo(cx, cy - h * 0.35f,               // Control point 1
-                      cx + w * 0.1f, cy - h * 0.55f,   // Control point 2
-                      cx + w * 0.5f, cy - h * 0.45f);   // Top of right lobe
-    heartPath.cubicTo(cx + w, cy - h * 0.25f,           // Control point 1
-                      cx + w * 0.8f, cy + h * 0.1f,    // Control point 2
-                      cx, cy + h * 0.5f);               // Back to bottom
-    heartPath.closeSubPath();
+    // Create 5-point star path
+    juce::Path starPath;
+    for (int i = 0; i < 10; ++i)
+    {
+        float radius = (i % 2 == 0) ? outerRadius : innerRadius;
+        float angle = static_cast<float>(i) * juce::MathConstants<float>::pi / 5.0f - juce::MathConstants<float>::halfPi;
+        float x = cx + radius * std::cos(angle);
+        float y = cy + radius * std::sin(angle);
+
+        if (i == 0)
+            starPath.startNewSubPath(x, y);
+        else
+            starPath.lineTo(x, y);
+    }
+    starPath.closeSubPath();
 
     if (pluginInfo.isFavorite)
     {
-        g.setColour(juce::Colour(0xffff4d6a));  // Pink/red color
-        g.fillPath(heartPath);
+        g.setColour(juce::Colour(0xffffc107));  // Yellow/gold color
+        g.fillPath(starPath);
     }
     else
     {
         g.setColour(juce::Colour(0xffcccccc));  // Light gray outline
-        g.strokePath(heartPath, juce::PathStrokeType(1.5f));
+        g.strokePath(starPath, juce::PathStrokeType(1.5f));
     }
 
     // Darken entire card on hover or when loaded (drawn last, button is a child component so stays bright)
@@ -278,9 +257,9 @@ void PluginCard::mouseExit(const juce::MouseEvent& e)
 
 void PluginCard::mouseDown(const juce::MouseEvent& e)
 {
-    // Check if click is on the heart area (with expanded hit area for easier clicking)
-    auto heartBounds = getLocalBounds().reduced(4).removeFromTop(28).removeFromRight(28);
-    if (heartBounds.contains(e.getPosition()))
+    // Check if click is on the star area (with expanded hit area for easier clicking)
+    auto starBounds = getLocalBounds().reduced(4).removeFromTop(28).removeFromRight(28);
+    if (starBounds.contains(e.getPosition()))
     {
         // Toggle favorite
         if (onFavoriteToggle)

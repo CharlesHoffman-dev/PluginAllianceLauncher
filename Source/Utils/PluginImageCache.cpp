@@ -130,6 +130,12 @@ void PluginImageCache::initializeThumbnailFilenames()
     thumbnailFilenames["adptr audio sculpt"] = "adptr_sculpt";
     thumbnailFilenames["adptr audio utopia"] = "adptr_utopia";
     thumbnailFilenames["adptr audio hype"] = "adptr_hype";
+    // Short names for ADPTR plugins
+    thumbnailFilenames["metric ab"] = "adptr_metric_ab";
+    thumbnailFilenames["streamliner"] = "adptr_streamliner";
+    thumbnailFilenames["sculpt"] = "adptr_sculpt";
+    thumbnailFilenames["utopia"] = "adptr_utopia";
+    thumbnailFilenames["hype"] = "adptr_hype";
 
     // Three-Body Technology
     thumbnailFilenames["kirchhoff-eq"] = "kirchhoff_eq";
@@ -934,6 +940,38 @@ void PluginImageCache::initializeImageUrls()
     imageUrls["perfection"] = baseUrl + "productimage-301331.png";
     imageUrls["xtcomp"] = baseUrl + "productimage-300998.png";
     imageUrls["xtressor"] = baseUrl + "productimage-300800_d2c32a9b-7c2a-4b1e-8a89-4c3a7c8d9e12.png";
+
+    // Additional SPL plugins
+    imageUrls["spl pq"] = baseUrl + "productimage-300014_41e6334f-ea81-4115-bcb2-ce021a984aae.png";
+    imageUrls["spl free ranger"] = baseUrl + "productimage-300186_672ca1e9-1e63-43ec-9c48-8a7cdb66b8d0.png";
+    imageUrls["spl hawkeye"] = baseUrl + "productimage-300400_d705cd7c-7087-4680-914b-646d0b0fe801.png";
+    imageUrls["pq"] = baseUrl + "productimage-300014_41e6334f-ea81-4115-bcb2-ce021a984aae.png";
+    imageUrls["free ranger"] = baseUrl + "productimage-300186_672ca1e9-1e63-43ec-9c48-8a7cdb66b8d0.png";
+
+    // Additional elysia plugins
+    imageUrls["elysia niveau filter"] = baseUrl + "productimage-300146_28c03de7-f9ca-42d6-8dc3-7cc60a8f2e54.png";
+    imageUrls["elysia phils cascade"] = baseUrl + "productimage-300369_a8076339-2084-4197-a944-dbbf15f01efd.png";
+    imageUrls["phils cascade"] = baseUrl + "productimage-300369_a8076339-2084-4197-a944-dbbf15f01efd.png";
+
+    // Kiive Audio
+    imageUrls["kiive audio tape face"] = baseUrl + "productimage-300883_ea7d242f-aca6-4785-8ee4-155cbfbd9fd2.png";
+    imageUrls["kiive audio xtressor"] = baseUrl + "productimage-300800_d2c32a9b-7c2a-4b1e-8a89-4c3a7c8d9e12.png";
+    imageUrls["kiive tape face"] = baseUrl + "productimage-300883_ea7d242f-aca6-4785-8ee4-155cbfbd9fd2.png";
+
+    // Additional Brainworx bx_ plugins with underscores
+    imageUrls["bx_meter"] = baseUrl + "productimage-300066_cf4b5c96-4b4d-4c04-8aa7-9a57c5f5af7a.png";
+    imageUrls["bx_solo"] = baseUrl + "productimage-300200_a0f5e7c1-0e45-4e6c-97e7-8aaa2c6be4d5.png";
+    imageUrls["bx_tuner"] = baseUrl + "productimage-300199_3640d2e9-1a04-4c7d-bc8e-6b03588f4b6b.png";
+    imageUrls["bx_subfilter"] = baseUrl + "productimage-300198_1234abcd-5678-efgh-ijkl-mnopqrstuvwx.png";
+    imageUrls["bx_shredspread"] = baseUrl + "productimage-300201_8a82a31c-3b25-4a5e-b0c5-d6c5be0a7fb1.png";
+    imageUrls["bx_opto pedal"] = baseUrl + "productimage-300149_0a8c4324-5cc3-45e3-b62e-9bea84ff8323.png";
+
+    // Millennia TCL-2
+    imageUrls["millennia tcl-2"] = baseUrl + "productimage-300143_3c0a78f2-31be-436b-ab39-a877c73d8694.png";
+
+    // Additional amp sims
+    imageUrls["bx_v3 player"] = baseUrl + "productimage-300244_20a2ee7e-c696-432e-ae2f-641cd41b7723.png";
+    imageUrls["bx_rockrack v3 player"] = baseUrl + "productimage-300244_20a2ee7e-c696-432e-ae2f-641cd41b7723.png";
 }
 
 juce::String PluginImageCache::normalizePluginName(const juce::String& name) const
@@ -946,6 +984,26 @@ juce::StringArray PluginImageCache::getNameVariants(const juce::String& normaliz
 {
     juce::StringArray variants;
     variants.add(normalizedName);
+
+    // Try adding hyphens before numbers (e.g., "b15n" -> "b-15n", "eq200" -> "eq-200")
+    juce::String withHyphens = normalizedName;
+    for (int i = 1; i < withHyphens.length(); ++i)
+    {
+        bool prevIsLetter = juce::CharacterFunctions::isLetter(withHyphens[i - 1]);
+        bool currIsDigit = juce::CharacterFunctions::isDigit(withHyphens[i]);
+        if (prevIsLetter && currIsDigit && withHyphens[i - 1] != '-')
+        {
+            withHyphens = withHyphens.substring(0, i) + "-" + withHyphens.substring(i);
+            i++; // Skip past the inserted hyphen
+        }
+    }
+    if (withHyphens != normalizedName && !variants.contains(withHyphens))
+        variants.add(withHyphens);
+
+    // Also try removing existing hyphens
+    auto withoutHyphens = normalizedName.replace("-", "");
+    if (withoutHyphens != normalizedName && !variants.contains(withoutHyphens))
+        variants.add(withoutHyphens);
 
     // Common brand prefixes to try removing
     juce::StringArray brandPrefixes = {
@@ -974,13 +1032,68 @@ juce::StringArray PluginImageCache::getNameVariants(const juce::String& normaliz
         }
     }
 
+    // Handle A/DA brand (appears as "ADA" in plugin names, "A/DA" in URLs)
+    if (normalizedName.startsWith("ada "))
+    {
+        auto adaVariant = "a/da " + normalizedName.substring(4);
+        if (!variants.contains(adaVariant))
+            variants.add(adaVariant);
+    }
+    else if (normalizedName.startsWith("a/da "))
+    {
+        auto adaVariant = "ada " + normalizedName.substring(5);
+        if (!variants.contains(adaVariant))
+            variants.add(adaVariant);
+    }
+
+    // Handle THX brand variants
+    if (normalizedName.startsWith("thx "))
+    {
+        auto thxVariant = "thx ltd. " + normalizedName.substring(4);
+        if (!variants.contains(thxVariant))
+            variants.add(thxVariant);
+    }
+
+    // Handle Maag brand (plugin uses "Maag" but URL might use "Maag Audio")
+    if (normalizedName.startsWith("maag ") && !normalizedName.startsWith("maag audio "))
+    {
+        auto maagVariant = "maag audio " + normalizedName.substring(5);
+        if (!variants.contains(maagVariant))
+            variants.add(maagVariant);
+    }
+
+    // Handle Dangerous brand
+    if (normalizedName.startsWith("dangerous ") && !normalizedName.startsWith("dangerous music "))
+    {
+        auto dangerousVariant = "dangerous music " + normalizedName.substring(10);
+        if (!variants.contains(dangerousVariant))
+            variants.add(dangerousVariant);
+    }
+
+    // Handle Chandler brand
+    if (normalizedName.startsWith("chandler ") && !normalizedName.startsWith("chandler limited "))
+    {
+        auto chandlerVariant = "chandler limited " + normalizedName.substring(9);
+        if (!variants.contains(chandlerVariant))
+            variants.add(chandlerVariant);
+    }
+
+    // Handle Lindell brand (plugin uses "Lindell" but URL uses "Lindell Audio")
+    if (normalizedName.startsWith("lindell ") && !normalizedName.startsWith("lindell audio "))
+    {
+        auto lindellVariant = "lindell audio " + normalizedName.substring(8);
+        if (!variants.contains(lindellVariant))
+            variants.add(lindellVariant);
+    }
+
     // Also try adding common brand prefixes if we have a short name
     if (!normalizedName.contains(" ") || normalizedName.length() < 15)
     {
         // Try with common prefixes for known product names
         juce::StringArray prefixesToTry = {
             "unfiltered audio ", "brainworx ", "ds audio ", "knif audio ",
-            "lindell audio ", "spl ", "neold ", "elysia ", "bettermaker "
+            "lindell audio ", "spl ", "neold ", "elysia ", "bettermaker ",
+            "adptr audio ", "maag audio ", "shadow hills ", "black box analog design "
         };
 
         for (const auto& prefix : prefixesToTry)
@@ -1005,6 +1118,9 @@ juce::String PluginImageCache::findImageUrl(const juce::String& normalizedName) 
         if (it != imageUrls.end() && it->second.isNotEmpty())
             return it->second;
     }
+
+    // Log missing URL for debugging
+    DBG("No image URL found for plugin: " + normalizedName);
 
     return juce::String();
 }
@@ -1183,11 +1299,26 @@ bool PluginImageCache::downloadImage(const juce::String& pluginName, const juce:
 
         if (image.isValid())
         {
-            // Resize to a reasonable thumbnail size
-            const int thumbnailWidth = 160;
-            const int thumbnailHeight = 100;
+            // Resize to fit within max thumbnail size while maintaining aspect ratio
+            const int maxThumbnailWidth = 300;
+            const int maxThumbnailHeight = 300;
 
-            auto thumbnail = image.rescaled(thumbnailWidth, thumbnailHeight, juce::Graphics::highResamplingQuality);
+            int originalWidth = image.getWidth();
+            int originalHeight = image.getHeight();
+
+            // Calculate scale factor to fit within max dimensions while preserving aspect ratio
+            float scaleX = static_cast<float>(maxThumbnailWidth) / static_cast<float>(originalWidth);
+            float scaleY = static_cast<float>(maxThumbnailHeight) / static_cast<float>(originalHeight);
+            float scale = juce::jmin(scaleX, scaleY, 1.0f);  // Don't upscale, only downscale
+
+            int newWidth = static_cast<int>(originalWidth * scale);
+            int newHeight = static_cast<int>(originalHeight * scale);
+
+            // Ensure minimum size of 1 pixel
+            newWidth = juce::jmax(1, newWidth);
+            newHeight = juce::jmax(1, newHeight);
+
+            auto thumbnail = image.rescaled(newWidth, newHeight, juce::Graphics::highResamplingQuality);
 
             // Save to cache
             auto cacheFile = getCacheFile(pluginName);
@@ -1200,10 +1331,10 @@ bool PluginImageCache::downloadImage(const juce::String& pluginName, const juce:
                 pngFormat.writeImageToStream(thumbnail, outputStream);
             }
 
-            // Store in memory
+            // Store in memory with normalized name so getImage() can find it
             {
                 juce::ScopedLock scopedLock(lock);
-                loadedImages[pluginName] = thumbnail;
+                loadedImages[normalizePluginName(pluginName)] = thumbnail;
             }
 
             return true;
@@ -1211,6 +1342,144 @@ bool PluginImageCache::downloadImage(const juce::String& pluginName, const juce:
     }
 
     return false;
+}
+
+juce::String PluginImageCache::generateProductPageUrl(const juce::String& pluginName) const
+{
+    // Convert plugin name to Plugin Alliance product page URL
+    // Format: https://www.plugin-alliance.com/en/products/plugin_name.html
+    // Note: Keep hyphens as-is since many product URLs preserve them (e.g., ada_std-1)
+
+    auto urlName = pluginName.toLowerCase()
+        .replace(" ", "_")
+        .replace("'", "")
+        .replace("ä", "a")
+        .replace("ö", "o")
+        .replace("ü", "u")
+        .retainCharacters("abcdefghijklmnopqrstuvwxyz0123456789_-");
+
+    // Replace double underscores with single
+    while (urlName.contains("__"))
+        urlName = urlName.replace("__", "_");
+
+    // Remove leading/trailing underscores or hyphens
+    while (urlName.startsWith("_") || urlName.startsWith("-"))
+        urlName = urlName.substring(1);
+    while (urlName.endsWith("_") || urlName.endsWith("-"))
+        urlName = urlName.dropLastCharacters(1);
+
+    return "https://www.plugin-alliance.com/en/products/" + urlName + ".html";
+}
+
+juce::String PluginImageCache::fetchImageUrlFromProductPage(const juce::String& pluginName)
+{
+    auto pageUrl = generateProductPageUrl(pluginName);
+    DBG("Fetching product page: " + pageUrl);
+
+    juce::URL url(pageUrl);
+    auto options = juce::URL::InputStreamOptions(juce::URL::ParameterHandling::inAddress)
+        .withConnectionTimeoutMs(15000)
+        .withNumRedirectsToFollow(5);
+
+    auto stream = url.createInputStream(options);
+    if (stream == nullptr)
+    {
+        DBG("Failed to fetch product page for: " + pluginName);
+        return juce::String();
+    }
+
+    auto html = stream->readEntireStreamAsString();
+    if (html.isEmpty())
+    {
+        DBG("Empty response for product page: " + pluginName);
+        return juce::String();
+    }
+
+    // Look for image URL in the hero banner section
+    // Pattern: src="//www.plugin-alliance.com/cdn/shop/files/productimage-*.png" or similar
+
+    // First try to find og:image meta tag (most reliable)
+    int ogImageStart = html.indexOf("og:image");
+    if (ogImageStart >= 0)
+    {
+        int contentStart = html.indexOfIgnoreCase(ogImageStart, "content=\"");
+        if (contentStart >= 0 && contentStart < ogImageStart + 100)
+        {
+            contentStart += 9; // Length of 'content="'
+            int contentEnd = html.indexOf(contentStart, juce::StringRef("\""));
+            if (contentEnd > contentStart)
+            {
+                auto imageUrl = html.substring(contentStart, contentEnd);
+                // Normalize URL (add https: if needed)
+                if (imageUrl.startsWith("//"))
+                    imageUrl = "https:" + imageUrl;
+                if (imageUrl.contains("/cdn/shop/files/"))
+                {
+                    DBG("Found og:image URL: " + imageUrl);
+                    return imageUrl;
+                }
+            }
+        }
+    }
+
+    // Fallback: Look for image in pdp-hero-banner section
+    int bannerStart = html.indexOf("pdp-hero-banner");
+    if (bannerStart >= 0)
+    {
+        // Find img src within the next 2000 characters
+        int searchEnd = juce::jmin(bannerStart + 2000, html.length());
+        auto bannerSection = html.substring(bannerStart, searchEnd);
+
+        int srcStart = bannerSection.indexOf("src=\"");
+        if (srcStart >= 0)
+        {
+            srcStart += 5; // Length of 'src="'
+            int srcEnd = bannerSection.indexOf(srcStart, juce::StringRef("\""));
+            if (srcEnd > srcStart)
+            {
+                auto imageUrl = bannerSection.substring(srcStart, srcEnd);
+                // Normalize URL
+                if (imageUrl.startsWith("//"))
+                    imageUrl = "https:" + imageUrl;
+                if (imageUrl.contains("/cdn/shop/files/"))
+                {
+                    // Remove width parameter if present
+                    int widthParam = imageUrl.indexOf("&width=");
+                    if (widthParam > 0)
+                        imageUrl = imageUrl.substring(0, widthParam);
+                    DBG("Found banner image URL: " + imageUrl);
+                    return imageUrl;
+                }
+            }
+        }
+    }
+
+    // Last resort: Search for any productimage URL
+    int prodImgStart = html.indexOf("/cdn/shop/files/productimage-");
+    if (prodImgStart >= 0)
+    {
+        // Find the opening quote before the URL by searching backwards
+        auto beforeProdImg = html.substring(0, prodImgStart);
+        int urlStart = beforeProdImg.lastIndexOf("\"") + 1;
+        int urlEnd = html.indexOf(prodImgStart, juce::StringRef("\""));
+        if (urlEnd > urlStart && urlStart > 0)
+        {
+            auto imageUrl = html.substring(urlStart, urlEnd);
+            if (imageUrl.startsWith("//"))
+                imageUrl = "https:" + imageUrl;
+            else if (!imageUrl.startsWith("http"))
+                imageUrl = "https://www.plugin-alliance.com" + imageUrl;
+            // Remove width parameter if present
+            int widthParam = imageUrl.indexOf("&width=");
+            if (widthParam > 0)
+                imageUrl = imageUrl.substring(0, widthParam);
+            DBG("Found productimage URL: " + imageUrl);
+            return imageUrl;
+        }
+    }
+
+    DBG("No image URL found in product page for: " + pluginName);
+    return juce::String();
 }
 
 void PluginImageCache::run()
@@ -1236,14 +1505,30 @@ void PluginImageCache::run()
 
         if (pluginToLoad.isNotEmpty())
         {
-            // Try loading from bundled resources first (fastest)
-            if (!loadFromBundled(pluginToLoad))
+            // Try loading from cache first
+            if (!loadFromCache(pluginToLoad))
             {
-                // Try loading from cache
-                if (!loadFromCache(pluginToLoad))
+                // Try direct URL download first
+                bool downloaded = false;
+                if (urlToLoad.isNotEmpty())
                 {
-                    // Download from web as fallback
-                    downloadImage(pluginToLoad, urlToLoad);
+                    downloaded = downloadImage(pluginToLoad, urlToLoad);
+                }
+
+                // If no URL or download failed, try fetching from product page dynamically
+                if (!downloaded)
+                {
+                    DBG("Trying dynamic fetch for: " + pluginToLoad);
+                    auto dynamicUrl = fetchImageUrlFromProductPage(pluginToLoad);
+                    if (dynamicUrl.isNotEmpty())
+                    {
+                        DBG("Found dynamic URL: " + dynamicUrl);
+                        downloadImage(pluginToLoad, dynamicUrl);
+                    }
+                    else
+                    {
+                        DBG("No image URL found for: " + pluginToLoad);
+                    }
                 }
             }
 
