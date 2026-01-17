@@ -126,9 +126,10 @@ enum class DisplayCategory
     // Effects (alphabetical)
     ChannelStrip,       // Console emulations (SSL, Neve, API, etc.)
     Delays,             // Analog, Digital, Granular, Tape, etc.
-    Dynamics,           // Compressors, Limiters, Gates, Transient Shapers, De-Essers
+    Dynamics,           // Compressors, Gates, Transient Shapers, De-Essers
     Equalization,       // Parametric, Passive, Dynamic, Filters, etc.
     GuitarBass,         // Amps, Pedals, Cabinets
+    Limiters,           // Limiters, Clippers, Maximizers
     Mastering,          // Mastering Suites, Limiters, Metering (legacy)
     Meters,             // Spectrum analyzers, loudness meters, phase meters
     Modulation,         // Chorus, Flanger, Phaser, Tremolo, Vibrato (legacy)

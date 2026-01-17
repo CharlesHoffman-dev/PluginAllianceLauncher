@@ -314,7 +314,7 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     }
 
     // Set editor size - wider to accommodate details panel
-    setSize(1400, 800);
+    setSize(1400, 900);
     setResizable(true, true);
     setResizeLimits(1000, 600, 2200, 1500);
 
@@ -471,15 +471,15 @@ void PluginAllianceLauncherEditor::resized()
 
     searchBar.setBounds(topBar.removeFromLeft(300));
 
-    // Sort, Era and Brand dropdowns in top bar (right of search, in browser mode)
+    // Brand, Sort, and Era dropdowns in top bar (right of search, in browser mode)
     if (browserMode)
     {
         topBar.removeFromLeft(12);  // Gap after search
+        brandComboBox.setBounds(topBar.removeFromLeft(160));
+        topBar.removeFromLeft(8);
         sortComboBox.setBounds(topBar.removeFromLeft(100));
         topBar.removeFromLeft(8);
         eraComboBox.setBounds(topBar.removeFromLeft(100));
-        topBar.removeFromLeft(8);
-        brandComboBox.setBounds(topBar.removeFromLeft(160));
     }
 
     // Only reserve space for status bar when scanning

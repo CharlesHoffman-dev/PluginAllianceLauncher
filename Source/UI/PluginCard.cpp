@@ -145,7 +145,7 @@ void PluginCard::paint(juce::Graphics& g)
         g.drawText("Loading...", imageBounds, juce::Justification::centred);
     }
 
-    contentBounds.removeFromTop(10);  // Increased spacing below thumbnail
+    contentBounds.removeFromTop(15);  // Spacing below thumbnail
 
     // Category and Era tags row
     auto tagRow = contentBounds.removeFromTop(18);

@@ -418,7 +418,6 @@ juce::Array<PluginInfo> PluginDatabase::getByDisplayCategory(DisplayCategory cat
 
                 case DisplayCategory::Dynamics:
                     matches = (info.category == EffectCategory::Compressor ||
-                              info.category == EffectCategory::Limiter ||
                               info.category == EffectCategory::Gate ||
                               info.category == EffectCategory::Expander ||
                               info.category == EffectCategory::DynamicsProcessor ||
@@ -437,6 +436,10 @@ juce::Array<PluginInfo> PluginDatabase::getByDisplayCategory(DisplayCategory cat
                     matches = (info.category == EffectCategory::AmpSimulator ||
                               info.category == EffectCategory::Preamp ||
                               info.category == EffectCategory::Distortion);
+                    break;
+
+                case DisplayCategory::Limiters:
+                    matches = (info.category == EffectCategory::Limiter);
                     break;
 
                 case DisplayCategory::Mastering:

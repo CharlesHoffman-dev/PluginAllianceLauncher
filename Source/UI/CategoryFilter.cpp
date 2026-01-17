@@ -49,6 +49,7 @@ void CategoryFilter::buildCategoryList()
     categories.push_back({DisplayCategory::Saturation, "Saturators", false});
     categories.push_back({DisplayCategory::Delays, "Delays", false});
     categories.push_back({DisplayCategory::Reverbs, "Reverbs", false});
+    categories.push_back({DisplayCategory::Limiters, "Limiters", false});
     categories.push_back({DisplayCategory::Meters, "Meters", false});
     categories.push_back({DisplayCategory::SpecialProcessing, "Other", false});
 }

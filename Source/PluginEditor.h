@@ -147,7 +147,7 @@ private:
     void loadLogo();
 
     // Window sizing
-    juce::Rectangle<int> defaultBrowserSize { 0, 0, 1200, 800 };
+    juce::Rectangle<int> defaultBrowserSize { 0, 0, 1200, 900 };
     void resizeForPlugin();
     void resizeForBrowser();
 
