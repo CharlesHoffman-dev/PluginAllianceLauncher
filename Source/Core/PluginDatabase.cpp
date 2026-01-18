@@ -62,7 +62,6 @@ static EffectCategory categoryFromString(const juce::String& category)
         {"Gates", EffectCategory::Gates},
         {"Lo-Fi", EffectCategory::LoFi},
         {"Modulator", EffectCategory::Modulators},
-        {"Modulators", EffectCategory::Modulators},
         {"Multi-FX", EffectCategory::MultiFX},
         {"Pitch Correction", EffectCategory::PitchCorrection},
         {"Restoration", EffectCategory::Restoration},
