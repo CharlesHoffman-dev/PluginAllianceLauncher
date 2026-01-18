@@ -40,6 +40,26 @@ HostedPluginView::HostedPluginView()
     pluginNameLabel.setJustificationType(juce::Justification::centredLeft);
     addAndMakeVisible(pluginNameLabel);
 
+    // Bypass button (power icon)
+    bypassButton.setButtonText(juce::String::charToString(0x23FB));  // Power symbol ⏻
+    bypassButton.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff2a2a2a));
+    bypassButton.setColour(juce::TextButton::textColourOffId, juce::Colour(0xff00cc66));  // Green when active
+    bypassButton.setLookAndFeel(&hostedViewButtonLookAndFeel);
+    bypassButton.setTooltip("Bypass plugin");
+    bypassButton.onClick = [this]()
+    {
+        if (pluginHost != nullptr)
+        {
+            bool newBypassState = !pluginHost->isBypassed();
+            pluginHost->setBypassed(newBypassState);
+            // Update button color: green = active, red = bypassed
+            bypassButton.setColour(juce::TextButton::textColourOffId,
+                newBypassState ? juce::Colour(0xffcc3333) : juce::Colour(0xff00cc66));
+            repaint();
+        }
+    };
+    addAndMakeVisible(bypassButton);
+
     unloadButton.setButtonText("Unload");
     unloadButton.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff2a2a2a));
     unloadButton.setColour(juce::TextButton::textColourOffId, juce::Colour(0xfff9f9f9));
@@ -89,6 +109,8 @@ void HostedPluginView::resized()
 
     unloadButton.setBounds(headerBounds.removeFromRight(70));
     headerBounds.removeFromRight(8);
+    bypassButton.setBounds(headerBounds.removeFromLeft(28));
+    headerBounds.removeFromLeft(8);
     pluginNameLabel.setBounds(headerBounds);
 
     // Editor viewport
@@ -120,6 +142,11 @@ void HostedPluginView::showPluginEditor()
     // Update plugin name
     pluginNameLabel.setText("Currently Loaded: " + pluginHost->getLoadedPluginName(),
                             juce::dontSendNotification);
+
+    // Update bypass button color based on current state
+    bool isBypassed = pluginHost->isBypassed();
+    bypassButton.setColour(juce::TextButton::textColourOffId,
+        isBypassed ? juce::Colour(0xffcc3333) : juce::Colour(0xff00cc66));
 
     // Create editor
     if (pluginHost->hasEditor())

@@ -49,6 +49,10 @@ public:
     // Sidechain support
     bool supportsSidechain() const { return hasSidechain; }
 
+    // Bypass
+    void setBypassed(bool shouldBypass) { bypassed = shouldBypass; }
+    bool isBypassed() const { return bypassed; }
+
 private:
     juce::AudioPluginFormatManager formatManager;
     std::unique_ptr<juce::AudioPluginInstance> loadedPlugin;
@@ -58,6 +62,7 @@ private:
     int currentBlockSize = 512;
     bool isPrepared = false;
     bool hasSidechain = false;
+    bool bypassed = false;
 
     // Temporary buffer for channel count adaptation
     juce::AudioBuffer<float> tempBuffer;

@@ -48,6 +48,7 @@ private:
 
     juce::Label pluginNameLabel;
     juce::TextButton unloadButton;
+    juce::TextButton bypassButton;
 
     juce::Viewport editorViewport;
 

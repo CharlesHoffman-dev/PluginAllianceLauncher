@@ -180,6 +180,10 @@ void PluginHost::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer
     if (loadedPlugin == nullptr || !isPrepared)
         return;
 
+    // If bypassed, pass audio through unchanged
+    if (bypassed)
+        return;
+
     // Get the hosted plugin's channel requirements
     int pluginInputChannels = loadedPlugin->getTotalNumInputChannels();
     int pluginOutputChannels = loadedPlugin->getTotalNumOutputChannels();

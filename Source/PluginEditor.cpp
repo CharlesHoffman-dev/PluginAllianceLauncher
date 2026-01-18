@@ -541,7 +541,7 @@ void PluginAllianceLauncherEditor::resized()
             detailsLoadButton.setVisible(true);
             // Position load button below content area (brand + name + image + tags + description)
             // Content starts at Y+16, then: brand(18) + gap(4) + name(24) + gap(16) + image(180) + gap(12) + tags(22) + gap(8) + description(~120) = ~420px
-            int buttonY = detailsPanel.getY() + 16 + 18 + 4 + 24 + 16 + 180 + 12 + 22 + 8 + 130;  // After description area
+            int buttonY = detailsPanel.getY() + 16 + 18 + 4 + 24 + 16 + 180 + 17 + 22 + 8 + 130;  // After description area
             detailsLoadButton.setBounds(detailsPanel.getX() + 20, buttonY, detailsPanelWidth - 40, 36);
         }
         else
@@ -1042,7 +1042,7 @@ void PluginAllianceLauncherEditor::paintDetailsPanel(juce::Graphics& g, juce::Re
         g.drawText("Loading...", imageBounds, juce::Justification::centred);
     }
 
-    contentBounds.removeFromTop(12);
+    contentBounds.removeFromTop(17);  // Spacing below thumbnail
 
     // Category and Era tags row (same as plugin card)
     auto tagRow = contentBounds.removeFromTop(22);
