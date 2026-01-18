@@ -6,35 +6,84 @@
 */
 
 #include "PluginDatabase.h"
-#include "../Data/PluginNameMap.h"
+#include "../Data/PluginData.h"
 #include <algorithm>
 
 namespace PALauncher
 {
 
-// Static category mappings
+// Convert category string from PluginData.h to EffectCategory enum
+static EffectCategory categoryFromString(const juce::String& category)
+{
+    static const std::map<juce::String, EffectCategory> categoryMap = {
+        {"Equalizer", EffectCategory::EQ},
+        {"EQ", EffectCategory::EQ},
+        {"Filter", EffectCategory::Filter},
+        {"Compressor", EffectCategory::Compressor},
+        {"Limiter", EffectCategory::Limiter},
+        {"Gate", EffectCategory::Gate},
+        {"Transient Shaper", EffectCategory::TransientShaper},
+        {"De-Esser", EffectCategory::DeEsser},
+        {"Channel Strip", EffectCategory::ChannelStrip},
+        {"Saturator", EffectCategory::Saturation},
+        {"Saturation", EffectCategory::Saturation},
+        {"Reverb", EffectCategory::Reverb},
+        {"Delay", EffectCategory::Delay},
+        {"Modulation", EffectCategory::Modulator},
+        {"Flanger", EffectCategory::Flanger},
+        {"Chorus", EffectCategory::Chorus},
+        {"Phaser", EffectCategory::Phaser},
+        {"Pitch", EffectCategory::PitchShifter},
+        {"Amp Simulator", EffectCategory::AmpSimulator},
+        {"Amp", EffectCategory::AmpSimulator},
+        {"Distortion", EffectCategory::Distortion},
+        {"Mastering", EffectCategory::MasteringSuite},
+        {"Meter", EffectCategory::SpectralAnalysis},
+        {"Metering", EffectCategory::SpectralAnalysis},
+        {"Imager", EffectCategory::StereoWidth},
+        {"Lo-Fi", EffectCategory::BitCrusher},
+        {"Restoration", EffectCategory::Unknown},
+        {"Sequencer", EffectCategory::Sequencer},
+        {"Multi-FX", EffectCategory::MultiEffect},
+        {"Tape", EffectCategory::TapeEmulation},
+        {"Vocal", EffectCategory::VocalProcessing},
+    };
+
+    auto it = categoryMap.find(category);
+    if (it != categoryMap.end())
+        return it->second;
+
+    return EffectCategory::Unknown;
+}
+
+// Convert era string from PluginData.h tags to Era enum
+static Era eraFromString(const juce::String& era)
+{
+    static const std::map<juce::String, Era> eraMap = {
+        {"1950s", Era::Era_1950s},
+        {"1960s", Era::Era_1960s},
+        {"1970s", Era::Era_1970s},
+        {"1980s", Era::Era_1980s},
+        {"1990s", Era::Era_1990s},
+        {"2000s", Era::Era_2000s},
+        {"2010s", Era::Era_2010s},
+        {"2020s", Era::Era_2020s},
+        {"Modern", Era::Era_Modern},
+    };
+
+    auto it = eraMap.find(era);
+    if (it != eraMap.end())
+        return it->second;
+
+    return Era::Era_Modern;
+}
+
+// LEGACY: Minimal fallback maps for plugins not in plugins.json
+// Most categories now come from findPluginMetadata() in PluginData.h
 namespace CategoryMaps
 {
-    // Plugin name -> Category mapping
+    // Empty - all categories now in plugins.json
     static const std::map<juce::String, EffectCategory> pluginCategories = {
-        // ============ EQUALIZERS ============
-        {"bx_digital V3", EffectCategory::EQ},
-        {"bx_digital V2", EffectCategory::EQ},
-        {"bx_digital", EffectCategory::EQ},
-        {"bx_hybrid V2", EffectCategory::EQ},
-        {"bx_hybrid", EffectCategory::EQ},
-        {"bx_dynEQ V2", EffectCategory::EQ},
-        {"bx_dynEQ", EffectCategory::EQ},
-        {"bx_2098 EQ", EffectCategory::EQ},
-        {"bx_panEQ", EffectCategory::EQ},
-        {"bx_refinement", EffectCategory::EQ},
-        {"Mäag Audio EQ4", EffectCategory::EQ},
-        {"Mäag Audio EQ4 MS", EffectCategory::EQ},
-        {"Maag Audio EQ4", EffectCategory::EQ},
-        {"Maag Audio EQ4 MS", EffectCategory::EQ},
-        {"Mäag Audio EQ2", EffectCategory::EQ},
-        {"Maag Audio EQ2", EffectCategory::EQ},
-        {"Maag EQ2", EffectCategory::EQ},
         {"Maag EQ4", EffectCategory::EQ},
         {"EQ4", EffectCategory::EQ},
         {"EQ2", EffectCategory::EQ},
@@ -1113,7 +1162,6 @@ void PluginDatabase::categorizePlugin(PluginInfo& info)
     auto nameLower = info.description.name.toLowerCase();
 
     // Check for Plugin Alliance synths/instruments first
-    // These are the PA virtual instruments: Knifonium, LION, Battalion, bx_oberhausen, Thorn
     if (nameLower.contains("knifonium") ||
         nameLower.contains("bx_oberhausen") ||
         nameLower.contains("thorn") ||
@@ -1125,7 +1173,7 @@ void PluginDatabase::categorizePlugin(PluginInfo& info)
         return;
     }
 
-    // Also check if plugin is categorized as an instrument by the host
+    // Check if plugin is categorized as an instrument by the host
     if (info.description.isInstrument)
     {
         info.isInstrument = true;
@@ -1133,27 +1181,18 @@ void PluginDatabase::categorizePlugin(PluginInfo& info)
         return;
     }
 
-    // Check explicit mapping for effects (try exact match first)
-    auto it = CategoryMaps::pluginCategories.find(info.description.name);
-    if (it != CategoryMaps::pluginCategories.end())
+    // PRIMARY: Look up category from PluginData.h (generated from plugins.json)
+    if (auto* metadata = findPluginMetadata(info.description.name))
     {
-        info.category = it->second;
-        return;
-    }
-
-    // Try partial matching for plugins with slight name variations
-    for (const auto& mapping : CategoryMaps::pluginCategories)
-    {
-        // Check if the mapping name is contained in the plugin name or vice versa
-        if (nameLower.contains(mapping.first.toLowerCase()) ||
-            mapping.first.toLowerCase().contains(nameLower))
+        if (metadata->category.isNotEmpty())
         {
-            info.category = mapping.second;
-            return;
+            info.category = categoryFromString(metadata->category);
+            if (info.category != EffectCategory::Unknown)
+                return;
         }
     }
 
-    // Fallback: comprehensive keyword-based categorization for effects
+    // FALLBACK: Keyword-based categorization for plugins not in plugins.json
 
     // Equalizers
     if (nameLower.contains("eq") || nameLower.contains("equalizer") ||
@@ -1304,12 +1343,18 @@ void PluginDatabase::categorizePlugin(PluginInfo& info)
 
 void PluginDatabase::assignEra(PluginInfo& info)
 {
-    // Check explicit mapping
-    auto it = CategoryMaps::pluginEras.find(info.description.name);
-    if (it != CategoryMaps::pluginEras.end())
+    // PRIMARY: Look up era from PluginData.h tags (generated from plugins.json)
+    if (auto* metadata = findPluginMetadata(info.description.name))
     {
-        info.era = it->second;
-        return;
+        for (const auto& tag : metadata->tags)
+        {
+            Era era = eraFromString(tag);
+            if (era != Era::Era_Modern || tag == "Modern")
+            {
+                info.era = era;
+                return;
+            }
+        }
     }
 
     // Default to Modern for plugins without explicit era

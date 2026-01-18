@@ -9,6 +9,7 @@
 
 #include <JuceHeader.h>
 #include <map>
+#include "PluginData.h"
 
 namespace PALauncher
 {
@@ -401,13 +402,16 @@ inline bool isBrandCategory(DisplayCategory cat)
 // Get the brand name from a plugin's name or manufacturer
 inline juce::String getBrandName(const juce::String& pluginName, const juce::String& manufacturerName)
 {
+    // PRIMARY: Look up brand from PluginData.h (generated from plugins.json)
+    if (auto* metadata = findPluginMetadata(pluginName))
+    {
+        if (metadata->brand.isNotEmpty())
+            return metadata->brand;
+    }
+
+    // FALLBACK: Keyword-based brand detection
     auto nameLower = pluginName.toLowerCase();
     auto mfrLower = manufacturerName.toLowerCase();
-
-    // ============ HARDCODED OVERRIDES ============
-    // These plugins report "Plugin Alliance" as manufacturer but have specific brands
-    if (pluginName == "ADA Flanger" || pluginName == "ADA STD-1 Stereo Tapped Delay")
-        return "A/DA";
 
     // Check for Brainworx prefix first (most common)
     if (nameLower.startsWith("bx_") || nameLower.startsWith("bx "))
@@ -662,6 +666,20 @@ inline juce::String getDisplayName(const juce::String& pluginName, const juce::S
         name = name.substring(8);
 
     return name.trim();
+}
+
+// Get the official plugin name from the database (normalized)
+inline juce::String getOfficialPluginName(const juce::String& pluginName)
+{
+    // Look up official name from PluginData.h (generated from plugins.json)
+    if (auto* metadata = findPluginMetadata(pluginName))
+    {
+        if (metadata->fullName.isNotEmpty())
+            return metadata->fullName;
+    }
+
+    // Fallback: return the original name
+    return pluginName;
 }
 
 } // namespace PALauncher

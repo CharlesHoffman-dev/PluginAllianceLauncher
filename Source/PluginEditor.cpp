@@ -7,7 +7,7 @@
 
 #include "PluginEditor.h"
 #include "Utils/PluginImageCache.h"
-#include "Data/PluginDescriptions.h"
+#include "Data/PluginData.h"
 
 namespace PALauncher
 {
@@ -1092,8 +1092,10 @@ void PluginAllianceLauncherEditor::paintDetailsPanel(juce::Graphics& g, juce::Re
 
     contentBounds.removeFromTop(8);
 
-    // Plugin description
-    auto descriptionText = getPluginDescription(selectedPlugin->description.name);
+    // Plugin description - look up from PluginData.h
+    juce::String descriptionText;
+    if (auto* metadata = findPluginMetadata(selectedPlugin->description.name))
+        descriptionText = metadata->description;
 
     // Fallback description if none found
     if (descriptionText.isEmpty())
