@@ -1697,6 +1697,14 @@ inline std::vector<PluginMetadata> getPluginDatabase()
     };
 }
 
+// Normalize a string for fuzzy matching (remove spaces, dashes, underscores, lowercase)
+inline juce::String normalizeForMatching(const juce::String& str)
+{
+    return str.toLowerCase()
+              .removeCharacters(" -_")
+              .replace(":", "");
+}
+
 // Lookup plugin metadata by various identifiers
 inline const PluginMetadata* findPluginMetadata(const juce::String& searchName)
 {
@@ -1705,6 +1713,7 @@ inline const PluginMetadata* findPluginMetadata(const juce::String& searchName)
     static std::map<juce::String, const PluginMetadata*> lookupByName;
     static std::map<juce::String, const PluginMetadata*> lookupById;
     static std::map<juce::String, const PluginMetadata*> lookupByProduct;
+    static std::map<juce::String, const PluginMetadata*> lookupByNormalized;
 
     if (!initialized)
     {
@@ -1715,15 +1724,23 @@ inline const PluginMetadata* findPluginMetadata(const juce::String& searchName)
             // Also index by brand + product
             lookupByName[(plugin.brand + " " + plugin.product).toLowerCase()] = &plugin;
             // Index by product name alone (for VST3s that report short names)
-            // Only add if not already present to avoid overwriting
             auto productLower = plugin.product.toLowerCase();
             if (lookupByProduct.find(productLower) == lookupByProduct.end())
                 lookupByProduct[productLower] = &plugin;
+            // Index by normalized name (handles "MetricAB" vs "Metric AB")
+            auto normalized = normalizeForMatching(plugin.fullName);
+            if (lookupByNormalized.find(normalized) == lookupByNormalized.end())
+                lookupByNormalized[normalized] = &plugin;
+            // Also normalized product
+            auto normalizedProduct = normalizeForMatching(plugin.product);
+            if (lookupByNormalized.find(normalizedProduct) == lookupByNormalized.end())
+                lookupByNormalized[normalizedProduct] = &plugin;
         }
         initialized = true;
     }
 
     auto searchLower = searchName.toLowerCase();
+    auto searchNormalized = normalizeForMatching(searchName);
 
     // Try exact match by full name
     auto it = lookupByName.find(searchLower);
@@ -1740,6 +1757,11 @@ inline const PluginMetadata* findPluginMetadata(const juce::String& searchName)
     if (it != lookupByProduct.end())
         return it->second;
 
+    // Try by normalized name (handles spacing/case variations)
+    it = lookupByNormalized.find(searchNormalized);
+    if (it != lookupByNormalized.end())
+        return it->second;
+
     // Try partial match - search name contains product or vice versa
     for (const auto& plugin : database)
     {
@@ -1747,6 +1769,18 @@ inline const PluginMetadata* findPluginMetadata(const juce::String& searchName)
             searchName.containsIgnoreCase(plugin.fullName) ||
             plugin.product.containsIgnoreCase(searchName) ||
             searchName.containsIgnoreCase(plugin.product))
+            return &plugin;
+    }
+
+    // Try normalized partial match
+    for (const auto& plugin : database)
+    {
+        auto normalizedFull = normalizeForMatching(plugin.fullName);
+        auto normalizedProduct = normalizeForMatching(plugin.product);
+        if (normalizedFull.contains(searchNormalized) ||
+            searchNormalized.contains(normalizedFull) ||
+            normalizedProduct.contains(searchNormalized) ||
+            searchNormalized.contains(normalizedProduct))
             return &plugin;
     }
 

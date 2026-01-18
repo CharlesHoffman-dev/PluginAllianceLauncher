@@ -8,6 +8,7 @@
 #include "PluginEditor.h"
 #include "Utils/PluginImageCache.h"
 #include "Data/PluginData.h"
+#include <set>
 
 namespace PALauncher
 {
@@ -1100,6 +1101,15 @@ void PluginAllianceLauncherEditor::paintDetailsPanel(juce::Graphics& g, juce::Re
     // Fallback description if none found
     if (descriptionText.isEmpty())
     {
+        // Log unmatched plugin names to a file for debugging
+        static std::set<juce::String> loggedPlugins;
+        if (loggedPlugins.find(selectedPlugin->description.name) == loggedPlugins.end())
+        {
+            loggedPlugins.insert(selectedPlugin->description.name);
+            auto logFile = juce::File::getSpecialLocation(juce::File::userDesktopDirectory).getChildFile("unmatched_plugins.txt");
+            logFile.appendText(selectedPlugin->description.name + "\n");
+        }
+
         juce::String pluginType = selectedPlugin->description.isInstrument ? "virtual instrument" : "audio effect";
         descriptionText = "A professional " + pluginType + " from Plugin Alliance. ";
         descriptionText += "Part of the extensive Plugin Alliance catalog of high-quality audio processing tools. ";
