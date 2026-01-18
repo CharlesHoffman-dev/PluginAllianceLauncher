@@ -41,14 +41,6 @@ void SubcategoryFilter::buildSubcategoryList()
 
     switch (currentCategory)
     {
-        case DisplayCategory::GuitarAndBass:
-            subcategories.push_back({static_cast<int>(GuitarBassType::Pedal), getGuitarBassTypeName(GuitarBassType::Pedal)});
-            subcategories.push_back({static_cast<int>(GuitarBassType::Preamp), getGuitarBassTypeName(GuitarBassType::Preamp)});
-            subcategories.push_back({static_cast<int>(GuitarBassType::Amp), getGuitarBassTypeName(GuitarBassType::Amp)});
-            subcategories.push_back({static_cast<int>(GuitarBassType::Cabinet), getGuitarBassTypeName(GuitarBassType::Cabinet)});
-            subcategories.push_back({static_cast<int>(GuitarBassType::Suite), getGuitarBassTypeName(GuitarBassType::Suite)});
-            break;
-
         case DisplayCategory::Equalizers:
             subcategories.push_back({static_cast<int>(EQType::Parametric), getEQTypeName(EQType::Parametric)});
             subcategories.push_back({static_cast<int>(EQType::Dynamic), getEQTypeName(EQType::Dynamic)});
@@ -89,8 +81,7 @@ void SubcategoryFilter::buildSubcategoryList()
     }
 
     // Sort subcategories alphabetically (keeping "All" at the top)
-    // Exception: GuitarAndBass has a specific order (Pedals, Preamps, Amplifiers, Cabinets, Suites)
-    if (subcategories.size() > 1 && currentCategory != DisplayCategory::GuitarAndBass)
+    if (subcategories.size() > 1)
     {
         std::sort(subcategories.begin() + 1, subcategories.end(),
             [](const SubcategoryItem& a, const SubcategoryItem& b)

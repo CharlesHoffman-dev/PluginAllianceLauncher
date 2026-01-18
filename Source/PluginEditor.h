@@ -97,42 +97,57 @@ public:
     void drawButtonText(juce::Graphics& g, juce::TextButton& button,
                         bool /*isMouseOverButton*/, bool /*isButtonDown*/) override
     {
-        // Draw gear icon instead of text
+        // Draw gear/cog icon
         auto bounds = button.getLocalBounds().toFloat();
         auto centerX = bounds.getCentreX();
         auto centerY = bounds.getCentreY();
-        auto size = juce::jmin(bounds.getWidth(), bounds.getHeight()) * 0.5f;
+        auto size = juce::jmin(bounds.getWidth(), bounds.getHeight()) * 0.45f;
 
         g.setColour(button.findColour(juce::TextButton::textColourOffId));
 
-        // Outer gear teeth
+        // Draw gear with proper rectangular teeth
         juce::Path gearPath;
-        const int numTeeth = 8;
-        const float outerRadius = size * 0.9f;
+        const int numTeeth = 6;
+        const float outerRadius = size;
         const float innerRadius = size * 0.65f;
-        const float toothDepth = size * 0.2f;
+        const float toothWidth = 0.35f;  // Width of tooth as fraction of tooth spacing
 
-        for (int i = 0; i < numTeeth * 2; ++i)
+        // Create gear outline with rectangular teeth
+        for (int i = 0; i < numTeeth; ++i)
         {
-            float angle = (float)i * juce::MathConstants<float>::pi / numTeeth;
-            float radius = (i % 2 == 0) ? outerRadius : (outerRadius - toothDepth);
+            float baseAngle = (float)i * juce::MathConstants<float>::twoPi / numTeeth;
+            float halfTooth = toothWidth * juce::MathConstants<float>::pi / numTeeth;
 
-            float x = centerX + std::cos(angle) * radius;
-            float y = centerY + std::sin(angle) * radius;
+            // Tooth outer edge (4 points per tooth)
+            float a1 = baseAngle - halfTooth;
+            float a2 = baseAngle + halfTooth;
 
+            // Inner radius points before tooth
+            float prevAngle = baseAngle - juce::MathConstants<float>::pi / numTeeth;
             if (i == 0)
-                gearPath.startNewSubPath(x, y);
-            else
-                gearPath.lineTo(x, y);
+            {
+                gearPath.startNewSubPath(centerX + std::cos(prevAngle + halfTooth) * innerRadius,
+                                         centerY + std::sin(prevAngle + halfTooth) * innerRadius);
+            }
+
+            // Rise to outer radius
+            gearPath.lineTo(centerX + std::cos(a1) * innerRadius, centerY + std::sin(a1) * innerRadius);
+            gearPath.lineTo(centerX + std::cos(a1) * outerRadius, centerY + std::sin(a1) * outerRadius);
+
+            // Across tooth top
+            gearPath.lineTo(centerX + std::cos(a2) * outerRadius, centerY + std::sin(a2) * outerRadius);
+
+            // Down to inner radius
+            gearPath.lineTo(centerX + std::cos(a2) * innerRadius, centerY + std::sin(a2) * innerRadius);
         }
         gearPath.closeSubPath();
 
-        // Inner circle (hole)
-        gearPath.addEllipse(centerX - innerRadius * 0.5f, centerY - innerRadius * 0.5f,
-                           innerRadius, innerRadius);
+        // Center hole
+        float holeRadius = size * 0.3f;
+        gearPath.addEllipse(centerX - holeRadius, centerY - holeRadius,
+                           holeRadius * 2.0f, holeRadius * 2.0f);
 
-        g.fillPath(gearPath, juce::AffineTransform::rotation(
-            juce::MathConstants<float>::pi / numTeeth, centerX, centerY));
+        g.fillPath(gearPath);
     }
 };
 

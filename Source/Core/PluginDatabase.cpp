@@ -22,6 +22,8 @@ static EffectCategory categoryFromString(const juce::String& category)
         {"Amplifiers", EffectCategory::AmpSimulator},
         {"Preamps", EffectCategory::Preamp},
         {"Pedals", EffectCategory::Pedals},
+        {"Cabinets", EffectCategory::Cabinet},
+        {"Suites", EffectCategory::GuitarSuite},
 
         // Channel Strip
         {"Channel Strip", EffectCategory::ChannelStrip},
@@ -861,6 +863,14 @@ juce::Array<PluginInfo> PluginDatabase::getByDisplayCategory(DisplayCategory cat
                 case DisplayCategory::Pedals:
                     matches = (info.category == EffectCategory::Pedals ||
                               info.category == EffectCategory::Distortion);
+                    break;
+
+                case DisplayCategory::Cabinets:
+                    matches = (info.category == EffectCategory::Cabinet);
+                    break;
+
+                case DisplayCategory::Suites:
+                    matches = (info.category == EffectCategory::GuitarSuite);
                     break;
 
                 case DisplayCategory::Limiters:

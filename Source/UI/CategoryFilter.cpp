@@ -37,11 +37,20 @@ void CategoryFilter::buildCategoryList()
 
     categories.push_back({DisplayCategory::Synthesizers, "Synthesizers", false});
 
+    // Guitar and Bass header
+    categories.push_back({DisplayCategory::All, "GUITAR & BASS", true});
+
+    // Guitar and Bass categories (user-defined order)
+    categories.push_back({DisplayCategory::Pedals, "Pedals", false});
+    categories.push_back({DisplayCategory::Preamps, "Preamps", false});
+    categories.push_back({DisplayCategory::Amplifiers, "Amplifiers", false});
+    categories.push_back({DisplayCategory::Cabinets, "Cabinets", false});
+    categories.push_back({DisplayCategory::Suites, "Suites", false});
+
     // Effects header
     categories.push_back({DisplayCategory::All, "EFFECTS", true});
 
     // Effect categories (user-defined order)
-    categories.push_back({DisplayCategory::GuitarAndBass, "Guitar and Bass", false});
     categories.push_back({DisplayCategory::ChannelStrips, "Channel Strips", false});
     categories.push_back({DisplayCategory::Equalizers, "Equalizers", false});
     categories.push_back({DisplayCategory::Compressors, "Compressors", false});

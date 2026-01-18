@@ -58,6 +58,8 @@ enum class EffectCategory
     AmpSimulator,
     Preamp,
     Pedals,
+    Cabinet,
+    GuitarSuite,
 
     // Channel & Mastering
     ChannelStrip,
@@ -127,11 +129,12 @@ enum class DisplayCategory
 
     // Effects (alphabetical)
     Amplifiers,         // Amp simulators
+    Cabinets,           // Speaker cabinet emulations
     ChannelStrips,      // Console emulations (SSL, Neve, API, etc.)
     Delays,             // Analog, Digital, Granular, Tape, etc.
     Compressors,        // Compressors, Gates, Transient Shapers, De-Essers
     Equalizers,         // Parametric, Passive, Dynamic, Filters, etc.
-    GuitarAndBass,      // Guitar and Bass category
+    GuitarAndBass,      // Guitar and Bass category (legacy)
     Limiters,           // Limiters, Clippers, Maximizers
     Mastering,          // Mastering Suites, Limiters, Metering (legacy)
     Meters,             // Spectrum analyzers, loudness meters, phase meters
@@ -141,6 +144,7 @@ enum class DisplayCategory
     Preamps,            // Preamps and mic pres
     Reverbs,            // Algorithmic, Plate, Hall, Room, Chamber, etc.
     Saturators,         // Distortion, Tube, Tape, Transformer, Harmonic
+    Suites,             // Amp + cabinet combinations and full guitar rigs
     Other,              // Multi-FX, Lo-Fi, Stereo Wideners, 3D Audio, etc.
 
     // Instruments - subcategories (alphabetical)
@@ -328,6 +332,7 @@ inline juce::String getDisplayCategoryName(DisplayCategory cat)
 
         // Effects (alphabetical)
         {DisplayCategory::Amplifiers, "Amplifiers"},
+        {DisplayCategory::Cabinets, "Cabinets"},
         {DisplayCategory::ChannelStrips, "Channel Strips"},
         {DisplayCategory::Delays, "Delays"},
         {DisplayCategory::Compressors, "Compressors"},
@@ -342,6 +347,7 @@ inline juce::String getDisplayCategoryName(DisplayCategory cat)
         {DisplayCategory::Preamps, "Preamps"},
         {DisplayCategory::Reverbs, "Reverbs"},
         {DisplayCategory::Saturators, "Saturators"},
+        {DisplayCategory::Suites, "Suites"},
         {DisplayCategory::Other, "Other"},
 
         // Instruments - subcategories
