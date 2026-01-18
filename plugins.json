@@ -75,7 +75,7 @@
       "url": "https://www.plugin-alliance.com/en/products/adptr_streamliner.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300287.png",
       "description": "AI-assisted mastering with LUFS targeting and adaptive processing.",
-      "category": "Mastering",
+      "category": "Meters",
       "tags": [
         "Original"
       ]
@@ -1019,7 +1019,7 @@
       "brand": "Louder Than Liftoff",
       "product": "SILVER BULLET mk2",
       "url": "https://www.plugin-alliance.com/en/products/louder_than_liftoff_silver_bullet_mk2.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300557.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300952_ae72f079-fed9-499f-a15f-c00e2d9fe988.png",
       "description": "Console-style tone shaping with dual saturation paths from 2014.",
       "category": "Saturators",
       "tags": [
@@ -1102,7 +1102,7 @@
       "brand": "NEOLD",
       "product": "U2A",
       "url": "https://www.plugin-alliance.com/en/products/neold_u2a.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/U17_GUI.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/U2A_GUI.png",
       "description": "LA-2A style optical compressor modeled from custom-built hardware (2023).",
       "category": "Compressors",
       "tags": [
@@ -1196,7 +1196,7 @@
       "brand": "Schoeps",
       "product": "Double MS",
       "url": "https://www.plugin-alliance.com/en/products/schoeps_double_ms.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300160.png",
+      "imageUrl": "https://schoeps.de/fileadmin/user_upload/_processed_/5/8/csm_DoubleMS_PlugIn_9e5c8e5c68.jpg",
       "description": "Double mid-side decoding and processing for surround recordings.",
       "category": "3D & Surround Sound",
       "tags": [
@@ -1209,7 +1209,7 @@
       "brand": "Schoeps",
       "product": "Mono Upmix",
       "url": "https://www.plugin-alliance.com/en/products/schoeps_mono_upmix.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300160.png",
+      "imageUrl": "https://schoeps.de/fileadmin/user_upload/_processed_/a/c/csm_MonoUpmix_0788687428.jpg",
       "description": "Convert mono recordings to immersive stereo and surround.",
       "category": "3D & Surround Sound",
       "tags": [
@@ -1250,7 +1250,7 @@
       "brand": "sonible",
       "product": "smart:reverb",
       "url": "https://www.plugin-alliance.com/en/products/x-sonible-smart-reverb.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300160.png",
+      "imageUrl": "https://www.sonible.com/wp-content/uploads/2025/06/smartReverb2_productpage_header-logo.png",
       "description": "AI-powered reverb that adapts to your source material.",
       "category": "Reverbs",
       "tags": [
@@ -1263,7 +1263,7 @@
       "brand": "SPL",
       "product": "Attacker Plus",
       "url": "https://www.plugin-alliance.com/en/products/spl_attacker_plus.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300303_cf082f7d-27b1-4317-874f-3732caec074d.png",
       "description": "Transient enhancer for adding punch and attack.",
       "category": "Transient Shapers",
       "tags": [
@@ -1289,7 +1289,7 @@
       "brand": "SPL",
       "product": "De-Verb Plus",
       "url": "https://www.plugin-alliance.com/en/products/spl_de-verb_plus.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300305_8082d009-6270-4264-84f8-5801a3dad97e.png",
       "description": "Advanced reverb reduction with more control and precision.",
       "category": "Restoration",
       "tags": [
@@ -1302,7 +1302,7 @@
       "brand": "SPL",
       "product": "DrumXchanger",
       "url": "https://www.plugin-alliance.com/en/products/spl_drumxchanger.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300020_b30bc9e9-b50a-4559-9e06-353e837f36fd.png",
       "description": "Drum replacement and augmentation tool.",
       "category": "Utility",
       "tags": [
@@ -1315,7 +1315,7 @@
       "brand": "SPL",
       "product": "EQ Ranger Plus",
       "url": "https://www.plugin-alliance.com/en/products/spl_eq_ranger_plus.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300186_672ca1e9-1e63-43ec-9c48-8a7cdb66b8d0.png",
       "description": "Full-range parametric equalizer with precise control.",
       "category": "Equalizers",
       "tags": [
@@ -1329,7 +1329,7 @@
       "brand": "SPL",
       "product": "Free Ranger",
       "url": "https://www.plugin-alliance.com/en/products/spl_free_ranger.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/SPL_ranger_free.png",
       "description": "Four-band EQ based on the Passeq circuit.",
       "category": "Equalizers",
       "tags": [
@@ -1371,7 +1371,7 @@
       "brand": "SPL",
       "product": "Mo-Verb Plus",
       "url": "https://www.plugin-alliance.com/en/products/spl_mo-verb_plus.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300307_b8dc9794-488c-4ffc-af14-deaa77633c9e.png",
       "description": "Room simulation and reverb modeling.",
       "category": "Reverbs",
       "tags": [
@@ -1426,7 +1426,7 @@
       "brand": "SPL",
       "product": "Twin Tube",
       "url": "https://www.plugin-alliance.com/en/products/spl_twintube.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300025_b2bd856a-47b9-433c-b622-31dd8c2d61a0.png",
       "description": "Dual tube saturation processor for warmth and harmonics.",
       "category": "Saturators",
       "tags": [
@@ -1465,7 +1465,7 @@
       "brand": "Suhr",
       "product": "SE100",
       "url": "https://www.plugin-alliance.com/en/products/suhr_se100.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300557.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300558_7a885e73-7f6b-4a7c-b1ab-3b8bf2413932.png",
       "description": "High-end guitar amplifier with versatile tone shaping.",
       "category": "Amplifiers",
       "tags": [
@@ -1507,7 +1507,7 @@
       "brand": "Unfiltered Audio",
       "product": "Bass-Mint",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_bass_mint.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300490_3df7645c-3a98-4c49-93be-3d4a9700d3e5.png",
       "description": "Bass enhancement and synthesis for adding low-end weight.",
       "category": "Saturators",
       "tags": [
@@ -1546,7 +1546,7 @@
       "brand": "Unfiltered Audio",
       "product": "Fault",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_fault.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300235_426efe25-abe9-4c9d-95d2-542c264e1dfa.png",
       "description": "Glitch and stutter effects for creative sound design.",
       "category": "Multi-FX",
       "tags": [
@@ -1572,7 +1572,7 @@
       "brand": "Unfiltered Audio",
       "product": "Indent 2",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_indent_2.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300343_766af22f-b8ac-43e8-b214-e6c3f008677a.png",
       "description": "Transient shaping with precise attack and sustain control.",
       "category": "Transient Shapers",
       "tags": [
@@ -1585,7 +1585,7 @@
       "brand": "Unfiltered Audio",
       "product": "Instant Delay",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_instant_delay.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300316_ce1f07a0-722d-4d3a-a1bf-b43231b62808.png",
       "description": "Zero-latency delay for creative timing effects.",
       "category": "Delays",
       "tags": [
@@ -1624,7 +1624,7 @@
       "brand": "Unfiltered Audio",
       "product": "Needlepoint",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_needlepoint.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300663_e9b251cc-820d-41e8-86e9-f487dd48e022.png",
       "description": "Vinyl and tape emulation for analog warmth and character.",
       "category": "Lo-Fi",
       "tags": [
@@ -1663,7 +1663,7 @@
       "brand": "Unfiltered Audio",
       "product": "SILO",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_silo.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300512_2269d8cb-2801-4e4d-915c-7ad722d6d4a8.png",
       "description": "Spectral freezing and manipulation for ambient textures.",
       "category": "Reverbs",
       "tags": [
@@ -1702,7 +1702,7 @@
       "brand": "Unfiltered Audio",
       "product": "TRIAD",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_triad.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300393_2300346d-45cc-4bd1-997d-10b1946db4e8.png",
       "description": "Multi-band distortion with three independent processing bands.",
       "category": "Saturators",
       "tags": [
@@ -1715,7 +1715,7 @@
       "brand": "Unfiltered Audio",
       "product": "Zip",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_zip.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300357_6d1acfe7-c862-4f57-aeeb-d9fe37986420.png",
       "description": "Compressor/limiter with aggressive character and fast response.",
       "category": "Compressors",
       "tags": [

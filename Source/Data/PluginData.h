@@ -2,7 +2,7 @@
   ==============================================================================
     PluginData.h
     AUTO-GENERATED FILE - DO NOT EDIT DIRECTLY
-    Generated: 2026-01-18 15:47:44
+    Generated: 2026-01-18 16:30:37
 
     Edit plugins.json and run: python scripts/generate_plugin_data.py
   ==============================================================================
@@ -96,7 +96,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "AI-assisted mastering with LUFS targeting and adaptive processing.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300287.png",
             "https://www.plugin-alliance.com/en/products/adptr_streamliner.html",
-            "Mastering",
+            "Meters",
             {"Original"}
         },
         {
@@ -875,7 +875,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "SILVER BULLET mk2",
             "Louder Than Liftoff SILVER BULLET mk2",
             "Console-style tone shaping with dual saturation paths from 2014.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300557.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300952_ae72f079-fed9-499f-a15f-c00e2d9fe988.png",
             "https://www.plugin-alliance.com/en/products/louder_than_liftoff_silver_bullet_mk2.html",
             "Saturators",
             {"2010s"}
@@ -941,7 +941,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "U2A",
             "NEOLD U2A",
             "LA-2A style optical compressor modeled from custom-built hardware (2023).",
-            "https://www.plugin-alliance.com/cdn/shop/files/U17_GUI.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/U2A_GUI.png",
             "https://www.plugin-alliance.com/en/products/neold_u2a.html",
             "Compressors",
             {"2020s", "Optical"}
@@ -1018,7 +1018,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "Double MS",
             "Schoeps Double MS",
             "Double mid-side decoding and processing for surround recordings.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300160.png",
+            "https://schoeps.de/fileadmin/user_upload/_processed_/5/8/csm_DoubleMS_PlugIn_9e5c8e5c68.jpg",
             "https://www.plugin-alliance.com/en/products/schoeps_double_ms.html",
             "3D & Surround Sound",
             {"Original"}
@@ -1029,7 +1029,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "Mono Upmix",
             "Schoeps Mono Upmix",
             "Convert mono recordings to immersive stereo and surround.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300160.png",
+            "https://schoeps.de/fileadmin/user_upload/_processed_/a/c/csm_MonoUpmix_0788687428.jpg",
             "https://www.plugin-alliance.com/en/products/schoeps_mono_upmix.html",
             "3D & Surround Sound",
             {"Original"}
@@ -1062,7 +1062,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "smart:reverb",
             "sonible smart:reverb",
             "AI-powered reverb that adapts to your source material.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300160.png",
+            "https://www.sonible.com/wp-content/uploads/2025/06/smartReverb2_productpage_header-logo.png",
             "https://www.plugin-alliance.com/en/products/x-sonible-smart-reverb.html",
             "Reverbs",
             {"Original"}
@@ -1073,7 +1073,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "Attacker Plus",
             "SPL Attacker Plus",
             "Transient enhancer for adding punch and attack.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300303_cf082f7d-27b1-4317-874f-3732caec074d.png",
             "https://www.plugin-alliance.com/en/products/spl_attacker_plus.html",
             "Transient Shapers",
             {"2000s"}
@@ -1095,7 +1095,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "De-Verb Plus",
             "SPL De-Verb Plus",
             "Advanced reverb reduction with more control and precision.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300305_8082d009-6270-4264-84f8-5801a3dad97e.png",
             "https://www.plugin-alliance.com/en/products/spl_de-verb_plus.html",
             "Restoration",
             {"Original"}
@@ -1106,7 +1106,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "DrumXchanger",
             "SPL DrumXchanger",
             "Drum replacement and augmentation tool.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300020_b30bc9e9-b50a-4559-9e06-353e837f36fd.png",
             "https://www.plugin-alliance.com/en/products/spl_drumxchanger.html",
             "Utility",
             {"Original"}
@@ -1117,7 +1117,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "EQ Ranger Plus",
             "SPL EQ Ranger Plus",
             "Full-range parametric equalizer with precise control.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300186_672ca1e9-1e63-43ec-9c48-8a7cdb66b8d0.png",
             "https://www.plugin-alliance.com/en/products/spl_eq_ranger_plus.html",
             "Equalizers",
             {"Original", "Parametric"}
@@ -1128,7 +1128,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "Free Ranger",
             "SPL Free Ranger",
             "Four-band EQ based on the Passeq circuit.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/SPL_ranger_free.png",
             "https://www.plugin-alliance.com/en/products/spl_free_ranger.html",
             "Equalizers",
             {"2000s", "Passive"}
@@ -1161,7 +1161,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "Mo-Verb Plus",
             "SPL Mo-Verb Plus",
             "Room simulation and reverb modeling.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300307_b8dc9794-488c-4ffc-af14-deaa77633c9e.png",
             "https://www.plugin-alliance.com/en/products/spl_mo-verb_plus.html",
             "Reverbs",
             {"Original"}
@@ -1205,7 +1205,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "Twin Tube",
             "SPL Twin Tube",
             "Dual tube saturation processor for warmth and harmonics.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300025_b2bd856a-47b9-433c-b622-31dd8c2d61a0.png",
             "https://www.plugin-alliance.com/en/products/spl_twintube.html",
             "Saturators",
             {"2000s"}
@@ -1238,7 +1238,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "SE100",
             "Suhr SE100",
             "High-end guitar amplifier with versatile tone shaping.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300557.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300558_7a885e73-7f6b-4a7c-b1ab-3b8bf2413932.png",
             "https://www.plugin-alliance.com/en/products/suhr_se100.html",
             "Amplifiers",
             {"2010s"}
@@ -1271,7 +1271,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "Bass-Mint",
             "Unfiltered Audio Bass-Mint",
             "Bass enhancement and synthesis for adding low-end weight.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300490_3df7645c-3a98-4c49-93be-3d4a9700d3e5.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_bass_mint.html",
             "Saturators",
             {"Original"}
@@ -1304,7 +1304,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "Fault",
             "Unfiltered Audio Fault",
             "Glitch and stutter effects for creative sound design.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300235_426efe25-abe9-4c9d-95d2-542c264e1dfa.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_fault.html",
             "Multi-FX",
             {"Original"}
@@ -1326,7 +1326,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "Indent 2",
             "Unfiltered Audio Indent 2",
             "Transient shaping with precise attack and sustain control.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300343_766af22f-b8ac-43e8-b214-e6c3f008677a.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_indent_2.html",
             "Transient Shapers",
             {"Original"}
@@ -1337,7 +1337,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "Instant Delay",
             "Unfiltered Audio Instant Delay",
             "Zero-latency delay for creative timing effects.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300316_ce1f07a0-722d-4d3a-a1bf-b43231b62808.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_instant_delay.html",
             "Delays",
             {"Original"}
@@ -1370,7 +1370,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "Needlepoint",
             "Unfiltered Audio Needlepoint",
             "Vinyl and tape emulation for analog warmth and character.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300663_e9b251cc-820d-41e8-86e9-f487dd48e022.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_needlepoint.html",
             "Lo-Fi",
             {"Original"}
@@ -1403,7 +1403,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "SILO",
             "Unfiltered Audio SILO",
             "Spectral freezing and manipulation for ambient textures.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300512_2269d8cb-2801-4e4d-915c-7ad722d6d4a8.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_silo.html",
             "Reverbs",
             {"Original"}
@@ -1436,7 +1436,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "TRIAD",
             "Unfiltered Audio TRIAD",
             "Multi-band distortion with three independent processing bands.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300393_2300346d-45cc-4bd1-997d-10b1946db4e8.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_triad.html",
             "Saturators",
             {"Original"}
@@ -1447,7 +1447,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "Zip",
             "Unfiltered Audio Zip",
             "Compressor/limiter with aggressive character and fast response.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300357_6d1acfe7-c862-4f57-aeeb-d9fe37986420.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_zip.html",
             "Compressors",
             {"Original"}
@@ -1704,6 +1704,7 @@ inline const PluginMetadata* findPluginMetadata(const juce::String& searchName)
     static bool initialized = false;
     static std::map<juce::String, const PluginMetadata*> lookupByName;
     static std::map<juce::String, const PluginMetadata*> lookupById;
+    static std::map<juce::String, const PluginMetadata*> lookupByProduct;
 
     if (!initialized)
     {
@@ -1713,6 +1714,11 @@ inline const PluginMetadata* findPluginMetadata(const juce::String& searchName)
             lookupById[plugin.id.toLowerCase()] = &plugin;
             // Also index by brand + product
             lookupByName[(plugin.brand + " " + plugin.product).toLowerCase()] = &plugin;
+            // Index by product name alone (for VST3s that report short names)
+            // Only add if not already present to avoid overwriting
+            auto productLower = plugin.product.toLowerCase();
+            if (lookupByProduct.find(productLower) == lookupByProduct.end())
+                lookupByProduct[productLower] = &plugin;
         }
         initialized = true;
     }
@@ -1729,11 +1735,18 @@ inline const PluginMetadata* findPluginMetadata(const juce::String& searchName)
     if (it != lookupById.end())
         return it->second;
 
-    // Try partial match
+    // Try by product name alone
+    it = lookupByProduct.find(searchLower);
+    if (it != lookupByProduct.end())
+        return it->second;
+
+    // Try partial match - search name contains product or vice versa
     for (const auto& plugin : database)
     {
         if (plugin.fullName.containsIgnoreCase(searchName) ||
-            searchName.containsIgnoreCase(plugin.fullName))
+            searchName.containsIgnoreCase(plugin.fullName) ||
+            plugin.product.containsIgnoreCase(searchName) ||
+            searchName.containsIgnoreCase(plugin.product))
             return &plugin;
     }
 

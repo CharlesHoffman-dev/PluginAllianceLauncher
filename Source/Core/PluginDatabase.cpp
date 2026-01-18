@@ -25,37 +25,48 @@ static EffectCategory categoryFromString(const juce::String& category)
         {"Cabinets", EffectCategory::Cabinet},
         {"Suites", EffectCategory::GuitarSuite},
 
-        // Channel Strip
+        // Channel Strips
+        {"Channel Strips", EffectCategory::ChannelStrip},
         {"Channel Strip", EffectCategory::ChannelStrip},
 
         // Equalizers
+        {"Equalizers", EffectCategory::EQ},
         {"Equalizer", EffectCategory::EQ},
         {"EQ", EffectCategory::EQ},
         {"Filter", EffectCategory::Filter},
 
         // Compressors
+        {"Compressors", EffectCategory::Compressor},
         {"Compressor", EffectCategory::Compressor},
         {"De-Esser", EffectCategory::DeEsser},
 
         // Saturators
+        {"Saturators", EffectCategory::Saturation},
         {"Saturator", EffectCategory::Saturation},
         {"Saturation", EffectCategory::Saturation},
         {"Tape", EffectCategory::TapeEmulation},
 
         // Delays
+        {"Delays", EffectCategory::Delay},
         {"Delay", EffectCategory::Delay},
 
         // Reverbs
+        {"Reverbs", EffectCategory::Reverb},
         {"Reverb", EffectCategory::Reverb},
 
         // Limiters
+        {"Limiters", EffectCategory::Limiter},
         {"Limiter", EffectCategory::Limiter},
 
         // Meters
+        {"Meters", EffectCategory::SpectralAnalysis},
         {"Meter", EffectCategory::SpectralAnalysis},
 
         // Mastering
         {"Mastering", EffectCategory::MasteringSuite},
+
+        // Synthesizers
+        {"Synthesizers", EffectCategory::Unknown},  // Handled separately as instrument
 
         // === OTHER CATEGORIES (appear under Other in sidebar) ===
         {"3D & Surround Sound", EffectCategory::ThreeDAndSurround},
