@@ -151,7 +151,7 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     eraComboBox.addItem("2000s", 7);
     eraComboBox.addItem("2010s", 8);
     eraComboBox.addItem("2020s", 9);
-    eraComboBox.addItem("Digital", 10);
+    eraComboBox.addItem("Original", 10);
     eraComboBox.setSelectedId(1, juce::dontSendNotification);
     eraComboBox.setColour(juce::ComboBox::backgroundColourId, juce::Colour(0xff2a2a2a));
     eraComboBox.setColour(juce::ComboBox::textColourId, juce::Colours::white);
@@ -171,7 +171,7 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
             case 7: currentEra = Era::Era_2000s; break;
             case 8: currentEra = Era::Era_2010s; break;
             case 9: currentEra = Era::Era_2020s; break;
-            case 10: currentEra = Era::Era_Digital; break;
+            case 10: currentEra = Era::Era_Original; break;
             default: currentEra = Era::Era_Unknown; break;
         }
         filterPlugins();

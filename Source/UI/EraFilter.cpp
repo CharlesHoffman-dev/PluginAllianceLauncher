@@ -30,8 +30,8 @@ void EraFilter::buildEraList()
     // All eras option (represented by Era_Unknown as "any")
     eras.push_back({Era::Era_Unknown, "All Eras"});
 
-    // Digital plugins (not based on hardware) - at top for easy access
-    eras.push_back({Era::Era_Digital, "Digital"});
+    // Original plugins (not based on hardware) - at top for easy access
+    eras.push_back({Era::Era_Original, "Original"});
 
     // Historical eras (hardware emulations only)
     eras.push_back({Era::Era_1950s, "1950s"});

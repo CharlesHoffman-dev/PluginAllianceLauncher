@@ -2,7 +2,7 @@
   ==============================================================================
     PluginData.h
     AUTO-GENERATED FILE - DO NOT EDIT DIRECTLY
-    Generated: 2026-01-18 15:04:18
+    Generated: 2026-01-18 15:16:09
 
     Edit plugins.json and run: python scripts/generate_plugin_data.py
   ==============================================================================
@@ -75,7 +75,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300287_30b5be99-27d7-49b3-a39f-52f46cf45987.png",
             "https://www.plugin-alliance.com/en/products/adptr_metricab.html",
             "Meters",
-            {"Digital"}
+            {"Original"}
         },
         {
             "adptr_sculpt",
@@ -86,7 +86,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300351_d1d58e0b-eeef-492b-b534-e17d94d12c38.png",
             "https://www.plugin-alliance.com/en/products/adptr_sculpt.html",
             "Compressors",
-            {"Digital", "Multi-Band"}
+            {"Original", "Multi-Band"}
         },
         {
             "adptr_streamliner",
@@ -97,7 +97,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300287.png",
             "https://www.plugin-alliance.com/en/products/adptr_streamliner.html",
             "Mastering",
-            {"Digital"}
+            {"Original"}
         },
         {
             "amek_eq200",
@@ -207,7 +207,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300113.png",
             "https://www.plugin-alliance.com/en/products/bx_bassdude.html",
             "Amplifiers",
-            {"Digital"}
+            {"Original"}
         },
         {
             "brainworx_bx_console_focusrite",
@@ -273,7 +273,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300111.png",
             "https://www.plugin-alliance.com/en/products/bx_delay_2500.html",
             "Delays",
-            {"Digital"}
+            {"Original"}
         },
         {
             "brainworx_bx_digital_v3",
@@ -284,7 +284,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300071_2ff6ba00-4bef-40af-8ba7-dd11c9b27b23.png",
             "https://www.plugin-alliance.com/en/products/bx_digital_v3.html",
             "Equalizers",
-            {"Digital", "Mid-Side"}
+            {"Original", "Mid-Side"}
         },
         {
             "brainworx_bx_distorange",
@@ -306,7 +306,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300096.png",
             "https://www.plugin-alliance.com/en/products/bx_dyneq_v2.html",
             "Equalizers",
-            {"Digital", "Dynamic"}
+            {"Original", "Dynamic"}
         },
         {
             "brainworx_bx_greenscreamer",
@@ -328,7 +328,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300096_8deef5cc-dc37-4b3c-a4e9-0ec4f390efb5.png",
             "https://www.plugin-alliance.com/en/products/bx_hybrid_v2.html",
             "Equalizers",
-            {"Digital", "Mid-Side"}
+            {"Original", "Mid-Side"}
         },
         {
             "brainworx_bx_limiter_true_peak",
@@ -339,7 +339,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300177_6d87aa2f-b1ba-402e-b025-0f51ac80abca.png",
             "https://www.plugin-alliance.com/en/products/bx_limiter_true_peak.html",
             "Limiters",
-            {"Digital"}
+            {"Original"}
         },
         {
             "brainworx_bx_masterdesk",
@@ -350,7 +350,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300177.png",
             "https://www.plugin-alliance.com/en/products/bx_masterdesk.html",
             "Mastering",
-            {"Digital"}
+            {"Original"}
         },
         {
             "brainworx_bx_masterdesk_classic",
@@ -361,7 +361,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300265.png",
             "https://www.plugin-alliance.com/en/products/bx_masterdesk_classic.html",
             "Mastering",
-            {"Digital"}
+            {"Original"}
         },
         {
             "brainworx_bx_masterdesk_pro",
@@ -372,7 +372,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300388_29ddb7bc-4d36-4b3f-889b-5f8bdb3e90b9.png",
             "https://www.plugin-alliance.com/en/products/bx_masterdesk_pro.html",
             "Mastering",
-            {"Digital"}
+            {"Original"}
         },
         {
             "brainworx_bx_meter",
@@ -383,7 +383,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300091_d0b86bd3-4809-4ec5-b0ed-c86c00dfbdd3.png",
             "https://www.plugin-alliance.com/en/products/bx_meter.html",
             "Meters",
-            {"Digital"}
+            {"Original"}
         },
         {
             "brainworx_bx_opto",
@@ -394,7 +394,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300283.png",
             "https://www.plugin-alliance.com/en/products/bx_opto.html",
             "Compressors",
-            {"Digital", "Optical"}
+            {"Original", "Optical"}
         },
         {
             "brainworx_bx_opto_pedal",
@@ -405,7 +405,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300298_17f1df47-dc47-4cf2-a3a6-9fc4f6f18fa9.png",
             "https://www.plugin-alliance.com/en/products/bx_opto_pedal.html",
             "Pedals",
-            {"Digital"}
+            {"Original"}
         },
         {
             "brainworx_bx_panEQ",
@@ -416,7 +416,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300091.png",
             "https://www.plugin-alliance.com/en/products/bx_paneq.html",
             "Equalizers",
-            {"Digital"}
+            {"Original"}
         },
         {
             "brainworx_bx_refinement",
@@ -427,7 +427,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300274.png",
             "https://www.plugin-alliance.com/en/products/bx_refinement.html",
             "Equalizers",
-            {"Digital", "Dynamic"}
+            {"Original", "Dynamic"}
         },
         {
             "brainworx_bx_rockrack_v3",
@@ -438,7 +438,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300113_dc4b6b3d-ae2b-445a-9b3f-30e8b97a39d9.png",
             "https://www.plugin-alliance.com/en/products/bx_rockrack_v3.html",
             "Suites",
-            {"Digital"}
+            {"Original"}
         },
         {
             "brainworx_bx_saturator_v2",
@@ -449,7 +449,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300110.png",
             "https://www.plugin-alliance.com/en/products/bx_saturator_v2.html",
             "Saturators",
-            {"Digital"}
+            {"Original"}
         },
         {
             "brainworx_bx_shredspread",
@@ -460,7 +460,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300110_a2de98a9-67ab-48e2-b78a-fafd1b6c7b3e.png",
             "https://www.plugin-alliance.com/en/products/bx_shredspread.html",
             "Stereo Imagers",
-            {"Digital"}
+            {"Original"}
         },
         {
             "brainworx_bx_ssl_v2",
@@ -482,7 +482,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300266.png",
             "https://www.plugin-alliance.com/en/products/bx_subfilter.html",
             "Utility",
-            {"Digital"}
+            {"Original"}
         },
         {
             "brainworx_bx_subsynth",
@@ -493,7 +493,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300164_3a93a60d-1a1f-4e83-9daf-97009caa08ef.png",
             "https://www.plugin-alliance.com/en/products/bx_subsynth.html",
             "Saturators",
-            {"Digital"}
+            {"Original"}
         },
         {
             "brainworx_bx_townhouse",
@@ -515,7 +515,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300091_dc9b81bb-a8ef-4f8d-b43f-6ff361d4fc8e.png",
             "https://www.plugin-alliance.com/en/products/bx_tuner.html",
             "Utility",
-            {"Digital"}
+            {"Original"}
         },
         {
             "brainworx_bx_xl_v2",
@@ -526,7 +526,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300172.png",
             "https://www.plugin-alliance.com/en/products/bx_xl_v2.html",
             "Limiters",
-            {"Digital"}
+            {"Original"}
         },
         {
             "chandler_gav19t",
@@ -581,7 +581,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300291.png",
             "https://www.plugin-alliance.com/en/products/ds_audio_thorn.html",
             "Synthesizers",
-            {"Digital"}
+            {"Original"}
         },
         {
             "elysia_alpha_compressor",
@@ -669,7 +669,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300410.png",
             "https://www.plugin-alliance.com/en/products/fiedler_audio_dolby_atmos_composer.html",
             "3D & Surround Sound",
-            {"Digital"}
+            {"Original"}
         },
         {
             "fiedler_audio_stage",
@@ -680,7 +680,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300304_8e80efd1-82eb-4a45-9b6f-7ef1a4da64a5.png",
             "https://www.plugin-alliance.com/en/products/fiedler_audio_stage.html",
             "Stereo Imagers",
-            {"Digital"}
+            {"Original"}
         },
         {
             "fiedler_audio_spacelab_interstellar",
@@ -691,7 +691,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300516_ba88f00a-b2dc-49af-be33-5cdf43d64d51.png",
             "https://www.plugin-alliance.com/en/products/fiedler_audio_spacelab_interstellar.html",
             "Reverbs",
-            {"Digital"}
+            {"Original"}
         },
         {
             "focusrite_red2_red3",
@@ -977,7 +977,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300068_1e2c9ec6-8b04-49e6-ac20-bfbc963d0481.png",
             "https://www.plugin-alliance.com/en/products/noveltech_character.html",
             "Saturators",
-            {"Digital"}
+            {"Original"}
         },
         {
             "noveltech_vocal_enhancer",
@@ -988,7 +988,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300068.png",
             "https://www.plugin-alliance.com/en/products/noveltech_vocal_enhancer.html",
             "Vocal Processing",
-            {"Digital"}
+            {"Original"}
         },
         {
             "proaudiodsp_dsm_v3",
@@ -999,7 +999,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300403_9bb5d6c3-5d94-46d0-86c4-f8c86bd9a7c3.png",
             "https://www.plugin-alliance.com/en/products/pro_audio_dsp_dsm_v3.html",
             "Equalizers",
-            {"Digital", "Dynamic"}
+            {"Original", "Dynamic"}
         },
         {
             "purple_audio_mc77",
@@ -1021,7 +1021,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300160.png",
             "https://www.plugin-alliance.com/en/products/schoeps_double_ms.html",
             "3D & Surround Sound",
-            {"Digital"}
+            {"Original"}
         },
         {
             "schoeps_mono_upmix",
@@ -1032,7 +1032,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300160.png",
             "https://www.plugin-alliance.com/en/products/schoeps_mono_upmix.html",
             "3D & Surround Sound",
-            {"Digital"}
+            {"Original"}
         },
         {
             "shadow_hills_mastering_compressor",
@@ -1065,7 +1065,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300160.png",
             "https://www.plugin-alliance.com/en/products/x-sonible-smart-reverb.html",
             "Reverbs",
-            {"Digital"}
+            {"Original"}
         },
         {
             "spl_attacker_plus",
@@ -1087,7 +1087,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
             "https://www.plugin-alliance.com/en/products/spl_de-verb.html",
             "Restoration",
-            {"Digital"}
+            {"Original"}
         },
         {
             "spl_de_verb_plus",
@@ -1098,7 +1098,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
             "https://www.plugin-alliance.com/en/products/spl_de-verb_plus.html",
             "Restoration",
-            {"Digital"}
+            {"Original"}
         },
         {
             "spl_drumxchanger",
@@ -1109,7 +1109,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
             "https://www.plugin-alliance.com/en/products/spl_drumxchanger.html",
             "Utility",
-            {"Digital"}
+            {"Original"}
         },
         {
             "spl_eq_ranger_plus",
@@ -1120,7 +1120,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
             "https://www.plugin-alliance.com/en/products/spl_eq_ranger_plus.html",
             "Equalizers",
-            {"Digital", "Parametric"}
+            {"Original", "Parametric"}
         },
         {
             "spl_free_ranger",
@@ -1142,7 +1142,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300400_d705cd7c-7087-4680-914b-646d0b0fe801.png",
             "https://www.plugin-alliance.com/en/products/spl_hawkeye.html",
             "Meters",
-            {"Digital"}
+            {"Original"}
         },
         {
             "spl_iron",
@@ -1164,7 +1164,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
             "https://www.plugin-alliance.com/en/products/spl_mo-verb_plus.html",
             "Reverbs",
-            {"Digital"}
+            {"Original"}
         },
         {
             "spl_passeq",
@@ -1252,7 +1252,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300781_6b333574-9e0f-4247-9d6a-81a75d11eadd.png",
             "https://www.plugin-alliance.com/en/products/tbt_kirchhoff-eq.html",
             "Equalizers",
-            {"Digital", "Parametric", "Dynamic"}
+            {"Original", "Parametric", "Dynamic"}
         },
         {
             "tomo_audiolabs_lisa",
@@ -1263,7 +1263,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300635_b22c3561-6e15-4c4d-ad52-4ac96b0e9d92.png",
             "https://www.plugin-alliance.com/en/products/tomo_audiolabs_lisa.html",
             "Equalizers",
-            {"Digital", "Dynamic"}
+            {"Original", "Dynamic"}
         },
         {
             "unfiltered_audio_bass_mint",
@@ -1274,7 +1274,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_bass_mint.html",
             "Saturators",
-            {"Digital"}
+            {"Original"}
         },
         {
             "unfiltered_audio_byome",
@@ -1285,7 +1285,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300378_43bef938-0ea5-4f09-ad46-0b34c751df83.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_byome.html",
             "Multi-FX",
-            {"Digital"}
+            {"Original"}
         },
         {
             "unfiltered_audio_dent_2",
@@ -1296,7 +1296,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300342_49bc2c9c-005d-4e8a-a7ae-f2b85de716c1.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_dent_2.html",
             "Lo-Fi",
-            {"Digital"}
+            {"Original"}
         },
         {
             "unfiltered_audio_fault",
@@ -1307,7 +1307,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_fault.html",
             "Multi-FX",
-            {"Digital"}
+            {"Original"}
         },
         {
             "unfiltered_audio_g8",
@@ -1318,7 +1318,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183_d5aedd52-8194-49bd-b280-24160da8aed4.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_g8.html",
             "Gates",
-            {"Digital"}
+            {"Original"}
         },
         {
             "unfiltered_audio_indent_2",
@@ -1329,7 +1329,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_indent_2.html",
             "Transient Shapers",
-            {"Digital"}
+            {"Original"}
         },
         {
             "unfiltered_audio_instant_delay",
@@ -1340,7 +1340,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_instant_delay.html",
             "Delays",
-            {"Digital"}
+            {"Original"}
         },
         {
             "unfiltered_audio_lion",
@@ -1351,7 +1351,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300413_87e9ac60-f714-4a6d-9e6a-7e6cd43a070f.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_lion.html",
             "Synthesizers",
-            {"Digital"}
+            {"Original"}
         },
         {
             "unfiltered_audio_lo_fi_af",
@@ -1362,7 +1362,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300492_3815c462-512d-438e-a1f7-9796ef5e7296.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_lo-fi-af.html",
             "Lo-Fi",
-            {"Digital"}
+            {"Original"}
         },
         {
             "unfiltered_audio_needlepoint",
@@ -1373,7 +1373,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_needlepoint.html",
             "Lo-Fi",
-            {"Digital"}
+            {"Original"}
         },
         {
             "unfiltered_audio_sandman",
@@ -1384,7 +1384,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300264.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_sandman.html",
             "Delays",
-            {"Digital"}
+            {"Original"}
         },
         {
             "unfiltered_audio_sandman_pro",
@@ -1395,7 +1395,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300264_331f5d02-0ec3-4e58-9218-1ffbbbf2a9f2.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_sandman_pro.html",
             "Delays",
-            {"Digital"}
+            {"Original"}
         },
         {
             "unfiltered_audio_silo",
@@ -1406,7 +1406,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_silo.html",
             "Reverbs",
-            {"Digital"}
+            {"Original"}
         },
         {
             "unfiltered_audio_specops",
@@ -1417,7 +1417,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300263_cda3010b-a419-4289-8245-3481b6409d10.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_specops.html",
             "Multi-FX",
-            {"Digital"}
+            {"Original"}
         },
         {
             "unfiltered_audio_tails",
@@ -1428,7 +1428,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300493_90634ade-c965-41fd-a5fe-ed40d14cec59.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_tails.html",
             "Reverbs",
-            {"Digital"}
+            {"Original"}
         },
         {
             "unfiltered_audio_triad",
@@ -1439,7 +1439,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_triad.html",
             "Saturators",
-            {"Digital"}
+            {"Original"}
         },
         {
             "unfiltered_audio_zip",
@@ -1450,7 +1450,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_zip.html",
             "Compressors",
-            {"Digital"}
+            {"Original"}
         },
         {
             "vertigo_vsc_2",
@@ -1483,7 +1483,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301236.png",
             "https://www.plugin-alliance.com/en/products/adptr_utopia.html",
             "Reverbs",
-            {"Digital"}
+            {"Original"}
         },
         {
             "adptr_audio_hype",
@@ -1494,7 +1494,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300999_56d6bbd4-8d7d-408d-845b-51ae21f9a76c.png",
             "https://www.plugin-alliance.com/en/products/adptr_hype.html",
             "Saturators",
-            {"Digital"}
+            {"Original"}
         },
         {
             "shadow_hills_optomax",
@@ -1571,7 +1571,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301331.png",
             "https://www.plugin-alliance.com/en/products/hears_perfection.html",
             "Utility",
-            {"Digital"}
+            {"Original"}
         },
         {
             "spl_machine_head",
@@ -1582,7 +1582,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301150_00d7f9ee.png",
             "https://www.plugin-alliance.com/en/products/spl_machine_head.html",
             "Saturators",
-            {"Digital"}
+            {"Original"}
         },
         {
             "brainworx_bx_xl_v3",
@@ -1593,7 +1593,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300918_98828b43.png",
             "https://www.plugin-alliance.com/en/products/bx_xl_v3.html",
             "Limiters",
-            {"Digital"}
+            {"Original"}
         },
         {
             "brainworx_bx_pulsar",
@@ -1604,7 +1604,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301279_2.png",
             "https://www.plugin-alliance.com/en/products/bx_pulsar.html",
             "Delays",
-            {"Digital"}
+            {"Original"}
         },
         {
             "vertigo_vss_2",
@@ -1637,7 +1637,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300982_3397fcd0.png",
             "https://www.plugin-alliance.com/en/products/tbt_cenozoix.html",
             "Compressors",
-            {"Digital"}
+            {"Original"}
         },
         {
             "brainworx_bx_aura",
@@ -1648,7 +1648,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301029_e4a95235.png",
             "https://www.plugin-alliance.com/en/products/bx_aura.html",
             "Reverbs",
-            {"Digital"}
+            {"Original"}
         },
         {
             "black_box_analog_design_hg_q",
@@ -1681,7 +1681,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301002_746463f1.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_battalion.html",
             "Synthesizers",
-            {"Digital"}
+            {"Original"}
         },
         {
             "brainworx_bx_refinement_v3",
@@ -1692,7 +1692,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301160.png",
             "https://www.plugin-alliance.com/en/products/bx_refinement_v3.html",
             "Equalizers",
-            {"Digital", "Dynamic"}
+            {"Original", "Dynamic"}
         }
     };
 }

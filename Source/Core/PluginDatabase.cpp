@@ -92,14 +92,14 @@ static Era eraFromString(const juce::String& era)
         {"2000s", Era::Era_2000s},
         {"2010s", Era::Era_2010s},
         {"2020s", Era::Era_2020s},
-        {"Digital", Era::Era_Digital},
+        {"Original", Era::Era_Original},
     };
 
     auto it = eraMap.find(era);
     if (it != eraMap.end())
         return it->second;
 
-    return Era::Era_Digital;
+    return Era::Era_Original;
 }
 
 // LEGACY: Minimal fallback maps for plugins not in plugins.json
@@ -1371,7 +1371,7 @@ void PluginDatabase::assignEra(PluginInfo& info)
         for (const auto& tag : metadata->tags)
         {
             Era era = eraFromString(tag);
-            if (era != Era::Era_Digital || tag == "Digital")
+            if (era != Era::Era_Original || tag == "Original")
             {
                 info.era = era;
                 return;
@@ -1379,8 +1379,8 @@ void PluginDatabase::assignEra(PluginInfo& info)
         }
     }
 
-    // Default to Digital for plugins without explicit era
-    info.era = Era::Era_Digital;
+    // Default to Original for plugins without explicit era
+    info.era = Era::Era_Original;
 }
 
 void PluginDatabase::assignSubcategory(PluginInfo& info)

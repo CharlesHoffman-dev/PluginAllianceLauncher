@@ -221,7 +221,7 @@ enum class Era
     Era_2000s,
     Era_2010s,
     Era_2020s,
-    Era_Digital,
+    Era_Original,
     Era_Unknown
 };
 
@@ -310,7 +310,7 @@ inline juce::String getEraName(Era era)
         {Era::Era_2000s, "2000s"},
         {Era::Era_2010s, "2010s"},
         {Era::Era_2020s, "2020s"},
-        {Era::Era_Digital, "Digital"},
+        {Era::Era_Original, "Original"},
         {Era::Era_Unknown, "Unknown Era"}
     };
 
