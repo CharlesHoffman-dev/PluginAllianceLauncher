@@ -2,7 +2,7 @@
   ==============================================================================
     PluginData.h
     AUTO-GENERATED FILE - DO NOT EDIT DIRECTLY
-    Generated: 2026-01-18 10:36:44
+    Generated: 2026-01-18 11:20:45
 
     Edit plugins.json and run: python scripts/generate_plugin_data.py
   ==============================================================================
@@ -38,55 +38,55 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "ACME Audio",
             "Opticom XLA-3",
             "ACME Opticom XLA-3",
-            "Optical compressor with tube sounds and opto-electric vibe for dynamic control or harmonic coloration.",
+            "Optical compressor with tube sounds and opto-electric vibe for dynamic control and harmonic coloration.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300211_137be455-e2d4-4035-9eee-f1ef6d7a3a15.png",
             "https://www.plugin-alliance.com/en/products/acme_opticom_xla-3.html",
             "Compressor",
-            {"Opto"}
+            {"Opto", "Tube", "2010s"}
         },
         {
             "ada_flanger",
-            "A/DA",
+            "ADA",
             "Flanger",
             "ADA Flanger",
             "Bucket-brigade analog flanging with threshold, manual sweep, range, speed, and resonance controls.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300356_b75930af-e197-461f-a776-d0b40f6fbfd7.png",
             "https://www.plugin-alliance.com/en/products/ada_flanger.html",
-            "",
-            {}
+            "Modulation",
+            {"Flanger", "1970s"}
         },
         {
             "ada_std_1_stereo_tapped_delay",
-            "A/DA",
+            "ADA",
             "STD-1 Stereo Tapped Delay",
             "ADA STD-1 Stereo Tapped Delay",
             "Six independent delay taps with modulation and flexible stereo routing for lush multi-voiced effects.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300258_e4416d1c-8f75-4683-8195-cc03447e59a0.png",
             "https://www.plugin-alliance.com/en/products/ada_std-1_stereo_tapped_delay.html",
             "Delay",
-            {}
+            {"Multi-Tap", "1980s"}
         },
         {
             "adptr_audio_metric_ab",
             "ADPTR Audio",
             "Metric AB",
             "ADPTR Audio Metric AB",
-            "Reference plugin for side-by-side audio comparison with instant loudness matching and analysis modes.",
+            "A/B reference plugin for comparing mixes against professional tracks with automatic level matching and visual metering.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300370_51fdb784-eaec-48b3-8609-4fccc7196d68.png",
             "https://www.plugin-alliance.com/en/products/adptr_metricab.html",
-            "",
-            {}
+            "Meter",
+            {"Modern"}
         },
         {
             "adptr_audio_sculpt",
             "ADPTR Audio",
             "Sculpt",
             "ADPTR Audio Sculpt",
-            "Intelligent audio sculpting tool for dynamic processing and spectral shaping.",
+            "Multi-band dynamics processor combining compression, expansion, and transient shaping for precise tonal sculpting and mix control.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300370.png",
             "https://www.plugin-alliance.com/en/products/adptr_sculpt.html",
             "Compressor",
-            {}
+            {"Modern", "Multi-band"}
         },
         {
             "adptr_audio_streamliner",
@@ -96,19 +96,19 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "Preview how audio sounds across 20 streaming platforms by simulating codec compression and loudness normalization.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300537_a0567c85-b2b2-4bd1-9f46-8f546e962030.png",
             "https://www.plugin-alliance.com/en/products/adptr_streamliner.html",
-            "",
-            {}
+            "Meter",
+            {"Modern"}
         },
         {
             "amek_eq_200",
             "AMEK",
             "EQ 200",
             "AMEK EQ 200",
-            "Classic 1970s-80s parametric equalizer emulation with transparent, precise analog sound.",
+            "Classic 1970s parametric equalizer emulation with transparent, precise analog sound.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300489_6767f358-fdda-4c8c-a54e-da06e303f0ef.png",
             "https://www.plugin-alliance.com/en/products/amek_eq_200.html",
             "Equalizer",
-            {}
+            {"1970s", "Parametric"}
         },
         {
             "amek_eq_250",
@@ -119,18 +119,18 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300489.png",
             "https://www.plugin-alliance.com/en/products/amek_eq_250.html",
             "Equalizer",
-            {}
+            {"1970s", "Parametric"}
         },
         {
             "amek_mastering_compressor",
             "AMEK",
             "Mastering Compressor",
             "AMEK Mastering Compressor",
-            "Professional mastering compressor with transparent dynamics control.",
+            "VCA mastering compressor with dual RMS and peak detection for transparent, ear-like dynamic control and timing precision.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300489.png",
             "https://www.plugin-alliance.com/en/products/amek_mastering_compressor.html",
             "Compressor",
-            {"Mastering"}
+            {"Mastering", "1990s", "VCA"}
         },
         {
             "ampeg_b_15n",
@@ -152,7 +152,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300438.png",
             "https://www.plugin-alliance.com/en/products/ampeg_svt3pro.html",
             "Amp Simulator",
-            {"Bass"}
+            {"Bass", "1990s"}
         },
         {
             "ampeg_svt_vr",
@@ -163,7 +163,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300438_138d8e73-8761-4454-8704-30db1d9bd58f.png",
             "https://www.plugin-alliance.com/en/products/ampeg_svtvr.html",
             "Amp Simulator",
-            {"1960s", "Bass"}
+            {"Bass", "1960s"}
         },
         {
             "ampeg_svt_vr_classic",
@@ -185,7 +185,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300438.png",
             "https://www.plugin-alliance.com/en/products/ampeg_v4b.html",
             "Amp Simulator",
-            {"Bass"}
+            {"Bass", "1970s"}
         },
         {
             "bettermaker_eq232d",
@@ -196,7 +196,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300421_fef58d06-aa5f-4482-8b6a-58c56f82a79a.png",
             "https://www.plugin-alliance.com/en/products/bettermaker_eq232d.html",
             "Equalizer",
-            {}
+            {"Parametric", "Passive", "2010s"}
         },
         {
             "black_box_analog_design_hg_2",
@@ -207,29 +207,29 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300259_1e8913ea-66da-4ac3-aee0-171e176dfa13.png",
             "https://www.plugin-alliance.com/en/products/black_box_analog_design_hg-2.html",
             "Saturator",
-            {"2010s"}
+            {"2010s", "Tube"}
         },
         {
             "black_box_analog_design_hg_2ms",
             "Black Box Analog Design",
             "HG-2MS",
             "Black Box Analog Design HG-2MS",
-            "Mid-side version of the HG-2 tube saturation unit for mastering applications.",
+            "Tube saturation emulating vacuum tubes and transformers for warmth and harmonic richness. Allows you to process your signal in mid-side mode.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300259.png",
             "https://www.plugin-alliance.com/en/products/black_box_analog_design_hg-2ms.html",
             "Saturator",
-            {"2010s"}
+            {"2010s", "Tube"}
         },
         {
-            "brainworx_bx_2098_eq",
+            "brainworx_bx_digital_v3",
             "Brainworx",
-            "bx_2098 EQ",
-            "Brainworx bx_2098 EQ",
-            "Neve 2098 channel EQ emulation with classic British console character.",
+            "bx_digital V3",
+            "Brainworx bx_digital V3",
+            "Pioneering M/S mastering EQ with transparent filters, dynamic processing, and Mono Maker for surgical stereo control.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300214.png",
             "https://www.plugin-alliance.com/en/products/bx_2098_eq.html",
             "Equalizer",
-            {}
+            {"1990s", "Parametric", "Dynamic"}
         },
         {
             "brainworx_bx_bassdude",
@@ -240,7 +240,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300160.png",
             "https://www.plugin-alliance.com/en/products/bx_bassdude.html",
             "Amp Simulator",
-            {"Bass"}
+            {"Bass", "1960s"}
         },
         {
             "brainworx_bx_blackdist2",
@@ -250,7 +250,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "Guitar distortion pedal emulation with aggressive tone shaping.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300160.png",
             "https://www.plugin-alliance.com/en/products/bx_blackdist2.html",
-            "",
+            "Amp Simulator",
             {"1980s"}
         },
         {

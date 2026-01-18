@@ -57,6 +57,7 @@ enum class EffectCategory
     // Amp & Preamp
     AmpSimulator,
     Preamp,
+    Pedals,
 
     // Channel & Mastering
     ChannelStrip,
@@ -68,27 +69,27 @@ enum class EffectCategory
     Harmonizer,
 
     // Stereo & Spatial
-    StereoWidth,
-    SurroundTools,
+    StereoImagers,
+    ThreeDAndSurround,
     SpectralAnalysis,
 
     // Voice & Vocal
     VocalProcessing,
-    Vocoder,
+    Vocoders,
 
     // Creative & FX
-    GranularFX,
-    MultiEffect,
-    Randomiser,
+    LoFi,
+    Modulators,
+    MultiFX,
+    PitchCorrection,
+    Restoration,
 
     // Utility
-    DrumFX,
-    DJTools,
-    Enhancer,
-    Sequencer,
-    MIDIArp,
+    Gates,
+    TransientShapers,
+    Utility,
 
-    // Other
+    // Other/Legacy
     ExpansionPack,
     Unknown
 };
@@ -125,19 +126,22 @@ enum class DisplayCategory
     Recent,
 
     // Effects (alphabetical)
-    ChannelStrip,       // Console emulations (SSL, Neve, API, etc.)
+    Amplifiers,         // Amp simulators
+    ChannelStrips,      // Console emulations (SSL, Neve, API, etc.)
     Delays,             // Analog, Digital, Granular, Tape, etc.
-    Dynamics,           // Compressors, Gates, Transient Shapers, De-Essers
-    Equalization,       // Parametric, Passive, Dynamic, Filters, etc.
-    GuitarBass,         // Amps, Pedals, Cabinets
+    Compressors,        // Compressors, Gates, Transient Shapers, De-Essers
+    Equalizers,         // Parametric, Passive, Dynamic, Filters, etc.
+    GuitarAndBass,      // Guitar and Bass category
     Limiters,           // Limiters, Clippers, Maximizers
     Mastering,          // Mastering Suites, Limiters, Metering (legacy)
     Meters,             // Spectrum analyzers, loudness meters, phase meters
     Modulation,         // Chorus, Flanger, Phaser, Tremolo, Vibrato (legacy)
+    Pedals,             // Distortion, overdrive, fuzz pedals
     PitchCorrection,    // Vocal Tuners, Pitch Shifters, Harmonizers (legacy)
+    Preamps,            // Preamps and mic pres
     Reverbs,            // Algorithmic, Plate, Hall, Room, Chamber, etc.
-    Saturation,         // Distortion, Tube, Tape, Transformer, Harmonic
-    SpecialProcessing,  // Multi-FX, Lo-Fi, Stereo Wideners, 3D Audio, etc.
+    Saturators,         // Distortion, Tube, Tape, Transformer, Harmonic
+    Other,              // Multi-FX, Lo-Fi, Stereo Wideners, 3D Audio, etc.
 
     // Instruments - subcategories (alphabetical)
     Inst_Bass,          // Bass instruments
@@ -146,7 +150,7 @@ enum class DisplayCategory
     Inst_Keys,          // Keyboard instruments (pianos, etc.)
     Inst_Organs,        // Organ instruments
     Inst_Strings,       // String instruments
-    Inst_Synths,        // Synthesizers
+    Synthesizers,        // Synthesizers
 
     // Legacy (keep for compatibility)
     VirtualInstruments, // All virtual instruments
@@ -217,7 +221,7 @@ enum class Era
     Era_2000s,
     Era_2010s,
     Era_2020s,
-    Era_Modern,
+    Era_Digital,
     Era_Unknown
 };
 
@@ -226,53 +230,64 @@ enum class Era
 // ============================================
 inline juce::String getEffectCategoryName(EffectCategory cat)
 {
-    // Category names match sidebar categories for consistency
+    // Returns the display name for a category
     static const std::map<EffectCategory, juce::String> names = {
+        // Dynamics
         {EffectCategory::Compressor, "Compressor"},
         {EffectCategory::Limiter, "Limiter"},
-        {EffectCategory::Gate, "Other"},
         {EffectCategory::Expander, "Compressor"},
         {EffectCategory::DynamicsProcessor, "Compressor"},
-        {EffectCategory::TransientShaper, "Other"},
         {EffectCategory::EnvelopeShaper, "Compressor"},
         {EffectCategory::DeEsser, "Compressor"},
+
+        // EQ
         {EffectCategory::EQ, "Equalizer"},
         {EffectCategory::Filter, "Equalizer"},
         {EffectCategory::FrequencyShifter, "Equalizer"},
+
+        // Time-Based
         {EffectCategory::Reverb, "Reverb"},
         {EffectCategory::Delay, "Delay"},
         {EffectCategory::Echo, "Delay"},
-        {EffectCategory::Chorus, "Other"},
-        {EffectCategory::Flanger, "Other"},
-        {EffectCategory::Phaser, "Other"},
-        {EffectCategory::Tremolo, "Other"},
-        {EffectCategory::Vibrato, "Other"},
-        {EffectCategory::Modulator, "Other"},
-        {EffectCategory::Distortion, "Amp Simulator"},
+
+        // Saturation
+        {EffectCategory::Distortion, "Pedals"},
         {EffectCategory::Saturation, "Saturator"},
-        {EffectCategory::BitCrusher, "Saturator"},
         {EffectCategory::Exciter, "Saturator"},
         {EffectCategory::TapeEmulation, "Saturator"},
-        {EffectCategory::AmpSimulator, "Amp Simulator"},
-        {EffectCategory::Preamp, "Amp Simulator"},
+
+        // Guitar & Bass
+        {EffectCategory::AmpSimulator, "Amplifiers"},
+        {EffectCategory::Preamp, "Preamps"},
+        {EffectCategory::Pedals, "Pedals"},
+
+        // Channel & Mastering
         {EffectCategory::ChannelStrip, "Channel Strip"},
         {EffectCategory::MasteringSuite, "Mastering"},
         {EffectCategory::Mastering, "Mastering"},
-        {EffectCategory::PitchShifter, "Other"},
-        {EffectCategory::Harmonizer, "Other"},
-        {EffectCategory::StereoWidth, "Other"},
-        {EffectCategory::SurroundTools, "Other"},
+
+        // Pitch
+        {EffectCategory::PitchShifter, "Pitch Correction"},
+        {EffectCategory::Harmonizer, "Pitch Correction"},
+
+        // Meters
         {EffectCategory::SpectralAnalysis, "Meter"},
-        {EffectCategory::VocalProcessing, "Other"},
-        {EffectCategory::Vocoder, "Other"},
-        {EffectCategory::GranularFX, "Other"},
-        {EffectCategory::MultiEffect, "Other"},
-        {EffectCategory::Randomiser, "Other"},
-        {EffectCategory::DrumFX, "Other"},
-        {EffectCategory::DJTools, "Other"},
-        {EffectCategory::Enhancer, "Saturator"},
-        {EffectCategory::Sequencer, "Other"},
-        {EffectCategory::MIDIArp, "Other"},
+
+        // Other categories (appear under Other in sidebar)
+        {EffectCategory::Gates, "Gates"},
+        {EffectCategory::LoFi, "Lo-Fi"},
+        {EffectCategory::Modulators, "Modulators"},
+        {EffectCategory::MultiFX, "Multi-FX"},
+        {EffectCategory::PitchCorrection, "Pitch Correction"},
+        {EffectCategory::Restoration, "Restoration"},
+        {EffectCategory::StereoImagers, "Stereo Imagers"},
+        {EffectCategory::ThreeDAndSurround, "3D & Surround Sound"},
+        {EffectCategory::TransientShapers, "Transient Shapers"},
+        {EffectCategory::Utility, "Utility"},
+        {EffectCategory::VocalProcessing, "Vocal Processing"},
+        {EffectCategory::Vocoders, "Vocoders"},
+
+        // Legacy
         {EffectCategory::ExpansionPack, "Other"},
         {EffectCategory::Unknown, "Other"}
     };
@@ -295,7 +310,7 @@ inline juce::String getEraName(Era era)
         {Era::Era_2000s, "2000s"},
         {Era::Era_2010s, "2010s"},
         {Era::Era_2020s, "2020s"},
-        {Era::Era_Modern, "Digital"},
+        {Era::Era_Digital, "Digital"},
         {Era::Era_Unknown, "Unknown Era"}
     };
 
@@ -312,18 +327,22 @@ inline juce::String getDisplayCategoryName(DisplayCategory cat)
         {DisplayCategory::Recent, "Recent"},
 
         // Effects (alphabetical)
-        {DisplayCategory::ChannelStrip, "Channel Strips"},
+        {DisplayCategory::Amplifiers, "Amplifiers"},
+        {DisplayCategory::ChannelStrips, "Channel Strips"},
         {DisplayCategory::Delays, "Delays"},
-        {DisplayCategory::Dynamics, "Dynamics"},
-        {DisplayCategory::Equalization, "Equalizers"},
-        {DisplayCategory::GuitarBass, "Amp Simulators"},
+        {DisplayCategory::Compressors, "Compressors"},
+        {DisplayCategory::Equalizers, "Equalizers"},
+        {DisplayCategory::GuitarAndBass, "Guitar and Bass"},
+        {DisplayCategory::Limiters, "Limiters"},
         {DisplayCategory::Mastering, "Mastering"},
         {DisplayCategory::Meters, "Meters"},
         {DisplayCategory::Modulation, "Modulation"},
+        {DisplayCategory::Pedals, "Pedals"},
         {DisplayCategory::PitchCorrection, "Pitch Correction"},
+        {DisplayCategory::Preamps, "Preamps"},
         {DisplayCategory::Reverbs, "Reverbs"},
-        {DisplayCategory::Saturation, "Saturators"},
-        {DisplayCategory::SpecialProcessing, "Other"},
+        {DisplayCategory::Saturators, "Saturators"},
+        {DisplayCategory::Other, "Other"},
 
         // Instruments - subcategories
         {DisplayCategory::Inst_Bass, "Bass"},
@@ -332,7 +351,7 @@ inline juce::String getDisplayCategoryName(DisplayCategory cat)
         {DisplayCategory::Inst_Keys, "Keys"},
         {DisplayCategory::Inst_Organs, "Organs"},
         {DisplayCategory::Inst_Strings, "Strings"},
-        {DisplayCategory::Inst_Synths, "Synths"},
+        {DisplayCategory::Synthesizers, "Synths"},
         {DisplayCategory::VirtualInstruments, "Virtual Instruments"},
 
         // Brands (alphabetical)

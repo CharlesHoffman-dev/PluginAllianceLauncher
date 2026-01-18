@@ -13,40 +13,71 @@ namespace PALauncher
 {
 
 // Convert category string from PluginData.h to EffectCategory enum
+// JSON category names should match display names exactly
 static EffectCategory categoryFromString(const juce::String& category)
 {
     static const std::map<juce::String, EffectCategory> categoryMap = {
+        // === SIDEBAR CATEGORIES (main categories in plugins.json) ===
+        // Guitar and Bass
+        {"Amplifiers", EffectCategory::AmpSimulator},
+        {"Preamps", EffectCategory::Preamp},
+        {"Pedals", EffectCategory::Pedals},
+
+        // Channel Strip
+        {"Channel Strip", EffectCategory::ChannelStrip},
+
+        // Equalizers
         {"Equalizer", EffectCategory::EQ},
         {"EQ", EffectCategory::EQ},
         {"Filter", EffectCategory::Filter},
+
+        // Compressors
         {"Compressor", EffectCategory::Compressor},
-        {"Limiter", EffectCategory::Limiter},
-        {"Gate", EffectCategory::Gate},
-        {"Transient Shaper", EffectCategory::TransientShaper},
         {"De-Esser", EffectCategory::DeEsser},
-        {"Channel Strip", EffectCategory::ChannelStrip},
+
+        // Saturators
         {"Saturator", EffectCategory::Saturation},
         {"Saturation", EffectCategory::Saturation},
-        {"Reverb", EffectCategory::Reverb},
-        {"Delay", EffectCategory::Delay},
-        {"Modulation", EffectCategory::Modulator},
-        {"Flanger", EffectCategory::Flanger},
-        {"Chorus", EffectCategory::Chorus},
-        {"Phaser", EffectCategory::Phaser},
-        {"Pitch", EffectCategory::PitchShifter},
-        {"Amp Simulator", EffectCategory::AmpSimulator},
-        {"Amp", EffectCategory::AmpSimulator},
-        {"Distortion", EffectCategory::Distortion},
-        {"Mastering", EffectCategory::MasteringSuite},
-        {"Meter", EffectCategory::SpectralAnalysis},
-        {"Metering", EffectCategory::SpectralAnalysis},
-        {"Imager", EffectCategory::StereoWidth},
-        {"Lo-Fi", EffectCategory::BitCrusher},
-        {"Restoration", EffectCategory::Unknown},
-        {"Sequencer", EffectCategory::Sequencer},
-        {"Multi-FX", EffectCategory::MultiEffect},
         {"Tape", EffectCategory::TapeEmulation},
-        {"Vocal", EffectCategory::VocalProcessing},
+
+        // Delays
+        {"Delay", EffectCategory::Delay},
+
+        // Reverbs
+        {"Reverb", EffectCategory::Reverb},
+
+        // Limiters
+        {"Limiter", EffectCategory::Limiter},
+
+        // Meters
+        {"Meter", EffectCategory::SpectralAnalysis},
+
+        // Mastering
+        {"Mastering", EffectCategory::MasteringSuite},
+
+        // === OTHER CATEGORIES (appear under Other in sidebar) ===
+        {"3D & Surround Sound", EffectCategory::ThreeDAndSurround},
+        {"Gates", EffectCategory::Gates},
+        {"Lo-Fi", EffectCategory::LoFi},
+        {"Modulators", EffectCategory::Modulators},
+        {"Multi-FX", EffectCategory::MultiFX},
+        {"Pitch Correction", EffectCategory::PitchCorrection},
+        {"Restoration", EffectCategory::Restoration},
+        {"Stereo Imagers", EffectCategory::StereoImagers},
+        {"Transient Shapers", EffectCategory::TransientShapers},
+        {"Utility", EffectCategory::Utility},
+        {"Vocal Processing", EffectCategory::VocalProcessing},
+        {"Vocoders", EffectCategory::Vocoders},
+
+        // Aliases for backwards compatibility
+        {"3D Audio", EffectCategory::ThreeDAndSurround},
+        {"Surround Sound", EffectCategory::ThreeDAndSurround},
+        {"Imagers", EffectCategory::StereoImagers},
+        {"Modulation", EffectCategory::Modulators},
+        {"Vocoder", EffectCategory::Vocoders},
+
+        // Legacy/fallback
+        {"Other", EffectCategory::Unknown},
     };
 
     auto it = categoryMap.find(category);
@@ -68,14 +99,15 @@ static Era eraFromString(const juce::String& era)
         {"2000s", Era::Era_2000s},
         {"2010s", Era::Era_2010s},
         {"2020s", Era::Era_2020s},
-        {"Modern", Era::Era_Modern},
+        {"Digital", Era::Era_Digital},
+        {"Modern", Era::Era_Digital},  // Alias for backwards compatibility
     };
 
     auto it = eraMap.find(era);
     if (it != eraMap.end())
         return it->second;
 
-    return Era::Era_Modern;
+    return Era::Era_Digital;
 }
 
 // LEGACY: Minimal fallback maps for plugins not in plugins.json
@@ -214,13 +246,13 @@ namespace CategoryMaps
         {"HUM Audio Devices LAAL", EffectCategory::Limiter},
 
         // ============ GATES ============
-        {"Unfiltered Audio G8", EffectCategory::Gate},
+        {"Unfiltered Audio G8", EffectCategory::Gates},
 
         // ============ TRANSIENT SHAPERS ============
-        {"SPL Transient Designer Plus", EffectCategory::TransientShaper},
-        {"elysia nvelope", EffectCategory::TransientShaper},
-        {"SPL Attacker Plus", EffectCategory::TransientShaper},
-        {"Unfiltered Audio Indent 2", EffectCategory::TransientShaper},
+        {"SPL Transient Designer Plus", EffectCategory::TransientShapers},
+        {"elysia nvelope", EffectCategory::TransientShapers},
+        {"SPL Attacker Plus", EffectCategory::TransientShapers},
+        {"Unfiltered Audio Indent 2", EffectCategory::TransientShapers},
 
         // ============ DE-ESSERS ============
         {"SPL De-Esser", EffectCategory::DeEsser},
@@ -272,8 +304,8 @@ namespace CategoryMaps
         {"NEOLD WARBLE", EffectCategory::TapeEmulation},
         {"Kiive Audio Tape Face", EffectCategory::TapeEmulation},
         {"Unfiltered Audio Needlepoint", EffectCategory::TapeEmulation},
-        {"Unfiltered Audio LO-FI-AF", EffectCategory::BitCrusher},
-        {"Unfiltered Audio Dent 2", EffectCategory::BitCrusher},
+        {"Unfiltered Audio LO-FI-AF", EffectCategory::LoFi},
+        {"Unfiltered Audio Dent 2", EffectCategory::LoFi},
 
         // ============ AMP SIMULATORS ============
         // German Amps
@@ -344,9 +376,9 @@ namespace CategoryMaps
         {"Unfiltered Audio Instant Delay", EffectCategory::Delay},
 
         // ============ MODULATION ============
-        {"A/DA Flanger", EffectCategory::Flanger},
-        {"ADA Flanger", EffectCategory::Flanger},
-        {"bx_bluechorus2", EffectCategory::Chorus},
+        {"A/DA Flanger", EffectCategory::Modulators},
+        {"ADA Flanger", EffectCategory::Modulators},
+        {"bx_bluechorus2", EffectCategory::Modulators},
 
         // ============ MASTERING SUITES ============
         {"bx_masterdesk", EffectCategory::MasteringSuite},
@@ -355,12 +387,12 @@ namespace CategoryMaps
         {"bx_masterdesk True Peak", EffectCategory::MasteringSuite},
 
         // ============ STEREO / IMAGING ============
-        {"bx_stereomaker", EffectCategory::StereoWidth},
-        {"bx_shredspread", EffectCategory::StereoWidth},
-        {"bx_solo", EffectCategory::StereoWidth},
-        {"fiedler audio stage", EffectCategory::StereoWidth},
-        {"Schoeps Double MS", EffectCategory::StereoWidth},
-        {"Schoeps Mono Upmix", EffectCategory::StereoWidth},
+        {"bx_stereomaker", EffectCategory::StereoImagers},
+        {"bx_shredspread", EffectCategory::StereoImagers},
+        {"bx_solo", EffectCategory::StereoImagers},
+        {"fiedler audio stage", EffectCategory::StereoImagers},
+        {"Schoeps Double MS", EffectCategory::StereoImagers},
+        {"Schoeps Mono Upmix", EffectCategory::StereoImagers},
 
         // ============ METERING / ANALYSIS ============
         {"bx_meter", EffectCategory::SpectralAnalysis},
@@ -380,11 +412,11 @@ namespace CategoryMaps
         {"bx_crispytuner", EffectCategory::VocalProcessing},
 
         // ============ MULTI-FX ============
-        {"DS Audio TANTRA 2", EffectCategory::MultiEffect},
-        {"Unfiltered Audio BYOME", EffectCategory::MultiEffect},
-        {"Unfiltered Audio SpecOps", EffectCategory::MultiEffect},
-        {"Unfiltered Audio TRIAD", EffectCategory::MultiEffect},
-        {"Unfiltered Audio Fault", EffectCategory::MultiEffect},
+        {"DS Audio TANTRA 2", EffectCategory::MultiFX},
+        {"Unfiltered Audio BYOME", EffectCategory::MultiFX},
+        {"Unfiltered Audio SpecOps", EffectCategory::MultiFX},
+        {"Unfiltered Audio TRIAD", EffectCategory::MultiFX},
+        {"Unfiltered Audio Fault", EffectCategory::MultiFX},
 
         // ============ UTILITY ============
         {"bx_tuner", EffectCategory::Unknown},
@@ -395,9 +427,9 @@ namespace CategoryMaps
         {"ADPTR Audio Utopia", EffectCategory::Reverb},
         {"ADPTR Utopia", EffectCategory::Reverb},
         {"Utopia", EffectCategory::Reverb},
-        {"ADPTR Audio Hype", EffectCategory::MultiEffect},
-        {"ADPTR Hype", EffectCategory::MultiEffect},
-        {"Hype", EffectCategory::MultiEffect},
+        {"ADPTR Audio Hype", EffectCategory::MultiFX},
+        {"ADPTR Hype", EffectCategory::MultiFX},
+        {"Hype", EffectCategory::MultiFX},
 
         // Shadow Hills
         {"Shadow Hills OptoMax", EffectCategory::Compressor},
@@ -410,8 +442,8 @@ namespace CategoryMaps
         // SPL new
         {"SPL Vitalizer MK3-T", EffectCategory::Mastering},
         {"Vitalizer MK3-T", EffectCategory::Mastering},
-        {"SPL BiG", EffectCategory::StereoWidth},
-        {"BiG", EffectCategory::StereoWidth},
+        {"SPL BiG", EffectCategory::StereoImagers},
+        {"BiG", EffectCategory::StereoImagers},
         {"SPL Machine Head", EffectCategory::TapeEmulation},
         {"Machine Head", EffectCategory::TapeEmulation},
 
@@ -459,8 +491,8 @@ namespace CategoryMaps
         {"EQ825", EffectCategory::EQ},
 
         // Unfiltered Audio new
-        {"Unfiltered Audio Battalion", EffectCategory::Sequencer},
-        {"Battalion", EffectCategory::Sequencer},
+        {"Unfiltered Audio Battalion", EffectCategory::Utility},
+        {"Battalion", EffectCategory::Utility},
     };
 
     // Plugin name -> Era mapping
@@ -636,33 +668,33 @@ namespace CategoryMaps
     };
 
     // Special Processing subcategories
-    static const std::map<juce::String, SpecialProcessingType> specialProcessingTypes = {
+    static const std::map<juce::String, OtherType> otherTypes = {
         // Gates
-        {"Unfiltered Audio G8", SpecialProcessingType::Gate},
+        {"Unfiltered Audio G8", OtherType::Gates},
         // Transient Shapers
-        {"SPL Transient Designer Plus", SpecialProcessingType::TransientShaper},
-        {"elysia nvelope", SpecialProcessingType::TransientShaper},
-        {"SPL Attacker Plus", SpecialProcessingType::TransientShaper},
-        {"Unfiltered Audio Indent 2", SpecialProcessingType::TransientShaper},
+        {"SPL Transient Designer Plus", OtherType::TransientShapers},
+        {"elysia nvelope", OtherType::TransientShapers},
+        {"SPL Attacker Plus", OtherType::TransientShapers},
+        {"Unfiltered Audio Indent 2", OtherType::TransientShapers},
         // Stereo Imaging
-        {"bx_stereomaker", SpecialProcessingType::Imagers},
-        {"bx_shredspread", SpecialProcessingType::Imagers},
-        {"bx_solo", SpecialProcessingType::Imagers},
-        {"fiedler audio stage", SpecialProcessingType::Imagers},
-        {"Schoeps Double MS", SpecialProcessingType::SurroundSound},
-        {"Schoeps Mono Upmix", SpecialProcessingType::SurroundSound},
+        {"bx_stereomaker", OtherType::StereoImagers},
+        {"bx_shredspread", OtherType::StereoImagers},
+        {"bx_solo", OtherType::StereoImagers},
+        {"fiedler audio stage", OtherType::StereoImagers},
+        {"Schoeps Double MS", OtherType::ThreeDAndSurround},
+        {"Schoeps Mono Upmix", OtherType::ThreeDAndSurround},
         // Multi-FX
-        {"DS Audio TANTRA 2", SpecialProcessingType::MultiFX},
-        {"Unfiltered Audio BYOME", SpecialProcessingType::MultiFX},
-        {"Unfiltered Audio SpecOps", SpecialProcessingType::MultiFX},
-        {"Unfiltered Audio TRIAD", SpecialProcessingType::MultiFX},
-        {"Unfiltered Audio Fault", SpecialProcessingType::MultiFX},
+        {"DS Audio TANTRA 2", OtherType::MultiFX},
+        {"Unfiltered Audio BYOME", OtherType::MultiFX},
+        {"Unfiltered Audio SpecOps", OtherType::MultiFX},
+        {"Unfiltered Audio TRIAD", OtherType::MultiFX},
+        {"Unfiltered Audio Fault", OtherType::MultiFX},
         // Lo-Fi
-        {"Unfiltered Audio LO-FI-AF", SpecialProcessingType::LoFi},
-        {"Unfiltered Audio Dent 2", SpecialProcessingType::LoFi},
+        {"Unfiltered Audio LO-FI-AF", OtherType::LoFi},
+        {"Unfiltered Audio Dent 2", OtherType::LoFi},
         // Utility
-        {"bx_tuner", SpecialProcessingType::Utility},
-        {"SPL DrumXchanger", SpecialProcessingType::Utility},
+        {"bx_tuner", OtherType::Utility},
+        {"SPL DrumXchanger", OtherType::Utility},
     };
 }
 
@@ -799,7 +831,7 @@ juce::Array<PluginInfo> PluginDatabase::getByDisplayCategory(DisplayCategory cat
                     break;
 
                 // 11 Effects Categories
-                case DisplayCategory::ChannelStrip:
+                case DisplayCategory::ChannelStrips:
                     matches = (info.category == EffectCategory::ChannelStrip);
                     break;
 
@@ -808,7 +840,7 @@ juce::Array<PluginInfo> PluginDatabase::getByDisplayCategory(DisplayCategory cat
                               info.category == EffectCategory::Echo);
                     break;
 
-                case DisplayCategory::Dynamics:
+                case DisplayCategory::Compressors:
                     matches = (info.category == EffectCategory::Compressor ||
                               info.category == EffectCategory::Expander ||
                               info.category == EffectCategory::DynamicsProcessor ||
@@ -816,15 +848,27 @@ juce::Array<PluginInfo> PluginDatabase::getByDisplayCategory(DisplayCategory cat
                               info.category == EffectCategory::DeEsser);
                     break;
 
-                case DisplayCategory::Equalization:
+                case DisplayCategory::Equalizers:
                     matches = (info.category == EffectCategory::EQ ||
                               info.category == EffectCategory::Filter ||
                               info.category == EffectCategory::FrequencyShifter);
                     break;
 
-                case DisplayCategory::GuitarBass:
-                    matches = (info.category == EffectCategory::AmpSimulator ||
-                              info.category == EffectCategory::Preamp ||
+                case DisplayCategory::GuitarAndBass:
+                    // Legacy - maps to Amplifiers for backwards compatibility
+                    matches = (info.category == EffectCategory::AmpSimulator);
+                    break;
+
+                case DisplayCategory::Amplifiers:
+                    matches = (info.category == EffectCategory::AmpSimulator);
+                    break;
+
+                case DisplayCategory::Preamps:
+                    matches = (info.category == EffectCategory::Preamp);
+                    break;
+
+                case DisplayCategory::Pedals:
+                    matches = (info.category == EffectCategory::Pedals ||
                               info.category == EffectCategory::Distortion);
                     break;
 
@@ -842,12 +886,7 @@ juce::Array<PluginInfo> PluginDatabase::getByDisplayCategory(DisplayCategory cat
                     break;
 
                 case DisplayCategory::Modulation:
-                    matches = (info.category == EffectCategory::Chorus ||
-                              info.category == EffectCategory::Flanger ||
-                              info.category == EffectCategory::Phaser ||
-                              info.category == EffectCategory::Tremolo ||
-                              info.category == EffectCategory::Vibrato ||
-                              info.category == EffectCategory::Modulator);
+                    matches = (info.category == EffectCategory::Modulators);
                     break;
 
                 case DisplayCategory::PitchCorrection:
@@ -860,36 +899,27 @@ juce::Array<PluginInfo> PluginDatabase::getByDisplayCategory(DisplayCategory cat
                     matches = (info.category == EffectCategory::Reverb);
                     break;
 
-                case DisplayCategory::Saturation:
+                case DisplayCategory::Saturators:
                     matches = (info.category == EffectCategory::Saturation ||
                               info.category == EffectCategory::TapeEmulation ||
-                              info.category == EffectCategory::Exciter ||
-                              info.category == EffectCategory::BitCrusher ||
-                              info.category == EffectCategory::Enhancer);
+                              info.category == EffectCategory::Exciter);
                     break;
 
-                case DisplayCategory::SpecialProcessing:
-                    matches = (info.category == EffectCategory::Gate ||
-                              info.category == EffectCategory::TransientShaper ||
-                              info.category == EffectCategory::StereoWidth ||
-                              info.category == EffectCategory::SurroundTools ||
-                              info.category == EffectCategory::GranularFX ||
-                              info.category == EffectCategory::MultiEffect ||
-                              info.category == EffectCategory::Vocoder ||
+                case DisplayCategory::Other:
+                    matches = (info.category == EffectCategory::Gates ||
+                              info.category == EffectCategory::LoFi ||
+                              info.category == EffectCategory::Modulators ||
+                              info.category == EffectCategory::MultiFX ||
+                              info.category == EffectCategory::PitchCorrection ||
+                              info.category == EffectCategory::Restoration ||
+                              info.category == EffectCategory::StereoImagers ||
+                              info.category == EffectCategory::ThreeDAndSurround ||
+                              info.category == EffectCategory::TransientShapers ||
+                              info.category == EffectCategory::Utility ||
                               info.category == EffectCategory::VocalProcessing ||
-                              info.category == EffectCategory::Randomiser ||
-                              info.category == EffectCategory::DrumFX ||
-                              info.category == EffectCategory::DJTools ||
-                              info.category == EffectCategory::Chorus ||
-                              info.category == EffectCategory::Flanger ||
-                              info.category == EffectCategory::Phaser ||
-                              info.category == EffectCategory::Tremolo ||
-                              info.category == EffectCategory::Vibrato ||
-                              info.category == EffectCategory::Modulator ||
+                              info.category == EffectCategory::Vocoders ||
                               info.category == EffectCategory::PitchShifter ||
                               info.category == EffectCategory::Harmonizer ||
-                              info.category == EffectCategory::Sequencer ||
-                              info.category == EffectCategory::MIDIArp ||
                               info.category == EffectCategory::Unknown);
                     break;
 
@@ -926,7 +956,7 @@ juce::Array<PluginInfo> PluginDatabase::getByDisplayCategory(DisplayCategory cat
                     matches = info.isInstrument &&
                               info.description.name.toLowerCase().contains("string");
                     break;
-                case DisplayCategory::Inst_Synths:
+                case DisplayCategory::Synthesizers:
                     matches = info.isInstrument &&
                               (info.instrumentCategory == InstrumentCategory::Synth ||
                                info.instrumentCategory == InstrumentCategory::VocalSynth ||
@@ -1228,12 +1258,12 @@ void PluginDatabase::categorizePlugin(PluginInfo& info)
 
     // Gates
     else if (nameLower.contains("gate") || nameLower.contains(" g8"))
-        info.category = EffectCategory::Gate;
+        info.category = EffectCategory::Gates;
 
     // Transient Shapers
     else if (nameLower.contains("transient") || nameLower.contains("nvelope") ||
              nameLower.contains("attacker") || nameLower.contains("indent"))
-        info.category = EffectCategory::TransientShaper;
+        info.category = EffectCategory::TransientShapers;
 
     // De-essers
     else if (nameLower.contains("de-ess") || nameLower.contains("deess") ||
@@ -1267,7 +1297,7 @@ void PluginDatabase::categorizePlugin(PluginInfo& info)
     // Lo-Fi / Bit Crusher
     else if (nameLower.contains("lo-fi") || nameLower.contains("lofi") ||
              nameLower.contains("dent 2") || nameLower.contains("dent2"))
-        info.category = EffectCategory::BitCrusher;
+        info.category = EffectCategory::LoFi;
 
     // Amp Simulators
     else if (nameLower.contains("diezel") || nameLower.contains("vh4") ||
@@ -1305,7 +1335,7 @@ void PluginDatabase::categorizePlugin(PluginInfo& info)
     else if (nameLower.contains("flanger") || nameLower.contains("chorus") ||
              nameLower.contains("phaser") || nameLower.contains("tremolo") ||
              nameLower.contains("vibrato"))
-        info.category = EffectCategory::Flanger;  // Will be refined later
+        info.category = EffectCategory::Modulators;  // Will be refined later
 
     // Mastering
     else if (nameLower.contains("masterdesk") || nameLower.contains("master"))
@@ -1315,7 +1345,7 @@ void PluginDatabase::categorizePlugin(PluginInfo& info)
     else if (nameLower.contains("stereo") || nameLower.contains("stage") ||
              nameLower.contains("shredspread") || nameLower.contains("solo") ||
              nameLower.contains("schoeps"))
-        info.category = EffectCategory::StereoWidth;
+        info.category = EffectCategory::StereoImagers;
 
     // Meters
     else if (nameLower.contains("meter") || nameLower.contains("metric") ||
@@ -1331,7 +1361,7 @@ void PluginDatabase::categorizePlugin(PluginInfo& info)
     else if (nameLower.contains("tantra") || nameLower.contains("byome") ||
              nameLower.contains("specops") || nameLower.contains("triad") ||
              nameLower.contains("fault"))
-        info.category = EffectCategory::MultiEffect;
+        info.category = EffectCategory::MultiFX;
 
     // Utility
     else if (nameLower.contains("tuner") || nameLower.contains("drumxchanger"))
@@ -1349,7 +1379,7 @@ void PluginDatabase::assignEra(PluginInfo& info)
         for (const auto& tag : metadata->tags)
         {
             Era era = eraFromString(tag);
-            if (era != Era::Era_Modern || tag == "Modern")
+            if (era != Era::Era_Digital || tag == "Modern")
             {
                 info.era = era;
                 return;
@@ -1358,7 +1388,7 @@ void PluginDatabase::assignEra(PluginInfo& info)
     }
 
     // Default to Modern for plugins without explicit era
-    info.era = Era::Era_Modern;
+    info.era = Era::Era_Digital;
 }
 
 void PluginDatabase::assignSubcategory(PluginInfo& info)
@@ -1388,38 +1418,33 @@ void PluginDatabase::assignSubcategory(PluginInfo& info)
                 info.ampType = it->second;
             break;
         }
-        case EffectCategory::Gate:
-            info.specialProcessingType = SpecialProcessingType::Gate;
+        case EffectCategory::Gates:
+            info.otherType = OtherType::Gates;
             break;
-        case EffectCategory::TransientShaper:
-            info.specialProcessingType = SpecialProcessingType::TransientShaper;
+        case EffectCategory::TransientShapers:
+            info.otherType = OtherType::TransientShapers;
             break;
-        case EffectCategory::StereoWidth:
-            info.specialProcessingType = SpecialProcessingType::Imagers;
+        case EffectCategory::StereoImagers:
+            info.otherType = OtherType::StereoImagers;
             break;
-        case EffectCategory::SurroundTools:
-            info.specialProcessingType = SpecialProcessingType::SurroundSound;
+        case EffectCategory::ThreeDAndSurround:
+            info.otherType = OtherType::ThreeDAndSurround;
             break;
-        case EffectCategory::MultiEffect:
-            info.specialProcessingType = SpecialProcessingType::MultiFX;
+        case EffectCategory::MultiFX:
+            info.otherType = OtherType::MultiFX;
             break;
-        case EffectCategory::Chorus:
-        case EffectCategory::Flanger:
-        case EffectCategory::Phaser:
-        case EffectCategory::Tremolo:
-        case EffectCategory::Vibrato:
-        case EffectCategory::Modulator:
-            info.specialProcessingType = SpecialProcessingType::Modulation;
+        case EffectCategory::Modulators:
+            info.otherType = OtherType::Modulators;
             break;
         case EffectCategory::PitchShifter:
         case EffectCategory::Harmonizer:
-            info.specialProcessingType = SpecialProcessingType::Pitch;
+            info.otherType = OtherType::PitchCorrection;
             break;
         case EffectCategory::VocalProcessing:
-            info.specialProcessingType = SpecialProcessingType::Pitch;
+            info.otherType = OtherType::PitchCorrection;
             break;
         case EffectCategory::Unknown:
-            info.specialProcessingType = SpecialProcessingType::Utility;
+            info.otherType = OtherType::Utility;
             break;
         default:
             break;

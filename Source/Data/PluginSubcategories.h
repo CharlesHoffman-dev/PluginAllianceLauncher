@@ -229,21 +229,22 @@ enum class MasteringType
 };
 
 // ============================================
-// SPECIAL PROCESSING (OTHER) SUBCATEGORIES (alphabetical)
+// OTHER SUBCATEGORIES (alphabetical)
 // ============================================
-enum class SpecialProcessingType
+enum class OtherType
 {
-    Gate,           // Dynamic gates
-    Imagers,        // Stereo imaging/widening
-    LoFi,           // Lo-fi/vintage effects
-    Modulation,     // Chorus, Flanger, Phaser, Tremolo, etc.
-    MultiFX,        // Multi-effects processors
-    Pitch,          // Pitch correction, harmonizers
-    Restoration,    // Noise reduction, de-click, etc.
-    SurroundSound,  // Surround/immersive audio
-    ThreeDAudio,    // 3D Audio / Spatial audio
-    TransientShaper,// Transient shapers/designers
-    Utility,        // Gain, phase, routing tools
+    Gates,              // Dynamic gates
+    LoFi,               // Lo-fi/vintage effects
+    Modulators,         // Chorus, Flanger, Phaser, Tremolo, etc.
+    MultiFX,            // Multi-effects processors
+    PitchCorrection,    // Pitch correction, harmonizers
+    Restoration,        // Noise reduction, de-click, etc.
+    StereoImagers,      // Stereo imaging/widening
+    ThreeDAndSurround,  // 3D Audio / Surround sound
+    TransientShapers,   // Transient shapers/designers
+    Utility,            // Gain, phase, routing tools
+    VocalProcessing,    // Vocal processing
+    Vocoders,           // Vocoders
     Unknown
 };
 
@@ -465,21 +466,22 @@ inline juce::String getMasteringTypeName(MasteringType type)
     return it != names.end() ? it->second : "Unknown";
 }
 
-inline juce::String getSpecialProcessingTypeName(SpecialProcessingType type)
+inline juce::String getOtherTypeName(OtherType type)
 {
-    static const std::map<SpecialProcessingType, juce::String> names = {
-        {SpecialProcessingType::Gate, "Gate"},
-        {SpecialProcessingType::Imagers, "Imagers"},
-        {SpecialProcessingType::LoFi, "Lo-Fi"},
-        {SpecialProcessingType::Modulation, "Modulation"},
-        {SpecialProcessingType::MultiFX, "Multi-FX"},
-        {SpecialProcessingType::Pitch, "Pitch"},
-        {SpecialProcessingType::Restoration, "Restoration"},
-        {SpecialProcessingType::SurroundSound, "Surround Sound"},
-        {SpecialProcessingType::ThreeDAudio, "3D Audio"},
-        {SpecialProcessingType::TransientShaper, "Transient Shaper"},
-        {SpecialProcessingType::Utility, "Utility"},
-        {SpecialProcessingType::Unknown, "Unknown"}
+    static const std::map<OtherType, juce::String> names = {
+        {OtherType::Gates, "Gates"},
+        {OtherType::LoFi, "Lo-Fi"},
+        {OtherType::Modulators, "Modulators"},
+        {OtherType::MultiFX, "Multi-FX"},
+        {OtherType::PitchCorrection, "Pitch Correction"},
+        {OtherType::Restoration, "Restoration"},
+        {OtherType::StereoImagers, "Stereo Imagers"},
+        {OtherType::ThreeDAndSurround, "3D & Surround Sound"},
+        {OtherType::TransientShapers, "Transient Shapers"},
+        {OtherType::Utility, "Utility"},
+        {OtherType::VocalProcessing, "Vocal Processing"},
+        {OtherType::Vocoders, "Vocoders"},
+        {OtherType::Unknown, "Unknown"}
     };
     auto it = names.find(type);
     return it != names.end() ? it->second : "Unknown";

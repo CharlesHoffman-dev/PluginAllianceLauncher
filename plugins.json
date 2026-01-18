@@ -7,33 +7,41 @@
       "product": "Opticom XLA-3",
       "url": "https://www.plugin-alliance.com/en/products/acme_opticom_xla-3.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300211_137be455-e2d4-4035-9eee-f1ef6d7a3a15.png",
-      "description": "Optical compressor with tube sounds and opto-electric vibe for dynamic control or harmonic coloration.",
+      "description": "Optical compressor with tube sounds and opto-electric vibe for dynamic control and harmonic coloration.",
       "category": "Compressor",
       "tags": [
-        "Opto"
+        "Opto",
+        "Tube",
+        "2010s"
       ]
     },
     {
       "id": "ada_flanger",
       "name": "ADA Flanger",
-      "brand": "A/DA",
+      "brand": "ADA",
       "product": "Flanger",
       "url": "https://www.plugin-alliance.com/en/products/ada_flanger.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300356_b75930af-e197-461f-a776-d0b40f6fbfd7.png",
       "description": "Bucket-brigade analog flanging with threshold, manual sweep, range, speed, and resonance controls.",
-      "category": "",
-      "tags": []
+      "category": "Modulation",
+      "tags": [
+        "Flanger",
+        "1970s"
+      ]
     },
     {
       "id": "ada_std_1_stereo_tapped_delay",
       "name": "ADA STD-1 Stereo Tapped Delay",
-      "brand": "A/DA",
+      "brand": "ADA",
       "product": "STD-1 Stereo Tapped Delay",
       "url": "https://www.plugin-alliance.com/en/products/ada_std-1_stereo_tapped_delay.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300258_e4416d1c-8f75-4683-8195-cc03447e59a0.png",
       "description": "Six independent delay taps with modulation and flexible stereo routing for lush multi-voiced effects.",
       "category": "Delay",
-      "tags": []
+      "tags": [
+        "Multi-Tap",
+        "1980s"
+      ]
     },
     {
       "id": "adptr_audio_metric_ab",
@@ -42,9 +50,11 @@
       "product": "Metric AB",
       "url": "https://www.plugin-alliance.com/en/products/adptr_metricab.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300370_51fdb784-eaec-48b3-8609-4fccc7196d68.png",
-      "description": "Reference plugin for side-by-side audio comparison with instant loudness matching and analysis modes.",
-      "category": "",
-      "tags": []
+      "description": "A/B reference plugin for comparing mixes against professional tracks with automatic level matching and visual metering.",
+      "category": "Meter",
+      "tags": [
+        "Modern"
+      ]
     },
     {
       "id": "adptr_audio_sculpt",
@@ -53,9 +63,12 @@
       "product": "Sculpt",
       "url": "https://www.plugin-alliance.com/en/products/adptr_sculpt.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300370.png",
-      "description": "Intelligent audio sculpting tool for dynamic processing and spectral shaping.",
+      "description": "Multi-band dynamics processor combining compression, expansion, and transient shaping for precise tonal sculpting and mix control.",
       "category": "Compressor",
-      "tags": []
+      "tags": [
+        "Modern",
+        "Multi-band"
+      ]
     },
     {
       "id": "adptr_audio_streamliner",
@@ -65,8 +78,10 @@
       "url": "https://www.plugin-alliance.com/en/products/adptr_streamliner.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300537_a0567c85-b2b2-4bd1-9f46-8f546e962030.png",
       "description": "Preview how audio sounds across 20 streaming platforms by simulating codec compression and loudness normalization.",
-      "category": "",
-      "tags": []
+      "category": "Meter",
+      "tags": [
+        "Modern"
+      ]
     },
     {
       "id": "amek_eq_200",
@@ -75,9 +90,12 @@
       "product": "EQ 200",
       "url": "https://www.plugin-alliance.com/en/products/amek_eq_200.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300489_6767f358-fdda-4c8c-a54e-da06e303f0ef.png",
-      "description": "Classic 1970s-80s parametric equalizer emulation with transparent, precise analog sound.",
+      "description": "Classic 1970s parametric equalizer emulation with transparent, precise analog sound.",
       "category": "Equalizer",
-      "tags": []
+      "tags": [
+        "1970s",
+        "Parametric"
+      ]
     },
     {
       "id": "amek_eq_250",
@@ -88,7 +106,10 @@
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300489.png",
       "description": "Vintage parametric equalizer with musical character for mixing and mastering.",
       "category": "Equalizer",
-      "tags": []
+      "tags": [
+        "1970s",
+        "Parametric"
+      ]
     },
     {
       "id": "amek_mastering_compressor",
@@ -97,10 +118,12 @@
       "product": "Mastering Compressor",
       "url": "https://www.plugin-alliance.com/en/products/amek_mastering_compressor.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300489.png",
-      "description": "Professional mastering compressor with transparent dynamics control.",
+      "description": "VCA mastering compressor with dual RMS and peak detection for transparent, ear-like dynamic control and timing precision.",
       "category": "Compressor",
       "tags": [
-        "Mastering"
+        "Mastering",
+        "1990s",
+        "VCA"
       ]
     },
     {
@@ -127,7 +150,8 @@
       "description": "Hybrid tube/solid-state bass amplifier with modern versatility.",
       "category": "Amp Simulator",
       "tags": [
-        "Bass"
+        "Bass",
+        "1990s"
       ]
     },
     {
@@ -140,8 +164,8 @@
       "description": "Legendary 300-watt bass amplifier with roaring bottom, punchy mids, and pleasant highs.",
       "category": "Amp Simulator",
       "tags": [
-        "1960s",
-        "Bass"
+        "Bass",
+        "1960s"
       ]
     },
     {
@@ -168,7 +192,8 @@
       "description": "All-tube bass amplifier with classic Ampeg warmth and character.",
       "category": "Amp Simulator",
       "tags": [
-        "Bass"
+        "Bass",
+        "1970s"
       ]
     },
     {
@@ -180,7 +205,11 @@
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300421_fef58d06-aa5f-4482-8b6a-58c56f82a79a.png",
       "description": "Mastering-grade equalizer with Pultec-style controls for incredible low and high-end shaping.",
       "category": "Equalizer",
-      "tags": []
+      "tags": [
+        "Parametric",
+        "Passive",
+        "2010s"
+      ]
     },
     {
       "id": "black_box_analog_design_hg_2",
@@ -192,7 +221,8 @@
       "description": "Tube saturation emulating vacuum tubes and transformers for warmth and harmonic richness.",
       "category": "Saturator",
       "tags": [
-        "2010s"
+        "2010s",
+        "Tube"
       ]
     },
     {
@@ -202,22 +232,27 @@
       "product": "HG-2MS",
       "url": "https://www.plugin-alliance.com/en/products/black_box_analog_design_hg-2ms.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300259.png",
-      "description": "Mid-side version of the HG-2 tube saturation unit for mastering applications.",
+      "description": "Tube saturation emulating vacuum tubes and transformers for warmth and harmonic richness. Allows you to process your signal in mid-side mode.",
       "category": "Saturator",
       "tags": [
-        "2010s"
+        "2010s",
+        "Tube"
       ]
     },
     {
-      "id": "brainworx_bx_2098_eq",
-      "name": "Brainworx bx_2098 EQ",
+      "id": "brainworx_bx_digital_v3",
+      "name": "Brainworx bx_digital V3",
       "brand": "Brainworx",
-      "product": "bx_2098 EQ",
+      "product": "bx_digital V3",
       "url": "https://www.plugin-alliance.com/en/products/bx_2098_eq.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300214.png",
-      "description": "Neve 2098 channel EQ emulation with classic British console character.",
+      "description": "Pioneering M/S mastering EQ with transparent filters, dynamic processing, and Mono Maker for surgical stereo control.",
       "category": "Equalizer",
-      "tags": []
+      "tags": [
+        "1990s",
+        "Parametric",
+        "Dynamic"
+      ]
     },
     {
       "id": "brainworx_bx_bassdude",
@@ -229,7 +264,8 @@
       "description": "Bass amplifier simulation for warm, punchy bass tones.",
       "category": "Amp Simulator",
       "tags": [
-        "Bass"
+        "Bass",
+        "1960s"
       ]
     },
     {
@@ -240,7 +276,7 @@
       "url": "https://www.plugin-alliance.com/en/products/bx_blackdist2.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300160.png",
       "description": "Guitar distortion pedal emulation with aggressive tone shaping.",
-      "category": "",
+      "category": "Amp Simulator",
       "tags": [
         "1980s"
       ]

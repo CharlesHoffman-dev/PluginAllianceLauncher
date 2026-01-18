@@ -35,24 +35,23 @@ void CategoryFilter::buildCategoryList()
     // Instruments header (above Effects)
     categories.push_back({DisplayCategory::All, "INSTRUMENTS", true});
 
-    // Only Synths - Plugin Alliance only has synth instruments
-    categories.push_back({DisplayCategory::Inst_Synths, "Synthesizers", false});
+    categories.push_back({DisplayCategory::Synthesizers, "Synthesizers", false});
 
     // Effects header
     categories.push_back({DisplayCategory::All, "EFFECTS", true});
 
     // Effect categories (user-defined order)
-    categories.push_back({DisplayCategory::GuitarBass, "Amp Simulators", false});
-    categories.push_back({DisplayCategory::ChannelStrip, "Channel Strips", false});
-    categories.push_back({DisplayCategory::Equalization, "Equalizers", false});
-    categories.push_back({DisplayCategory::Dynamics, "Compressors", false});
-    categories.push_back({DisplayCategory::Saturation, "Saturators", false});
+    categories.push_back({DisplayCategory::GuitarAndBass, "Guitar and Bass", false});
+    categories.push_back({DisplayCategory::ChannelStrips, "Channel Strips", false});
+    categories.push_back({DisplayCategory::Equalizers, "Equalizers", false});
+    categories.push_back({DisplayCategory::Compressors, "Compressors", false});
+    categories.push_back({DisplayCategory::Saturators, "Saturators", false});
     categories.push_back({DisplayCategory::Delays, "Delays", false});
     categories.push_back({DisplayCategory::Reverbs, "Reverbs", false});
     categories.push_back({DisplayCategory::Limiters, "Limiters", false});
     categories.push_back({DisplayCategory::Meters, "Meters", false});
     categories.push_back({DisplayCategory::Mastering, "Mastering", false});
-    categories.push_back({DisplayCategory::SpecialProcessing, "Other", false});
+    categories.push_back({DisplayCategory::Other, "Other", false});
 }
 
 void CategoryFilter::paint(juce::Graphics& g)

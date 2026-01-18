@@ -40,7 +40,7 @@ struct PluginInfo
     ModulationType modulationType = ModulationType::Unknown;
     GuitarBassType guitarBassType = GuitarBassType::Unknown;
     MasteringType masteringType = MasteringType::Unknown;
-    SpecialProcessingType specialProcessingType = SpecialProcessingType::Unknown;
+    OtherType otherType = OtherType::Unknown;
 };
 
 class PluginDatabase

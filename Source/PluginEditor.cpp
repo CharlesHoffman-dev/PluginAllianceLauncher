@@ -171,7 +171,7 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
             case 7: currentEra = Era::Era_2000s; break;
             case 8: currentEra = Era::Era_2010s; break;
             case 9: currentEra = Era::Era_2020s; break;
-            case 10: currentEra = Era::Era_Modern; break;
+            case 10: currentEra = Era::Era_Digital; break;
             default: currentEra = Era::Era_Unknown; break;
         }
         filterPlugins();
@@ -517,10 +517,10 @@ void PluginAllianceLauncherEditor::resized()
         subscribeButton.setVisible(true);
 
         // Check if current category has subcategories
-        bool hasSubcategories = (currentCategory == DisplayCategory::Dynamics ||
-                                 currentCategory == DisplayCategory::Equalization ||
-                                 currentCategory == DisplayCategory::GuitarBass ||
-                                 currentCategory == DisplayCategory::SpecialProcessing);
+        bool hasSubcategories = (currentCategory == DisplayCategory::Compressors ||
+                                 currentCategory == DisplayCategory::Equalizers ||
+                                 currentCategory == DisplayCategory::GuitarAndBass ||
+                                 currentCategory == DisplayCategory::Other);
         subcategoryFilter.setVisible(hasSubcategories);
 
         auto sidebar = bounds.removeFromLeft(sidebarWidth);
@@ -709,23 +709,23 @@ void PluginAllianceLauncherEditor::filterPlugins()
             // Check based on current category type
             switch (currentCategory)
             {
-                case DisplayCategory::Dynamics:
+                case DisplayCategory::Compressors:
                     matches = (static_cast<int>(plugin.compressorType) == currentSubcategory);
                     break;
-                case DisplayCategory::Equalization:
+                case DisplayCategory::Equalizers:
                     matches = (static_cast<int>(plugin.eqType) == currentSubcategory);
                     break;
                 case DisplayCategory::Reverbs:
                     matches = (static_cast<int>(plugin.reverbType) == currentSubcategory);
                     break;
-                case DisplayCategory::GuitarBass:
+                case DisplayCategory::GuitarAndBass:
                     matches = (static_cast<int>(plugin.guitarBassType) == currentSubcategory);
                     break;
-                case DisplayCategory::Saturation:
+                case DisplayCategory::Saturators:
                     matches = (static_cast<int>(plugin.saturationType) == currentSubcategory);
                     break;
-                case DisplayCategory::SpecialProcessing:
-                    matches = (static_cast<int>(plugin.specialProcessingType) == currentSubcategory);
+                case DisplayCategory::Other:
+                    matches = (static_cast<int>(plugin.otherType) == currentSubcategory);
                     break;
                 default:
                     matches = true;
@@ -840,23 +840,23 @@ void PluginAllianceLauncherEditor::refreshPluginsPreservingScroll()
             bool matches = false;
             switch (currentCategory)
             {
-                case DisplayCategory::Dynamics:
+                case DisplayCategory::Compressors:
                     matches = (static_cast<int>(plugin.compressorType) == currentSubcategory);
                     break;
-                case DisplayCategory::Equalization:
+                case DisplayCategory::Equalizers:
                     matches = (static_cast<int>(plugin.eqType) == currentSubcategory);
                     break;
                 case DisplayCategory::Reverbs:
                     matches = (static_cast<int>(plugin.reverbType) == currentSubcategory);
                     break;
-                case DisplayCategory::GuitarBass:
+                case DisplayCategory::GuitarAndBass:
                     matches = (static_cast<int>(plugin.guitarBassType) == currentSubcategory);
                     break;
-                case DisplayCategory::Saturation:
+                case DisplayCategory::Saturators:
                     matches = (static_cast<int>(plugin.saturationType) == currentSubcategory);
                     break;
-                case DisplayCategory::SpecialProcessing:
-                    matches = (static_cast<int>(plugin.specialProcessingType) == currentSubcategory);
+                case DisplayCategory::Other:
+                    matches = (static_cast<int>(plugin.otherType) == currentSubcategory);
                     break;
                 default:
                     matches = true;
