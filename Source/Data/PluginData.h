@@ -2,7 +2,7 @@
   ==============================================================================
     PluginData.h
     AUTO-GENERATED FILE - DO NOT EDIT DIRECTLY
-    Generated: 2026-01-18 15:16:09
+    Generated: 2026-01-18 15:47:44
 
     Edit plugins.json and run: python scripts/generate_plugin_data.py
   ==============================================================================
@@ -36,8 +36,8 @@ inline std::vector<PluginMetadata> getPluginDatabase()
         {
             "acme_opticom_xla3",
             "ACME Audio",
-            "Opticom XLA-3",
-            "ACME Audio Opticom XLA-3",
+            "Opticom CLA-3",
+            "ACME Audio Opticom CLA-3",
             "Triple-curve optical tube compressor with smooth leveling and harmonic warmth.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300196_93d7cf64-bfa3-470f-bbb9-96b1d2dde9f9.png",
             "https://www.plugin-alliance.com/en/products/acme_opticom_xla-3.html",
@@ -52,7 +52,7 @@ inline std::vector<PluginMetadata> getPluginDatabase()
             "Classic 1979 analog flanger with bucket-brigade circuitry for lush modulation.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300339_ed23a5bb-1f30-4c03-ac02-a0bfb39dbc65.png",
             "https://www.plugin-alliance.com/en/products/ada_flanger.html",
-            "Modulators",
+            "Modulator",
             {"1970s"}
         },
         {

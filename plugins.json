@@ -2,9 +2,9 @@
   "plugins": [
     {
       "id": "acme_opticom_xla3",
-      "name": "ACME Audio Opticom XLA-3",
+      "name": "ACME Audio Opticom CLA-3",
       "brand": "ACME Audio",
-      "product": "Opticom XLA-3",
+      "product": "Opticom CLA-3",
       "url": "https://www.plugin-alliance.com/en/products/acme_opticom_xla-3.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300196_93d7cf64-bfa3-470f-bbb9-96b1d2dde9f9.png",
       "description": "Triple-curve optical tube compressor with smooth leveling and harmonic warmth.",
@@ -22,7 +22,7 @@
       "url": "https://www.plugin-alliance.com/en/products/ada_flanger.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300339_ed23a5bb-1f30-4c03-ac02-a0bfb39dbc65.png",
       "description": "Classic 1979 analog flanger with bucket-brigade circuitry for lush modulation.",
-      "category": "Modulators",
+      "category": "Modulator",
       "tags": [
         "1970s"
       ]
