@@ -388,7 +388,6 @@ namespace CategoryMaps
 
         // ============ METERING / ANALYSIS ============
         {"bx_meter", EffectCategory::SpectralAnalysis},
-        {"ADPTR AUDIO Metric AB", EffectCategory::SpectralAnalysis},
         {"ADPTR Audio Metric AB", EffectCategory::SpectralAnalysis},
         {"MetricAB", EffectCategory::SpectralAnalysis},
         {"Metric AB", EffectCategory::SpectralAnalysis},

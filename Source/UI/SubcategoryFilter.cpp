@@ -89,7 +89,8 @@ void SubcategoryFilter::buildSubcategoryList()
     }
 
     // Sort subcategories alphabetically (keeping "All" at the top)
-    if (subcategories.size() > 1)
+    // Exception: GuitarAndBass has a specific order (Pedals, Preamps, Amplifiers, Cabinets, Suites)
+    if (subcategories.size() > 1 && currentCategory != DisplayCategory::GuitarAndBass)
     {
         std::sort(subcategories.begin() + 1, subcategories.end(),
             [](const SubcategoryItem& a, const SubcategoryItem& b)

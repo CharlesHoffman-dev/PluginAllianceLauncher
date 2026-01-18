@@ -439,11 +439,11 @@ inline juce::String getModulationTypeName(ModulationType type)
 inline juce::String getGuitarBassTypeName(GuitarBassType type)
 {
     static const std::map<GuitarBassType, juce::String> names = {
-        {GuitarBassType::Amp, "Amp"},
-        {GuitarBassType::Cabinet, "Cabinet"},
-        {GuitarBassType::Pedal, "Pedal"},
-        {GuitarBassType::Preamp, "Preamp"},
-        {GuitarBassType::Suite, "Suite"},
+        {GuitarBassType::Amp, "Amplifiers"},
+        {GuitarBassType::Cabinet, "Cabinets"},
+        {GuitarBassType::Pedal, "Pedals"},
+        {GuitarBassType::Preamp, "Preamps"},
+        {GuitarBassType::Suite, "Suites"},
         {GuitarBassType::Unknown, "Unknown"}
     };
     auto it = names.find(type);

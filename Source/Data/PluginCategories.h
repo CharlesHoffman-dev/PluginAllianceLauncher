@@ -357,7 +357,7 @@ inline juce::String getDisplayCategoryName(DisplayCategory cat)
         // Brands (alphabetical)
         {DisplayCategory::Brand_ACMEAudio, "ACME Audio"},
         {DisplayCategory::Brand_ADA, "ADA"},
-        {DisplayCategory::Brand_ADPTRAudio, "ADPTR AUDIO"},
+        {DisplayCategory::Brand_ADPTRAudio, "ADPTR Audio"},
         {DisplayCategory::Brand_AMEK, "AMEK"},
         {DisplayCategory::Brand_Ampeg, "Ampeg"},
         {DisplayCategory::Brand_Bettermaker, "Bettermaker"},
@@ -447,7 +447,7 @@ inline juce::String getBrandName(const juce::String& pluginName, const juce::Str
         nameLower == "flanger" || nameLower == "std-1 stereo tapped delay" || nameLower.startsWith("std-1"))
         return "A/DA";
     if (mfrLower.contains("adptr") || nameLower.contains("adptr"))
-        return "ADPTR AUDIO";
+        return "ADPTR Audio";
     if (mfrLower.contains("amek") || nameLower.contains("amek"))
         return "AMEK";
     if (mfrLower.contains("ampeg") || nameLower.contains("ampeg"))
@@ -569,7 +569,7 @@ inline juce::String getDisplayName(const juce::String& pluginName, const juce::S
         name = name.substring(5);
     else if (name.startsWithIgnoreCase("ADA "))
         name = name.substring(4);
-    else if (name.startsWithIgnoreCase("ADPTR AUDIO "))
+    else if (name.startsWithIgnoreCase("ADPTR Audio "))
         name = name.substring(12);
     else if (name.startsWithIgnoreCase("ADPTR "))
         name = name.substring(6);

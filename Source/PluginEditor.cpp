@@ -182,7 +182,7 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     brandComboBox.addItem("All Brands", 1);
     brandComboBox.addItem("ACME Audio", 2);
     brandComboBox.addItem("ADA", 3);
-    brandComboBox.addItem("ADPTR AUDIO", 4);
+    brandComboBox.addItem("ADPTR Audio", 4);
     brandComboBox.addItem("AMEK", 5);
     brandComboBox.addItem("Ampeg", 6);
     brandComboBox.addItem("Bettermaker", 7);
