@@ -69,13 +69,6 @@ static EffectCategory categoryFromString(const juce::String& category)
         {"Vocal Processing", EffectCategory::VocalProcessing},
         {"Vocoders", EffectCategory::Vocoders},
 
-        // Aliases for backwards compatibility
-        {"3D Audio", EffectCategory::ThreeDAndSurround},
-        {"Surround Sound", EffectCategory::ThreeDAndSurround},
-        {"Imagers", EffectCategory::StereoImagers},
-        {"Modulation", EffectCategory::Modulators},
-        {"Vocoder", EffectCategory::Vocoders},
-
         // Legacy/fallback
         {"Other", EffectCategory::Unknown},
     };
@@ -100,7 +93,6 @@ static Era eraFromString(const juce::String& era)
         {"2010s", Era::Era_2010s},
         {"2020s", Era::Era_2020s},
         {"Digital", Era::Era_Digital},
-        {"Modern", Era::Era_Digital},  // Alias for backwards compatibility
     };
 
     auto it = eraMap.find(era);
@@ -1379,7 +1371,7 @@ void PluginDatabase::assignEra(PluginInfo& info)
         for (const auto& tag : metadata->tags)
         {
             Era era = eraFromString(tag);
-            if (era != Era::Era_Digital || tag == "Modern")
+            if (era != Era::Era_Digital || tag == "Digital")
             {
                 info.era = era;
                 return;
@@ -1387,7 +1379,7 @@ void PluginDatabase::assignEra(PluginInfo& info)
         }
     }
 
-    // Default to Modern for plugins without explicit era
+    // Default to Digital for plugins without explicit era
     info.era = Era::Era_Digital;
 }
 
