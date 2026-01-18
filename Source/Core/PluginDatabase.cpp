@@ -340,6 +340,78 @@ namespace CategoryMaps
         // ============ UTILITY ============
         {"bx_tuner", EffectCategory::Unknown},
         {"SPL DrumXchanger", EffectCategory::Unknown},
+
+        // ============ NEW PLUGINS (2024-2025) ============
+        // ADPTR Audio
+        {"ADPTR Audio Utopia", EffectCategory::Reverb},
+        {"ADPTR Utopia", EffectCategory::Reverb},
+        {"Utopia", EffectCategory::Reverb},
+        {"ADPTR Audio Hype", EffectCategory::MultiEffect},
+        {"ADPTR Hype", EffectCategory::MultiEffect},
+        {"Hype", EffectCategory::MultiEffect},
+
+        // Shadow Hills
+        {"Shadow Hills OptoMax", EffectCategory::Compressor},
+        {"OptoMax", EffectCategory::Compressor},
+
+        // NEOLD
+        {"NEOLD RZ062", EffectCategory::EQ},
+        {"RZ062", EffectCategory::EQ},
+
+        // SPL new
+        {"SPL Vitalizer MK3-T", EffectCategory::Mastering},
+        {"Vitalizer MK3-T", EffectCategory::Mastering},
+        {"SPL BiG", EffectCategory::StereoWidth},
+        {"BiG", EffectCategory::StereoWidth},
+        {"SPL Machine Head", EffectCategory::TapeEmulation},
+        {"Machine Head", EffectCategory::TapeEmulation},
+
+        // elysia new
+        {"elysia alpha compressor V2", EffectCategory::Compressor},
+        {"alpha compressor V2", EffectCategory::Compressor},
+
+        // Maag Audio new
+        {"Maag Audio EQ4 MS", EffectCategory::EQ},
+        {"EQ4 MS", EffectCategory::EQ},
+
+        // HEARS
+        {"HEARS Perfection", EffectCategory::Unknown},
+        {"Perfection", EffectCategory::Unknown},
+
+        // Brainworx new
+        {"Brainworx bx_XL V3", EffectCategory::Limiter},
+        {"bx_XL V3", EffectCategory::Limiter},
+        {"Brainworx bx_pulsar", EffectCategory::Delay},
+        {"bx_pulsar", EffectCategory::Delay},
+        {"Brainworx bx_aura", EffectCategory::Reverb},
+        {"bx_aura", EffectCategory::Reverb},
+        {"Brainworx bx_refinement V3", EffectCategory::EQ},
+        {"bx_refinement V3", EffectCategory::EQ},
+
+        // Vertigo new
+        {"Vertigo VSS-2", EffectCategory::ChannelStrip},
+        {"VSS-2", EffectCategory::ChannelStrip},
+
+        // HUM Audio
+        {"HUM Audio LAAL", EffectCategory::Limiter},
+        {"LAAL", EffectCategory::Limiter},
+
+        // Three-Body Technology new
+        {"Three-Body Technology Cenozoix Compressor", EffectCategory::Compressor},
+        {"Cenozoix Compressor", EffectCategory::Compressor},
+        {"Cenozoix", EffectCategory::Compressor},
+
+        // Black Box new
+        {"Black Box Analog Design HG-Q", EffectCategory::EQ},
+        {"HG-Q", EffectCategory::EQ},
+
+        // Lindell Audio new
+        {"Lindell Audio EQ825", EffectCategory::EQ},
+        {"EQ825", EffectCategory::EQ},
+
+        // Unfiltered Audio new
+        {"Unfiltered Audio Battalion", EffectCategory::Sequencer},
+        {"Battalion", EffectCategory::Sequencer},
     };
 
     // Plugin name -> Era mapping
@@ -842,7 +914,9 @@ bool PluginDatabase::matchesBrand(const PluginInfo& info, DisplayCategory brandC
         case DisplayCategory::Brand_ACMEAudio:
             return mfr.contains("acme") || name.contains("acme");
         case DisplayCategory::Brand_ADA:
-            return mfr.contains("a/da") || mfr.contains("a-da") || name.startsWith("a/da") || name.startsWith("a-da");
+            return mfr.contains("a/da") || mfr.contains("a-da") || mfr == "ada" ||
+                   name.startsWith("a/da") || name.startsWith("a-da") || name.startsWith("ada ") ||
+                   name.contains("ada flanger") || name.contains("ada std-1") || path.contains("ada_");
         case DisplayCategory::Brand_ADPTRAudio:
             return mfr.contains("adptr") || name.contains("adptr");
         case DisplayCategory::Brand_AMEK:

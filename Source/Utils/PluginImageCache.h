@@ -29,6 +29,9 @@ public:
     // Request an image to be loaded (async)
     void requestImage(const juce::String& pluginName);
 
+    // Clear all cached images (both memory and disk)
+    void clearCache();
+
     // Callback when an image is loaded
     std::function<void(const juce::String&)> onImageLoaded;
 

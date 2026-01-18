@@ -1257,6 +1257,22 @@ void PluginImageCache::requestImage(const juce::String& pluginName)
     wakeUp.signal();
 }
 
+void PluginImageCache::clearCache()
+{
+    juce::ScopedLock scopedLock(lock);
+
+    // Clear in-memory images
+    loadedImages.clear();
+    pendingRequests.clear();
+
+    // Clear disk cache
+    auto cacheDir = getCacheDirectory();
+    if (cacheDir.isDirectory())
+    {
+        cacheDir.deleteRecursively();
+    }
+}
+
 bool PluginImageCache::loadFromCache(const juce::String& pluginName)
 {
     auto cacheFile = getCacheFile(pluginName);

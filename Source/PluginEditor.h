@@ -74,6 +74,68 @@ public:
     }
 };
 
+// Custom LookAndFeel for settings button with gear icon
+class SettingsButtonLookAndFeel : public juce::LookAndFeel_V4
+{
+public:
+    void drawButtonBackground(juce::Graphics& g, juce::Button& button,
+                              const juce::Colour& backgroundColour,
+                              bool isMouseOverButton, bool isButtonDown) override
+    {
+        auto bounds = button.getLocalBounds().toFloat().reduced(0.5f);
+        auto baseColour = backgroundColour;
+
+        if (isButtonDown)
+            baseColour = baseColour.darker(0.2f);
+        else if (isMouseOverButton)
+            baseColour = baseColour.brighter(0.15f);
+
+        g.setColour(baseColour);
+        g.fillRoundedRectangle(bounds, 4.0f);
+    }
+
+    void drawButtonText(juce::Graphics& g, juce::TextButton& button,
+                        bool /*isMouseOverButton*/, bool /*isButtonDown*/) override
+    {
+        // Draw gear icon instead of text
+        auto bounds = button.getLocalBounds().toFloat();
+        auto centerX = bounds.getCentreX();
+        auto centerY = bounds.getCentreY();
+        auto size = juce::jmin(bounds.getWidth(), bounds.getHeight()) * 0.5f;
+
+        g.setColour(button.findColour(juce::TextButton::textColourOffId));
+
+        // Outer gear teeth
+        juce::Path gearPath;
+        const int numTeeth = 8;
+        const float outerRadius = size * 0.9f;
+        const float innerRadius = size * 0.65f;
+        const float toothDepth = size * 0.2f;
+
+        for (int i = 0; i < numTeeth * 2; ++i)
+        {
+            float angle = (float)i * juce::MathConstants<float>::pi / numTeeth;
+            float radius = (i % 2 == 0) ? outerRadius : (outerRadius - toothDepth);
+
+            float x = centerX + std::cos(angle) * radius;
+            float y = centerY + std::sin(angle) * radius;
+
+            if (i == 0)
+                gearPath.startNewSubPath(x, y);
+            else
+                gearPath.lineTo(x, y);
+        }
+        gearPath.closeSubPath();
+
+        // Inner circle (hole)
+        gearPath.addEllipse(centerX - innerRadius * 0.5f, centerY - innerRadius * 0.5f,
+                           innerRadius, innerRadius);
+
+        g.fillPath(gearPath, juce::AffineTransform::rotation(
+            juce::MathConstants<float>::pi / numTeeth, centerX, centerY));
+    }
+};
+
 class PluginAllianceLauncherEditor : public juce::AudioProcessorEditor,
                                       public juce::ChangeListener,
                                       public juce::Timer
@@ -107,7 +169,11 @@ private:
     // Top bar components
     SearchBar searchBar;
     juce::TextButton rescanButton;
+    juce::TextButton settingsButton;
     juce::TextButton toggleModeButton;
+
+    // Settings menu
+    void showSettingsMenu();
 
     // Sidebar components
     CategoryFilter categoryFilter;
@@ -163,6 +229,7 @@ private:
     // Custom look and feel for buttons
     ButtonLookAndFeel buttonLookAndFeel;
     BrandComboBoxLookAndFeel brandComboBoxLookAndFeel;
+    SettingsButtonLookAndFeel settingsButtonLookAndFeel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginAllianceLauncherEditor)
 };

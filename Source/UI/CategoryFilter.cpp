@@ -129,4 +129,20 @@ DisplayCategory CategoryFilter::getSelectedCategory() const
     return DisplayCategory::All;
 }
 
+void CategoryFilter::setSelectedCategory(DisplayCategory category)
+{
+    for (int i = 0; i < static_cast<int>(categories.size()); ++i)
+    {
+        if (!categories[i].isHeader && categories[i].category == category)
+        {
+            selectedRow = i;
+            listBox.selectRow(i);
+            return;
+        }
+    }
+    // Default to All if category not found
+    selectedRow = 0;
+    listBox.selectRow(0);
+}
+
 } // namespace PALauncher

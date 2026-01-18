@@ -14,7 +14,7 @@
     <key>CFBundleDisplayName</key>
     <string>Plugin Alliance Launcher</string>
     <key>CFBundlePackageType</key>
-    <string>BNDL</string>
+    <string>APPL</string>
     <key>CFBundleSignature</key>
     <string>????</string>
     <key>CFBundleShortVersionString</key>
@@ -25,31 +25,5 @@
     <string></string>
     <key>NSHighResolutionCapable</key>
     <true/>
-    <key>AudioComponents</key>
-    <array>
-      <dict>
-        <key>name</key>
-        <string>PALauncher: Plugin Alliance Launcher</string>
-        <key>description</key>
-        <string>Search and launch Plugin Alliance plugins</string>
-        <key>factoryFunction</key>
-        <string>PALauncherAUFactory</string>
-        <key>manufacturer</key>
-        <string>PLnc</string>
-        <key>type</key>
-        <string>aumf</string>
-        <key>subtype</key>
-        <string>PAL3</string>
-        <key>version</key>
-        <integer>65536</integer>
-        <key>resourceUsage</key>
-        <dict>
-          <key>network.client</key>
-          <true/>
-          <key>temporary-exception.files.all.read-write</key>
-          <true/>
-        </dict>
-      </dict>
-    </array>
   </dict>
 </plist>

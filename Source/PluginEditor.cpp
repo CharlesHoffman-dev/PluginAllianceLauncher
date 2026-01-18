@@ -88,6 +88,15 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     };
     addAndMakeVisible(rescanButton);
 
+    // Set up settings button - gear icon
+    settingsButton.setButtonText("");  // No text, just icon
+    settingsButton.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff2a2a2a));
+    settingsButton.setColour(juce::TextButton::textColourOffId, juce::Colours::white);
+    settingsButton.setLookAndFeel(&settingsButtonLookAndFeel);
+    settingsButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
+    settingsButton.onClick = [this]() { showSettingsMenu(); };
+    addAndMakeVisible(settingsButton);
+
     // Set up toggle mode button - white with black text
     toggleModeButton.setButtonText("Show Plugin");
     toggleModeButton.setColour(juce::TextButton::buttonColourId, juce::Colours::white);
@@ -454,6 +463,10 @@ void PluginAllianceLauncherEditor::resized()
 
     // Skip sidebar area (logo is there)
     topBar.removeFromLeft(sidebarWidth - 10);  // -10 because we already reduced by 10
+
+    // Settings button (gear icon) - rightmost
+    settingsButton.setBounds(topBar.removeFromRight(36));
+    topBar.removeFromRight(8);
 
     rescanButton.setBounds(topBar.removeFromRight(80));
     topBar.removeFromRight(8);
@@ -1102,6 +1115,124 @@ void PluginAllianceLauncherEditor::paintDetailsPanel(juce::Graphics& g, juce::Re
     juce::TextLayout textLayout;
     textLayout.createLayout(attrStr, static_cast<float>(contentBounds.getWidth()));
     textLayout.draw(g, contentBounds.toFloat());
+}
+
+void PluginAllianceLauncherEditor::showSettingsMenu()
+{
+    juce::PopupMenu menu;
+
+    // Display Settings submenu
+    juce::PopupMenu displayMenu;
+    displayMenu.addItem(101, "Small Cards", true, false);
+    displayMenu.addItem(102, "Medium Cards", true, true);  // Default checked
+    displayMenu.addItem(103, "Large Cards", true, false);
+    displayMenu.addSeparator();
+    displayMenu.addItem(104, "Show Descriptions", true, true);
+    menu.addSubMenu("Display", displayMenu);
+
+    // Scan Settings submenu
+    juce::PopupMenu scanMenu;
+    scanMenu.addItem(201, "Auto-Scan on Startup", true, false);
+    scanMenu.addSeparator();
+    scanMenu.addItem(202, "Add Scan Path...");
+    scanMenu.addItem(203, "Manage Scan Paths...");
+    menu.addSubMenu("Scanning", scanMenu);
+
+    // Behavior submenu
+    juce::PopupMenu behaviorMenu;
+    behaviorMenu.addItem(301, "Remember Last Filter", true, true);
+    behaviorMenu.addItem(302, "Remember Scroll Position", true, true);
+    behaviorMenu.addSeparator();
+    behaviorMenu.addItem(303, "Open Links in Browser", true, true);
+    menu.addSubMenu("Behavior", behaviorMenu);
+
+    menu.addSeparator();
+
+    // Data section
+    menu.addItem(401, "Clear Image Cache");
+    menu.addItem(402, "Reset All Filters");
+
+    menu.addSeparator();
+
+    // About section
+    menu.addItem(501, "About Plugin Alliance Launcher...");
+    menu.addItem(502, "Check for Updates...");
+
+    // Show menu and handle selection
+    menu.showMenuAsync(juce::PopupMenu::Options()
+        .withTargetComponent(&settingsButton)
+        .withMinimumWidth(180),
+        [this](int result)
+        {
+            switch (result)
+            {
+                case 101: // Small cards
+                case 102: // Medium cards
+                case 103: // Large cards
+                    // TODO: Implement card size setting
+                    break;
+
+                case 104: // Show descriptions
+                    // TODO: Implement description visibility toggle
+                    break;
+
+                case 201: // Auto-scan on startup
+                    // TODO: Implement auto-scan setting
+                    break;
+
+                case 202: // Add scan path
+                    // TODO: Implement add scan path dialog
+                    break;
+
+                case 203: // Manage scan paths
+                    // TODO: Implement scan paths manager
+                    break;
+
+                case 301: // Remember last filter
+                case 302: // Remember scroll position
+                case 303: // Open links in browser
+                    // TODO: Implement behavior settings
+                    break;
+
+                case 401: // Clear image cache
+                    PluginImageCache::getInstance().clearCache();
+                    filterPlugins();  // Refresh to reload images
+                    break;
+
+                case 402: // Reset all filters
+                    currentCategory = DisplayCategory::All;
+                    currentSubcategory = -1;
+                    currentEra = Era::Era_Unknown;
+                    currentBrandFilter = "";
+                    currentSearchText = "";
+                    searchBar.clear();
+                    categoryFilter.setSelectedCategory(DisplayCategory::All);
+                    subcategoryFilter.setCategory(DisplayCategory::All);
+                    eraComboBox.setSelectedId(1, juce::dontSendNotification);
+                    brandComboBox.setSelectedId(1, juce::dontSendNotification);
+                    sortComboBox.setSelectedId(1, juce::dontSendNotification);
+                    currentSortOrder = 0;
+                    filterPlugins();
+                    break;
+
+                case 501: // About
+                    juce::AlertWindow::showMessageBoxAsync(
+                        juce::AlertWindow::InfoIcon,
+                        "About Plugin Alliance Launcher",
+                        "Plugin Alliance Launcher v1.0.0\n\n"
+                        "A plugin browser and host for Plugin Alliance plugins.\n\n"
+                        "Visit plugin-alliance.com for more information.",
+                        "OK");
+                    break;
+
+                case 502: // Check for updates
+                    juce::URL("https://www.plugin-alliance.com/pages/downloads").launchInDefaultBrowser();
+                    break;
+
+                default:
+                    break;
+            }
+        });
 }
 
 } // namespace PALauncher

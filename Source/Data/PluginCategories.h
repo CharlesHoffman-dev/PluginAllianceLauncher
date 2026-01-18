@@ -404,6 +404,11 @@ inline juce::String getBrandName(const juce::String& pluginName, const juce::Str
     auto nameLower = pluginName.toLowerCase();
     auto mfrLower = manufacturerName.toLowerCase();
 
+    // ============ HARDCODED OVERRIDES ============
+    // These plugins report "Plugin Alliance" as manufacturer but have specific brands
+    if (pluginName == "ADA Flanger" || pluginName == "ADA STD-1 Stereo Tapped Delay")
+        return "A/DA";
+
     // Check for Brainworx prefix first (most common)
     if (nameLower.startsWith("bx_") || nameLower.startsWith("bx "))
         return "Brainworx";
@@ -411,7 +416,12 @@ inline juce::String getBrandName(const juce::String& pluginName, const juce::Str
     // Alphabetical brand detection
     if (mfrLower.contains("acme") || nameLower.contains("acme"))
         return "ACME Audio";
-    if (mfrLower.contains("a/da") || mfrLower.contains("a-da") || nameLower.startsWith("a/da") || nameLower.startsWith("a-da"))
+    if (mfrLower.contains("a/da") || mfrLower.contains("a-da") || mfrLower == "ada" ||
+        nameLower.startsWith("a/da") || nameLower.startsWith("a-da") ||
+        nameLower.contains(" ada ") || nameLower.startsWith("ada ") || nameLower.endsWith(" ada") ||
+        nameLower.contains("ada_") || nameLower.contains("_ada") ||
+        nameLower.contains("ada flanger") || nameLower.contains("ada std-1") ||
+        nameLower == "flanger" || nameLower == "std-1 stereo tapped delay" || nameLower.startsWith("std-1"))
         return "A/DA";
     if (mfrLower.contains("adptr") || nameLower.contains("adptr"))
         return "ADPTR AUDIO";
@@ -534,6 +544,8 @@ inline juce::String getDisplayName(const juce::String& pluginName, const juce::S
         name = name.substring(11);
     else if (name.startsWithIgnoreCase("A/DA "))
         name = name.substring(5);
+    else if (name.startsWithIgnoreCase("ADA "))
+        name = name.substring(4);
     else if (name.startsWithIgnoreCase("ADPTR AUDIO "))
         name = name.substring(12);
     else if (name.startsWithIgnoreCase("ADPTR "))

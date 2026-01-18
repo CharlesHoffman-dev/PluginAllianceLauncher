@@ -31,6 +31,9 @@ public:
     // Get selected category
     DisplayCategory getSelectedCategory() const;
 
+    // Set selected category programmatically
+    void setSelectedCategory(DisplayCategory category);
+
     // Callback when category changes
     std::function<void(DisplayCategory)> onCategoryChanged;
 
