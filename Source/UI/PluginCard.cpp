@@ -107,14 +107,16 @@ void PluginCard::paint(juce::Graphics& g)
     auto brandName = getBrandName(pluginInfo.description.name, pluginInfo.description.manufacturerName);
     auto displayName = getDisplayName(pluginInfo.description.name, brandName);
 
-    // Brand name - gray text, in line with star
+    // Add spacing above brand name to push content below the star
+    contentBounds.removeFromTop(9);
+
+    // Brand name - gray text
     g.setColour(juce::Colour(0xff666666));
     g.setFont(juce::Font(13.0f));
-    auto brandBounds = contentBounds.removeFromTop(12);
-    brandBounds.removeFromRight(26); // Space for favorite button
+    auto brandBounds = contentBounds.removeFromTop(14);
     g.drawText(brandName, brandBounds, juce::Justification::centredLeft, true);
 
-    // Plugin name (with brand removed) - dark text, larger bold font
+    // Plugin name (with brand removed) - dark text
     g.setColour(juce::Colour(0xff1a1a1a));
     g.setFont(juce::Font(16.0f, juce::Font::bold));
     g.drawText(displayName, contentBounds.removeFromTop(24),
@@ -224,7 +226,8 @@ void PluginCard::resized()
 {
     // Position the Load button in center of image area
     auto contentBounds = getLocalBounds().reduced(8, 6);
-    contentBounds.removeFromTop(12);  // Brand name
+    contentBounds.removeFromTop(9);   // Spacing above brand
+    contentBounds.removeFromTop(14);  // Brand name
     contentBounds.removeFromTop(24);  // Plugin name
     contentBounds.removeFromTop(6);   // Spacing
     auto imageBounds = contentBounds.removeFromTop(125);

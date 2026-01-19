@@ -277,18 +277,18 @@ inline juce::String getEffectCategoryName(EffectCategory cat)
         {EffectCategory::SpectralAnalysis, "Meter"},
 
         // Other categories (appear under Other in sidebar)
-        {EffectCategory::Gates, "Gates"},
+        {EffectCategory::Gates, "Gate"},
         {EffectCategory::LoFi, "Lo-Fi"},
-        {EffectCategory::Modulators, "Modulators"},
+        {EffectCategory::Modulators, "Modulator"},
         {EffectCategory::MultiFX, "Multi-FX"},
         {EffectCategory::PitchCorrection, "Pitch Correction"},
         {EffectCategory::Restoration, "Restoration"},
-        {EffectCategory::StereoImagers, "Stereo Imagers"},
+        {EffectCategory::StereoImagers, "Stereo Imager"},
         {EffectCategory::ThreeDAndSurround, "3D & Surround Sound"},
-        {EffectCategory::TransientShapers, "Transient Shapers"},
+        {EffectCategory::TransientShapers, "Transient Shaper"},
         {EffectCategory::Utility, "Utility"},
         {EffectCategory::VocalProcessing, "Vocal Processing"},
-        {EffectCategory::Vocoders, "Vocoders"},
+        {EffectCategory::Vocoders, "Vocoder"},
 
         // Legacy
         {EffectCategory::ExpansionPack, "Other"},
