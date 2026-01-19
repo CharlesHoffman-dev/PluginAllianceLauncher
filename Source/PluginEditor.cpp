@@ -929,6 +929,18 @@ void PluginAllianceLauncherEditor::refreshPluginsPreservingScroll()
 
 void PluginAllianceLauncherEditor::loadSelectedPlugin(const PluginInfo& info)
 {
+    // Check if the plugin is installed before attempting to load
+    if (!info.isInstalled)
+    {
+        juce::AlertWindow::showMessageBoxAsync(
+            juce::AlertWindow::InfoIcon,
+            "Plugin Not Installed",
+            "This plugin is not installed on your system.\n\nVisit plugin-alliance.com to purchase and download it.",
+            "OK"
+        );
+        return;
+    }
+
     // Show loading indicator immediately
     isLoadingPlugin = true;
     loadingPluginName = info.description.name;

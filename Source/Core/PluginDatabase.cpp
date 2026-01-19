@@ -1576,27 +1576,36 @@ void PluginDatabase::loadFromDisk()
     if (xml == nullptr || !xml->hasTagName("PALauncherDatabase"))
         return;
 
-    // Only update metadata (favorites, lastUsed) for existing plugins
-    // Don't add new plugins - the embedded database is the source of truth
+    // Restore plugin metadata including file paths from last scan
     for (auto* pluginXml : xml->getChildIterator())
     {
         if (pluginXml->hasTagName("Plugin"))
         {
             auto savedName = pluginXml->getStringAttribute("name");
+            auto savedFileOrIdentifier = pluginXml->getStringAttribute("fileOrIdentifier");
+            auto savedFormat = pluginXml->getStringAttribute("format");
+            auto savedUid = pluginXml->getStringAttribute("uid").getIntValue();
             auto isFavorite = pluginXml->getBoolAttribute("favorite", false);
             auto lastUsed = pluginXml->getStringAttribute("lastUsed").getLargeIntValue();
-
-            // Skip if no user data to restore
-            if (!isFavorite && lastUsed == 0)
-                continue;
 
             // Find matching plugin in the database by name
             for (auto& pair : plugins)
             {
                 if (pair.second.description.name.equalsIgnoreCase(savedName))
                 {
+                    // Restore user data
                     pair.second.isFavorite = isFavorite;
                     pair.second.lastUsed = lastUsed;
+
+                    // Restore file path if it looks like a real path (not just "PluginName.vst3")
+                    // Real paths contain directory separators
+                    if (savedFileOrIdentifier.containsChar('/') || savedFileOrIdentifier.containsChar('\\'))
+                    {
+                        pair.second.description.fileOrIdentifier = savedFileOrIdentifier;
+                        pair.second.description.pluginFormatName = savedFormat;
+                        pair.second.description.uniqueId = savedUid;
+                        pair.second.isInstalled = true;
+                    }
                     break;
                 }
             }
