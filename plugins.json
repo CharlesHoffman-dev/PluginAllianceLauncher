@@ -42,9 +42,9 @@
     },
     {
       "id": "adptr_audio_hype",
-      "displayName": "ADPTR Audio Hype",
+      "displayName": "Hype",
       "brand": "ADPTR Audio",
-      "vstFileName": "Hype",
+      "vstFileName": "ADPTR Hype",
       "url": "https://www.plugin-alliance.com/en/products/adptr_hype.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300999_56d6bbd4-8d7d-408d-845b-51ae21f9a76c.png",
       "description": "Multi-band enhancement with compression, harmonics, and stereo width adjustment.",
@@ -55,9 +55,9 @@
     },
     {
       "id": "adptr_audio_utopia",
-      "displayName": "ADPTR Audio Utopia",
+      "displayName": "Utopia",
       "brand": "ADPTR Audio",
-      "vstFileName": "Utopia",
+      "vstFileName": "ADPTR Utopia",
       "url": "https://www.plugin-alliance.com/en/products/adptr_utopia.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-301236.png",
       "description": "Spectral reverb for lush, evolving, cinematic soundscapes with real-time harmonic transformation.",
@@ -97,7 +97,7 @@
       "id": "adptr_streamliner",
       "displayName": "Streamliner",
       "brand": "ADPTR Audio",
-      "vstFileName": "Streamliner",
+      "vstFileName": "ADPTR StreamLiner",
       "url": "https://www.plugin-alliance.com/en/products/adptr_streamliner.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300287.png",
       "description": "AI-assisted mastering with LUFS targeting and adaptive processing.",
@@ -110,7 +110,7 @@
       "id": "amek_eq200",
       "displayName": "EQ 200",
       "brand": "AMEK",
-      "vstFileName": "EQ 200",
+      "vstFileName": "AMEK EQ 200",
       "url": "https://www.plugin-alliance.com/en/products/amek_eq_200.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300375_a06e2b91-11f1-4fc0-9d21-fe1b9a9de6b7.png",
       "description": "Legendary analog parametric EQ with Massenburg-style precision.",
@@ -124,7 +124,7 @@
       "id": "amek_mastering_compressor",
       "displayName": "Mastering Compressor",
       "brand": "AMEK",
-      "vstFileName": "Mastering Compressor",
+      "vstFileName": "AMEK Mastering Compressor",
       "url": "https://www.plugin-alliance.com/en/products/amek_mastering_compressor.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300375.png",
       "description": "Smooth mastering compressor with versatile VCA and optical modes.",
@@ -138,7 +138,7 @@
       "id": "ampeg_b15n",
       "displayName": "B-15N",
       "brand": "Ampeg",
-      "vstFileName": "B-15N",
+      "vstFileName": "Ampeg B15N",
       "url": "https://www.plugin-alliance.com/en/products/ampeg_b15n.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300306_f99f79f4-3b68-439a-a025-a1f90f6fbe13.png",
       "description": "The classic 1960 Portaflex bass amp with warm tube tone.",
@@ -151,7 +151,7 @@
       "id": "ampeg_svt3pro",
       "displayName": "SVT-3PRO",
       "brand": "Ampeg",
-      "vstFileName": "SVT-3PRO",
+      "vstFileName": "Ampeg SVT3Pro",
       "url": "https://www.plugin-alliance.com/en/products/ampeg_svt3pro.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300306.png",
       "description": "Hybrid tube/solid-state bass amp with modern punch and clarity.",
@@ -164,7 +164,7 @@
       "id": "ampeg_svtvr",
       "displayName": "SVT-VR",
       "brand": "Ampeg",
-      "vstFileName": "SVT-VR",
+      "vstFileName": "Ampeg SVTVR",
       "url": "https://www.plugin-alliance.com/en/products/ampeg_svtvr.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300154_2cb58dff-84c5-4f9d-aee6-bd1fce67d1d7.png",
       "description": "The legendary 1969 SVT all-tube bass amp with 300-watt power.",
@@ -177,7 +177,7 @@
       "id": "ampeg_v4b",
       "displayName": "V-4B",
       "brand": "Ampeg",
-      "vstFileName": "V-4B",
+      "vstFileName": "Ampeg V4B",
       "url": "https://www.plugin-alliance.com/en/products/ampeg_v4b.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300530_e5bf95b6-a1d5-4f20-8e9a-da1f1b22d0b8.png",
       "description": "100-watt all-tube bass amp from 1971 with classic SVT preamp.",
@@ -190,7 +190,7 @@
       "id": "bettermaker_eq232d",
       "displayName": "EQ232D",
       "brand": "Bettermaker",
-      "vstFileName": "EQ232D",
+      "vstFileName": "Bettermaker EQ232D",
       "url": "https://www.plugin-alliance.com/en/products/bettermaker_eq232d.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300325_45026c47-87af-406e-80a2-d5d5ee6bf93b.png",
       "description": "Modern mastering EQ with Pultec-style passive curves and extended control.",
@@ -203,9 +203,9 @@
     },
     {
       "id": "black_box_hg2",
-      "displayName": "Black Box Analog Design HG-2",
+      "displayName": "HG-2",
       "brand": "Black Box Analog Design",
-      "vstFileName": "HG-2",
+      "vstFileName": "Black Box Analog Design HG-2",
       "url": "https://www.plugin-alliance.com/en/products/black_box_analog_design_hg-2.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300097_1ec3b92b-f2f9-431f-b851-4ac0ce3e4971.png",
       "description": "Tube saturation processor with pentode and triode stages for rich harmonics.",
@@ -216,9 +216,9 @@
     },
     {
       "id": "black_box_hg2ms",
-      "displayName": "Black Box Analog Design HG-2MS",
+      "displayName": "HG-2MS",
       "brand": "Black Box Analog Design",
-      "vstFileName": "HG-2MS",
+      "vstFileName": "Black Box Analog Design HG-2MS",
       "url": "https://www.plugin-alliance.com/en/products/black_box_analog_design_hg-2ms.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300097.png",
       "description": "Mid-side version of the HG-2 tube saturator for mastering.",
@@ -229,9 +229,9 @@
     },
     {
       "id": "black_box_analog_design_hg_q",
-      "displayName": "Black Box Analog Design HG-Q",
+      "displayName": "HG-Q",
       "brand": "Black Box Analog Design",
-      "vstFileName": "HG-Q",
+      "vstFileName": "Black Box Analog Design HG-Q",
       "url": "https://www.plugin-alliance.com/en/products/black_box_hg-q.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300902_7f6334fb.png",
       "description": "Six-band EQ with dual circuit design, tube boosts, and solid-state cuts.",
@@ -242,7 +242,7 @@
     },
     {
       "id": "brainworx_bx_aura",
-      "displayName": "Brainworx bx_aura",
+      "displayName": "bx_aura",
       "brand": "Brainworx",
       "vstFileName": "bx_aura",
       "url": "https://www.plugin-alliance.com/en/products/bx_aura.html",
@@ -255,7 +255,7 @@
     },
     {
       "id": "brainworx_bx_bassdude",
-      "displayName": "Brainworx bx_bassdude",
+      "displayName": "bx_bassdude",
       "brand": "Brainworx",
       "vstFileName": "bx_bassdude",
       "url": "https://www.plugin-alliance.com/en/products/bx_bassdude.html",
@@ -268,7 +268,7 @@
     },
     {
       "id": "brainworx_bx_console_focusrite",
-      "displayName": "Brainworx bx_console Focusrite SC",
+      "displayName": "bx_console Focusrite SC",
       "brand": "Brainworx",
       "vstFileName": "bx_console Focusrite SC",
       "url": "https://www.plugin-alliance.com/en/products/bx_console_focusrite_sc.html",
@@ -281,7 +281,7 @@
     },
     {
       "id": "brainworx_bx_console_n",
-      "displayName": "Brainworx bx_console N",
+      "displayName": "bx_console N",
       "brand": "Brainworx",
       "vstFileName": "bx_console N",
       "url": "https://www.plugin-alliance.com/en/products/bx_console_n.html",
@@ -294,7 +294,7 @@
     },
     {
       "id": "brainworx_bx_console_ssl_4000_e",
-      "displayName": "Brainworx bx_console SSL 4000 E",
+      "displayName": "bx_console SSL 4000 E",
       "brand": "Brainworx",
       "vstFileName": "bx_console SSL 4000 E",
       "url": "https://www.plugin-alliance.com/en/products/bx_console_ssl_4000_e.html",
@@ -307,7 +307,7 @@
     },
     {
       "id": "brainworx_bx_console_ssl_4000_g",
-      "displayName": "Brainworx bx_console SSL 4000 G",
+      "displayName": "bx_console SSL 4000 G",
       "brand": "Brainworx",
       "vstFileName": "bx_console SSL 4000 G",
       "url": "https://www.plugin-alliance.com/en/products/bx_console_ssl_4000_g.html",
@@ -320,7 +320,7 @@
     },
     {
       "id": "brainworx_bx_console_ssl_9000_j",
-      "displayName": "Brainworx bx_console SSL 9000 J",
+      "displayName": "bx_console SSL 9000 J",
       "brand": "Brainworx",
       "vstFileName": "bx_console SSL 9000 J",
       "url": "https://www.plugin-alliance.com/en/products/bx_console_ssl_9000_j.html",
@@ -333,9 +333,9 @@
     },
     {
       "id": "brainworx_bx_delay_2500",
-      "displayName": "Brainworx bx_delay 2500",
+      "displayName": "bx_delay 2500",
       "brand": "Brainworx",
-      "vstFileName": "bx_delay 2500",
+      "vstFileName": "bx_delay2500",
       "url": "https://www.plugin-alliance.com/en/products/bx_delay_2500.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300111.png",
       "description": "Versatile stereo delay with extensive modulation and filtering.",
@@ -346,7 +346,7 @@
     },
     {
       "id": "brainworx_bx_digital_v3",
-      "displayName": "Brainworx bx_digital V3",
+      "displayName": "bx_digital V3",
       "brand": "Brainworx",
       "vstFileName": "bx_digital V3",
       "url": "https://www.plugin-alliance.com/en/products/bx_digital_v3.html",
@@ -360,7 +360,7 @@
     },
     {
       "id": "brainworx_bx_distorange",
-      "displayName": "Brainworx bx_distorange",
+      "displayName": "bx_distorange",
       "brand": "Brainworx",
       "vstFileName": "bx_distorange",
       "url": "https://www.plugin-alliance.com/en/products/bx_distorange.html",
@@ -373,7 +373,7 @@
     },
     {
       "id": "brainworx_bx_dynEQ_v2",
-      "displayName": "Brainworx bx_dynEQ V2",
+      "displayName": "bx_dynEQ V2",
       "brand": "Brainworx",
       "vstFileName": "bx_dynEQ V2",
       "url": "https://www.plugin-alliance.com/en/products/bx_dyneq_v2.html",
@@ -387,7 +387,7 @@
     },
     {
       "id": "brainworx_bx_greenscreamer",
-      "displayName": "Brainworx bx_greenscreamer",
+      "displayName": "bx_greenscreamer",
       "brand": "Brainworx",
       "vstFileName": "bx_greenscreamer",
       "url": "https://www.plugin-alliance.com/en/products/bx_greenscreamer.html",
@@ -400,7 +400,7 @@
     },
     {
       "id": "brainworx_bx_hybrid_v2",
-      "displayName": "Brainworx bx_hybrid V2",
+      "displayName": "bx_hybrid V2",
       "brand": "Brainworx",
       "vstFileName": "bx_hybrid V2",
       "url": "https://www.plugin-alliance.com/en/products/bx_hybrid_v2.html",
@@ -414,7 +414,7 @@
     },
     {
       "id": "brainworx_bx_limiter_true_peak",
-      "displayName": "Brainworx bx_limiter True Peak",
+      "displayName": "bx_limiter True Peak",
       "brand": "Brainworx",
       "vstFileName": "bx_limiter True Peak",
       "url": "https://www.plugin-alliance.com/en/products/bx_limiter_true_peak.html",
@@ -427,7 +427,7 @@
     },
     {
       "id": "brainworx_bx_masterdesk",
-      "displayName": "Brainworx bx_masterdesk",
+      "displayName": "bx_masterdesk",
       "brand": "Brainworx",
       "vstFileName": "bx_masterdesk",
       "url": "https://www.plugin-alliance.com/en/products/bx_masterdesk.html",
@@ -440,7 +440,7 @@
     },
     {
       "id": "brainworx_bx_masterdesk_classic",
-      "displayName": "Brainworx bx_masterdesk Classic",
+      "displayName": "bx_masterdesk Classic",
       "brand": "Brainworx",
       "vstFileName": "bx_masterdesk Classic",
       "url": "https://www.plugin-alliance.com/en/products/bx_masterdesk_classic.html",
@@ -453,7 +453,7 @@
     },
     {
       "id": "brainworx_bx_masterdesk_pro",
-      "displayName": "Brainworx bx_masterdesk Pro",
+      "displayName": "bx_masterdesk Pro",
       "brand": "Brainworx",
       "vstFileName": "bx_masterdesk Pro",
       "url": "https://www.plugin-alliance.com/en/products/bx_masterdesk_pro.html",
@@ -466,7 +466,7 @@
     },
     {
       "id": "brainworx_bx_meter",
-      "displayName": "Brainworx bx_meter",
+      "displayName": "bx_meter",
       "brand": "Brainworx",
       "vstFileName": "bx_meter",
       "url": "https://www.plugin-alliance.com/en/products/bx_meter.html",
@@ -479,7 +479,7 @@
     },
     {
       "id": "brainworx_bx_opto",
-      "displayName": "Brainworx bx_opto",
+      "displayName": "bx_opto",
       "brand": "Brainworx",
       "vstFileName": "bx_opto",
       "url": "https://www.plugin-alliance.com/en/products/bx_opto.html",
@@ -493,7 +493,7 @@
     },
     {
       "id": "brainworx_bx_opto_pedal",
-      "displayName": "Brainworx bx_opto Pedal",
+      "displayName": "bx_opto Pedal",
       "brand": "Brainworx",
       "vstFileName": "bx_opto Pedal",
       "url": "https://www.plugin-alliance.com/en/products/bx_opto_pedal.html",
@@ -506,7 +506,7 @@
     },
     {
       "id": "brainworx_bx_panEQ",
-      "displayName": "Brainworx bx_panEQ",
+      "displayName": "bx_panEQ",
       "brand": "Brainworx",
       "vstFileName": "bx_panEQ",
       "url": "https://www.plugin-alliance.com/en/products/bx_paneq.html",
@@ -519,7 +519,7 @@
     },
     {
       "id": "brainworx_bx_pulsar",
-      "displayName": "Brainworx bx_pulsar",
+      "displayName": "bx_pulsar",
       "brand": "Brainworx",
       "vstFileName": "bx_pulsar",
       "url": "https://www.plugin-alliance.com/en/products/bx_pulsar.html",
@@ -532,7 +532,7 @@
     },
     {
       "id": "brainworx_bx_refinement",
-      "displayName": "Brainworx bx_refinement",
+      "displayName": "bx_refinement",
       "brand": "Brainworx",
       "vstFileName": "bx_refinement",
       "url": "https://www.plugin-alliance.com/en/products/bx_refinement.html",
@@ -546,7 +546,7 @@
     },
     {
       "id": "brainworx_bx_refinement_v3",
-      "displayName": "Brainworx bx_refinement V3",
+      "displayName": "bx_refinement V3",
       "brand": "Brainworx",
       "vstFileName": "bx_refinement V3",
       "url": "https://www.plugin-alliance.com/en/products/bx_refinement_v3.html",
@@ -560,7 +560,7 @@
     },
     {
       "id": "brainworx_bx_rockrack_v3",
-      "displayName": "Brainworx bx_rockrack V3",
+      "displayName": "bx_rockrack V3",
       "brand": "Brainworx",
       "vstFileName": "bx_rockrack V3",
       "url": "https://www.plugin-alliance.com/en/products/bx_rockrack_v3.html",
@@ -573,7 +573,7 @@
     },
     {
       "id": "brainworx_bx_saturator_v2",
-      "displayName": "Brainworx bx_saturator V2",
+      "displayName": "bx_saturator V2",
       "brand": "Brainworx",
       "vstFileName": "bx_saturator V2",
       "url": "https://www.plugin-alliance.com/en/products/bx_saturator_v2.html",
@@ -586,7 +586,7 @@
     },
     {
       "id": "brainworx_bx_shredspread",
-      "displayName": "Brainworx bx_shredspread",
+      "displayName": "bx_shredspread",
       "brand": "Brainworx",
       "vstFileName": "bx_shredspread",
       "url": "https://www.plugin-alliance.com/en/products/bx_shredspread.html",
@@ -599,7 +599,7 @@
     },
     {
       "id": "brainworx_bx_ssl_v2",
-      "displayName": "Brainworx bx_ssl V2",
+      "displayName": "bx_ssl V2",
       "brand": "Brainworx",
       "vstFileName": "bx_ssl V2",
       "url": "https://www.plugin-alliance.com/en/products/bx_ssl_v2.html",
@@ -613,7 +613,7 @@
     },
     {
       "id": "brainworx_bx_subfilter",
-      "displayName": "Brainworx bx_subfilter",
+      "displayName": "bx_subfilter",
       "brand": "Brainworx",
       "vstFileName": "bx_subfilter",
       "url": "https://www.plugin-alliance.com/en/products/bx_subfilter.html",
@@ -626,7 +626,7 @@
     },
     {
       "id": "brainworx_bx_subsynth",
-      "displayName": "Brainworx bx_subsynth",
+      "displayName": "bx_subsynth",
       "brand": "Brainworx",
       "vstFileName": "bx_subsynth",
       "url": "https://www.plugin-alliance.com/en/products/bx_subsynth.html",
@@ -639,9 +639,9 @@
     },
     {
       "id": "brainworx_bx_townhouse",
-      "displayName": "Brainworx bx_townhouse",
+      "displayName": "bx_townhouse",
       "brand": "Brainworx",
-      "vstFileName": "bx_townhouse",
+      "vstFileName": "bx_townhouse Buss Compressor",
       "url": "https://www.plugin-alliance.com/en/products/bx_townhouse.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300157_d75f2fe4-c76d-4e45-a270-e1f9baafb74f.png",
       "description": "SSL bus compressor from the legendary Townhouse Studios.",
@@ -653,7 +653,7 @@
     },
     {
       "id": "brainworx_bx_tuner",
-      "displayName": "Brainworx bx_tuner",
+      "displayName": "bx_tuner",
       "brand": "Brainworx",
       "vstFileName": "bx_tuner",
       "url": "https://www.plugin-alliance.com/en/products/bx_tuner.html",
@@ -666,7 +666,7 @@
     },
     {
       "id": "brainworx_bx_xl_v2",
-      "displayName": "Brainworx bx_XL V2",
+      "displayName": "bx_XL V2",
       "brand": "Brainworx",
       "vstFileName": "bx_XL V2",
       "url": "https://www.plugin-alliance.com/en/products/bx_xl_v2.html",
@@ -679,7 +679,7 @@
     },
     {
       "id": "brainworx_bx_xl_v3",
-      "displayName": "Brainworx bx_XL V3",
+      "displayName": "bx_XL V3",
       "brand": "Brainworx",
       "vstFileName": "bx_XL V3",
       "url": "https://www.plugin-alliance.com/en/products/bx_xl_v3.html",
@@ -692,9 +692,9 @@
     },
     {
       "id": "chandler_gav19t",
-      "displayName": "Chandler Limited GAV19T",
+      "displayName": "GAV19T",
       "brand": "Chandler Limited",
-      "vstFileName": "GAV19T",
+      "vstFileName": "Chandler GAV19T",
       "url": "https://www.plugin-alliance.com/en/products/chandler_gav19t.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300252.png",
       "description": "19-watt Class A tube amp inspired by vintage British designs from 2012.",
@@ -705,9 +705,9 @@
     },
     {
       "id": "dangerous_bax_eq",
-      "displayName": "Dangerous Music BAX EQ",
+      "displayName": "BAX EQ",
       "brand": "Dangerous Music",
-      "vstFileName": "BAX EQ",
+      "vstFileName": "Dangerous BAX EQ Mix",
       "url": "https://www.plugin-alliance.com/en/products/dangerous_bax_eq.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300120_e2f34e44-7d84-4fd1-ab13-2203f87a2b0e.png",
       "description": "Mastering EQ based on the 1950s Baxandall tone control design, released 2009.",
@@ -719,9 +719,9 @@
     },
     {
       "id": "diezel_herbert",
-      "displayName": "Diezel Herbert",
+      "displayName": "Herbert",
       "brand": "Diezel",
-      "vstFileName": "Herbert",
+      "vstFileName": "Diezel Herbert",
       "url": "https://www.plugin-alliance.com/en/products/diezel_herbert.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300175_27a0fd9b-cc3a-488e-8aab-f78b40b3dbdd.png",
       "description": "180-watt high-gain German tube amp from 2000 for modern metal.",
@@ -732,9 +732,9 @@
     },
     {
       "id": "diezel_vh4",
-      "displayName": "Diezel VH4",
+      "displayName": "VH4",
       "brand": "Diezel",
-      "vstFileName": "VH4",
+      "vstFileName": "Diezel VH4",
       "url": "https://www.plugin-alliance.com/en/products/diezel_vh4.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300175.png",
       "description": "Legendary 1994 4-channel German tube amp with versatile gain staging.",
@@ -747,7 +747,7 @@
       "id": "ds_audio_thorn",
       "displayName": "DS Audio Thorn",
       "brand": "DS Audio Software",
-      "vstFileName": "Thorn",
+      "vstFileName": "DS Thorn",
       "url": "https://www.plugin-alliance.com/en/products/ds_audio_thorn.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300291.png",
       "description": "Spectral wavetable synthesizer with complex modulation.",
@@ -758,9 +758,9 @@
     },
     {
       "id": "elysia_alpha_compressor",
-      "displayName": "elysia alpha compressor",
+      "displayName": "alpha compressor",
       "brand": "elysia",
-      "vstFileName": "alpha compressor",
+      "vstFileName": "elysia alpha compressor V2",
       "url": "https://www.plugin-alliance.com/en/products/elysia_alpha_compressor.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300144_c2df89cc-bc07-45d6-ae2c-59f5d437eb5b.png",
       "description": "Mastering-grade discrete Class A compressor from 2008.",
@@ -773,9 +773,9 @@
     },
     {
       "id": "elysia_alpha_compressor_v2",
-      "displayName": "elysia alpha compressor V2",
+      "displayName": "alpha compressor V2",
       "brand": "elysia",
-      "vstFileName": "alpha compressor V2",
+      "vstFileName": "elysia alpha compressor V2",
       "url": "https://www.plugin-alliance.com/en/products/elysia_alpha_compressor_v2.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-301253.png",
       "description": "Detailed emulation of revered analog mastering compressor with M/S capability and TMT technology.",
@@ -788,9 +788,9 @@
     },
     {
       "id": "elysia_mpressor",
-      "displayName": "elysia mpressor",
+      "displayName": "mpressor",
       "brand": "elysia",
-      "vstFileName": "mpressor",
+      "vstFileName": "elysia mpressor",
       "url": "https://www.plugin-alliance.com/en/products/elysia_mpressor.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300099_5063cabe-5e9e-47b5-a3e9-8a35ecb6e2e0.png",
       "description": "Creative discrete Class A compressor with unique character.",
@@ -802,9 +802,9 @@
     },
     {
       "id": "elysia_museq",
-      "displayName": "elysia museq",
+      "displayName": "museq",
       "brand": "elysia",
-      "vstFileName": "museq",
+      "vstFileName": "elysia museq mix",
       "url": "https://www.plugin-alliance.com/en/products/elysia_museq.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300144.png",
       "description": "Mastering EQ with warm tube-like character.",
@@ -816,9 +816,9 @@
     },
     {
       "id": "elysia_niveau_filter",
-      "displayName": "elysia niveau filter",
+      "displayName": "niveau filter",
       "brand": "elysia",
-      "vstFileName": "niveau filter",
+      "vstFileName": "elysia niveau filter",
       "url": "https://www.plugin-alliance.com/en/products/elysia_niveau_filter.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300099.png",
       "description": "Single-knob tilt EQ for broad tonal shaping.",
@@ -829,9 +829,9 @@
     },
     {
       "id": "engl_e646_vs",
-      "displayName": "ENGL E646 VS",
+      "displayName": "E646 VS",
       "brand": "ENGL",
-      "vstFileName": "E646 VS",
+      "vstFileName": "ENGL E646 VS",
       "url": "https://www.plugin-alliance.com/en/products/engl_e646_vs.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300236.png",
       "description": "Victor Smolski signature amp for progressive metal.",
@@ -842,7 +842,7 @@
     },
     {
       "id": "engl_e765_rt",
-      "displayName": "ENGL E765 Retro Tube",
+      "displayName": "E765 Retro Tube",
       "brand": "ENGL",
       "vstFileName": "E765 Retro Tube",
       "url": "https://www.plugin-alliance.com/en/products/engl_e765_rt.html",
@@ -855,9 +855,9 @@
     },
     {
       "id": "engl_savage_120",
-      "displayName": "ENGL Savage 120",
+      "displayName": "Savage 120",
       "brand": "ENGL",
-      "vstFileName": "Savage 120",
+      "vstFileName": "ENGL Savage 120",
       "url": "https://www.plugin-alliance.com/en/products/engl_savage_120.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300236_35ca3f14-ccc9-4b77-8393-bda3c13f2d7b.png",
       "description": "High-gain German metal amp from 1993 with tight low end.",
@@ -868,7 +868,7 @@
     },
     {
       "id": "fiedler_audio_dolby_atmos_composer",
-      "displayName": "fiedler audio Dolby Atmos Composer",
+      "displayName": "Dolby Atmos Composer",
       "brand": "fiedler audio",
       "vstFileName": "Dolby Atmos Composer",
       "url": "https://www.plugin-alliance.com/en/products/fiedler_audio_dolby_atmos_composer.html",
@@ -881,7 +881,7 @@
     },
     {
       "id": "fiedler_audio_spacelab_interstellar",
-      "displayName": "fiedler audio Spacelab Interstellar",
+      "displayName": "Spacelab Interstellar",
       "brand": "fiedler audio",
       "vstFileName": "Spacelab Interstellar",
       "url": "https://www.plugin-alliance.com/en/products/fiedler_audio_spacelab_interstellar.html",
@@ -894,9 +894,9 @@
     },
     {
       "id": "fiedler_audio_stage",
-      "displayName": "fiedler audio STAGE",
+      "displayName": "STAGE",
       "brand": "fiedler audio",
-      "vstFileName": "STAGE",
+      "vstFileName": "fiedler audio stage",
       "url": "https://www.plugin-alliance.com/en/products/fiedler_audio_stage.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300304_8e80efd1-82eb-4a45-9b6f-7ef1a4da64a5.png",
       "description": "Advanced stereo positioning and depth control.",
@@ -907,7 +907,7 @@
     },
     {
       "id": "focusrite_red2_red3",
-      "displayName": "Focusrite Red 2 & Red 3",
+      "displayName": "Red 2 & Red 3",
       "brand": "Focusrite",
       "vstFileName": "Red 2 & Red 3",
       "url": "https://www.plugin-alliance.com/en/products/focusrite_red_2_red_3.html",
@@ -920,7 +920,7 @@
     },
     {
       "id": "friedman_be100",
-      "displayName": "Friedman BE-100",
+      "displayName": "BE-100",
       "brand": "Friedman",
       "vstFileName": "BE-100",
       "url": "https://www.plugin-alliance.com/en/products/friedman_be100.html",
@@ -933,9 +933,9 @@
     },
     {
       "id": "friedman_buxom_betty",
-      "displayName": "Friedman Buxom Betty",
+      "displayName": "Buxom Betty",
       "brand": "Friedman",
-      "vstFileName": "Buxom Betty",
+      "vstFileName": "Friedman Buxom Betty",
       "url": "https://www.plugin-alliance.com/en/products/friedman_buxom_betty.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300246.png",
       "description": "American-voiced clean to crunch amp with 6V6 power tubes.",
@@ -946,9 +946,9 @@
     },
     {
       "id": "friedman_ds40",
-      "displayName": "Friedman DS40",
+      "displayName": "DS40",
       "brand": "Friedman",
-      "vstFileName": "DS40",
+      "vstFileName": "Friedman DS40",
       "url": "https://www.plugin-alliance.com/en/products/friedman_ds40.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300246_c8e3e3ca-e5f9-4b45-bc92-a62ed3e38da0.png",
       "description": "EL34-powered British tone with smooth gain.",
@@ -961,7 +961,7 @@
       "id": "fuchs_overdrive_supreme",
       "displayName": "Fuchs Overdrive Supreme 50",
       "brand": "Fuchs Audio",
-      "vstFileName": "Overdrive Supreme 50",
+      "vstFileName": "Fuchs Overdrive Supreme 50",
       "url": "https://www.plugin-alliance.com/en/products/fuchs_overdrive_supreme.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300256.png",
       "description": "Boutique American amp with transparent overdrive.",
@@ -985,9 +985,9 @@
     },
     {
       "id": "gallien_krueger_800rb",
-      "displayName": "Gallien-Krueger 800RB",
+      "displayName": "800RB",
       "brand": "Gallien-Krueger",
-      "vstFileName": "800RB",
+      "vstFileName": "Gallien Krueger 800RB",
       "url": "https://www.plugin-alliance.com/en/products/gallien_krueger_800rb.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300355_4f8bbe3f-c5d8-4fc9-a64f-3f3d5a8d63b4.png",
       "description": "Iconic 1982 bi-amped bass head with aggressive punch.",
@@ -998,9 +998,9 @@
     },
     {
       "id": "hears_perfection",
-      "displayName": "HEARS Perfection",
+      "displayName": "Perfection",
       "brand": "HEARS",
-      "vstFileName": "Perfection",
+      "vstFileName": "HEARS Perfection",
       "url": "https://www.plugin-alliance.com/en/products/hears_perfection.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-301331.png",
       "description": "Personalized frequency correction addressing hearing loss for accurate mix monitoring.",
@@ -1013,7 +1013,7 @@
       "id": "hum_audio_laal",
       "displayName": "HUM Audio LAAL",
       "brand": "HUM Audio Devices",
-      "vstFileName": "LAAL",
+      "vstFileName": "HUM Audio Devices LAAL",
       "url": "https://www.plugin-alliance.com/en/products/hum_audio_laal.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-301243_6f932fc9.png",
       "description": "Look Ahead Analog Limiter for mastering with fully analog look ahead delay line.",
@@ -1024,9 +1024,9 @@
     },
     {
       "id": "kiive_xtcomp",
-      "displayName": "Kiive Audio XTComp",
+      "displayName": "XTComp",
       "brand": "Kiive Audio",
-      "vstFileName": "XTComp",
+      "vstFileName": "Kiive XTComp",
       "url": "https://www.plugin-alliance.com/en/products/kiive_xtcomp.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300768.png",
       "description": "FET compressor inspired by the Empirical Labs Distressor (1995).",
@@ -1038,9 +1038,9 @@
     },
     {
       "id": "knif_audio_soma",
-      "displayName": "Knif Audio Soma",
+      "displayName": "Soma",
       "brand": "Knif Audio",
-      "vstFileName": "Soma",
+      "vstFileName": "Knif Audio Soma",
       "url": "https://www.plugin-alliance.com/en/products/knif_audio_soma.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300455.png",
       "description": "Finnish passive tube EQ for mastering from 2013.",
@@ -1053,9 +1053,9 @@
     },
     {
       "id": "lindell_254e",
-      "displayName": "Lindell Audio 254E",
+      "displayName": "254E",
       "brand": "Lindell Audio",
-      "vstFileName": "254E",
+      "vstFileName": "Lindell 254E",
       "url": "https://www.plugin-alliance.com/en/products/lindell_254e.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300181_5bca4a41-cb3c-4e95-8a3c-71f79e99ea66.png",
       "description": "Neve 2254 diode bridge compressor from 1968.",
@@ -1067,9 +1067,9 @@
     },
     {
       "id": "lindell_6x500",
-      "displayName": "Lindell Audio 6X-500",
+      "displayName": "6X-500",
       "brand": "Lindell Audio",
-      "vstFileName": "6X-500",
+      "vstFileName": "Lindell 6X-500",
       "url": "https://www.plugin-alliance.com/en/products/lindell_6x-500.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300181.png",
       "description": "Transformer-coupled preamp with passive EQ from 2012.",
@@ -1080,9 +1080,9 @@
     },
     {
       "id": "lindell_7x500",
-      "displayName": "Lindell Audio 7X-500",
+      "displayName": "7X-500",
       "brand": "Lindell Audio",
-      "vstFileName": "7X-500",
+      "vstFileName": "Lindell 7X-500",
       "url": "https://www.plugin-alliance.com/en/products/lindell_7x-500.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300199.png",
       "description": "FET compressor with 1176-style compression.",
@@ -1094,7 +1094,7 @@
     },
     {
       "id": "lindell_80_series",
-      "displayName": "Lindell Audio 80 Series",
+      "displayName": "80 Series",
       "brand": "Lindell Audio",
       "vstFileName": "80 Series",
       "url": "https://www.plugin-alliance.com/en/products/lindell_80_series.html",
@@ -1107,9 +1107,9 @@
     },
     {
       "id": "lindell_audio_eq825",
-      "displayName": "Lindell Audio EQ825",
+      "displayName": "EQ825",
       "brand": "Lindell Audio",
-      "vstFileName": "EQ825",
+      "vstFileName": "Lindell EQ825",
       "url": "https://www.plugin-alliance.com/en/products/lindell_eq825.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-301272.jpg",
       "description": "Rare mastering EQ emulation with tube and transformer design.",
@@ -1121,9 +1121,9 @@
     },
     {
       "id": "lindell_pex500",
-      "displayName": "Lindell Audio PEX-500",
+      "displayName": "PEX-500",
       "brand": "Lindell Audio",
-      "vstFileName": "PEX-500",
+      "vstFileName": "Lindell PEX-500",
       "url": "https://www.plugin-alliance.com/en/products/lindell_pex-500.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300181_31ac25bc-f0c7-4e4b-b9fc-ff58f0e91e9e.png",
       "description": "Pultec-style passive EQ with modern enhancements.",
@@ -1135,9 +1135,9 @@
     },
     {
       "id": "lindell_retro",
-      "displayName": "Lindell Audio Retro",
+      "displayName": "Retro",
       "brand": "Lindell Audio",
-      "vstFileName": "Retro",
+      "vstFileName": "RC-20 Retro Color",
       "url": "https://www.plugin-alliance.com/en/products/lindell_retro.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300535_f4d5b9d7-aba0-4a31-8e0b-61cce47e0a4a.png",
       "description": "Complete channel strip with vintage British character.",
@@ -1148,7 +1148,7 @@
     },
     {
       "id": "looptrotter_monster",
-      "displayName": "Looptrotter Monster",
+      "displayName": "Monster",
       "brand": "Looptrotter",
       "vstFileName": "Monster",
       "url": "https://www.plugin-alliance.com/en/products/looptrotter_monster.html",
@@ -1162,9 +1162,9 @@
     },
     {
       "id": "louder_than_liftoff_silver_bullet_mk2",
-      "displayName": "Louder Than Liftoff SILVER BULLET mk2",
+      "displayName": "SILVER BULLET mk2",
       "brand": "Louder Than Liftoff",
-      "vstFileName": "SILVER BULLET mk2",
+      "vstFileName": "LTL SILVER BULLET mk2",
       "url": "https://www.plugin-alliance.com/en/products/louder_than_liftoff_silver_bullet_mk2.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300952_ae72f079-fed9-499f-a15f-c00e2d9fe988.png",
       "description": "Console-style tone shaping with dual saturation paths from 2014.",
@@ -1175,9 +1175,9 @@
     },
     {
       "id": "maag_eq4",
-      "displayName": "Maag Audio EQ4",
+      "displayName": "EQ4",
       "brand": "Maag Audio",
-      "vstFileName": "EQ4",
+      "vstFileName": "Maag EQ4",
       "url": "https://www.plugin-alliance.com/en/products/maag_eq4.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300284_06dd5fd0-71b9-4f15-a9e4-ed4f64b94a84.png",
       "description": "6-band EQ with legendary Air Band for high-frequency presence.",
@@ -1188,9 +1188,9 @@
     },
     {
       "id": "maag_audio_eq4_ms",
-      "displayName": "Maag Audio EQ4 MS",
+      "displayName": "EQ4 MS",
       "brand": "Maag Audio",
-      "vstFileName": "EQ4 MS",
+      "vstFileName": "Maag EQ4 MS",
       "url": "https://www.plugin-alliance.com/en/products/maag_eq4_ms.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-301107_7eb64f8c.png",
       "description": "Dual-channel mastering EQ with AIR BAND and M/S processing.",
@@ -1203,9 +1203,9 @@
     },
     {
       "id": "millennia_nseq2",
-      "displayName": "Millennia NSEQ-2",
+      "displayName": "NSEQ-2",
       "brand": "Millennia",
-      "vstFileName": "NSEQ-2",
+      "vstFileName": "Millennia NSEQ-2",
       "url": "https://www.plugin-alliance.com/en/products/millennia_nseq-2.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300218_24fa8cd1-4c88-4f76-a617-e314ea56ae09.png",
       "description": "Mastering parametric EQ with tube/solid-state topology from 1999.",
@@ -1218,7 +1218,7 @@
     },
     {
       "id": "millennia_tclv",
-      "displayName": "Millennia TCL-V",
+      "displayName": "TCL-V",
       "brand": "Millennia",
       "vstFileName": "TCL-V",
       "url": "https://www.plugin-alliance.com/en/products/millennia_tclv.html",
@@ -1233,9 +1233,9 @@
     },
     {
       "id": "neold_big_al",
-      "displayName": "NEOLD BIG AL",
+      "displayName": "BIG AL",
       "brand": "NEOLD",
-      "vstFileName": "BIG AL",
+      "vstFileName": "NEOLD BIG AL",
       "url": "https://www.plugin-alliance.com/en/products/neold_big_al.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/BIG_AL_GUI.png",
       "description": "Dual-stage tube saturator modeled from custom-built hardware with NOS components (2021).",
@@ -1246,9 +1246,9 @@
     },
     {
       "id": "neold_rz062",
-      "displayName": "NEOLD RZ062",
+      "displayName": "RZ062",
       "brand": "NEOLD",
-      "vstFileName": "RZ062",
+      "vstFileName": "NEOLD RZ062",
       "url": "https://www.plugin-alliance.com/en/products/neold_rz062.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/NEOLD_RZ062_GUI.jpg",
       "description": "Recreation of the legendary 1960s Siemens Klangfilm tube equalizer with vintage warmth.",
@@ -1259,9 +1259,9 @@
     },
     {
       "id": "neold_u17",
-      "displayName": "NEOLD U17",
+      "displayName": "U17",
       "brand": "NEOLD",
-      "vstFileName": "U17",
+      "vstFileName": "NEOLD U17",
       "url": "https://www.plugin-alliance.com/en/products/neold_u17.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/U17_GUI.png",
       "description": "Tube compressor modeled from rare 1954 broadcast compressor, custom hardware built for plugin (2022).",
@@ -1273,9 +1273,9 @@
     },
     {
       "id": "neold_u2a",
-      "displayName": "NEOLD U2A",
+      "displayName": "U2A",
       "brand": "NEOLD",
-      "vstFileName": "U2A",
+      "vstFileName": "NEOLD U2A",
       "url": "https://www.plugin-alliance.com/en/products/neold_u2a.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/U2A_GUI.png",
       "description": "LA-2A style optical compressor modeled from custom-built hardware (2023).",
@@ -1287,9 +1287,9 @@
     },
     {
       "id": "neold_v76u73",
-      "displayName": "NEOLD V76U73",
+      "displayName": "V76U73",
       "brand": "NEOLD",
-      "vstFileName": "V76U73",
+      "vstFileName": "NEOLD V76U73",
       "url": "https://www.plugin-alliance.com/en/products/neold_v76u73.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/V76U73_GUI.png",
       "description": "1950s Telefunken V76 preamp (1958) and U73 compressor (1954).",
@@ -1300,9 +1300,9 @@
     },
     {
       "id": "neold_warble",
-      "displayName": "NEOLD WARBLE",
+      "displayName": "WARBLE",
       "brand": "NEOLD",
-      "vstFileName": "WARBLE",
+      "vstFileName": "NEOLD WARBLE",
       "url": "https://www.plugin-alliance.com/en/products/neold_warble.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/WARBLE_GUI.png",
       "description": "Vintage tape modulation modeled from custom-built hardware (2021).",
@@ -1313,9 +1313,9 @@
     },
     {
       "id": "noveltech_character",
-      "displayName": "Noveltech Character",
+      "displayName": "Character",
       "brand": "Noveltech",
-      "vstFileName": "Character",
+      "vstFileName": "Noveltech Character",
       "url": "https://www.plugin-alliance.com/en/products/noveltech_character.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300068_1e2c9ec6-8b04-49e6-ac20-bfbc963d0481.png",
       "description": "Intelligent tonal and dynamic enhancement by auto-adjusting complex parameters.",
@@ -1326,9 +1326,9 @@
     },
     {
       "id": "noveltech_vocal_enhancer",
-      "displayName": "Noveltech Vocal Enhancer",
+      "displayName": "Vocal Enhancer",
       "brand": "Noveltech",
-      "vstFileName": "Vocal Enhancer",
+      "vstFileName": "Noveltech Vocal Enhancer",
       "url": "https://www.plugin-alliance.com/en/products/noveltech_vocal_enhancer.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300068.png",
       "description": "Intelligent vocal processing for presence and clarity.",
@@ -1339,9 +1339,9 @@
     },
     {
       "id": "proaudiodsp_dsm_v3",
-      "displayName": "ProAudioDSP DSM V3",
+      "displayName": "DSM V3",
       "brand": "ProAudioDSP",
-      "vstFileName": "DSM V3",
+      "vstFileName": "Pro Audio DSP DSM V3",
       "url": "https://www.plugin-alliance.com/en/products/pro_audio_dsp_dsm_v3.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300403_9bb5d6c3-5d94-46d0-86c4-f8c86bd9a7c3.png",
       "description": "Spectral matching and dynamic control to capture and apply sonic character.",
@@ -1353,9 +1353,9 @@
     },
     {
       "id": "purple_audio_mc77",
-      "displayName": "Purple Audio MC77",
+      "displayName": "MC77",
       "brand": "Purple Audio",
-      "vstFileName": "MC77",
+      "vstFileName": "Purple Audio MC 77",
       "url": "https://www.plugin-alliance.com/en/products/purple_audio_mc_77.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300417_8eceb4b6-1550-4496-aa2a-45aadb2e1c92.png",
       "description": "1176 limiter recreation from 2002 with stereo processing.",
@@ -1367,9 +1367,9 @@
     },
     {
       "id": "schoeps_double_ms",
-      "displayName": "Schoeps Double MS",
+      "displayName": "Double MS",
       "brand": "Schoeps",
-      "vstFileName": "Double MS",
+      "vstFileName": "Schoeps Double MS",
       "url": "https://www.plugin-alliance.com/en/products/schoeps_double_ms.html",
       "imageUrl": "https://schoeps.de/fileadmin/user_upload/_processed_/5/8/csm_DoubleMS_PlugIn_9e5c8e5c68.jpg",
       "description": "Double mid-side decoding and processing for surround recordings.",
@@ -1380,9 +1380,9 @@
     },
     {
       "id": "schoeps_mono_upmix",
-      "displayName": "Schoeps Mono Upmix",
+      "displayName": "Mono Upmix",
       "brand": "Schoeps",
-      "vstFileName": "Mono Upmix",
+      "vstFileName": "Schoeps Mono Upmix 1to3",
       "url": "https://www.plugin-alliance.com/en/products/schoeps_mono_upmix.html",
       "imageUrl": "https://schoeps.de/fileadmin/user_upload/_processed_/a/c/csm_MonoUpmix_0788687428.jpg",
       "description": "Convert mono recordings to immersive stereo and surround.",
@@ -1393,9 +1393,9 @@
     },
     {
       "id": "shadow_hills_mastering_compressor",
-      "displayName": "Shadow Hills Mastering Compressor",
+      "displayName": "Mastering Compressor",
       "brand": "Shadow Hills",
-      "vstFileName": "Mastering Compressor",
+      "vstFileName": "Shadow Hills Mastering Compressor",
       "url": "https://www.plugin-alliance.com/en/products/shadow_hills_mastering_compressor.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300081_a9a2e16c-5b2f-47ae-9537-3073a3ed18f9.png",
       "description": "Dual-stage compression with switchable output transformers from 2008.",
@@ -1407,7 +1407,7 @@
     },
     {
       "id": "shadow_hills_mastering_compressor_class_a",
-      "displayName": "Shadow Hills Mastering Compressor Class A",
+      "displayName": "Mastering Compressor Class A",
       "brand": "Shadow Hills",
       "vstFileName": "Mastering Compressor Class A",
       "url": "https://www.plugin-alliance.com/en/products/shadow_hills_class_a_mastering_comp.html",
@@ -1421,9 +1421,9 @@
     },
     {
       "id": "shadow_hills_optomax",
-      "displayName": "Shadow Hills OptoMax",
+      "displayName": "OptoMax",
       "brand": "Shadow Hills",
-      "vstFileName": "OptoMax",
+      "vstFileName": "Shadow Hills OptoMax",
       "url": "https://www.plugin-alliance.com/en/products/shadow_hills_optomax.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-301332.jpg",
       "description": "New generation optical compressor with expanded ratio, speed, push mode, and transformer options.",
@@ -1435,7 +1435,7 @@
     },
     {
       "id": "sonible_smart:reverb",
-      "displayName": "sonible smart:reverb",
+      "displayName": "smart:reverb",
       "brand": "sonible",
       "vstFileName": "smart:reverb",
       "url": "https://www.plugin-alliance.com/en/products/x-sonible-smart-reverb.html",
@@ -1448,9 +1448,9 @@
     },
     {
       "id": "spl_attacker_plus",
-      "displayName": "SPL Attacker Plus",
+      "displayName": "Attacker Plus",
       "brand": "SPL",
-      "vstFileName": "Attacker Plus",
+      "vstFileName": "SPL Attacker Plus",
       "url": "https://www.plugin-alliance.com/en/products/spl_attacker_plus.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300303_cf082f7d-27b1-4317-874f-3732caec074d.png",
       "description": "Transient enhancer for adding punch and attack.",
@@ -1461,9 +1461,9 @@
     },
     {
       "id": "spl_big",
-      "displayName": "SPL BiG",
+      "displayName": "BiG",
       "brand": "SPL",
-      "vstFileName": "BiG",
+      "vstFileName": "SPL BiG",
       "url": "https://www.plugin-alliance.com/en/products/spl_big.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-301157_b5d6244c.png",
       "description": "TEC Award-winning stereo expander with unique stereo processing and AirBass EQ.",
@@ -1474,9 +1474,9 @@
     },
     {
       "id": "spl_de_verb",
-      "displayName": "SPL De-Verb",
+      "displayName": "De-Verb",
       "brand": "SPL",
-      "vstFileName": "De-Verb",
+      "vstFileName": "SPL De-Verb Plus",
       "url": "https://www.plugin-alliance.com/en/products/spl_de-verb.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
       "description": "Reverb reduction tool for cleaning up room ambience.",
@@ -1487,9 +1487,9 @@
     },
     {
       "id": "spl_de_verb_plus",
-      "displayName": "SPL De-Verb Plus",
+      "displayName": "De-Verb Plus",
       "brand": "SPL",
-      "vstFileName": "De-Verb Plus",
+      "vstFileName": "SPL De-Verb Plus",
       "url": "https://www.plugin-alliance.com/en/products/spl_de-verb_plus.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300305_8082d009-6270-4264-84f8-5801a3dad97e.png",
       "description": "Advanced reverb reduction with more control and precision.",
@@ -1500,9 +1500,9 @@
     },
     {
       "id": "spl_drumxchanger",
-      "displayName": "SPL DrumXchanger",
+      "displayName": "DrumXchanger",
       "brand": "SPL",
-      "vstFileName": "DrumXchanger",
+      "vstFileName": "SPL DrumXchanger",
       "url": "https://www.plugin-alliance.com/en/products/spl_drumxchanger.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300020_b30bc9e9-b50a-4559-9e06-353e837f36fd.png",
       "description": "Drum replacement and augmentation tool.",
@@ -1513,9 +1513,9 @@
     },
     {
       "id": "spl_eq_ranger_plus",
-      "displayName": "SPL EQ Ranger Plus",
+      "displayName": "EQ Ranger Plus",
       "brand": "SPL",
-      "vstFileName": "EQ Ranger Plus",
+      "vstFileName": "SPL EQ Ranger Plus",
       "url": "https://www.plugin-alliance.com/en/products/spl_eq_ranger_plus.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300186_672ca1e9-1e63-43ec-9c48-8a7cdb66b8d0.png",
       "description": "Full-range parametric equalizer with precise control.",
@@ -1527,9 +1527,9 @@
     },
     {
       "id": "spl_free_ranger",
-      "displayName": "SPL Free Ranger",
+      "displayName": "Free Ranger",
       "brand": "SPL",
-      "vstFileName": "Free Ranger",
+      "vstFileName": "SPL Free Ranger",
       "url": "https://www.plugin-alliance.com/en/products/spl_free_ranger.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/SPL_ranger_free.png",
       "description": "Four-band EQ based on the Passeq circuit.",
@@ -1541,9 +1541,9 @@
     },
     {
       "id": "spl_hawkeye",
-      "displayName": "SPL HawkEye",
+      "displayName": "HawkEye",
       "brand": "SPL",
-      "vstFileName": "HawkEye",
+      "vstFileName": "SPL HawkEye",
       "url": "https://www.plugin-alliance.com/en/products/spl_hawkeye.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300400_d705cd7c-7087-4680-914b-646d0b0fe801.png",
       "description": "Metering suite with level, loudness, bit monitoring, vectorscope, and spectrum analyzer.",
@@ -1554,9 +1554,9 @@
     },
     {
       "id": "spl_iron",
-      "displayName": "SPL IRON",
+      "displayName": "IRON",
       "brand": "SPL",
-      "vstFileName": "IRON",
+      "vstFileName": "SPL IRON",
       "url": "https://www.plugin-alliance.com/en/products/spl_iron.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300386_5a609eb0-4eb3-4780-82b2-2bc2077c677b.png",
       "description": "Tube compressor from 2015 with dual-circuit topology for transparent mastering.",
@@ -1569,9 +1569,9 @@
     },
     {
       "id": "spl_machine_head",
-      "displayName": "SPL Machine Head",
+      "displayName": "Machine Head",
       "brand": "SPL",
-      "vstFileName": "Machine Head",
+      "vstFileName": "SPL Machine Head",
       "url": "https://www.plugin-alliance.com/en/products/spl_machine_head.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-301150_00d7f9ee.png",
       "description": "Digital tape saturator with Original and Ultimate modes for authentic analog warmth.",
@@ -1582,9 +1582,9 @@
     },
     {
       "id": "spl_mo_verb_plus",
-      "displayName": "SPL Mo-Verb Plus",
+      "displayName": "Mo-Verb Plus",
       "brand": "SPL",
-      "vstFileName": "Mo-Verb Plus",
+      "vstFileName": "SPL Mo-Verb Plus",
       "url": "https://www.plugin-alliance.com/en/products/spl_mo-verb_plus.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300307_b8dc9794-488c-4ffc-af14-deaa77633c9e.png",
       "description": "Room simulation and reverb modeling.",
@@ -1595,9 +1595,9 @@
     },
     {
       "id": "spl_passeq",
-      "displayName": "SPL Passeq",
+      "displayName": "Passeq",
       "brand": "SPL",
-      "vstFileName": "Passeq",
+      "vstFileName": "SPL Passeq",
       "url": "https://www.plugin-alliance.com/en/products/spl_passeq.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300014_41e6334f-ea81-4115-bcb2-ce021a984aae.png",
       "description": "Six-band passive mastering EQ from 2007.",
@@ -1610,9 +1610,9 @@
     },
     {
       "id": "spl_pq",
-      "displayName": "SPL PQ",
+      "displayName": "PQ",
       "brand": "SPL",
-      "vstFileName": "PQ",
+      "vstFileName": "SPL PQ",
       "url": "https://www.plugin-alliance.com/en/products/spl_pq.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300014.png",
       "description": "Mastering equalizer with five bands of precise control.",
@@ -1624,9 +1624,9 @@
     },
     {
       "id": "spl_transient_designer_plus",
-      "displayName": "SPL Transient Designer Plus",
+      "displayName": "Transient Designer Plus",
       "brand": "SPL",
-      "vstFileName": "Transient Designer Plus",
+      "vstFileName": "SPL Transient Designer Plus",
       "url": "https://www.plugin-alliance.com/en/products/spl_transient_designer_plus.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187_f60f1190-959c-48af-b3e7-0d907bc344e9.png",
       "description": "Threshold-independent transient processing from 1998.",
@@ -1637,9 +1637,9 @@
     },
     {
       "id": "spl_twin_tube",
-      "displayName": "SPL Twin Tube",
+      "displayName": "Twin Tube",
       "brand": "SPL",
-      "vstFileName": "Twin Tube",
+      "vstFileName": "SPL TwinTube",
       "url": "https://www.plugin-alliance.com/en/products/spl_twintube.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300025_b2bd856a-47b9-433c-b622-31dd8c2d61a0.png",
       "description": "Dual tube saturation processor for warmth and harmonics.",
@@ -1650,9 +1650,9 @@
     },
     {
       "id": "spl_vitalizer_mk2_t",
-      "displayName": "SPL Vitalizer MK2-T",
+      "displayName": "Vitalizer MK2-T",
       "brand": "SPL",
-      "vstFileName": "Vitalizer MK2-T",
+      "vstFileName": "SPL Vitalizer MK2-T",
       "url": "https://www.plugin-alliance.com/en/products/spl_vitalizer_mk2-t.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
       "description": "Psychoacoustic processor from 1999 for enhancing bass and presence.",
@@ -1663,9 +1663,9 @@
     },
     {
       "id": "spl_vitalizer_mk3_t",
-      "displayName": "SPL Vitalizer MK3-T",
+      "displayName": "Vitalizer MK3-T",
       "brand": "SPL",
-      "vstFileName": "Vitalizer MK3-T",
+      "vstFileName": "SPL Vitalizer MK3-T",
       "url": "https://www.plugin-alliance.com/en/products/spl_vitalizer_mk3-t.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-301205.png",
       "description": "Mix finishing tool with frequency shaping, bass processing, and de-masking technology.",
@@ -1676,9 +1676,9 @@
     },
     {
       "id": "suhr_pt100",
-      "displayName": "Suhr PT100",
+      "displayName": "PT100",
       "brand": "Suhr",
-      "vstFileName": "PT100",
+      "vstFileName": "Suhr PT100",
       "url": "https://www.plugin-alliance.com/en/products/suhr_pt100.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300557_5b344abb-f597-41e9-ac6d-bd3885b474fc.png",
       "description": "Three-channel amplifier from 2011 with American clean, British vintage, and high-gain tones.",
@@ -1689,9 +1689,9 @@
     },
     {
       "id": "suhr_se100",
-      "displayName": "Suhr SE100",
+      "displayName": "SE100",
       "brand": "Suhr",
-      "vstFileName": "SE100",
+      "vstFileName": "Suhr SE100",
       "url": "https://www.plugin-alliance.com/en/products/suhr_se100.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300558_7a885e73-7f6b-4a7c-b1ab-3b8bf2413932.png",
       "description": "High-end guitar amplifier with versatile tone shaping.",
@@ -1702,9 +1702,9 @@
     },
     {
       "id": "three_body_technology_cenozoix_compressor",
-      "displayName": "Three-Body Technology Cenozoix Compressor",
+      "displayName": "Cenozoix Compressor",
       "brand": "Three-Body Technology",
-      "vstFileName": "Cenozoix Compressor",
+      "vstFileName": "TBTECH Cenozoix Compressor",
       "url": "https://www.plugin-alliance.com/en/products/tbt_cenozoix.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300982_3397fcd0.png",
       "description": "Next-gen compressor with 12 algorithms including modern and vintage emulations.",
@@ -1715,7 +1715,7 @@
     },
     {
       "id": "three_body_technology_kirchoff_eq",
-      "displayName": "Three-Body Technology Kirchoff EQ",
+      "displayName": "Kirchoff EQ",
       "brand": "Three-Body Technology",
       "vstFileName": "Kirchoff EQ",
       "url": "https://www.plugin-alliance.com/en/products/tbt_kirchhoff-eq.html",
@@ -1730,9 +1730,9 @@
     },
     {
       "id": "tomo_audiolabs_lisa",
-      "displayName": "TOMO Audiolabs LISA",
+      "displayName": "LISA",
       "brand": "TOMO Audiolabs",
-      "vstFileName": "LISA",
+      "vstFileName": "TOMO Audiolabs LISA",
       "url": "https://www.plugin-alliance.com/en/products/tomo_audiolabs_lisa.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300635_b22c3561-6e15-4c4d-ad52-4ac96b0e9d92.png",
       "description": "Six-band opto-compression dynamic EQ for sophisticated tone shaping.",
@@ -1744,7 +1744,7 @@
     },
     {
       "id": "unfiltered_audio_bass_mint",
-      "displayName": "Unfiltered Audio Bass-Mint",
+      "displayName": "Bass-Mint",
       "brand": "Unfiltered Audio",
       "vstFileName": "Bass-Mint",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_bass_mint.html",
@@ -1757,9 +1757,9 @@
     },
     {
       "id": "unfiltered_audio_battalion",
-      "displayName": "Unfiltered Audio Battalion",
+      "displayName": "Battalion",
       "brand": "Unfiltered Audio",
-      "vstFileName": "Battalion",
+      "vstFileName": "Unfiltered Audio Battalion",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_battalion.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-301002_746463f1.png",
       "description": "Modern drum machine with 20 synthesis engines and 1000+ samples.",
@@ -1770,9 +1770,9 @@
     },
     {
       "id": "unfiltered_audio_byome",
-      "displayName": "Unfiltered Audio BYOME",
+      "displayName": "BYOME",
       "brand": "Unfiltered Audio",
-      "vstFileName": "BYOME",
+      "vstFileName": "Unfiltered Audio Byome",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_byome.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300378_43bef938-0ea5-4f09-ad46-0b34c751df83.png",
       "description": "Modular effects with 40 unique types including reverbs, delays, and dynamics.",
@@ -1783,9 +1783,9 @@
     },
     {
       "id": "unfiltered_audio_dent_2",
-      "displayName": "Unfiltered Audio Dent 2",
+      "displayName": "Dent 2",
       "brand": "Unfiltered Audio",
-      "vstFileName": "Dent 2",
+      "vstFileName": "Unfiltered Audio Indent 2",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_dent_2.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300342_49bc2c9c-005d-4e8a-a7ae-f2b85de716c1.png",
       "description": "Waveform manipulation with clipping algorithms, bit-crushing, and modulation.",
@@ -1796,9 +1796,9 @@
     },
     {
       "id": "unfiltered_audio_fault",
-      "displayName": "Unfiltered Audio Fault",
+      "displayName": "Fault",
       "brand": "Unfiltered Audio",
-      "vstFileName": "Fault",
+      "vstFileName": "Unfiltered Audio Fault",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_fault.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300235_426efe25-abe9-4c9d-95d2-542c264e1dfa.png",
       "description": "Glitch and stutter effects for creative sound design.",
@@ -1809,9 +1809,9 @@
     },
     {
       "id": "unfiltered_audio_g8",
-      "displayName": "Unfiltered Audio G8",
+      "displayName": "G8",
       "brand": "Unfiltered Audio",
-      "vstFileName": "G8",
+      "vstFileName": "Unfiltered Audio G8",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_g8.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183_d5aedd52-8194-49bd-b280-24160da8aed4.png",
       "description": "Dynamic gate with MIDI control and alternate modes for creative gating.",
@@ -1822,9 +1822,9 @@
     },
     {
       "id": "unfiltered_audio_indent_2",
-      "displayName": "Unfiltered Audio Indent 2",
+      "displayName": "Indent 2",
       "brand": "Unfiltered Audio",
-      "vstFileName": "Indent 2",
+      "vstFileName": "Unfiltered Audio Indent 2",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_indent_2.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300343_766af22f-b8ac-43e8-b214-e6c3f008677a.png",
       "description": "Transient shaping with precise attack and sustain control.",
@@ -1835,9 +1835,9 @@
     },
     {
       "id": "unfiltered_audio_instant_delay",
-      "displayName": "Unfiltered Audio Instant Delay",
+      "displayName": "Instant Delay",
       "brand": "Unfiltered Audio",
-      "vstFileName": "Instant Delay",
+      "vstFileName": "Unfiltered Audio Instant Delay",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_instant_delay.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300316_ce1f07a0-722d-4d3a-a1bf-b43231b62808.png",
       "description": "Zero-latency delay for creative timing effects.",
@@ -1848,9 +1848,9 @@
     },
     {
       "id": "unfiltered_audio_lion",
-      "displayName": "Unfiltered Audio LION",
+      "displayName": "LION",
       "brand": "Unfiltered Audio",
-      "vstFileName": "LION",
+      "vstFileName": "Unfiltered Audio LION",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_lion.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300413_87e9ac60-f714-4a6d-9e6a-7e6cd43a070f.png",
       "description": "Dual-oscillator synthesizer with 26 modes, 16 filters, and 40+ effects.",
@@ -1861,9 +1861,9 @@
     },
     {
       "id": "unfiltered_audio_lo_fi_af",
-      "displayName": "Unfiltered Audio LO-FI-AF",
+      "displayName": "LO-FI-AF",
       "brand": "Unfiltered Audio",
-      "vstFileName": "LO-FI-AF",
+      "vstFileName": "Unfiltered Audio lo-fi-af",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_lo-fi-af.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300492_3815c462-512d-438e-a1f7-9796ef5e7296.png",
       "description": "Vintage degradation with four rearrangeable modules for nostalgic character.",
@@ -1874,9 +1874,9 @@
     },
     {
       "id": "unfiltered_audio_needlepoint",
-      "displayName": "Unfiltered Audio Needlepoint",
+      "displayName": "Needlepoint",
       "brand": "Unfiltered Audio",
-      "vstFileName": "Needlepoint",
+      "vstFileName": "Unfiltered Audio Needlepoint",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_needlepoint.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300663_e9b251cc-820d-41e8-86e9-f487dd48e022.png",
       "description": "Vinyl and tape emulation for analog warmth and character.",
@@ -1887,9 +1887,9 @@
     },
     {
       "id": "unfiltered_audio_sandman",
-      "displayName": "Unfiltered Audio Sandman",
+      "displayName": "Sandman",
       "brand": "Unfiltered Audio",
-      "vstFileName": "Sandman",
+      "vstFileName": "Unfiltered Audio Sandman",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_sandman.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300264.png",
       "description": "Delay with sleep mode for infinite frozen repeats.",
@@ -1900,9 +1900,9 @@
     },
     {
       "id": "unfiltered_audio_sandman_pro",
-      "displayName": "Unfiltered Audio Sandman Pro",
+      "displayName": "Sandman Pro",
       "brand": "Unfiltered Audio",
-      "vstFileName": "Sandman Pro",
+      "vstFileName": "Unfiltered Audio Sandman Pro",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_sandman_pro.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300264_331f5d02-0ec3-4e58-9218-1ffbbbf2a9f2.png",
       "description": "Sophisticated delay with multiple modes for echo to granular synthesis.",
@@ -1913,9 +1913,9 @@
     },
     {
       "id": "unfiltered_audio_silo",
-      "displayName": "Unfiltered Audio SILO",
+      "displayName": "SILO",
       "brand": "Unfiltered Audio",
-      "vstFileName": "SILO",
+      "vstFileName": "Unfiltered Audio Silo",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_silo.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300512_2269d8cb-2801-4e4d-915c-7ad722d6d4a8.png",
       "description": "Spectral freezing and manipulation for ambient textures.",
@@ -1926,9 +1926,9 @@
     },
     {
       "id": "unfiltered_audio_specops",
-      "displayName": "Unfiltered Audio SpecOps",
+      "displayName": "SpecOps",
       "brand": "Unfiltered Audio",
-      "vstFileName": "SpecOps",
+      "vstFileName": "Unfiltered Audio SpecOps",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_specops.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300263_cda3010b-a419-4289-8245-3481b6409d10.png",
       "description": "36 spectral effects applied to different frequency bands simultaneously.",
@@ -1939,9 +1939,9 @@
     },
     {
       "id": "unfiltered_audio_tails",
-      "displayName": "Unfiltered Audio TAILS",
+      "displayName": "TAILS",
       "brand": "Unfiltered Audio",
-      "vstFileName": "TAILS",
+      "vstFileName": "Unfiltered Audio Tails",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_tails.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300493_90634ade-c965-41fd-a5fe-ed40d14cec59.png",
       "description": "Next-gen reverb removing dissonances and transients with auto-ducking.",
@@ -1952,9 +1952,9 @@
     },
     {
       "id": "unfiltered_audio_triad",
-      "displayName": "Unfiltered Audio TRIAD",
+      "displayName": "TRIAD",
       "brand": "Unfiltered Audio",
-      "vstFileName": "TRIAD",
+      "vstFileName": "Unfiltered Audio Triad",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_triad.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300393_2300346d-45cc-4bd1-997d-10b1946db4e8.png",
       "description": "Multi-band distortion with three independent processing bands.",
@@ -1965,9 +1965,9 @@
     },
     {
       "id": "unfiltered_audio_zip",
-      "displayName": "Unfiltered Audio Zip",
+      "displayName": "Zip",
       "brand": "Unfiltered Audio",
-      "vstFileName": "Zip",
+      "vstFileName": "Unfiltered Audio Zip",
       "url": "https://www.plugin-alliance.com/en/products/unfiltered_audio_zip.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300357_6d1acfe7-c862-4f57-aeeb-d9fe37986420.png",
       "description": "Compressor/limiter with aggressive character and fast response.",
@@ -1978,9 +1978,9 @@
     },
     {
       "id": "vertigo_vsc_2",
-      "displayName": "Vertigo VSC-2",
+      "displayName": "VSC-2",
       "brand": "Vertigo",
-      "vstFileName": "VSC-2",
+      "vstFileName": "Vertigo VSC-2",
       "url": "https://www.plugin-alliance.com/en/products/vertigo_vsc-2.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300016_b2d9cdc4-0a57-4ea9-ac82-c9be994d59a3.png",
       "description": "VCA compressor from 2007 with 1979-style VCAs for smooth, glossy compression.",
@@ -1992,9 +1992,9 @@
     },
     {
       "id": "vertigo_vsm_3",
-      "displayName": "Vertigo VSM-3",
+      "displayName": "VSM-3",
       "brand": "Vertigo",
-      "vstFileName": "VSM-3",
+      "vstFileName": "Vertigo VSM-3",
       "url": "https://www.plugin-alliance.com/en/products/vertigo_vsm-3.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300100_481634f1-902d-46ca-9da7-bbe7f2b83313.png",
       "description": "Mastering saturation with dual harmonic circuitry for flexible tone shaping.",
@@ -2005,15 +2005,1158 @@
     },
     {
       "id": "vertigo_vss_2",
-      "displayName": "Vertigo VSS-2",
+      "displayName": "VSS-2",
       "brand": "Vertigo",
-      "vstFileName": "VSS-2",
+      "vstFileName": "Vertigo VSS-2",
       "url": "https://www.plugin-alliance.com/en/products/vertigo_vss-2.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-301211_c9e80b87.png",
       "description": "Channel strip combining VSC-3 compressor, VSE-4 EQ, and VSM-4 tube sections.",
       "category": "Channel Strips",
       "tags": [
         "2010s"
+      ]
+    },
+    {
+      "id": "amek_eq_250",
+      "displayName": "EQ 250",
+      "brand": "AMEK",
+      "vstFileName": "AMEK EQ 250",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Equalizers",
+      "tags": [
+        "1980s",
+        "Parametric"
+      ]
+    },
+    {
+      "id": "ampeg_svtvr_classic",
+      "displayName": "SVTVR Classic",
+      "brand": "Ampeg",
+      "vstFileName": "Ampeg SVTVR Classic",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Amplifiers",
+      "tags": [
+        "1960s"
+      ]
+    },
+    {
+      "id": "arousor",
+      "displayName": "Arousor",
+      "brand": "SPL",
+      "vstFileName": "Arousor",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Compressors",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "arousor_lt",
+      "displayName": "Arousor Lt",
+      "brand": "SPL",
+      "vstFileName": "Arousor Lt",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Compressors",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bettermaker_bm60",
+      "displayName": "BM60",
+      "brand": "Bettermaker",
+      "vstFileName": "Bettermaker BM60",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Compressors",
+      "tags": [
+        "2020s"
+      ]
+    },
+    {
+      "id": "bettermaker_bus_compressor",
+      "displayName": "Bus Compressor",
+      "brand": "Bettermaker",
+      "vstFileName": "Bettermaker Bus Compressor",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Compressors",
+      "tags": [
+        "2010s",
+        "Bus"
+      ]
+    },
+    {
+      "id": "bettermaker_bus_compressor_dsp",
+      "displayName": "Bus Compressor DSP",
+      "brand": "Bettermaker",
+      "vstFileName": "Bettermaker Bus Compressor DSP",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Compressors",
+      "tags": [
+        "2010s",
+        "Bus"
+      ]
+    },
+    {
+      "id": "bettermaker_c502v_dsp",
+      "displayName": "C502V DSP",
+      "brand": "Bettermaker",
+      "vstFileName": "Bettermaker C502V DSP",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Compressors",
+      "tags": [
+        "2010s"
+      ]
+    },
+    {
+      "id": "bettermaker_mastering_compressor_dsp",
+      "displayName": "Mastering Compressor DSP",
+      "brand": "Bettermaker",
+      "vstFileName": "Bettermaker Mastering Compressor DSP",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Compressors",
+      "tags": [
+        "2010s",
+        "Mastering"
+      ]
+    },
+    {
+      "id": "bettermaker_passive_equalizer",
+      "displayName": "Passive Equalizer",
+      "brand": "Bettermaker",
+      "vstFileName": "Bettermaker Passive Equalizer",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Equalizers",
+      "tags": [
+        "2010s",
+        "Passive"
+      ]
+    },
+    {
+      "id": "dangerous_bax_eq_master",
+      "displayName": "Dangerous BAX EQ Master",
+      "brand": "Dangerous Music",
+      "vstFileName": "Dangerous BAX EQ Master",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Equalizers",
+      "tags": [
+        "2000s",
+        "Mastering"
+      ]
+    },
+    {
+      "id": "engl_e765_rt",
+      "displayName": "E765 RT",
+      "brand": "ENGL",
+      "vstFileName": "ENGL E765 RT",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Amplifiers",
+      "tags": [
+        "2000s"
+      ]
+    },
+    {
+      "id": "friedman_be100",
+      "displayName": "BE100",
+      "brand": "Friedman",
+      "vstFileName": "Friedman BE100",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Amplifiers",
+      "tags": [
+        "2010s"
+      ]
+    },
+    {
+      "id": "fuchs_train_ii",
+      "displayName": "Fuchs Train II",
+      "brand": "Fuchs Audio",
+      "vstFileName": "Fuchs Train II",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Amplifiers",
+      "tags": [
+        "2000s"
+      ]
+    },
+    {
+      "id": "kiive_tape_face",
+      "displayName": "Kiive Tape Face",
+      "brand": "Kiive Audio",
+      "vstFileName": "Kiive Tape Face",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Saturators",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "kiive_xtressor",
+      "displayName": "Kiive Xtressor",
+      "brand": "Kiive Audio",
+      "vstFileName": "Kiive Xtressor",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Compressors",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "knif_audio_knifonium",
+      "displayName": "Knifonium",
+      "brand": "Knif Audio",
+      "vstFileName": "Knif Audio Knifonium",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Synthesizers",
+      "tags": [
+        "2010s"
+      ]
+    },
+    {
+      "id": "lindell_354e",
+      "displayName": "Lindell 354E",
+      "brand": "Lindell Audio",
+      "vstFileName": "Lindell 354E",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Compressors",
+      "tags": [
+        "1970s",
+        "Diode"
+      ]
+    },
+    {
+      "id": "lindell_50_buss",
+      "displayName": "Lindell 50 Buss",
+      "brand": "Lindell Audio",
+      "vstFileName": "Lindell 50 Buss",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Compressors",
+      "tags": [
+        "2010s",
+        "Bus"
+      ]
+    },
+    {
+      "id": "lindell_50_channel",
+      "displayName": "Lindell 50 Channel",
+      "brand": "Lindell Audio",
+      "vstFileName": "Lindell 50 Channel",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Channel Strips",
+      "tags": [
+        "2010s"
+      ]
+    },
+    {
+      "id": "lindell_69_buss",
+      "displayName": "Lindell 69 Buss",
+      "brand": "Lindell Audio",
+      "vstFileName": "Lindell 69 Buss",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Compressors",
+      "tags": [
+        "2010s",
+        "Bus"
+      ]
+    },
+    {
+      "id": "lindell_69_channel",
+      "displayName": "Lindell 69 Channel",
+      "brand": "Lindell Audio",
+      "vstFileName": "Lindell 69 Channel",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Channel Strips",
+      "tags": [
+        "2010s"
+      ]
+    },
+    {
+      "id": "lindell_80_bus",
+      "displayName": "Lindell 80 Bus",
+      "brand": "Lindell Audio",
+      "vstFileName": "Lindell 80 Bus",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Compressors",
+      "tags": [
+        "1980s",
+        "Bus"
+      ]
+    },
+    {
+      "id": "lindell_80_channel",
+      "displayName": "Lindell 80 Channel",
+      "brand": "Lindell Audio",
+      "vstFileName": "Lindell 80 Channel",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Channel Strips",
+      "tags": [
+        "1980s"
+      ]
+    },
+    {
+      "id": "lindell_902_de_esser",
+      "displayName": "Lindell 902 De-esser",
+      "brand": "Lindell Audio",
+      "vstFileName": "Lindell 902 De-esser",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Vocal Processing",
+      "tags": [
+        "2010s"
+      ]
+    },
+    {
+      "id": "lindell_channelx",
+      "displayName": "Lindell ChannelX",
+      "brand": "Lindell Audio",
+      "vstFileName": "Lindell ChannelX",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Channel Strips",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "lindell_mbc",
+      "displayName": "Lindell MBC",
+      "brand": "Lindell Audio",
+      "vstFileName": "Lindell MBC",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Compressors",
+      "tags": [
+        "Original",
+        "Multi-Band"
+      ]
+    },
+    {
+      "id": "lindell_mu_66",
+      "displayName": "Lindell MU-66",
+      "brand": "Lindell Audio",
+      "vstFileName": "Lindell MU-66",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Compressors",
+      "tags": [
+        "1960s",
+        "Tube"
+      ]
+    },
+    {
+      "id": "lindell_sbc",
+      "displayName": "Lindell SBC",
+      "brand": "Lindell Audio",
+      "vstFileName": "Lindell SBC",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Compressors",
+      "tags": [
+        "Original",
+        "Bus"
+      ]
+    },
+    {
+      "id": "lindell_te_100",
+      "displayName": "Lindell TE-100",
+      "brand": "Lindell Audio",
+      "vstFileName": "Lindell TE-100",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Saturators",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "looptrotter_sa2rate2",
+      "displayName": "SA2RATE2",
+      "brand": "Looptrotter",
+      "vstFileName": "Looptrotter SA2RATE2",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Saturators",
+      "tags": [
+        "2010s"
+      ]
+    },
+    {
+      "id": "maag_eq2",
+      "displayName": "Maag EQ2",
+      "brand": "Maag Audio",
+      "vstFileName": "Maag EQ2",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Equalizers",
+      "tags": [
+        "2010s"
+      ]
+    },
+    {
+      "id": "maag_magnum_k",
+      "displayName": "Maag MAGNUM-K",
+      "brand": "Maag Audio",
+      "vstFileName": "Maag MAGNUM-K",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Compressors",
+      "tags": [
+        "2010s"
+      ]
+    },
+    {
+      "id": "millennia_tcl_2",
+      "displayName": "TCL-2",
+      "brand": "Millennia",
+      "vstFileName": "Millennia TCL-2",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Compressors",
+      "tags": [
+        "1990s",
+        "Tube"
+      ]
+    },
+    {
+      "id": "neold_oldtimer",
+      "displayName": "OLDTIMER",
+      "brand": "NEOLD",
+      "vstFileName": "NEOLD OLDTIMER",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Delays",
+      "tags": [
+        "2020s"
+      ]
+    },
+    {
+      "id": "neold_wunderlich",
+      "displayName": "WUNDERLICH",
+      "brand": "NEOLD",
+      "vstFileName": "NEOLD WUNDERLICH",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Saturators",
+      "tags": [
+        "2020s"
+      ]
+    },
+    {
+      "id": "spl_de_esser",
+      "displayName": "De-Esser",
+      "brand": "SPL",
+      "vstFileName": "SPL De-Esser",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Vocal Processing",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "spl_de_esser_dual_band",
+      "displayName": "De-Esser Dual-Band",
+      "brand": "SPL",
+      "vstFileName": "SPL De-Esser Dual-Band",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Vocal Processing",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "spl_passeq_single",
+      "displayName": "Passeq Single",
+      "brand": "SPL",
+      "vstFileName": "SPL Passeq Single",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Equalizers",
+      "tags": [
+        "2000s",
+        "Passive"
+      ]
+    },
+    {
+      "id": "schoeps_mono_upmix_1to2",
+      "displayName": "Mono Upmix 1to2",
+      "brand": "Schoeps",
+      "vstFileName": "Schoeps Mono Upmix 1to2",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "3D & Surround Sound",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "shadow_hills_class_a_mastering_comp",
+      "displayName": "Class A Mastering Comp",
+      "brand": "Shadow Hills",
+      "vstFileName": "Shadow Hills Class A Mastering Comp",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Compressors",
+      "tags": [
+        "2010s",
+        "Mastering"
+      ]
+    },
+    {
+      "id": "tbtech_kirchhoff_eq",
+      "displayName": "TBTECH Kirchhoff-EQ",
+      "brand": "Three-Body Technology",
+      "vstFileName": "TBTECH Kirchhoff-EQ",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Equalizers",
+      "tags": [
+        "Original",
+        "Parametric",
+        "Dynamic"
+      ]
+    },
+    {
+      "id": "tbtech_trinity_shaper",
+      "displayName": "TBTECH Trinity Shaper",
+      "brand": "Three-Body Technology",
+      "vstFileName": "TBTECH Trinity Shaper",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Transient Shapers",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "unfiltered_audio_bass_mint",
+      "displayName": "Bass Mint",
+      "brand": "Unfiltered Audio",
+      "vstFileName": "Unfiltered Audio Bass Mint",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Saturators",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "unfiltered_audio_dent_2",
+      "displayName": "Dent 2",
+      "brand": "Unfiltered Audio",
+      "vstFileName": "Unfiltered Audio Dent 2",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Lo-Fi",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bx_2098_eq",
+      "displayName": "bx_2098 EQ",
+      "brand": "Brainworx",
+      "vstFileName": "bx_2098 EQ",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Equalizers",
+      "tags": [
+        "1970s"
+      ]
+    },
+    {
+      "id": "bx_blackdist2",
+      "displayName": "bx_blackdist2",
+      "brand": "Brainworx",
+      "vstFileName": "bx_blackdist2",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Pedals",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bx_bluechorus2",
+      "displayName": "bx_bluechorus2",
+      "brand": "Brainworx",
+      "vstFileName": "bx_bluechorus2",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Modulator",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bx_boom",
+      "displayName": "bx_boom",
+      "brand": "Brainworx",
+      "vstFileName": "bx_boom",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Saturators",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bx_boom_v3",
+      "displayName": "bx_boom V3",
+      "brand": "Brainworx",
+      "vstFileName": "bx_boom V3",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Saturators",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bx_cleansweep_pro",
+      "displayName": "bx_cleansweep Pro",
+      "brand": "Brainworx",
+      "vstFileName": "bx_cleansweep Pro",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Equalizers",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bx_cleansweep_v2",
+      "displayName": "bx_cleansweep V2",
+      "brand": "Brainworx",
+      "vstFileName": "bx_cleansweep V2",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Equalizers",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bx_clipper",
+      "displayName": "bx_clipper",
+      "brand": "Brainworx",
+      "vstFileName": "bx_clipper",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Saturators",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bx_console_amek_200",
+      "displayName": "bx_console AMEK 200",
+      "brand": "Brainworx",
+      "vstFileName": "bx_console AMEK 200",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Channel Strips",
+      "tags": [
+        "1970s"
+      ]
+    },
+    {
+      "id": "bx_console_amek_9099",
+      "displayName": "bx_console AMEK 9099",
+      "brand": "Brainworx",
+      "vstFileName": "bx_console AMEK 9099",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Channel Strips",
+      "tags": [
+        "1990s"
+      ]
+    },
+    {
+      "id": "bx_control_v2",
+      "displayName": "bx_control V2",
+      "brand": "Brainworx",
+      "vstFileName": "bx_control V2",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Meters",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bx_crispyscale",
+      "displayName": "bx_crispyscale",
+      "brand": "Brainworx",
+      "vstFileName": "bx_crispyscale",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Utility",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bx_crispytuner",
+      "displayName": "bx_crispytuner",
+      "brand": "Brainworx",
+      "vstFileName": "bx_crispytuner",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Vocal Processing",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bx_digital_v3_mix",
+      "displayName": "bx_digital V3 mix",
+      "brand": "Brainworx",
+      "vstFileName": "bx_digital V3 mix",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Equalizers",
+      "tags": [
+        "Original",
+        "Mid-Side"
+      ]
+    },
+    {
+      "id": "bx_dyneq_v2_mono",
+      "displayName": "bx_dynEQ V2 Mono",
+      "brand": "Brainworx",
+      "vstFileName": "bx_dynEQ V2 Mono",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Equalizers",
+      "tags": [
+        "Original",
+        "Dynamic"
+      ]
+    },
+    {
+      "id": "bx_enhancer",
+      "displayName": "bx_enhancer",
+      "brand": "Brainworx",
+      "vstFileName": "bx_enhancer",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Saturators",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bx_glue",
+      "displayName": "bx_glue",
+      "brand": "Brainworx",
+      "vstFileName": "bx_glue",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Compressors",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bx_hybrid_v2_mix",
+      "displayName": "bx_hybrid V2 mix",
+      "brand": "Brainworx",
+      "vstFileName": "bx_hybrid V2 mix",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Equalizers",
+      "tags": [
+        "Original",
+        "Mid-Side"
+      ]
+    },
+    {
+      "id": "bx_limiter",
+      "displayName": "bx_limiter",
+      "brand": "Brainworx",
+      "vstFileName": "bx_limiter",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Limiters",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bx_masterdesk_true_peak",
+      "displayName": "bx_masterdesk True Peak",
+      "brand": "Brainworx",
+      "vstFileName": "bx_masterdesk True Peak",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Mastering",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bx_megadual",
+      "displayName": "bx_megadual",
+      "brand": "Brainworx",
+      "vstFileName": "bx_megadual",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Amplifiers",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bx_megasingle",
+      "displayName": "bx_megasingle",
+      "brand": "Brainworx",
+      "vstFileName": "bx_megasingle",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Amplifiers",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bx_metal2",
+      "displayName": "bx_metal2",
+      "brand": "Brainworx",
+      "vstFileName": "bx_metal2",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Amplifiers",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bx_oberhausen",
+      "displayName": "bx_oberhausen",
+      "brand": "Brainworx",
+      "vstFileName": "bx_oberhausen",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Synthesizers",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bx_rockergain100",
+      "displayName": "bx_rockergain100",
+      "brand": "Brainworx",
+      "vstFileName": "bx_rockergain100",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Amplifiers",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bx_rockrack_v3_player",
+      "displayName": "bx_rockrack V3 Player",
+      "brand": "Brainworx",
+      "vstFileName": "bx_rockrack V3 Player",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Suites",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bx_rooms",
+      "displayName": "bx_rooMS",
+      "brand": "Brainworx",
+      "vstFileName": "bx_rooMS",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Reverbs",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bx_solo",
+      "displayName": "bx_solo",
+      "brand": "Brainworx",
+      "vstFileName": "bx_solo",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Utility",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bx_stereomaker",
+      "displayName": "bx_stereomaker",
+      "brand": "Brainworx",
+      "vstFileName": "bx_stereomaker",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Stereo Imagers",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bx_tonebox",
+      "displayName": "bx_tonebox",
+      "brand": "Brainworx",
+      "vstFileName": "bx_tonebox",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Saturators",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "bx_yellowdrive",
+      "displayName": "bx_yellowdrive",
+      "brand": "Brainworx",
+      "vstFileName": "bx_yellowdrive",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Pedals",
+      "tags": [
+        "1970s"
+      ]
+    },
+    {
+      "id": "elysia_alpha_master",
+      "displayName": "alpha master",
+      "brand": "elysia",
+      "vstFileName": "elysia alpha master",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Compressors",
+      "tags": [
+        "2000s",
+        "Mastering",
+        "VCA"
+      ]
+    },
+    {
+      "id": "elysia_alpha_mix",
+      "displayName": "alpha mix",
+      "brand": "elysia",
+      "vstFileName": "elysia alpha mix",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Compressors",
+      "tags": [
+        "2000s",
+        "VCA"
+      ]
+    },
+    {
+      "id": "elysia_karacter_master",
+      "displayName": "karacter master",
+      "brand": "elysia",
+      "vstFileName": "elysia karacter master",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Saturators",
+      "tags": [
+        "2000s"
+      ]
+    },
+    {
+      "id": "elysia_karacter_mix",
+      "displayName": "karacter mix",
+      "brand": "elysia",
+      "vstFileName": "elysia karacter mix",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Saturators",
+      "tags": [
+        "2000s"
+      ]
+    },
+    {
+      "id": "elysia_museq_master",
+      "displayName": "museq master",
+      "brand": "elysia",
+      "vstFileName": "elysia museq master",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Equalizers",
+      "tags": [
+        "2000s",
+        "Mastering"
+      ]
+    },
+    {
+      "id": "elysia_nvelope",
+      "displayName": "nvelope",
+      "brand": "elysia",
+      "vstFileName": "elysia nvelope",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Transient Shapers",
+      "tags": [
+        "2000s"
+      ]
+    },
+    {
+      "id": "elysia_phils_cascade",
+      "displayName": "phils cascade",
+      "brand": "elysia",
+      "vstFileName": "elysia phils cascade",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Compressors",
+      "tags": [
+        "2000s"
+      ]
+    },
+    {
+      "id": "fiedler_audio_spacelab_beam",
+      "displayName": "spacelab beam",
+      "brand": "fiedler audio",
+      "vstFileName": "fiedler audio spacelab beam",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Reverbs",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "fiedler_audio_spacelab_ignition",
+      "displayName": "spacelab ignition",
+      "brand": "fiedler audio",
+      "vstFileName": "fiedler audio spacelab ignition",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Reverbs",
+      "tags": [
+        "Original"
+      ]
+    },
+    {
+      "id": "fiedler_audio_splat",
+      "displayName": "splat",
+      "brand": "fiedler audio",
+      "vstFileName": "fiedler audio splat",
+      "url": "",
+      "imageUrl": "",
+      "description": "",
+      "category": "Utility",
+      "tags": [
+        "Original"
       ]
     }
   ]
