@@ -555,142 +555,18 @@ inline juce::String getBrandName(const juce::String& pluginName, const juce::Str
     return "Plugin Alliance";
 }
 
-// Get display name with brand prefix removed (but keep bx_ prefix for Brainworx products)
-inline juce::String getDisplayName(const juce::String& pluginName, const juce::String& brandName)
+// Get display name from database, or return VST3 name as fallback
+inline juce::String getDisplayName(const juce::String& pluginName, const juce::String& /*brandName*/)
 {
-    auto name = pluginName;
+    // Look up display name from PluginData.h (generated from plugins.json)
+    if (auto* metadata = findPluginMetadata(pluginName))
+    {
+        if (metadata->displayName.isNotEmpty())
+            return metadata->displayName;
+    }
 
-    // Keep bx_ prefix for Brainworx products - it's part of the product name
-
-    // Remove brand name prefix if present
-    if (name.startsWithIgnoreCase(brandName + " "))
-        name = name.substring(brandName.length() + 1);
-    else if (name.startsWithIgnoreCase(brandName))
-        name = name.substring(brandName.length()).trimStart();
-
-    // Handle specific brand prefixes
-    if (name.startsWithIgnoreCase("ACME Audio "))
-        name = name.substring(11);
-    else if (name.startsWithIgnoreCase("A/DA "))
-        name = name.substring(5);
-    else if (name.startsWithIgnoreCase("ADA "))
-        name = name.substring(4);
-    else if (name.startsWithIgnoreCase("ADPTR Audio "))
-        name = name.substring(12);
-    else if (name.startsWithIgnoreCase("ADPTR "))
-        name = name.substring(6);
-    else if (name.startsWithIgnoreCase("AMEK "))
-        name = name.substring(5);
-    else if (name.startsWithIgnoreCase("Ampeg "))
-        name = name.substring(6);
-    else if (name.startsWithIgnoreCase("Bettermaker "))
-        name = name.substring(12);
-    else if (name.startsWithIgnoreCase("Black Box Analog Design "))
-        name = name.substring(24);
-    else if (name.startsWithIgnoreCase("Black Box "))
-        name = name.substring(10);
-    else if (name.startsWithIgnoreCase("Chandler Limited "))
-        name = name.substring(17);
-    else if (name.startsWithIgnoreCase("Chandler "))
-        name = name.substring(9);
-    else if (name.startsWithIgnoreCase("Dangerous Music "))
-        name = name.substring(16);
-    else if (name.startsWithIgnoreCase("Dangerous "))
-        name = name.substring(10);
-    else if (name.startsWithIgnoreCase("Diezel "))
-        name = name.substring(7);
-    else if (name.startsWithIgnoreCase("DS Audio "))
-        name = name.substring(9);
-    else if (name.startsWithIgnoreCase("elysia "))
-        name = name.substring(7);
-    else if (name.startsWithIgnoreCase("ENGL "))
-        name = name.substring(5);
-    else if (name.startsWithIgnoreCase("fiedler audio "))
-        name = name.substring(14);
-    else if (name.startsWithIgnoreCase("fiedler "))
-        name = name.substring(8);
-    else if (name.startsWithIgnoreCase("Focusrite "))
-        name = name.substring(10);
-    else if (name.startsWithIgnoreCase("Friedman "))
-        name = name.substring(9);
-    else if (name.startsWithIgnoreCase("Fuchs "))
-        name = name.substring(6);
-    else if (name.startsWithIgnoreCase("Gallien-Krueger "))
-        name = name.substring(16);
-    else if (name.startsWithIgnoreCase("Gallien Krueger "))
-        name = name.substring(16);
-    else if (name.startsWithIgnoreCase("Harris Doyle "))
-        name = name.substring(13);
-    else if (name.startsWithIgnoreCase("HEARS "))
-        name = name.substring(6);
-    else if (name.startsWithIgnoreCase("HUM Audio Devices "))
-        name = name.substring(18);
-    else if (name.startsWithIgnoreCase("HUM Audio "))
-        name = name.substring(10);
-    else if (name.startsWithIgnoreCase("Karanyi Sounds "))
-        name = name.substring(15);
-    else if (name.startsWithIgnoreCase("Karanyi "))
-        name = name.substring(8);
-    else if (name.startsWithIgnoreCase("Kiive Audio "))
-        name = name.substring(12);
-    else if (name.startsWithIgnoreCase("Kiive "))
-        name = name.substring(6);
-    else if (name.startsWithIgnoreCase("Knif Audio "))
-        name = name.substring(11);
-    else if (name.startsWithIgnoreCase("Knif "))
-        name = name.substring(5);
-    else if (name.startsWithIgnoreCase("Lindell Audio "))
-        name = name.substring(14);
-    else if (name.startsWithIgnoreCase("Lindell "))
-        name = name.substring(8);
-    else if (name.startsWithIgnoreCase("Looptrotter "))
-        name = name.substring(12);
-    else if (name.startsWithIgnoreCase("Louder Than Liftoff "))
-        name = name.substring(20);
-    else if (name.startsWithIgnoreCase("Maag Audio "))
-        name = name.substring(11);
-    else if (name.startsWithIgnoreCase("Mäag Audio "))
-        name = name.substring(11);
-    else if (name.startsWithIgnoreCase("Maag "))
-        name = name.substring(5);
-    else if (name.startsWithIgnoreCase("Mäag "))
-        name = name.substring(5);
-    else if (name.startsWithIgnoreCase("Millennia "))
-        name = name.substring(10);
-    else if (name.startsWithIgnoreCase("Mixland "))
-        name = name.substring(8);
-    else if (name.startsWithIgnoreCase("NEOLD "))
-        name = name.substring(6);
-    else if (name.startsWithIgnoreCase("Noveltech "))
-        name = name.substring(10);
-    else if (name.startsWithIgnoreCase("Pro Audio DSP "))
-        name = name.substring(14);
-    else if (name.startsWithIgnoreCase("Purple Audio "))
-        name = name.substring(13);
-    else if (name.startsWithIgnoreCase("Shadow Hills "))
-        name = name.substring(13);
-    else if (name.startsWithIgnoreCase("SSL "))
-        name = name.substring(4);
-    else if (name.startsWithIgnoreCase("SPL "))
-        name = name.substring(4);
-    else if (name.startsWithIgnoreCase("Suhr "))
-        name = name.substring(5);
-    else if (name.startsWithIgnoreCase("Swivel Audio "))
-        name = name.substring(13);
-    else if (name.startsWithIgnoreCase("THX "))
-        name = name.substring(4);
-    else if (name.startsWithIgnoreCase("TOMO Audiolabs "))
-        name = name.substring(15);
-    else if (name.startsWithIgnoreCase("TOMO "))
-        name = name.substring(5);
-    else if (name.startsWithIgnoreCase("Unfiltered Audio "))
-        name = name.substring(17);
-    else if (name.startsWithIgnoreCase("Unfiltered "))
-        name = name.substring(11);
-    else if (name.startsWithIgnoreCase("Vertigo "))
-        name = name.substring(8);
-
-    return name.trim();
+    // Fallback: return the original VST3 name
+    return pluginName;
 }
 
 // Get the official plugin name from the database (normalized)

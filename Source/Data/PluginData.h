@@ -3,7 +3,7 @@
     PluginData.h
     AUTO-GENERATED - DO NOT EDIT
 
-    Generated: 2026-01-18 19:01:40
+    Generated: 2026-01-18 19:46:46
     Source: plugins.json
 
     To update: Edit plugins.json then run: python scripts/generate_plugin_data.py
@@ -46,7 +46,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
         {
             "acme_opticom_xla3",
             "Acme Opticom XLA-3",
-            "ACME Audio Opticom CLA-3",
+            "Opticom XLA-3",
             "ACME Audio",
             "Triple-curve optical tube compressor with smooth leveling and harmonic warmth.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300196_93d7cf64-bfa3-470f-bbb9-96b1d2dde9f9.png",
@@ -57,7 +57,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
         {
             "ada_flanger",
             "ADA Flanger",
-            "ADA Flanger",
+            "Flanger",
             "ADA",
             "Classic 1979 analog flanger with bucket-brigade circuitry for lush modulation.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300339_ed23a5bb-1f30-4c03-ac02-a0bfb39dbc65.png",
@@ -68,7 +68,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
         {
             "ada_std1",
             "ADA STD-1 Stereo Tapped Delay",
-            "ADA STD-1 Stereo Tapped Delay",
+            "STD-1 Stereo Tapped Delay",
             "ADA",
             "Rare 1980 stereo tapped analog delay for rich chorusing and doubling effects.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300339.png",
@@ -79,7 +79,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
         {
             "adptr_metricab",
             "ADPTR MetricAB",
-            "ADPTR Metric AB",
+            "Metric AB",
             "ADPTR Audio",
             "Reference comparison tool for A/B testing mixes against commercial releases.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300287_30b5be99-27d7-49b3-a39f-52f46cf45987.png",
@@ -90,7 +90,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
         {
             "adptr_sculpt",
             "ADPTR Sculpt",
-            "ADPTR SCULPT",
+            "Sculpt",
             "ADPTR Audio",
             "Multiband dynamics with four parallel modules for transparent mastering.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300351_d1d58e0b-eeef-492b-b534-e17d94d12c38.png",
@@ -101,7 +101,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
         {
             "adptr_streamliner",
             "Streamliner",
-            "ADPTR Streamliner",
+            "Streamliner",
             "ADPTR Audio",
             "AI-assisted mastering with LUFS targeting and adaptive processing.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300287.png",
@@ -112,7 +112,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
         {
             "amek_eq200",
             "EQ 200",
-            "AMEK EQ 200",
+            "EQ 200",
             "AMEK",
             "Legendary analog parametric EQ with Massenburg-style precision.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300375_a06e2b91-11f1-4fc0-9d21-fe1b9a9de6b7.png",
@@ -123,7 +123,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
         {
             "amek_mastering_compressor",
             "Mastering Compressor",
-            "AMEK Mastering Compressor",
+            "Mastering Compressor",
             "AMEK",
             "Smooth mastering compressor with versatile VCA and optical modes.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300375.png",
@@ -134,7 +134,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
         {
             "ampeg_b15n",
             "B-15N",
-            "Ampeg B-15N",
+            "B-15N",
             "Ampeg",
             "The classic 1960 Portaflex bass amp with warm tube tone.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300306_f99f79f4-3b68-439a-a025-a1f90f6fbe13.png",
@@ -145,7 +145,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
         {
             "ampeg_svt3pro",
             "SVT-3PRO",
-            "Ampeg SVT-3PRO",
+            "SVT-3PRO",
             "Ampeg",
             "Hybrid tube/solid-state bass amp with modern punch and clarity.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300306.png",
@@ -156,7 +156,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
         {
             "ampeg_svtvr",
             "SVT-VR",
-            "Ampeg SVT-VR",
+            "SVT-VR",
             "Ampeg",
             "The legendary 1969 SVT all-tube bass amp with 300-watt power.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300154_2cb58dff-84c5-4f9d-aee6-bd1fce67d1d7.png",
@@ -167,7 +167,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
         {
             "ampeg_v4b",
             "V-4B",
-            "Ampeg V-4B",
+            "V-4B",
             "Ampeg",
             "100-watt all-tube bass amp from 1971 with classic SVT preamp.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300530_e5bf95b6-a1d5-4f20-8e9a-da1f1b22d0b8.png",
@@ -178,7 +178,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
         {
             "bettermaker_eq232d",
             "EQ232D",
-            "Bettermaker EQ232D",
+            "EQ232D",
             "Bettermaker",
             "Modern mastering EQ with Pultec-style passive curves and extended control.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300325_45026c47-87af-406e-80a2-d5d5ee6bf93b.png",
