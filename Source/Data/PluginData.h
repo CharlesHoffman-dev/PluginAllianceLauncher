@@ -3,7 +3,7 @@
     PluginData.h
     AUTO-GENERATED - DO NOT EDIT
 
-    Generated: 2026-01-18 22:43:11
+    Generated: 2026-01-18 22:46:44
     Source: plugins.json
 
     To update: Edit plugins.json then run: python scripts/generate_plugin_data.py
@@ -403,7 +403,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "One-knob mastering chain with saturation, dynamics, and limiting.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300177.png",
             "https://www.plugin-alliance.com/en/products/bx_masterdesk.html",
-            "Mastering",
+            "Mastering Suites",
             {"Original"}
         },
         {
@@ -414,7 +414,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Simplified mastering chain with analog saturation focus.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300265.png",
             "https://www.plugin-alliance.com/en/products/bx_masterdesk_classic.html",
-            "Mastering",
+            "Mastering Suites",
             {"Original"}
         },
         {
@@ -425,7 +425,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Advanced mastering suite with M/S control and multiple saturation modes.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300388_29ddb7bc-4d36-4b3f-889b-5f8bdb3e90b9.png",
             "https://www.plugin-alliance.com/en/products/bx_masterdesk_pro.html",
-            "Mastering",
+            "Mastering Suites",
             {"Original"}
         },
         {
@@ -1415,8 +1415,8 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Mix finishing tool with frequency shaping, bass processing, and de-masking technology.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301205.png",
             "https://www.plugin-alliance.com/en/products/spl_vitalizer_mk3-t.html",
-            "Mastering",
-            {"2020s"}
+            "Equalizers",
+            {"2020s", "Mastering"}
         },
         {
             "suhr_pt100",
@@ -2405,7 +2405,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "One-knob mastering with true peak limiting.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300383_a2601b0c-d04f-4feb-9a7c-5af3dbf5d472.png?v=1745586743",
             "https://www.plugin-alliance.com/en/products/bx_masterdesk.html",
-            "Mastering",
+            "Mastering Suites",
             {"Original"}
         },
         {

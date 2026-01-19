@@ -433,7 +433,7 @@
       "url": "https://www.plugin-alliance.com/en/products/bx_masterdesk.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300177.png",
       "description": "One-knob mastering chain with saturation, dynamics, and limiting.",
-      "category": "Mastering",
+      "category": "Mastering Suites",
       "tags": [
         "Original"
       ]
@@ -446,7 +446,7 @@
       "url": "https://www.plugin-alliance.com/en/products/bx_masterdesk_classic.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300265.png",
       "description": "Simplified mastering chain with analog saturation focus.",
-      "category": "Mastering",
+      "category": "Mastering Suites",
       "tags": [
         "Original"
       ]
@@ -459,7 +459,7 @@
       "url": "https://www.plugin-alliance.com/en/products/bx_masterdesk_pro.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300388_29ddb7bc-4d36-4b3f-889b-5f8bdb3e90b9.png",
       "description": "Advanced mastering suite with M/S control and multiple saturation modes.",
-      "category": "Mastering",
+      "category": "Mastering Suites",
       "tags": [
         "Original"
       ]
@@ -1669,9 +1669,10 @@
       "url": "https://www.plugin-alliance.com/en/products/spl_vitalizer_mk3-t.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-301205.png",
       "description": "Mix finishing tool with frequency shaping, bass processing, and de-masking technology.",
-      "category": "Mastering",
+      "category": "Equalizers",
       "tags": [
-        "2020s"
+        "2020s",
+        "Mastering"
       ]
     },
     {
@@ -2864,7 +2865,7 @@
       "url": "https://www.plugin-alliance.com/en/products/bx_masterdesk.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300383_a2601b0c-d04f-4feb-9a7c-5af3dbf5d472.png?v=1745586743",
       "description": "One-knob mastering with true peak limiting.",
-      "category": "Mastering",
+      "category": "Mastering Suites",
       "tags": [
         "Original"
       ]

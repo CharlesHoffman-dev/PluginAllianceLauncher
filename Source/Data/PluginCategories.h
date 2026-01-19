@@ -337,7 +337,7 @@ inline juce::String getDisplayCategoryName(DisplayCategory cat)
         {DisplayCategory::Equalizers, "Equalizers"},
         {DisplayCategory::GuitarAndBass, "Guitar and Bass"},
         {DisplayCategory::Limiters, "Limiters"},
-        {DisplayCategory::Mastering, "Mastering"},
+        {DisplayCategory::Mastering, "Mastering Suites"},
         {DisplayCategory::Meters, "Meters"},
         {DisplayCategory::Modulation, "Modulation"},
         {DisplayCategory::Pedals, "Pedals"},

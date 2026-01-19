@@ -58,7 +58,7 @@ void CategoryFilter::buildCategoryList()
     categories.push_back({DisplayCategory::Reverbs, "Reverbs", false});
     categories.push_back({DisplayCategory::Limiters, "Limiters", false});
     categories.push_back({DisplayCategory::Meters, "Meters", false});
-    categories.push_back({DisplayCategory::Mastering, "Mastering", false});
+    categories.push_back({DisplayCategory::Mastering, "Mastering Suites", false});
     categories.push_back({DisplayCategory::Other, "Other", false});
 }
 

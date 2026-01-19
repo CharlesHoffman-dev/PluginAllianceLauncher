@@ -61,7 +61,8 @@ static EffectCategory categoryFromString(const juce::String& category)
         {"Meters", EffectCategory::SpectralAnalysis},
         {"Meter", EffectCategory::SpectralAnalysis},
 
-        // Mastering
+        // Mastering Suites
+        {"Mastering Suites", EffectCategory::MasteringSuite},
         {"Mastering", EffectCategory::MasteringSuite},
 
         // Synthesizers
@@ -443,8 +444,8 @@ namespace CategoryMaps
         {"RZ062", EffectCategory::EQ},
 
         // SPL new
-        {"SPL Vitalizer MK3-T", EffectCategory::Mastering},
-        {"Vitalizer MK3-T", EffectCategory::Mastering},
+        {"SPL Vitalizer MK3-T", EffectCategory::EQ},
+        {"Vitalizer MK3-T", EffectCategory::EQ},
         {"SPL BiG", EffectCategory::StereoImagers},
         {"BiG", EffectCategory::StereoImagers},
         {"SPL Machine Head", EffectCategory::TapeEmulation},
