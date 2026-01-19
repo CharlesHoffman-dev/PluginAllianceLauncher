@@ -83,71 +83,94 @@ public:
                               bool isMouseOverButton, bool isButtonDown) override
     {
         auto bounds = button.getLocalBounds().toFloat().reduced(0.5f);
-        auto baseColour = backgroundColour;
 
-        if (isButtonDown)
-            baseColour = baseColour.darker(0.2f);
-        else if (isMouseOverButton)
-            baseColour = baseColour.brighter(0.15f);
+        // Only show background on hover or press
+        if (isButtonDown || isMouseOverButton)
+        {
+            auto baseColour = backgroundColour;
+            if (isButtonDown)
+                baseColour = baseColour.darker(0.2f);
+            else
+                baseColour = baseColour.brighter(0.15f);
 
-        g.setColour(baseColour);
-        g.fillRoundedRectangle(bounds, 4.0f);
+            g.setColour(baseColour);
+            g.fillRoundedRectangle(bounds, 4.0f);
+        }
     }
 
     void drawButtonText(juce::Graphics& g, juce::TextButton& button,
-                        bool /*isMouseOverButton*/, bool /*isButtonDown*/) override
+                        bool isMouseOverButton, bool isButtonDown) override
     {
         // Draw gear/cog icon
         auto bounds = button.getLocalBounds().toFloat();
-        auto centerX = bounds.getCentreX();
-        auto centerY = bounds.getCentreY();
-        auto size = juce::jmin(bounds.getWidth(), bounds.getHeight()) * 0.45f;
+        auto cx = bounds.getCentreX();
+        auto cy = bounds.getCentreY();
+        auto size = juce::jmin(bounds.getWidth(), bounds.getHeight()) * 0.4f;
 
         g.setColour(button.findColour(juce::TextButton::textColourOffId));
 
-        // Draw gear with proper rectangular teeth
+        // Draw gear with 8 rectangular teeth (constant width)
         juce::Path gearPath;
-        const int numTeeth = 6;
-        const float outerRadius = size;
-        const float innerRadius = size * 0.65f;
-        const float toothWidth = 0.35f;  // Width of tooth as fraction of tooth spacing
+        const int numTeeth = 8;
+        const float outerRadius = size * 0.88f;
+        const float innerRadius = size * 0.66f;
+        const float toothWidth = size * 0.28f;  // Constant width for teeth
+        const float toothStep = juce::MathConstants<float>::twoPi / numTeeth;
 
-        // Create gear outline with rectangular teeth
+        // Start at the first tooth
+        float startAngle = -juce::MathConstants<float>::halfPi;  // Start from top
+
+        // Calculate perpendicular offset for constant-width teeth
+        auto toothPoint = [&](float angle, float radius, float perpOffset) {
+            float px = cx + std::cos(angle) * radius - std::sin(angle) * perpOffset;
+            float py = cy + std::sin(angle) * radius + std::cos(angle) * perpOffset;
+            return juce::Point<float>(px, py);
+        };
+
+        auto firstPt = toothPoint(startAngle, outerRadius, -toothWidth * 0.5f);
+        gearPath.startNewSubPath(firstPt.x, firstPt.y);
+
         for (int i = 0; i < numTeeth; ++i)
         {
-            float baseAngle = (float)i * juce::MathConstants<float>::twoPi / numTeeth;
-            float halfTooth = toothWidth * juce::MathConstants<float>::pi / numTeeth;
+            float toothAngle = startAngle + i * toothStep;
+            float nextToothAngle = startAngle + (i + 1) * toothStep;
 
-            // Tooth outer edge (4 points per tooth)
-            float a1 = baseAngle - halfTooth;
-            float a2 = baseAngle + halfTooth;
+            // Right edge of tooth tip (outer radius)
+            auto p1 = toothPoint(toothAngle, outerRadius, toothWidth * 0.5f);
+            gearPath.lineTo(p1.x, p1.y);
 
-            // Inner radius points before tooth
-            float prevAngle = baseAngle - juce::MathConstants<float>::pi / numTeeth;
-            if (i == 0)
-            {
-                gearPath.startNewSubPath(centerX + std::cos(prevAngle + halfTooth) * innerRadius,
-                                         centerY + std::sin(prevAngle + halfTooth) * innerRadius);
-            }
+            // Right edge of tooth base (inner radius) - same perpendicular offset
+            auto p2 = toothPoint(toothAngle, innerRadius, toothWidth * 0.5f);
+            gearPath.lineTo(p2.x, p2.y);
 
-            // Rise to outer radius
-            gearPath.lineTo(centerX + std::cos(a1) * innerRadius, centerY + std::sin(a1) * innerRadius);
-            gearPath.lineTo(centerX + std::cos(a1) * outerRadius, centerY + std::sin(a1) * outerRadius);
+            // Left edge of next tooth base (inner radius)
+            auto p3 = toothPoint(nextToothAngle, innerRadius, -toothWidth * 0.5f);
+            gearPath.lineTo(p3.x, p3.y);
 
-            // Across tooth top
-            gearPath.lineTo(centerX + std::cos(a2) * outerRadius, centerY + std::sin(a2) * outerRadius);
-
-            // Down to inner radius
-            gearPath.lineTo(centerX + std::cos(a2) * innerRadius, centerY + std::sin(a2) * innerRadius);
+            // Left edge of next tooth tip (outer radius)
+            auto p4 = toothPoint(nextToothAngle, outerRadius, -toothWidth * 0.5f);
+            gearPath.lineTo(p4.x, p4.y);
         }
         gearPath.closeSubPath();
 
-        // Center hole
-        float holeRadius = size * 0.3f;
-        gearPath.addEllipse(centerX - holeRadius, centerY - holeRadius,
-                           holeRadius * 2.0f, holeRadius * 2.0f);
-
         g.fillPath(gearPath);
+
+        // Draw center hole - use button background when hovered, top bar color otherwise
+        float holeRadius = size * 0.30f;
+        if (isMouseOverButton || isButtonDown)
+        {
+            auto bgColour = button.findColour(juce::TextButton::buttonColourId);
+            if (isButtonDown)
+                bgColour = bgColour.darker(0.2f);
+            else
+                bgColour = bgColour.brighter(0.15f);
+            g.setColour(bgColour);
+        }
+        else
+        {
+            g.setColour(juce::Colour(0xff1a1a1a));  // Top bar background color
+        }
+        g.fillEllipse(cx - holeRadius, cy - holeRadius, holeRadius * 2.0f, holeRadius * 2.0f);
     }
 };
 

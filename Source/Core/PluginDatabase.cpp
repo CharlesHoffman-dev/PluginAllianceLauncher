@@ -238,8 +238,8 @@ namespace CategoryMaps
         // Other Compressors
         {"Lindell Audio 254E", EffectCategory::Compressor},
         {"254E", EffectCategory::Compressor},
-        {"Lindell Audio 6X-500", EffectCategory::Compressor},
-        {"6X-500", EffectCategory::Compressor},
+        {"Lindell Audio 6X-500", EffectCategory::EQ},
+        {"6X-500", EffectCategory::EQ},
         {"Kiive Audio Xtressor", EffectCategory::Compressor},
         {"Xtressor", EffectCategory::Compressor},
         {"Unfiltered Audio Zip", EffectCategory::Compressor},

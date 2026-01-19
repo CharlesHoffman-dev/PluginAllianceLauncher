@@ -252,13 +252,13 @@
       "brand": "Black Box Analog Design",
       "vstFileName": "Black Box Analog Design HG-2MS",
       "url": "https://www.plugin-alliance.com/en/products/black_box_analog_design_hg-2ms.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300097.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300541_892dac09-0f4a-4c59-ac02-2419b76d461c.png?v=1745586764",
       "description": "Mid-side version of the HG-2 tube saturator for mastering.",
       "category": "Saturators",
       "tags": [
         "2010s"
       ],
-      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300097.png",
+      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300541_892dac09-0f4a-4c59-ac02-2419b76d461c.png?v=1745586764",
       "imageFile": "black_box_hg2ms.png"
     },
     {
@@ -611,22 +611,6 @@
       "imageFile": "brainworx_bx_pulsar.png"
     },
     {
-      "id": "brainworx_bx_refinement",
-      "displayName": "bx_refinement",
-      "brand": "Brainworx",
-      "vstFileName": "bx_refinement",
-      "url": "https://www.plugin-alliance.com/en/products/bx_refinement.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300274.png",
-      "description": "Harshness removal tool for taming digital brightness.",
-      "category": "Equalizers",
-      "tags": [
-        "Original",
-        "Dynamic"
-      ],
-      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300274.png",
-      "imageFile": "brainworx_bx_refinement.png"
-    },
-    {
       "id": "brainworx_bx_refinement_v3",
       "displayName": "bx_refinement V3",
       "brand": "Brainworx",
@@ -650,7 +634,7 @@
       "url": "https://www.plugin-alliance.com/en/products/bx_rockrack_v3.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300113_dc4b6b3d-ae2b-445a-9b3f-30e8b97a39d9.png",
       "description": "Multi-amp guitar processor with cab simulation.",
-      "category": "Suites",
+      "category": "Amplifiers",
       "tags": [
         "Original"
       ],
@@ -811,18 +795,18 @@
     },
     {
       "id": "dangerous_bax_eq",
-      "displayName": "BAX EQ",
+      "displayName": "BAX EQ Mix",
       "brand": "Dangerous Music",
       "vstFileName": "Dangerous BAX EQ Mix",
       "url": "https://www.plugin-alliance.com/en/products/dangerous_bax_eq.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300120_e2f34e44-7d84-4fd1-ab13-2203f87a2b0e.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300095_e8339764-5fb2-4554-b4d2-14fee7d1b140.png?v=1745586729",
       "description": "Mastering EQ based on the 1950s Baxandall tone control design, released 2009.",
       "category": "Equalizers",
       "tags": [
         "2000s",
         "Mastering"
       ],
-      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300120_e2f34e44-7d84-4fd1-ab13-2203f87a2b0e.png",
+      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300095_e8339764-5fb2-4554-b4d2-14fee7d1b140.png?v=1745586729",
       "imageFile": "dangerous_bax_eq.png"
     },
     {
@@ -871,23 +855,6 @@
       "imageFile": "ds_audio_thorn.png"
     },
     {
-      "id": "elysia_alpha_compressor",
-      "displayName": "alpha compressor",
-      "brand": "elysia",
-      "vstFileName": "elysia alpha compressor V2",
-      "url": "https://www.plugin-alliance.com/en/products/elysia_alpha_compressor.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300144_c2df89cc-bc07-45d6-ae2c-59f5d437eb5b.png",
-      "description": "Mastering-grade discrete Class A compressor from 2008.",
-      "category": "Compressors",
-      "tags": [
-        "2000s",
-        "Mastering",
-        "VCA"
-      ],
-      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300144_c2df89cc-bc07-45d6-ae2c-59f5d437eb5b.png",
-      "imageFile": "elysia_alpha_compressor.png"
-    },
-    {
       "id": "elysia_alpha_compressor_v2",
       "displayName": "alpha compressor V2",
       "brand": "elysia",
@@ -926,14 +893,14 @@
       "brand": "elysia",
       "vstFileName": "elysia museq mix",
       "url": "https://www.plugin-alliance.com/en/products/elysia_museq.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300144.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300055_aa4bc727-7c4a-4c2c-839e-af90427a44eb.png?v=1745586761",
       "description": "Mastering EQ with warm tube-like character.",
       "category": "Equalizers",
       "tags": [
         "2000s",
         "Mastering"
       ],
-      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300144.png",
+      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300055_aa4bc727-7c4a-4c2c-839e-af90427a44eb.png?v=1745586761",
       "imageFile": "elysia_museq.png"
     },
     {
@@ -1010,21 +977,6 @@
       ],
       "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300410.png",
       "imageFile": "fiedler_audio_dolby_atmos_composer.png"
-    },
-    {
-      "id": "fiedler_audio_spacelab_interstellar",
-      "displayName": "Spacelab Interstellar",
-      "brand": "fiedler audio",
-      "vstFileName": "Spacelab Interstellar",
-      "url": "https://www.plugin-alliance.com/en/products/fiedler_audio_spacelab_interstellar.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300516_ba88f00a-b2dc-49af-be33-5cdf43d64d51.png",
-      "description": "Multichannel reverb for immersive audio production.",
-      "category": "Reverbs",
-      "tags": [
-        "Original"
-      ],
-      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300516_ba88f00a-b2dc-49af-be33-5cdf43d64d51.png",
-      "imageFile": "fiedler_audio_spacelab_interstellar.png"
     },
     {
       "id": "fiedler_audio_stage",
@@ -1163,7 +1115,7 @@
     },
     {
       "id": "hum_audio_laal",
-      "displayName": "HUM Audio LAAL",
+      "displayName": "LAAL",
       "brand": "HUM Audio Devices",
       "vstFileName": "HUM Audio Devices LAAL",
       "url": "https://www.plugin-alliance.com/en/products/hum_audio_laal.html",
@@ -1182,14 +1134,14 @@
       "brand": "Kiive Audio",
       "vstFileName": "Kiive XTComp",
       "url": "https://www.plugin-alliance.com/en/products/kiive_xtcomp.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300768.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/300998.png?v=1749744759",
       "description": "FET compressor inspired by the Empirical Labs Distressor (1995).",
       "category": "Compressors",
       "tags": [
         "1990s",
         "FET"
       ],
-      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300768.png",
+      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/300998.png?v=1749744759",
       "imageFile": "kiive_xtcomp.png"
     },
     {
@@ -1233,7 +1185,7 @@
       "url": "https://www.plugin-alliance.com/en/products/lindell_6x-500.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300181.png",
       "description": "Transformer-coupled preamp with passive EQ from 2012.",
-      "category": "Preamps",
+      "category": "Equalizers",
       "tags": [
         "2010s"
       ],
@@ -1246,14 +1198,14 @@
       "brand": "Lindell Audio",
       "vstFileName": "Lindell 7X-500",
       "url": "https://www.plugin-alliance.com/en/products/lindell_7x-500.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300199.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300178_8bb5104f-8127-409a-89ec-25840ed22e19.png",
       "description": "FET compressor with 1176-style compression.",
       "category": "Compressors",
       "tags": [
         "2010s",
         "FET"
       ],
-      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300199.png",
+      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300178_8bb5104f-8127-409a-89ec-25840ed22e19.png",
       "imageFile": "lindell_7x500.png"
     },
     {
@@ -1528,13 +1480,13 @@
       "brand": "Noveltech",
       "vstFileName": "Noveltech Vocal Enhancer",
       "url": "https://www.plugin-alliance.com/en/products/noveltech_vocal_enhancer.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300068.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300088_7acfec5d-912a-48ca-9ebd-fe07e741e6e1.png",
       "description": "Intelligent vocal processing for presence and clarity.",
       "category": "Vocal Processing",
       "tags": [
         "Original"
       ],
-      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300068.png",
+      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300088_7acfec5d-912a-48ca-9ebd-fe07e741e6e1.png",
       "imageFile": "noveltech_vocal_enhancer.png"
     },
     {
@@ -1621,14 +1573,14 @@
       "brand": "Shadow Hills",
       "vstFileName": "Mastering Compressor Class A",
       "url": "https://www.plugin-alliance.com/en/products/shadow_hills_class_a_mastering_comp.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300081.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300477_e8983653-ad69-4077-b345-b55cc0c50e99.png?v=1745586742",
       "description": "Class A version of the legendary mastering compressor from 2012.",
       "category": "Compressors",
       "tags": [
         "2010s",
         "Mastering"
       ],
-      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300081.png",
+      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300477_e8983653-ad69-4077-b345-b55cc0c50e99.png?v=1745586742",
       "imageFile": "shadow_hills_mastering_compressor_class_a.png"
     },
     {
@@ -1691,21 +1643,6 @@
       ],
       "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-301157_b5d6244c.png",
       "imageFile": "spl_big.png"
-    },
-    {
-      "id": "spl_de_verb",
-      "displayName": "De-Verb",
-      "brand": "SPL",
-      "vstFileName": "SPL De-Verb Plus",
-      "url": "https://www.plugin-alliance.com/en/products/spl_de-verb.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
-      "description": "Reverb reduction tool for cleaning up room ambience.",
-      "category": "Restoration",
-      "tags": [
-        "Original"
-      ],
-      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
-      "imageFile": "spl_de_verb.png"
     },
     {
       "id": "spl_de_verb_plus",
@@ -1854,14 +1791,14 @@
       "brand": "SPL",
       "vstFileName": "SPL PQ",
       "url": "https://www.plugin-alliance.com/en/products/spl_pq.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300014.png",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300682_e9888535-781e-4df8-ad82-419b0fddb790.png?v=1745586696",
       "description": "Mastering equalizer with five bands of precise control.",
       "category": "Equalizers",
       "tags": [
         "2000s",
         "Mastering"
       ],
-      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300014.png",
+      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300682_e9888535-781e-4df8-ad82-419b0fddb790.png?v=1745586696",
       "imageFile": "spl_pq.png"
     },
     {
@@ -1893,21 +1830,6 @@
       ],
       "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300025_b2bd856a-47b9-433c-b622-31dd8c2d61a0.png",
       "imageFile": "spl_twin_tube.png"
-    },
-    {
-      "id": "spl_vitalizer_mk2_t",
-      "displayName": "Vitalizer MK2-T",
-      "brand": "SPL",
-      "vstFileName": "SPL Vitalizer MK2-T",
-      "url": "https://www.plugin-alliance.com/en/products/spl_vitalizer_mk2-t.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
-      "description": "Psychoacoustic processor from 1999 for enhancing bass and presence.",
-      "category": "Saturators",
-      "tags": [
-        "1990s"
-      ],
-      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
-      "imageFile": "spl_vitalizer_mk2_t.png"
     },
     {
       "id": "spl_vitalizer_mk3_t",
@@ -2351,36 +2273,6 @@
       "imageFile": "ampeg_svtvr_classic.png"
     },
     {
-      "id": "arousor",
-      "displayName": "Arousor",
-      "brand": "SPL",
-      "vstFileName": "Arousor",
-      "url": "https://www.plugin-alliance.com/en/products/spl_transient_designer_plus.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187_f60f1190-959c-48af-b3e7-0d907bc344e9.png",
-      "description": "Transient designer and compressor with unique parallel compression.",
-      "category": "Compressors",
-      "tags": [
-        "Original"
-      ],
-      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187_f60f1190-959c-48af-b3e7-0d907bc344e9.png",
-      "imageFile": "arousor.png"
-    },
-    {
-      "id": "arousor_lt",
-      "displayName": "Arousor Lt",
-      "brand": "SPL",
-      "vstFileName": "Arousor Lt",
-      "url": "https://www.plugin-alliance.com/en/products/spl_transient_designer_plus.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187_f60f1190-959c-48af-b3e7-0d907bc344e9.png",
-      "description": "Streamlined version of the Arousor transient designer.",
-      "category": "Compressors",
-      "tags": [
-        "Original"
-      ],
-      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187_f60f1190-959c-48af-b3e7-0d907bc344e9.png",
-      "imageFile": "arousor_lt.png"
-    },
-    {
       "id": "bettermaker_bm60",
       "displayName": "BM60",
       "brand": "Bettermaker",
@@ -2476,7 +2368,7 @@
     },
     {
       "id": "dangerous_bax_eq_master",
-      "displayName": "Dangerous BAX EQ Master",
+      "displayName": "BAX EQ Master",
       "brand": "Dangerous Music",
       "vstFileName": "Dangerous BAX EQ Master",
       "url": "https://www.plugin-alliance.com/en/products/dangerous_bax_eq.html",
@@ -2537,7 +2429,7 @@
     },
     {
       "id": "kiive_tape_face",
-      "displayName": "Kiive Tape Face",
+      "displayName": "Tape Face",
       "brand": "Kiive Audio",
       "vstFileName": "Kiive Tape Face",
       "url": "https://www.plugin-alliance.com/en/products/kiive_tape_face.html",
@@ -2549,21 +2441,6 @@
       ],
       "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300883_ea7d242f-aca6-4785-8ee4-155cbfbd9fd2.png?v=1745586700",
       "imageFile": "kiive_tape_face.png"
-    },
-    {
-      "id": "kiive_xtressor",
-      "displayName": "Kiive Xtressor",
-      "brand": "Kiive Audio",
-      "vstFileName": "Kiive Xtressor",
-      "url": "https://www.plugin-alliance.com/en/products/kiive_xtressor.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300370_51fdb784-eaec-48b3-8609-4fccc7196d68.png",
-      "description": "Aggressive FET compressor with character.",
-      "category": "Compressors",
-      "tags": [
-        "Original"
-      ],
-      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300370_51fdb784-eaec-48b3-8609-4fccc7196d68.png",
-      "imageFile": "kiive_xtressor.png"
     },
     {
       "id": "knif_audio_knifonium",
@@ -3063,13 +2940,13 @@
       "brand": "Brainworx",
       "vstFileName": "bx_boom V3",
       "url": "https://www.plugin-alliance.com/en/products/bx_boom.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300038.png?v=1756969663",
+      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-301127_e9ace067-330a-4797-9b22-85b8cb2bf870.png?v=1749744797",
       "description": "Enhanced bass processor with additional controls.",
       "category": "Saturators",
       "tags": [
         "Original"
       ],
-      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300038.png?v=1756969663",
+      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-301127_e9ace067-330a-4797-9b22-85b8cb2bf870.png?v=1749744797",
       "imageFile": "bx_boom_v3.png"
     },
     {
@@ -3383,7 +3260,7 @@
       "url": "https://www.plugin-alliance.com/en/products/bx_rockrack_v3.html",
       "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300244_20a2ee7e-c696-432e-ae2f-641cd41b7723.png?v=1745586750",
       "description": "Preset player for the bx_rockrack amp suite.",
-      "category": "Suites",
+      "category": "Amplifiers",
       "tags": [
         "Original"
       ],
@@ -3558,36 +3435,6 @@
       ],
       "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300369_a8076339-2084-4197-a944-dbbf15f01efd.png?v=1745586744",
       "imageFile": "elysia_phils_cascade.png"
-    },
-    {
-      "id": "fiedler_audio_spacelab_beam",
-      "displayName": "spacelab beam",
-      "brand": "fiedler audio",
-      "vstFileName": "fiedler audio spacelab beam",
-      "url": "https://www.plugin-alliance.com/en/products/fiedler_audio_spacelab_interstellar.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300516_ba88f00a-b2dc-49af-be33-5cdf43d64d51.png",
-      "description": "Spatial audio beam forming tool.",
-      "category": "Reverbs",
-      "tags": [
-        "Original"
-      ],
-      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300516_ba88f00a-b2dc-49af-be33-5cdf43d64d51.png",
-      "imageFile": "fiedler_audio_spacelab_beam.png"
-    },
-    {
-      "id": "fiedler_audio_spacelab_ignition",
-      "displayName": "spacelab ignition",
-      "brand": "fiedler audio",
-      "vstFileName": "fiedler audio spacelab ignition",
-      "url": "https://www.plugin-alliance.com/en/products/fiedler_audio_spacelab_interstellar.html",
-      "imageUrl": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300516_ba88f00a-b2dc-49af-be33-5cdf43d64d51.png",
-      "description": "Immersive audio reverb and spatial processor.",
-      "category": "Reverbs",
-      "tags": [
-        "Original"
-      ],
-      "imageUrlRemote": "https://www.plugin-alliance.com/cdn/shop/files/productimage-300516_ba88f00a-b2dc-49af-be33-5cdf43d64d51.png",
-      "imageFile": "fiedler_audio_spacelab_ignition.png"
     },
     {
       "id": "fiedler_audio_splat",

@@ -3,7 +3,7 @@
     PluginData.h
     AUTO-GENERATED - DO NOT EDIT
 
-    Generated: 2026-01-18 22:46:44
+    Generated: 2026-01-19 16:36:50
     Source: plugins.json
 
     To update: Edit plugins.json then run: python scripts/generate_plugin_data.py
@@ -51,7 +51,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Triple-curve optical tube compressor with smooth leveling and harmonic warmth.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300196_93d7cf64-bfa3-470f-bbb9-96b1d2dde9f9.png",
             "https://www.plugin-alliance.com/en/products/acme_opticom_xla-3.html",
-            "Compressor",
+            "Compressors",
             {"2010s", "Optical"}
         },
         {
@@ -73,7 +73,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Rare 1980 stereo tapped analog delay for rich chorusing and doubling effects.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300339.png",
             "https://www.plugin-alliance.com/en/products/ada_std-1_stereo_tapped_delay.html",
-            "Delay",
+            "Delays",
             {"1980s"}
         },
         {
@@ -84,7 +84,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Multi-band enhancement with compression, harmonics, and stereo width adjustment.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300999_56d6bbd4-8d7d-408d-845b-51ae21f9a76c.png",
             "https://www.plugin-alliance.com/en/products/adptr_hype.html",
-            "Saturator",
+            "Saturators",
             {"Original"}
         },
         {
@@ -95,7 +95,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Spectral reverb for lush, evolving, cinematic soundscapes with real-time harmonic transformation.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301236.png",
             "https://www.plugin-alliance.com/en/products/adptr_utopia.html",
-            "Reverb",
+            "Reverbs",
             {"Original"}
         },
         {
@@ -106,7 +106,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Reference comparison tool for A/B testing mixes against commercial releases.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300287_30b5be99-27d7-49b3-a39f-52f46cf45987.png",
             "https://www.plugin-alliance.com/en/products/adptr_metricab.html",
-            "Meter",
+            "Meters",
             {"Original"}
         },
         {
@@ -117,7 +117,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Multiband dynamics with four parallel modules for transparent mastering.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300351_d1d58e0b-eeef-492b-b534-e17d94d12c38.png",
             "https://www.plugin-alliance.com/en/products/adptr_sculpt.html",
-            "Compressor",
+            "Compressors",
             {"Original", "Multi-Band"}
         },
         {
@@ -128,7 +128,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "AI-assisted mastering with LUFS targeting and adaptive processing.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300287.png",
             "https://www.plugin-alliance.com/en/products/adptr_streamliner.html",
-            "Meter",
+            "Meters",
             {"Original"}
         },
         {
@@ -139,7 +139,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Legendary analog parametric EQ with Massenburg-style precision.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300375_a06e2b91-11f1-4fc0-9d21-fe1b9a9de6b7.png",
             "https://www.plugin-alliance.com/en/products/amek_eq_200.html",
-            "Equalizer",
+            "Equalizers",
             {"1970s", "Parametric"}
         },
         {
@@ -150,7 +150,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Smooth mastering compressor with versatile VCA and optical modes.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300375.png",
             "https://www.plugin-alliance.com/en/products/amek_mastering_compressor.html",
-            "Compressor",
+            "Compressors",
             {"1990s", "Mastering"}
         },
         {
@@ -161,7 +161,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "The classic 1960 Portaflex bass amp with warm tube tone.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300306_f99f79f4-3b68-439a-a025-a1f90f6fbe13.png",
             "https://www.plugin-alliance.com/en/products/ampeg_b15n.html",
-            "Amplifier",
+            "Amplifiers",
             {"1960s"}
         },
         {
@@ -172,7 +172,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Hybrid tube/solid-state bass amp with modern punch and clarity.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300306.png",
             "https://www.plugin-alliance.com/en/products/ampeg_svt3pro.html",
-            "Amplifier",
+            "Amplifiers",
             {"1990s"}
         },
         {
@@ -183,7 +183,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "The legendary 1969 SVT all-tube bass amp with 300-watt power.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300154_2cb58dff-84c5-4f9d-aee6-bd1fce67d1d7.png",
             "https://www.plugin-alliance.com/en/products/ampeg_svtvr.html",
-            "Amplifier",
+            "Amplifiers",
             {"1960s"}
         },
         {
@@ -194,7 +194,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "100-watt all-tube bass amp from 1971 with classic SVT preamp.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300530_e5bf95b6-a1d5-4f20-8e9a-da1f1b22d0b8.png",
             "https://www.plugin-alliance.com/en/products/ampeg_v4b.html",
-            "Amplifier",
+            "Amplifiers",
             {"1970s"}
         },
         {
@@ -205,7 +205,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Modern mastering EQ with Pultec-style passive curves and extended control.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300325_45026c47-87af-406e-80a2-d5d5ee6bf93b.png",
             "https://www.plugin-alliance.com/en/products/bettermaker_eq232d.html",
-            "Equalizer",
+            "Equalizers",
             {"2000s", "Mastering", "Passive"}
         },
         {
@@ -216,7 +216,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Tube saturation processor with pentode and triode stages for rich harmonics.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300097_1ec3b92b-f2f9-431f-b851-4ac0ce3e4971.png",
             "https://www.plugin-alliance.com/en/products/black_box_analog_design_hg-2.html",
-            "Saturator",
+            "Saturators",
             {"2010s"}
         },
         {
@@ -225,9 +225,9 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "HG-2MS",
             "Black Box Analog Design",
             "Mid-side version of the HG-2 tube saturator for mastering.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300097.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300541_892dac09-0f4a-4c59-ac02-2419b76d461c.png?v=1745586764",
             "https://www.plugin-alliance.com/en/products/black_box_analog_design_hg-2ms.html",
-            "Saturator",
+            "Saturators",
             {"2010s"}
         },
         {
@@ -238,7 +238,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Six-band EQ with dual circuit design, tube boosts, and solid-state cuts.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300902_7f6334fb.png",
             "https://www.plugin-alliance.com/en/products/black_box_hg-q.html",
-            "Equalizer",
+            "Equalizers",
             {"2010s"}
         },
         {
@@ -249,7 +249,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Creative reverb with five algorithms, gate/ducking, drive section, and freeze mode.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301029_e4a95235.png",
             "https://www.plugin-alliance.com/en/products/bx_aura.html",
-            "Reverb",
+            "Reverbs",
             {"Original"}
         },
         {
@@ -260,7 +260,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Bass amp simulator with Fender-style warmth and flexibility.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300113.png",
             "https://www.plugin-alliance.com/en/products/bx_bassdude.html",
-            "Amplifier",
+            "Amplifiers",
             {"Original"}
         },
         {
@@ -326,7 +326,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Versatile stereo delay with extensive modulation and filtering.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300111.png",
             "https://www.plugin-alliance.com/en/products/bx_delay_2500.html",
-            "Delay",
+            "Delays",
             {"Original"}
         },
         {
@@ -337,7 +337,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "M/S mastering EQ with dynamic bands and mono-maker.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300071_2ff6ba00-4bef-40af-8ba7-dd11c9b27b23.png",
             "https://www.plugin-alliance.com/en/products/bx_digital_v3.html",
-            "Equalizer",
+            "Equalizers",
             {"Original", "Mid-Side"}
         },
         {
@@ -348,7 +348,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Boss DS-1 distortion pedal emulation from 1978.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300113_98f18c30-f64d-42ce-8b14-d4a8d2ed4db6.png",
             "https://www.plugin-alliance.com/en/products/bx_distorange.html",
-            "Pedal",
+            "Pedals",
             {"1970s"}
         },
         {
@@ -359,7 +359,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Dynamic EQ with M/S and surround support.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300096.png",
             "https://www.plugin-alliance.com/en/products/bx_dyneq_v2.html",
-            "Equalizer",
+            "Equalizers",
             {"Original", "Dynamic"}
         },
         {
@@ -370,7 +370,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Ibanez TS808 Tube Screamer overdrive from 1979.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300113_5a36e09c-6a5e-46d4-b1a4-3e9ade3c2587.png",
             "https://www.plugin-alliance.com/en/products/bx_greenscreamer.html",
-            "Pedal",
+            "Pedals",
             {"1970s"}
         },
         {
@@ -381,7 +381,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "11-band M/S EQ with analog-modeled filters.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300096_8deef5cc-dc37-4b3c-a4e9-0ec4f390efb5.png",
             "https://www.plugin-alliance.com/en/products/bx_hybrid_v2.html",
-            "Equalizer",
+            "Equalizers",
             {"Original", "Mid-Side"}
         },
         {
@@ -392,7 +392,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Transparent true peak limiter for streaming compliance.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300177_6d87aa2f-b1ba-402e-b025-0f51ac80abca.png",
             "https://www.plugin-alliance.com/en/products/bx_limiter_true_peak.html",
-            "Limiter",
+            "Limiters",
             {"Original"}
         },
         {
@@ -436,7 +436,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Precision metering with peak, RMS, and correlation display.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300091_d0b86bd3-4809-4ec5-b0ed-c86c00dfbdd3.png",
             "https://www.plugin-alliance.com/en/products/bx_meter.html",
-            "Meter",
+            "Meters",
             {"Original"}
         },
         {
@@ -447,7 +447,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Optical compressor with smooth leveling and vintage character.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300283.png",
             "https://www.plugin-alliance.com/en/products/bx_opto.html",
-            "Compressor",
+            "Compressors",
             {"Original", "Optical"}
         },
         {
@@ -458,7 +458,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Stompbox-style optical compressor for guitar and bass.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300298_17f1df47-dc47-4cf2-a3a6-9fc4f6f18fa9.png",
             "https://www.plugin-alliance.com/en/products/bx_opto_pedal.html",
-            "Pedal",
+            "Pedals",
             {"Original"}
         },
         {
@@ -469,7 +469,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "EQ with per-band stereo panning for creative sound design.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300091.png",
             "https://www.plugin-alliance.com/en/products/bx_paneq.html",
-            "Equalizer",
+            "Equalizers",
             {"Original"}
         },
         {
@@ -480,19 +480,8 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Creative delay with five modes, 8-step sequencer, and advanced modulation.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301279_2.png",
             "https://www.plugin-alliance.com/en/products/bx_pulsar.html",
-            "Delay",
+            "Delays",
             {"Original"}
-        },
-        {
-            "brainworx_bx_refinement",
-            "bx_refinement",
-            "bx_refinement",
-            "Brainworx",
-            "Harshness removal tool for taming digital brightness.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300274.png",
-            "https://www.plugin-alliance.com/en/products/bx_refinement.html",
-            "Equalizer",
-            {"Original", "Dynamic"}
         },
         {
             "brainworx_bx_refinement_v3",
@@ -502,7 +491,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Dynamic EQ for removing harshness with tube saturation and de-esser.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301160.png",
             "https://www.plugin-alliance.com/en/products/bx_refinement_v3.html",
-            "Equalizer",
+            "Equalizers",
             {"Original", "Dynamic"}
         },
         {
@@ -513,7 +502,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Multi-amp guitar processor with cab simulation.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300113_dc4b6b3d-ae2b-445a-9b3f-30e8b97a39d9.png",
             "https://www.plugin-alliance.com/en/products/bx_rockrack_v3.html",
-            "Amplifier",
+            "Amplifiers",
             {"Original"}
         },
         {
@@ -524,7 +513,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "M/S saturation with XL mode for enhanced harmonics.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300110.png",
             "https://www.plugin-alliance.com/en/products/bx_saturator_v2.html",
-            "Saturator",
+            "Saturators",
             {"Original"}
         },
         {
@@ -546,7 +535,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "SSL G-series bus compressor with M/S processing.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300262.png",
             "https://www.plugin-alliance.com/en/products/bx_ssl_v2.html",
-            "Compressor",
+            "Compressors",
             {"1980s", "Bus"}
         },
         {
@@ -568,7 +557,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Sub-bass synthesizer for adding low-end weight.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300164_3a93a60d-1a1f-4e83-9daf-97009caa08ef.png",
             "https://www.plugin-alliance.com/en/products/bx_subsynth.html",
-            "Saturator",
+            "Saturators",
             {"Original"}
         },
         {
@@ -579,7 +568,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "SSL bus compressor from the legendary Townhouse Studios.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300157_d75f2fe4-c76d-4e45-a270-e1f9baafb74f.png",
             "https://www.plugin-alliance.com/en/products/bx_townhouse.html",
-            "Compressor",
+            "Compressors",
             {"1980s", "Bus"}
         },
         {
@@ -594,6 +583,17 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             {"Original"}
         },
         {
+            "brainworx_bx_xl_v2",
+            "bx_XL V2",
+            "bx_XL V2",
+            "Brainworx",
+            "M/S mastering limiter with XL saturation mode.",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300172.png",
+            "https://www.plugin-alliance.com/en/products/bx_xl_v2.html",
+            "Limiters",
+            {"Original"}
+        },
+        {
             "brainworx_bx_xl_v3",
             "bx_XL V3",
             "bx_XL V3",
@@ -601,7 +601,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "M/S mastering limiter with four-stage limiting, XL harmonics, and advanced metering.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300918_98828b43.png",
             "https://www.plugin-alliance.com/en/products/bx_xl_v3.html",
-            "Limiter",
+            "Limiters",
             {"Original"}
         },
         {
@@ -612,18 +612,18 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "19-watt Class A tube amp inspired by vintage British designs from 2012.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300252.png",
             "https://www.plugin-alliance.com/en/products/chandler_gav19t.html",
-            "Amplifier",
+            "Amplifiers",
             {"2010s"}
         },
         {
             "dangerous_bax_eq",
             "Dangerous BAX EQ Mix",
-            "BAX EQ",
+            "BAX EQ Mix",
             "Dangerous Music",
             "Mastering EQ based on the 1950s Baxandall tone control design, released 2009.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300120_e2f34e44-7d84-4fd1-ab13-2203f87a2b0e.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300095_e8339764-5fb2-4554-b4d2-14fee7d1b140.png?v=1745586729",
             "https://www.plugin-alliance.com/en/products/dangerous_bax_eq.html",
-            "Equalizer",
+            "Equalizers",
             {"2000s", "Mastering"}
         },
         {
@@ -634,7 +634,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "180-watt high-gain German tube amp from 2000 for modern metal.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300175_27a0fd9b-cc3a-488e-8aab-f78b40b3dbdd.png",
             "https://www.plugin-alliance.com/en/products/diezel_herbert.html",
-            "Amplifier",
+            "Amplifiers",
             {"2000s"}
         },
         {
@@ -645,7 +645,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Legendary 1994 4-channel German tube amp with versatile gain staging.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300175.png",
             "https://www.plugin-alliance.com/en/products/diezel_vh4.html",
-            "Amplifier",
+            "Amplifiers",
             {"1990s"}
         },
         {
@@ -656,19 +656,8 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Spectral wavetable synthesizer with complex modulation.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300291.png",
             "https://www.plugin-alliance.com/en/products/ds_audio_thorn.html",
-            "Synthesizer",
+            "Synthesizers",
             {"Original"}
-        },
-        {
-            "elysia_alpha_compressor",
-            "elysia alpha compressor V2",
-            "alpha compressor",
-            "elysia",
-            "Mastering-grade discrete Class A compressor from 2008.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300144_c2df89cc-bc07-45d6-ae2c-59f5d437eb5b.png",
-            "https://www.plugin-alliance.com/en/products/elysia_alpha_compressor.html",
-            "Compressor",
-            {"2000s", "Mastering", "VCA"}
         },
         {
             "elysia_alpha_compressor_v2",
@@ -678,7 +667,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Detailed emulation of revered analog mastering compressor with M/S capability and TMT technology.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301253.png",
             "https://www.plugin-alliance.com/en/products/elysia_alpha_compressor_v2.html",
-            "Compressor",
+            "Compressors",
             {"2000s", "VCA", "Mastering"}
         },
         {
@@ -689,7 +678,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Creative discrete Class A compressor with unique character.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300099_5063cabe-5e9e-47b5-a3e9-8a35ecb6e2e0.png",
             "https://www.plugin-alliance.com/en/products/elysia_mpressor.html",
-            "Compressor",
+            "Compressors",
             {"2000s", "VCA"}
         },
         {
@@ -698,9 +687,9 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "museq",
             "elysia",
             "Mastering EQ with warm tube-like character.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300144.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300055_aa4bc727-7c4a-4c2c-839e-af90427a44eb.png?v=1745586761",
             "https://www.plugin-alliance.com/en/products/elysia_museq.html",
-            "Equalizer",
+            "Equalizers",
             {"2000s", "Mastering"}
         },
         {
@@ -711,7 +700,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Single-knob tilt EQ for broad tonal shaping.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300099.png",
             "https://www.plugin-alliance.com/en/products/elysia_niveau_filter.html",
-            "Equalizer",
+            "Equalizers",
             {"2000s"}
         },
         {
@@ -722,7 +711,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Victor Smolski signature amp for progressive metal.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300236.png",
             "https://www.plugin-alliance.com/en/products/engl_e646_vs.html",
-            "Amplifier",
+            "Amplifiers",
             {"2000s"}
         },
         {
@@ -733,7 +722,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Vintage-voiced German tube amp with EL34 power section.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300236_02a8e4cf-e49d-4e23-8b1a-ecd76e2f5bbe.png",
             "https://www.plugin-alliance.com/en/products/engl_e765_rt.html",
-            "Amplifier",
+            "Amplifiers",
             {"2000s"}
         },
         {
@@ -744,8 +733,19 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "High-gain German metal amp from 1993 with tight low end.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300236_35ca3f14-ccc9-4b77-8393-bda3c13f2d7b.png",
             "https://www.plugin-alliance.com/en/products/engl_savage_120.html",
-            "Amplifier",
+            "Amplifiers",
             {"1990s"}
+        },
+        {
+            "fiedler_audio_dolby_atmos_composer",
+            "Dolby Atmos Composer",
+            "Dolby Atmos Composer",
+            "fiedler audio",
+            "3D audio panning and object-based mixing for Atmos.",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300410.png",
+            "https://www.plugin-alliance.com/en/products/fiedler_audio_dolby_atmos_composer.html",
+            "3D & Surround Sound",
+            {"Original"}
         },
         {
             "fiedler_audio_stage",
@@ -759,6 +759,17 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             {"Original"}
         },
         {
+            "focusrite_red2_red3",
+            "Red 2 & Red 3",
+            "Red 2 & Red 3",
+            "Focusrite",
+            "Classic 1993 Red range EQ and compressor with Neve-inspired sound.",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300241_9157b7c4-e2b9-4ad3-87f9-58e7e4ac1a02.png",
+            "https://www.plugin-alliance.com/en/products/focusrite_red_2_red_3.html",
+            "Channel Strips",
+            {"1990s"}
+        },
+        {
             "friedman_be100",
             "BE-100",
             "BE-100",
@@ -766,7 +777,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Boutique high-gain amp inspired by modified Plexi designs.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300246_03f32b94-be80-4b08-9d80-c11c6e4cc933.png",
             "https://www.plugin-alliance.com/en/products/friedman_be100.html",
-            "Amplifier",
+            "Amplifiers",
             {"2010s"}
         },
         {
@@ -777,7 +788,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "American-voiced clean to crunch amp with 6V6 power tubes.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300246.png",
             "https://www.plugin-alliance.com/en/products/friedman_buxom_betty.html",
-            "Amplifier",
+            "Amplifiers",
             {"2010s"}
         },
         {
@@ -788,7 +799,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "EL34-powered British tone with smooth gain.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300246_c8e3e3ca-e5f9-4b45-bc92-a62ed3e38da0.png",
             "https://www.plugin-alliance.com/en/products/friedman_ds40.html",
-            "Amplifier",
+            "Amplifiers",
             {"2010s"}
         },
         {
@@ -799,7 +810,18 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Boutique American amp with transparent overdrive.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300256.png",
             "https://www.plugin-alliance.com/en/products/fuchs_overdrive_supreme.html",
-            "Amplifier",
+            "Amplifiers",
+            {"2000s"}
+        },
+        {
+            "fuchs_train_45",
+            "Train 45",
+            "Fuchs Train 45",
+            "Fuchs Audio",
+            "Tweed-inspired tone with modern reliability.",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300256_c70e1be7-9dc5-4f18-8c76-b4e462f00e45.png",
+            "https://www.plugin-alliance.com/en/products/fuchs_train_45.html",
+            "Amplifiers",
             {"2000s"}
         },
         {
@@ -810,7 +832,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Iconic 1982 bi-amped bass head with aggressive punch.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300355_4f8bbe3f-c5d8-4fc9-a64f-3f3d5a8d63b4.png",
             "https://www.plugin-alliance.com/en/products/gallien_krueger_800rb.html",
-            "Amplifier",
+            "Amplifiers",
             {"1980s"}
         },
         {
@@ -827,12 +849,12 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
         {
             "hum_audio_laal",
             "HUM Audio Devices LAAL",
-            "HUM Audio LAAL",
+            "LAAL",
             "HUM Audio Devices",
             "Look Ahead Analog Limiter for mastering with fully analog look ahead delay line.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301243_6f932fc9.png",
             "https://www.plugin-alliance.com/en/products/hum_audio_laal.html",
-            "Limiter",
+            "Limiters",
             {"2020s"}
         },
         {
@@ -841,9 +863,9 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "XTComp",
             "Kiive Audio",
             "FET compressor inspired by the Empirical Labs Distressor (1995).",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300768.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/300998.png?v=1749744759",
             "https://www.plugin-alliance.com/en/products/kiive_xtcomp.html",
-            "Compressor",
+            "Compressors",
             {"1990s", "FET"}
         },
         {
@@ -854,7 +876,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Finnish passive tube EQ for mastering from 2013.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300455.png",
             "https://www.plugin-alliance.com/en/products/knif_audio_soma.html",
-            "Equalizer",
+            "Equalizers",
             {"2010s", "Passive", "Mastering"}
         },
         {
@@ -865,7 +887,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Neve 2254 diode bridge compressor from 1968.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300181_5bca4a41-cb3c-4e95-8a3c-71f79e99ea66.png",
             "https://www.plugin-alliance.com/en/products/lindell_254e.html",
-            "Compressor",
+            "Compressors",
             {"1960s", "Diode"}
         },
         {
@@ -876,7 +898,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Transformer-coupled preamp with passive EQ from 2012.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300181.png",
             "https://www.plugin-alliance.com/en/products/lindell_6x-500.html",
-            "Preamp",
+            "Equalizers",
             {"2010s"}
         },
         {
@@ -885,9 +907,9 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "7X-500",
             "Lindell Audio",
             "FET compressor with 1176-style compression.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300199.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300178_8bb5104f-8127-409a-89ec-25840ed22e19.png",
             "https://www.plugin-alliance.com/en/products/lindell_7x-500.html",
-            "Compressor",
+            "Compressors",
             {"2010s", "FET"}
         },
         {
@@ -909,7 +931,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Rare mastering EQ emulation with tube and transformer design.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301272.jpg",
             "https://www.plugin-alliance.com/en/products/lindell_eq825.html",
-            "Equalizer",
+            "Equalizers",
             {"2010s", "Mastering"}
         },
         {
@@ -920,8 +942,30 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Pultec-style passive EQ with modern enhancements.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300181_31ac25bc-f0c7-4e4b-b9fc-ff58f0e91e9e.png",
             "https://www.plugin-alliance.com/en/products/lindell_pex-500.html",
-            "Equalizer",
+            "Equalizers",
             {"2010s", "Passive"}
+        },
+        {
+            "lindell_retro",
+            "RC-20 Retro Color",
+            "Retro",
+            "Lindell Audio",
+            "Complete channel strip with vintage British character.",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300535_f4d5b9d7-aba0-4a31-8e0b-61cce47e0a4a.png",
+            "https://www.plugin-alliance.com/en/products/lindell_retro.html",
+            "Channel Strips",
+            {"1970s"}
+        },
+        {
+            "looptrotter_monster",
+            "Monster",
+            "Monster",
+            "Looptrotter",
+            "Aggressive bus compressor with harmonic saturation from 2013.",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300459_b4a9c7d4-0f1b-4e2e-8cef-daeee4f8e0a6.png",
+            "https://www.plugin-alliance.com/en/products/looptrotter_monster.html",
+            "Compressors",
+            {"2010s", "Bus"}
         },
         {
             "louder_than_liftoff_silver_bullet_mk2",
@@ -931,7 +975,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Console-style tone shaping with dual saturation paths from 2014.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300952_ae72f079-fed9-499f-a15f-c00e2d9fe988.png",
             "https://www.plugin-alliance.com/en/products/louder_than_liftoff_silver_bullet_mk2.html",
-            "Saturator",
+            "Saturators",
             {"2010s"}
         },
         {
@@ -942,7 +986,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "6-band EQ with legendary Air Band for high-frequency presence.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300284_06dd5fd0-71b9-4f15-a9e4-ed4f64b94a84.png",
             "https://www.plugin-alliance.com/en/products/maag_eq4.html",
-            "Equalizer",
+            "Equalizers",
             {"2010s"}
         },
         {
@@ -953,7 +997,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Dual-channel mastering EQ with AIR BAND and M/S processing.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301107_7eb64f8c.png",
             "https://www.plugin-alliance.com/en/products/maag_eq4_ms.html",
-            "Equalizer",
+            "Equalizers",
             {"2010s", "Mid-Side", "Mastering"}
         },
         {
@@ -964,8 +1008,19 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Mastering parametric EQ with tube/solid-state topology from 1999.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300218_24fa8cd1-4c88-4f76-a617-e314ea56ae09.png",
             "https://www.plugin-alliance.com/en/products/millennia_nseq-2.html",
-            "Equalizer",
+            "Equalizers",
             {"1990s", "Mastering", "Parametric"}
+        },
+        {
+            "millennia_tclv",
+            "TCL-V",
+            "TCL-V",
+            "Millennia",
+            "Tube compressor/limiter for transparent mastering dynamics.",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300218.png",
+            "https://www.plugin-alliance.com/en/products/millennia_tclv.html",
+            "Compressors",
+            {"1990s", "Tube", "Mastering"}
         },
         {
             "neold_big_al",
@@ -975,7 +1030,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Dual-stage tube saturator modeled from custom-built hardware with NOS components (2021).",
             "https://www.plugin-alliance.com/cdn/shop/files/BIG_AL_GUI.png",
             "https://www.plugin-alliance.com/en/products/neold_big_al.html",
-            "Saturator",
+            "Saturators",
             {"2020s"}
         },
         {
@@ -986,7 +1041,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Recreation of the legendary 1960s Siemens Klangfilm tube equalizer with vintage warmth.",
             "https://www.plugin-alliance.com/cdn/shop/files/NEOLD_RZ062_GUI.jpg",
             "https://www.plugin-alliance.com/en/products/neold_rz062.html",
-            "Equalizer",
+            "Equalizers",
             {"1960s"}
         },
         {
@@ -997,7 +1052,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Tube compressor modeled from rare 1954 broadcast compressor, custom hardware built for plugin (2022).",
             "https://www.plugin-alliance.com/cdn/shop/files/U17_GUI.png",
             "https://www.plugin-alliance.com/en/products/neold_u17.html",
-            "Compressor",
+            "Compressors",
             {"2020s", "Tube"}
         },
         {
@@ -1008,7 +1063,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "LA-2A style optical compressor modeled from custom-built hardware (2023).",
             "https://www.plugin-alliance.com/cdn/shop/files/U2A_GUI.png",
             "https://www.plugin-alliance.com/en/products/neold_u2a.html",
-            "Compressor",
+            "Compressors",
             {"2020s", "Optical"}
         },
         {
@@ -1041,7 +1096,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Intelligent tonal and dynamic enhancement by auto-adjusting complex parameters.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300068_1e2c9ec6-8b04-49e6-ac20-bfbc963d0481.png",
             "https://www.plugin-alliance.com/en/products/noveltech_character.html",
-            "Saturator",
+            "Saturators",
             {"Original"}
         },
         {
@@ -1050,7 +1105,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Vocal Enhancer",
             "Noveltech",
             "Intelligent vocal processing for presence and clarity.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300068.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300088_7acfec5d-912a-48ca-9ebd-fe07e741e6e1.png",
             "https://www.plugin-alliance.com/en/products/noveltech_vocal_enhancer.html",
             "Vocal Processing",
             {"Original"}
@@ -1063,7 +1118,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Spectral matching and dynamic control to capture and apply sonic character.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300403_9bb5d6c3-5d94-46d0-86c4-f8c86bd9a7c3.png",
             "https://www.plugin-alliance.com/en/products/pro_audio_dsp_dsm_v3.html",
-            "Equalizer",
+            "Equalizers",
             {"Original", "Dynamic"}
         },
         {
@@ -1074,7 +1129,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "1176 limiter recreation from 2002 with stereo processing.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300417_8eceb4b6-1550-4496-aa2a-45aadb2e1c92.png",
             "https://www.plugin-alliance.com/en/products/purple_audio_mc_77.html",
-            "Compressor",
+            "Compressors",
             {"2000s", "FET"}
         },
         {
@@ -1089,6 +1144,17 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             {"Original"}
         },
         {
+            "schoeps_mono_upmix",
+            "Schoeps Mono Upmix 1to3",
+            "Mono Upmix",
+            "Schoeps",
+            "Convert mono recordings to immersive stereo and surround.",
+            "https://schoeps.de/fileadmin/user_upload/_processed_/a/c/csm_MonoUpmix_0788687428.jpg",
+            "https://www.plugin-alliance.com/en/products/schoeps_mono_upmix.html",
+            "3D & Surround Sound",
+            {"Original"}
+        },
+        {
             "shadow_hills_mastering_compressor",
             "Shadow Hills Mastering Compressor",
             "Mastering Compressor",
@@ -1096,7 +1162,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Dual-stage compression with switchable output transformers from 2008.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300081_a9a2e16c-5b2f-47ae-9537-3073a3ed18f9.png",
             "https://www.plugin-alliance.com/en/products/shadow_hills_mastering_compressor.html",
-            "Compressor",
+            "Compressors",
             {"2000s", "Mastering"}
         },
         {
@@ -1107,7 +1173,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Class A version of the legendary mastering compressor from 2012.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300477_e8983653-ad69-4077-b345-b55cc0c50e99.png?v=1745586742",
             "https://www.plugin-alliance.com/en/products/shadow_hills_class_a_mastering_comp.html",
-            "Compressor",
+            "Compressors",
             {"2010s", "Mastering"}
         },
         {
@@ -1118,8 +1184,19 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "New generation optical compressor with expanded ratio, speed, push mode, and transformer options.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301332.jpg",
             "https://www.plugin-alliance.com/en/products/shadow_hills_optomax.html",
-            "Compressor",
+            "Compressors",
             {"2020s", "Optical"}
+        },
+        {
+            "sonible_smart:reverb",
+            "smart:reverb",
+            "smart:reverb",
+            "sonible",
+            "AI-powered reverb that adapts to your source material.",
+            "https://www.sonible.com/wp-content/uploads/2025/06/smartReverb2_productpage_header-logo.png",
+            "https://www.plugin-alliance.com/en/products/x-sonible-smart-reverb.html",
+            "Reverbs",
+            {"Original"}
         },
         {
             "spl_attacker_plus",
@@ -1142,17 +1219,6 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "https://www.plugin-alliance.com/en/products/spl_big.html",
             "Stereo Imagers",
             {"2010s"}
-        },
-        {
-            "spl_de_verb",
-            "SPL De-Verb Plus",
-            "De-Verb",
-            "SPL",
-            "Reverb reduction tool for cleaning up room ambience.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
-            "https://www.plugin-alliance.com/en/products/spl_de-verb.html",
-            "Restoration",
-            {"Original"}
         },
         {
             "spl_de_verb_plus",
@@ -1184,7 +1250,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Full-range parametric equalizer with precise control.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300186_672ca1e9-1e63-43ec-9c48-8a7cdb66b8d0.png",
             "https://www.plugin-alliance.com/en/products/spl_eq_ranger_plus.html",
-            "Equalizer",
+            "Equalizers",
             {"Original", "Parametric"}
         },
         {
@@ -1195,7 +1261,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Four-band EQ based on the Passeq circuit.",
             "https://www.plugin-alliance.com/cdn/shop/files/SPL_ranger_free.png",
             "https://www.plugin-alliance.com/en/products/spl_free_ranger.html",
-            "Equalizer",
+            "Equalizers",
             {"2000s", "Passive"}
         },
         {
@@ -1206,7 +1272,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Metering suite with level, loudness, bit monitoring, vectorscope, and spectrum analyzer.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300400_d705cd7c-7087-4680-914b-646d0b0fe801.png",
             "https://www.plugin-alliance.com/en/products/spl_hawkeye.html",
-            "Meter",
+            "Meters",
             {"Original"}
         },
         {
@@ -1217,7 +1283,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Tube compressor from 2015 with dual-circuit topology for transparent mastering.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300386_5a609eb0-4eb3-4780-82b2-2bc2077c677b.png",
             "https://www.plugin-alliance.com/en/products/spl_iron.html",
-            "Compressor",
+            "Compressors",
             {"2010s", "Tube", "Mastering"}
         },
         {
@@ -1228,7 +1294,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Digital tape saturator with Original and Ultimate modes for authentic analog warmth.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301150_00d7f9ee.png",
             "https://www.plugin-alliance.com/en/products/spl_machine_head.html",
-            "Saturator",
+            "Saturators",
             {"Original"}
         },
         {
@@ -1239,7 +1305,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Room simulation and reverb modeling.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300307_b8dc9794-488c-4ffc-af14-deaa77633c9e.png",
             "https://www.plugin-alliance.com/en/products/spl_mo-verb_plus.html",
-            "Reverb",
+            "Reverbs",
             {"Original"}
         },
         {
@@ -1250,7 +1316,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Six-band passive mastering EQ from 2007.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300014_41e6334f-ea81-4115-bcb2-ce021a984aae.png",
             "https://www.plugin-alliance.com/en/products/spl_passeq.html",
-            "Equalizer",
+            "Equalizers",
             {"2000s", "Passive", "Mastering"}
         },
         {
@@ -1259,9 +1325,9 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "PQ",
             "SPL",
             "Mastering equalizer with five bands of precise control.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300014.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300682_e9888535-781e-4df8-ad82-419b0fddb790.png?v=1745586696",
             "https://www.plugin-alliance.com/en/products/spl_pq.html",
-            "Equalizer",
+            "Equalizers",
             {"2000s", "Mastering"}
         },
         {
@@ -1283,19 +1349,8 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Dual tube saturation processor for warmth and harmonics.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300025_b2bd856a-47b9-433c-b622-31dd8c2d61a0.png",
             "https://www.plugin-alliance.com/en/products/spl_twintube.html",
-            "Saturator",
+            "Saturators",
             {"2000s"}
-        },
-        {
-            "spl_vitalizer_mk2_t",
-            "SPL Vitalizer MK2-T",
-            "Vitalizer MK2-T",
-            "SPL",
-            "Psychoacoustic processor from 1999 for enhancing bass and presence.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187.png",
-            "https://www.plugin-alliance.com/en/products/spl_vitalizer_mk2-t.html",
-            "Saturator",
-            {"1990s"}
         },
         {
             "spl_vitalizer_mk3_t",
@@ -1305,7 +1360,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Mix finishing tool with frequency shaping, bass processing, and de-masking technology.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301205.png",
             "https://www.plugin-alliance.com/en/products/spl_vitalizer_mk3-t.html",
-            "Equalizer",
+            "Equalizers",
             {"2020s", "Mastering"}
         },
         {
@@ -1316,7 +1371,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Three-channel amplifier from 2011 with American clean, British vintage, and high-gain tones.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300557_5b344abb-f597-41e9-ac6d-bd3885b474fc.png",
             "https://www.plugin-alliance.com/en/products/suhr_pt100.html",
-            "Amplifier",
+            "Amplifiers",
             {"2010s"}
         },
         {
@@ -1327,7 +1382,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "High-end guitar amplifier with versatile tone shaping.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300558_7a885e73-7f6b-4a7c-b1ab-3b8bf2413932.png",
             "https://www.plugin-alliance.com/en/products/suhr_se100.html",
-            "Amplifier",
+            "Amplifiers",
             {"2010s"}
         },
         {
@@ -1338,8 +1393,19 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Next-gen compressor with 12 algorithms including modern and vintage emulations.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300982_3397fcd0.png",
             "https://www.plugin-alliance.com/en/products/tbt_cenozoix.html",
-            "Compressor",
+            "Compressors",
             {"Original"}
+        },
+        {
+            "three_body_technology_kirchoff_eq",
+            "Kirchoff EQ",
+            "Kirchoff EQ",
+            "Three-Body Technology",
+            "32-band parametric EQ with analog curves, dynamics processing, and vintage emulations.",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300781_6b333574-9e0f-4247-9d6a-81a75d11eadd.png",
+            "https://www.plugin-alliance.com/en/products/tbt_kirchhoff-eq.html",
+            "Equalizers",
+            {"Original", "Parametric", "Dynamic"}
         },
         {
             "tomo_audiolabs_lisa",
@@ -1349,7 +1415,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Six-band opto-compression dynamic EQ for sophisticated tone shaping.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300635_b22c3561-6e15-4c4d-ad52-4ac96b0e9d92.png",
             "https://www.plugin-alliance.com/en/products/tomo_audiolabs_lisa.html",
-            "Equalizer",
+            "Equalizers",
             {"Original", "Dynamic"}
         },
         {
@@ -1360,7 +1426,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Bass enhancement and synthesis for adding low-end weight.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300490_3df7645c-3a98-4c49-93be-3d4a9700d3e5.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_bass_mint.html",
-            "Saturator",
+            "Saturators",
             {"Original"}
         },
         {
@@ -1371,7 +1437,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Modern drum machine with 20 synthesis engines and 1000+ samples.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301002_746463f1.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_battalion.html",
-            "Synthesizer",
+            "Synthesizers",
             {"Original"}
         },
         {
@@ -1415,7 +1481,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Dynamic gate with MIDI control and alternate modes for creative gating.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300183_d5aedd52-8194-49bd-b280-24160da8aed4.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_g8.html",
-            "Gate",
+            "Gates",
             {"Original"}
         },
         {
@@ -1437,7 +1503,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Zero-latency delay for creative timing effects.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300316_ce1f07a0-722d-4d3a-a1bf-b43231b62808.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_instant_delay.html",
-            "Delay",
+            "Delays",
             {"Original"}
         },
         {
@@ -1448,7 +1514,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Dual-oscillator synthesizer with 26 modes, 16 filters, and 40+ effects.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300413_87e9ac60-f714-4a6d-9e6a-7e6cd43a070f.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_lion.html",
-            "Synthesizer",
+            "Synthesizers",
             {"Original"}
         },
         {
@@ -1481,7 +1547,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Delay with sleep mode for infinite frozen repeats.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300264.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_sandman.html",
-            "Delay",
+            "Delays",
             {"Original"}
         },
         {
@@ -1492,7 +1558,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Sophisticated delay with multiple modes for echo to granular synthesis.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300264_331f5d02-0ec3-4e58-9218-1ffbbbf2a9f2.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_sandman_pro.html",
-            "Delay",
+            "Delays",
             {"Original"}
         },
         {
@@ -1503,7 +1569,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Spectral freezing and manipulation for ambient textures.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300512_2269d8cb-2801-4e4d-915c-7ad722d6d4a8.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_silo.html",
-            "Reverb",
+            "Reverbs",
             {"Original"}
         },
         {
@@ -1525,7 +1591,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Next-gen reverb removing dissonances and transients with auto-ducking.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300493_90634ade-c965-41fd-a5fe-ed40d14cec59.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_tails.html",
-            "Reverb",
+            "Reverbs",
             {"Original"}
         },
         {
@@ -1536,7 +1602,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Multi-band distortion with three independent processing bands.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300393_2300346d-45cc-4bd1-997d-10b1946db4e8.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_triad.html",
-            "Saturator",
+            "Saturators",
             {"Original"}
         },
         {
@@ -1547,7 +1613,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Compressor/limiter with aggressive character and fast response.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300357_6d1acfe7-c862-4f57-aeeb-d9fe37986420.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_zip.html",
-            "Compressor",
+            "Compressors",
             {"Original"}
         },
         {
@@ -1558,7 +1624,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "VCA compressor from 2007 with 1979-style VCAs for smooth, glossy compression.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300016_b2d9cdc4-0a57-4ea9-ac82-c9be994d59a3.png",
             "https://www.plugin-alliance.com/en/products/vertigo_vsc-2.html",
-            "Compressor",
+            "Compressors",
             {"2000s", "VCA"}
         },
         {
@@ -1569,7 +1635,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Mastering saturation with dual harmonic circuitry for flexible tone shaping.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300100_481634f1-902d-46ca-9da7-bbe7f2b83313.png",
             "https://www.plugin-alliance.com/en/products/vertigo_vsm-3.html",
-            "Saturator",
+            "Saturators",
             {"2000s"}
         },
         {
@@ -1591,7 +1657,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Vintage parametric EQ with warm analog character.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300661_afa25549-2347-4ed7-9321-d48f261fc6ee.png?v=1745586747",
             "https://www.plugin-alliance.com/en/products/amek_eq_250.html",
-            "Equalizer",
+            "Equalizers",
             {"1980s", "Parametric"}
         },
         {
@@ -1602,30 +1668,8 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Classic version of the legendary SVT-VR all-tube bass amp.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300439_cf6e9c57-eddc-40b0-af64-192174df03d0.png?v=1745586745",
             "https://www.plugin-alliance.com/en/products/ampeg_svtvr_classic.html",
-            "Amplifier",
+            "Amplifiers",
             {"1960s"}
-        },
-        {
-            "arousor",
-            "Arousor",
-            "Arousor",
-            "SPL",
-            "Transient designer and compressor with unique parallel compression.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187_f60f1190-959c-48af-b3e7-0d907bc344e9.png",
-            "https://www.plugin-alliance.com/en/products/spl_transient_designer_plus.html",
-            "Compressor",
-            {"Original"}
-        },
-        {
-            "arousor_lt",
-            "Arousor Lt",
-            "Arousor Lt",
-            "SPL",
-            "Streamlined version of the Arousor transient designer.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300187_f60f1190-959c-48af-b3e7-0d907bc344e9.png",
-            "https://www.plugin-alliance.com/en/products/spl_transient_designer_plus.html",
-            "Compressor",
-            {"Original"}
         },
         {
             "bettermaker_bm60",
@@ -1635,7 +1679,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Analog-modeled 60-band mastering EQ with precision control.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301030_a53ec7b3-bdb8-4f9f-847c-c4ae1c766f78.png?v=1745586697",
             "https://www.plugin-alliance.com/en/products/bettermaker_bm60.html",
-            "Compressor",
+            "Compressors",
             {"2020s"}
         },
         {
@@ -1646,7 +1690,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "VCA bus compressor for gluing mixes with punch and clarity.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300973_b69e8739-4394-49f1-bb2d-c4df85dd2bcb.png?v=1745586698",
             "https://www.plugin-alliance.com/en/products/bettermaker_bus_compressor.html",
-            "Compressor",
+            "Compressors",
             {"2010s", "Bus"}
         },
         {
@@ -1657,7 +1701,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Hardware-connected version of the Bettermaker Bus Compressor.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300973_b69e8739-4394-49f1-bb2d-c4df85dd2bcb.png?v=1745586698",
             "https://www.plugin-alliance.com/en/products/bettermaker_bus_compressor.html",
-            "Compressor",
+            "Compressors",
             {"2010s", "Bus"}
         },
         {
@@ -1668,7 +1712,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Hardware-connected 500-series VCA compressor.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301146_2bdf41cf-d9d8-4294-8d8a-270560c4cc74.png?v=1745586694",
             "https://www.plugin-alliance.com/en/products/bettermaker_c502v.html",
-            "Compressor",
+            "Compressors",
             {"2010s"}
         },
         {
@@ -1679,7 +1723,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Hardware-connected mastering compressor with analog warmth.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301237.png?v=1757922617",
             "https://www.plugin-alliance.com/en/products/bettermaker_mastering_compressor.html",
-            "Compressor",
+            "Compressors",
             {"2010s", "Mastering"}
         },
         {
@@ -1690,18 +1734,18 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Passive mastering EQ with Pultec-style curves.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301098.png?v=1745506620",
             "https://www.plugin-alliance.com/en/products/bettermaker_passive_equalizer.html",
-            "Equalizer",
+            "Equalizers",
             {"2010s", "Passive"}
         },
         {
             "dangerous_bax_eq_master",
             "Dangerous BAX EQ Master",
-            "Dangerous BAX EQ Master",
+            "BAX EQ Master",
             "Dangerous Music",
             "Mastering version of the Baxandall-style tone control EQ.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300095_e8339764-5fb2-4554-b4d2-14fee7d1b140.png?v=1745586729",
             "https://www.plugin-alliance.com/en/products/dangerous_bax_eq.html",
-            "Equalizer",
+            "Equalizers",
             {"2000s", "Mastering"}
         },
         {
@@ -1712,7 +1756,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Retro Tube amp with vintage EL34 tone and modern features.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300148_cdb32674-3646-451d-8b91-d5a793b68296.png?v=1745586729",
             "https://www.plugin-alliance.com/en/products/engl_e765_rt.html",
-            "Amplifier",
+            "Amplifiers",
             {"2000s"}
         },
         {
@@ -1723,7 +1767,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Boutique high-gain amp inspired by hot-rodded British designs.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300435_2754fb79-473f-4297-9053-282544fea9df.png?v=1745586749",
             "https://www.plugin-alliance.com/en/products/friedman_be100.html",
-            "Amplifier",
+            "Amplifiers",
             {"2010s"}
         },
         {
@@ -1734,29 +1778,18 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Tweed-inspired amp with Train Wreck-style overdrive.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300486_5bd98aea-95ec-42eb-8701-c60accecc3cf.png?v=1745586753",
             "https://www.plugin-alliance.com/en/products/fuchs_train_ii.html",
-            "Amplifier",
+            "Amplifiers",
             {"2000s"}
         },
         {
             "kiive_tape_face",
             "Kiive Tape Face",
-            "Kiive Tape Face",
+            "Tape Face",
             "Kiive Audio",
             "Tape saturation processor with vintage warmth.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300883_ea7d242f-aca6-4785-8ee4-155cbfbd9fd2.png?v=1745586700",
             "https://www.plugin-alliance.com/en/products/kiive_tape_face.html",
-            "Saturator",
-            {"Original"}
-        },
-        {
-            "kiive_xtressor",
-            "Kiive Xtressor",
-            "Kiive Xtressor",
-            "Kiive Audio",
-            "Aggressive FET compressor with character.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300370_51fdb784-eaec-48b3-8609-4fccc7196d68.png",
-            "https://www.plugin-alliance.com/en/products/kiive_xtressor.html",
-            "Compressor",
+            "Saturators",
             {"Original"}
         },
         {
@@ -1767,7 +1800,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Monophonic tube synthesizer with unique analog sound.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300471_d66727a9-586b-47d0-97ed-9f176c296269.png?v=1745586754",
             "https://www.plugin-alliance.com/en/products/knif_audio_knifonium.html",
-            "Synthesizer",
+            "Synthesizers",
             {"2010s"}
         },
         {
@@ -1778,7 +1811,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Neve 2254-style diode bridge compressor.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300289_fadcef28-689f-493c-b1ae-a695928bf0a1.png?v=1745586764",
             "https://www.plugin-alliance.com/en/products/lindell_354e.html",
-            "Compressor",
+            "Compressors",
             {"1970s", "Diode"}
         },
         {
@@ -1789,7 +1822,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "API 2500-style bus compressor.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300543_18e03db2-391e-4555-ba69-376b1cc1842a.png?v=1745586695",
             "https://www.plugin-alliance.com/en/products/lindell_50_series.html",
-            "Compressor",
+            "Compressors",
             {"2010s", "Bus"}
         },
         {
@@ -1811,7 +1844,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Helios-style bus compressor.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300738_552e118f-280c-45c0-bb35-df6d7492b686.png?v=1745586708",
             "https://www.plugin-alliance.com/en/products/lindell_69_series.html",
-            "Compressor",
+            "Compressors",
             {"2010s", "Bus"}
         },
         {
@@ -1833,7 +1866,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Neve 80-series bus compressor.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300475_de30a79f-c507-4963-9d9f-b09b50e2b91b.png?v=1745586761",
             "https://www.plugin-alliance.com/en/products/lindell_80_series.html",
-            "Compressor",
+            "Compressors",
             {"1980s", "Bus"}
         },
         {
@@ -1877,7 +1910,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Multi-band compressor for mastering and mixing.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300737_d0202dc3-2fc5-432e-b972-f3b6edc13dbd.png?v=1745586719",
             "https://www.plugin-alliance.com/en/products/lindell_mbc.html",
-            "Compressor",
+            "Compressors",
             {"Original", "Multi-Band"}
         },
         {
@@ -1888,7 +1921,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Fairchild 660/670-style tube limiter.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301012_2e708038-ee2b-4bc1-97db-a55966cf2523.png?v=1745586735",
             "https://www.plugin-alliance.com/en/products/lindell_mu-66.html",
-            "Compressor",
+            "Compressors",
             {"1960s", "Tube"}
         },
         {
@@ -1899,7 +1932,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "SSL-style bus compressor.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300627_3efa1f27-cc48-46d3-a800-a417c51b1e5c.png?v=1745586723",
             "https://www.plugin-alliance.com/en/products/lindell_sbc.html",
-            "Compressor",
+            "Compressors",
             {"Original", "Bus"}
         },
         {
@@ -1910,7 +1943,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Tube saturation and enhancement processor.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300236_5566d6a5-698c-439c-82d1-35e8137524b4.png?v=1745586749",
             "https://www.plugin-alliance.com/en/products/lindell_te-100.html",
-            "Saturator",
+            "Saturators",
             {"Original"}
         },
         {
@@ -1921,7 +1954,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Dual-channel tube and transformer saturation.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300629_fe5b41c8-37fd-4fa6-a20e-831a09f0f481.png?v=1745586730",
             "https://www.plugin-alliance.com/en/products/looptrotter_sa2rate2.html",
-            "Saturator",
+            "Saturators",
             {"2010s"}
         },
         {
@@ -1932,7 +1965,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Two-band EQ with the legendary Air Band.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300117_4ea7b383-e026-40eb-ad25-72287bdcd42e.png?v=1745586760",
             "https://www.plugin-alliance.com/en/products/maag_eq2.html",
-            "Equalizer",
+            "Equalizers",
             {"2010s"}
         },
         {
@@ -1943,7 +1976,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Compressor with unique Air Band limiting.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300396_1fab8194-5ca3-4b6d-99b1-0e53a025bcb9.png?v=1745913993",
             "https://www.plugin-alliance.com/en/products/maag_magnum-k.html",
-            "Compressor",
+            "Compressors",
             {"2010s"}
         },
         {
@@ -1954,7 +1987,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Twin Com tube compressor/limiter for mastering.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300143_3c0a78f2-31be-436b-ab39-a877c73d8694.png?v=1745586716",
             "https://www.plugin-alliance.com/en/products/millennia_tcl-2.html",
-            "Compressor",
+            "Compressors",
             {"1990s", "Tube"}
         },
         {
@@ -1965,7 +1998,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Vintage tape delay emulation with modulation.",
             "https://www.plugin-alliance.com/cdn/shop/files/OLDTIMER_GUI.png",
             "https://www.plugin-alliance.com/en/products/neold_oldtimer.html",
-            "Delay",
+            "Delays",
             {"2020s"}
         },
         {
@@ -1976,7 +2009,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Tube saturator modeled from rare German broadcast gear.",
             "https://www.plugin-alliance.com/cdn/shop/files/WUNDERLICH_GUI.png",
             "https://www.plugin-alliance.com/en/products/neold_wunderlich.html",
-            "Saturator",
+            "Saturators",
             {"2020s"}
         },
         {
@@ -2009,18 +2042,29 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Single-channel version of the passive mastering EQ.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300014_41e6334f-ea81-4115-bcb2-ce021a984aae.png?v=1745586752",
             "https://www.plugin-alliance.com/en/products/spl_passeq.html",
-            "Equalizer",
+            "Equalizers",
             {"2000s", "Passive"}
         },
         {
+            "shadow_hills_class_a_mastering_comp",
+            "Shadow Hills Class A Mastering Comp",
+            "Class A Mastering Comp",
+            "Shadow Hills",
+            "Class A discrete version of the mastering compressor.",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300477_e8983653-ad69-4077-b345-b55cc0c50e99.png?v=1745586742",
+            "https://www.plugin-alliance.com/en/products/shadow_hills_class_a_mastering_comp.html",
+            "Compressors",
+            {"2010s", "Mastering"}
+        },
+        {
             "tbtech_kirchhoff_eq",
-            "Kirchhoff-EQ",
-            "Kirchhoff-EQ",
+            "TBTECH Kirchhoff-EQ",
+            "TBTECH Kirchhoff-EQ",
             "Three-Body Technology",
             "32-band parametric EQ with analog modeling and dynamics.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300781_6b333574-9e0f-4247-9d6a-81a75d11eadd.png?v=1745586715",
             "https://www.plugin-alliance.com/en/products/tbt_kirchhoff-eq.html",
-            "Equalizer",
+            "Equalizers",
             {"Original", "Parametric", "Dynamic"}
         },
         {
@@ -2042,7 +2086,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Bass enhancement and sub synthesis.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300490_3df7645c-3a98-4c49-93be-3d4a9700d3e5.png?v=1745586736",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_bass_mint.html",
-            "Saturator",
+            "Saturators",
             {"Original"}
         },
         {
@@ -2064,7 +2108,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Amek 9098-style parametric EQ with TMT modeling.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300359_322c1bfe-9086-4af3-8fa9-ee42b6149d81.png?v=1745586731",
             "https://www.plugin-alliance.com/en/products/bx_2098_eq.html",
-            "Equalizer",
+            "Equalizers",
             {"1970s"}
         },
         {
@@ -2075,7 +2119,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "ProCo RAT-style distortion pedal.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300219.png?v=1756967420",
             "https://www.plugin-alliance.com/en/products/bx_blackdist2.html",
-            "Pedal",
+            "Pedals",
             {"Original"}
         },
         {
@@ -2097,7 +2141,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Low-end enhancement and sub-bass processor.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300038.png?v=1756969663",
             "https://www.plugin-alliance.com/en/products/bx_boom.html",
-            "Saturator",
+            "Saturators",
             {"Original"}
         },
         {
@@ -2106,9 +2150,9 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "bx_boom V3",
             "Brainworx",
             "Enhanced bass processor with additional controls.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300038.png?v=1756969663",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-301127_e9ace067-330a-4797-9b22-85b8cb2bf870.png?v=1749744797",
             "https://www.plugin-alliance.com/en/products/bx_boom.html",
-            "Saturator",
+            "Saturators",
             {"Original"}
         },
         {
@@ -2119,7 +2163,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "High and low-pass filter for cleaning mixes.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300199_3640d2e9-1a04-4c7d-bc8e-6b03588f4b6b.png?v=1745586750",
             "https://www.plugin-alliance.com/en/products/bx_cleansweep_pro.html",
-            "Equalizer",
+            "Equalizers",
             {"Original"}
         },
         {
@@ -2130,7 +2174,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Precision filter for removing unwanted frequencies.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300036.png?v=1756967088",
             "https://www.plugin-alliance.com/en/products/bx_cleansweep_v2.html",
-            "Equalizer",
+            "Equalizers",
             {"Original"}
         },
         {
@@ -2141,7 +2185,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Clipping saturator for loudness and harmonics.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300897_8836b232-ad58-4b7b-84ad-b3ecb5454842.png?v=1745586702",
             "https://www.plugin-alliance.com/en/products/bx_clipper.html",
-            "Saturator",
+            "Saturators",
             {"Original"}
         },
         {
@@ -2174,7 +2218,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Monitor controller and metering suite.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300039_3f18bdee-2603-4bf6-902e-927155d0aad6.png?v=1745586759",
             "https://www.plugin-alliance.com/en/products/bx_control_v2.html",
-            "Meter",
+            "Meters",
             {"Original"}
         },
         {
@@ -2207,7 +2251,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "M/S mastering EQ optimized for mixing.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300214_d6cd321d-80bd-4c41-bd6a-4b05198f3e30.png?v=1745586761",
             "https://www.plugin-alliance.com/en/products/bx_digital_v3.html",
-            "Equalizer",
+            "Equalizers",
             {"Original", "Mid-Side"}
         },
         {
@@ -2218,7 +2262,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Mono version of the dynamic EQ.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300008_23571076-2caa-4b69-809a-1d234d32eb18.png?v=1745586760",
             "https://www.plugin-alliance.com/en/products/bx_dyneq_v2.html",
-            "Equalizer",
+            "Equalizers",
             {"Original", "Dynamic"}
         },
         {
@@ -2229,7 +2273,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Harmonic enhancement for adding presence.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300927_483a3bdf-0d3a-4970-a5b7-d0b6b37ba07c.png?v=1745586701",
             "https://www.plugin-alliance.com/en/products/bx_enhancer.html",
-            "Saturator",
+            "Saturators",
             {"Original"}
         },
         {
@@ -2240,7 +2284,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Mix bus processor for cohesive sound.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300988_dbbe8b26-3676-473a-8766-8a51308d591f.png?v=1745586695",
             "https://www.plugin-alliance.com/en/products/bx_glue.html",
-            "Compressor",
+            "Compressors",
             {"Original"}
         },
         {
@@ -2251,7 +2295,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "M/S EQ optimized for mixing applications.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300097_74b90f56-7fc4-4c94-86f1-cdbb4ad2d724.png?v=1745586723",
             "https://www.plugin-alliance.com/en/products/bx_hybrid_v2.html",
-            "Equalizer",
+            "Equalizers",
             {"Original", "Mid-Side"}
         },
         {
@@ -2262,7 +2306,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Transparent brickwall limiter.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300085_6cee96b9-0f1f-4499-9d6d-81bea3ca9da3.png?v=1745586720",
             "https://www.plugin-alliance.com/en/products/bx_limiter.html",
-            "Limiter",
+            "Limiters",
             {"Original"}
         },
         {
@@ -2284,7 +2328,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Dual-rectifier style high-gain amp.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300160_cf331a7a-0d2e-4d93-a0e8-ca026d93f930.png?v=1745586733",
             "https://www.plugin-alliance.com/en/products/bx_megadual.html",
-            "Amplifier",
+            "Amplifiers",
             {"Original"}
         },
         {
@@ -2295,7 +2339,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Single-channel high-gain amp.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300161_5c17c827-8c0c-468b-aa25-f395ca06499f.png?v=1745586747",
             "https://www.plugin-alliance.com/en/products/bx_megasingle.html",
-            "Amplifier",
+            "Amplifiers",
             {"Original"}
         },
         {
@@ -2306,7 +2350,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Modern metal amp for aggressive tones.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300208.png?v=1756967288",
             "https://www.plugin-alliance.com/en/products/bx_metal2.html",
-            "Amplifier",
+            "Amplifiers",
             {"Original"}
         },
         {
@@ -2317,7 +2361,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Analog-style synthesizer with classic waveforms.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300404_8690b6b0-99e3-4490-91e0-4dbb9fd154ca.png?v=1745586756",
             "https://www.plugin-alliance.com/en/products/bx_oberhausen.html",
-            "Synthesizer",
+            "Synthesizers",
             {"Original"}
         },
         {
@@ -2328,7 +2372,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "High-gain rock amp with Marshall-style tone.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300464_722b950c-c750-41b2-b860-a90fdb759f0b.png?v=1745586752",
             "https://www.plugin-alliance.com/en/products/bx_rockergain100.html",
-            "Amplifier",
+            "Amplifiers",
             {"Original"}
         },
         {
@@ -2339,7 +2383,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Preset player for the bx_rockrack amp suite.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300244_20a2ee7e-c696-432e-ae2f-641cd41b7723.png?v=1745586750",
             "https://www.plugin-alliance.com/en/products/bx_rockrack_v3.html",
-            "Amplifier",
+            "Amplifiers",
             {"Original"}
         },
         {
@@ -2350,7 +2394,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Room simulation and ambience processor.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300218_b3b1d5e1-dcb0-4b24-a58a-3db127e0e259.png?v=1745586753",
             "https://www.plugin-alliance.com/en/products/bx_rooms.html",
-            "Reverb",
+            "Reverbs",
             {"Original"}
         },
         {
@@ -2383,7 +2427,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Boss OD-1 style overdrive pedal.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300197_69f8a5e2-6d60-40b9-aea2-8da18dbe5671.png?v=1756967355",
             "https://www.plugin-alliance.com/en/products/bx_yellowdrive.html",
-            "Pedal",
+            "Pedals",
             {"1970s"}
         },
         {
@@ -2394,7 +2438,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Mastering version of the alpha compressor.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301253.png?v=1757584233",
             "https://www.plugin-alliance.com/en/products/elysia_alpha_compressor.html",
-            "Compressor",
+            "Compressors",
             {"2000s", "Mastering", "VCA"}
         },
         {
@@ -2405,7 +2449,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Mix version of the alpha compressor.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301253.png?v=1757584233",
             "https://www.plugin-alliance.com/en/products/elysia_alpha_compressor.html",
-            "Compressor",
+            "Compressors",
             {"2000s", "VCA"}
         },
         {
@@ -2416,7 +2460,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Mastering saturator with parallel compression.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300256_1b500d94-b2ab-4d3d-8537-32ac61b673c9.png?v=1745586725",
             "https://www.plugin-alliance.com/en/products/elysia_karacter.html",
-            "Saturator",
+            "Saturators",
             {"2000s"}
         },
         {
@@ -2427,7 +2471,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Mix version of the karacter saturator.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300256_1b500d94-b2ab-4d3d-8537-32ac61b673c9.png?v=1745586725",
             "https://www.plugin-alliance.com/en/products/elysia_karacter.html",
-            "Saturator",
+            "Saturators",
             {"2000s"}
         },
         {
@@ -2438,7 +2482,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Mastering version of the museq EQ.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300055_aa4bc727-7c4a-4c2c-839e-af90427a44eb.png?v=1745586761",
             "https://www.plugin-alliance.com/en/products/elysia_museq.html",
-            "Equalizer",
+            "Equalizers",
             {"2000s", "Mastering"}
         },
         {
@@ -2460,30 +2504,8 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Cascading compressor with unique character.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300369_a8076339-2084-4197-a944-dbbf15f01efd.png?v=1745586744",
             "https://www.plugin-alliance.com/en/products/elysia_phils_cascade.html",
-            "Compressor",
+            "Compressors",
             {"2000s"}
-        },
-        {
-            "fiedler_audio_spacelab_beam",
-            "fiedler audio spacelab beam",
-            "spacelab beam",
-            "fiedler audio",
-            "Spatial audio beam forming tool.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300516_ba88f00a-b2dc-49af-be33-5cdf43d64d51.png",
-            "https://www.plugin-alliance.com/en/products/fiedler_audio_spacelab_interstellar.html",
-            "Reverb",
-            {"Original"}
-        },
-        {
-            "fiedler_audio_spacelab_ignition",
-            "fiedler audio spacelab ignition",
-            "spacelab ignition",
-            "fiedler audio",
-            "Immersive audio reverb and spatial processor.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300516_ba88f00a-b2dc-49af-be33-5cdf43d64d51.png",
-            "https://www.plugin-alliance.com/en/products/fiedler_audio_spacelab_interstellar.html",
-            "Reverb",
-            {"Original"}
         },
         {
             "fiedler_audio_splat",

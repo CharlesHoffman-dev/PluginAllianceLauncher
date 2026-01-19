@@ -254,15 +254,15 @@ inline juce::String getEffectCategoryName(EffectCategory cat)
         {EffectCategory::Echo, "Delay"},
 
         // Saturation
-        {EffectCategory::Distortion, "Pedals"},
+        {EffectCategory::Distortion, "Pedal"},
         {EffectCategory::Saturation, "Saturator"},
         {EffectCategory::Exciter, "Saturator"},
         {EffectCategory::TapeEmulation, "Saturator"},
 
         // Guitar & Bass
-        {EffectCategory::AmpSimulator, "Amplifiers"},
-        {EffectCategory::Preamp, "Preamps"},
-        {EffectCategory::Pedals, "Pedals"},
+        {EffectCategory::AmpSimulator, "Amplifier"},
+        {EffectCategory::Preamp, "Preamp"},
+        {EffectCategory::Pedals, "Pedal"},
 
         // Channel & Mastering
         {EffectCategory::ChannelStrip, "Channel Strip"},
