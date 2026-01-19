@@ -1,233 +1,287 @@
 #!/usr/bin/env python3
 """
-Generate C++ header file from plugins.json
+================================================================================
+  Plugin Data Generator
 
-Usage:
-    python generate_plugin_data.py
+  Converts plugins.json → Source/Data/PluginData.h
 
-This script reads plugins.json and generates Source/Data/PluginData.h
-which contains all plugin metadata as compile-time constants.
+  Usage:
+      python scripts/generate_plugin_data.py
+
+  This generates a C++ header containing all plugin metadata. The launcher uses
+  this data to display plugin information (descriptions, images, categories).
+================================================================================
+
+JSON Schema (plugins.json):
+---------------------------
+{
+  "plugins": [
+    {
+      "id":          "unique_plugin_id",           // Required: Unique identifier
+      "vstFileName": "Exact VST3 Name",            // Required: EXACT name the VST3 reports
+      "displayName": "Display Name for UI",        // Required: Name shown in launcher UI
+      "brand":       "Manufacturer Name",          // Required: Company/brand name
+      "description": "Short description text.",    // Required: Plugin description
+      "category":    "Compressors",                // Required: Primary category
+      "imageUrl":    "https://...",                // Optional: Thumbnail image URL
+      "url":         "https://...",                // Optional: Product page URL
+      "tags":        ["tag1", "tag2"]              // Optional: Additional tags
+    }
+  ]
+}
+
+How Matching Works:
+-------------------
+When you click a plugin in the launcher, it looks up metadata by comparing the
+VST3's reported name against the 'vstFileName' field in the database.
+
+To find the exact VST3 name:
+  1. Check your DAW's plugin manager
+  2. Or look at the plugin's .vst3 folder name
+  3. Or check the log file on your desktop after clicking plugins
+
+If a plugin shows generic description, the vstFileName doesn't match.
 """
 
 import json
-import os
 from pathlib import Path
 from datetime import datetime
 
-# Paths
+# ==============================================================================
+# Configuration
+# ==============================================================================
+
 SCRIPT_DIR = Path(__file__).parent
 PROJECT_ROOT = SCRIPT_DIR.parent
 PLUGINS_JSON = PROJECT_ROOT / "plugins.json"
 OUTPUT_HEADER = PROJECT_ROOT / "Source" / "Data" / "PluginData.h"
 
+# ==============================================================================
+# Utility Functions
+# ==============================================================================
 
 def escape_cpp_string(s: str) -> str:
-    """Escape a string for use in C++ code."""
+    """Escape a string for safe use in C++ string literals."""
     if not s:
         return ""
     return s.replace('\\', '\\\\').replace('"', '\\"').replace('\n', '\\n')
 
+# ==============================================================================
+# Code Generation
+# ==============================================================================
 
-def generate_header(plugins: list) -> str:
-    """Generate the C++ header file content."""
+def generate_cpp_header(plugins: list) -> str:
+    """Generate the complete C++ header file content."""
 
-    lines = []
-    lines.append("/*")
-    lines.append("  ==============================================================================")
-    lines.append("    PluginData.h")
-    lines.append("    AUTO-GENERATED FILE - DO NOT EDIT DIRECTLY")
-    lines.append(f"    Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    lines.append("")
-    lines.append("    Edit plugins.json and run: python scripts/generate_plugin_data.py")
-    lines.append("  ==============================================================================")
-    lines.append("*/")
-    lines.append("")
-    lines.append("#pragma once")
-    lines.append("")
-    lines.append("#include <JuceHeader.h>")
-    lines.append("#include <vector>")
-    lines.append("#include <map>")
-    lines.append("")
-    lines.append("namespace PALauncher")
-    lines.append("{")
-    lines.append("")
-    lines.append("struct PluginMetadata")
-    lines.append("{")
-    lines.append("    juce::String id;           // Unique identifier (e.g., \"ada_flanger\")")
-    lines.append("    juce::String brand;        // Brand name (e.g., \"A/DA\")")
-    lines.append("    juce::String product;      // Product name (e.g., \"Flanger\")")
-    lines.append("    juce::String fullName;     // Full display name (e.g., \"ADA Flanger\")")
-    lines.append("    juce::String description;  // Short description")
-    lines.append("    juce::String imageUrl;     // Thumbnail image URL")
-    lines.append("    juce::String productUrl;   // Product page URL")
-    lines.append("    juce::String category;     // Primary category")
-    lines.append("    juce::StringArray tags;    // All tags (category, era, type, etc.)")
-    lines.append("};")
-    lines.append("")
-    lines.append("inline std::vector<PluginMetadata> getPluginDatabase()")
-    lines.append("{")
-    lines.append("    return {")
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-    for i, plugin in enumerate(plugins):
-        plugin_id = plugin.get('id', '')
-        if not plugin_id:
-            # Generate ID from name if not present
-            name = plugin.get('name', '')
-            plugin_id = name.lower().replace(' ', '_').replace('/', '_').replace('-', '_')
+    # Header comment
+    header = f'''/*
+  ==============================================================================
+    PluginData.h
+    AUTO-GENERATED - DO NOT EDIT
 
+    Generated: {timestamp}
+    Source: plugins.json
+
+    To update: Edit plugins.json then run: python scripts/generate_plugin_data.py
+  ==============================================================================
+*/
+
+#pragma once
+
+#include <JuceHeader.h>
+#include <vector>
+#include <map>
+
+namespace PALauncher
+{{
+
+// =============================================================================
+// Plugin Metadata Structure
+// =============================================================================
+
+struct PluginMetadata
+{{
+    juce::String id;           // Unique identifier (e.g., "ada_flanger")
+    juce::String vstFileName;  // Exact VST3 reported name - used for matching
+    juce::String displayName;  // Name shown in UI
+    juce::String brand;        // Manufacturer name
+    juce::String description;  // Plugin description text
+    juce::String imageUrl;     // Thumbnail image URL
+    juce::String productUrl;   // Product page URL
+    juce::String category;     // Primary category
+    juce::StringArray tags;    // Additional tags
+}};
+
+// =============================================================================
+// Plugin Database
+// =============================================================================
+
+inline const std::vector<PluginMetadata>& getPluginDatabase()
+{{
+    static const std::vector<PluginMetadata> database = {{
+'''
+
+    # Generate plugin entries
+    entries = []
+    for plugin in plugins:
+        plugin_id = escape_cpp_string(plugin.get('id', ''))
+        vst_name = escape_cpp_string(plugin.get('vstFileName', ''))
+        display_name = escape_cpp_string(plugin.get('displayName', ''))
         brand = escape_cpp_string(plugin.get('brand', ''))
-        product = escape_cpp_string(plugin.get('product', ''))
-        full_name = escape_cpp_string(plugin.get('name', ''))
         description = escape_cpp_string(plugin.get('description', ''))
         image_url = escape_cpp_string(plugin.get('imageUrl', ''))
         product_url = escape_cpp_string(plugin.get('url', ''))
         category = escape_cpp_string(plugin.get('category', ''))
         tags = plugin.get('tags', [])
 
-        # Build tags string array
-        tags_str = ', '.join([f'"{escape_cpp_string(t)}"' for t in tags]) if tags else ''
+        tags_str = ', '.join([f'"{escape_cpp_string(t)}"' for t in tags])
 
-        comma = "," if i < len(plugins) - 1 else ""
+        entry = f'''        {{
+            "{plugin_id}",
+            "{vst_name}",
+            "{display_name}",
+            "{brand}",
+            "{description}",
+            "{image_url}",
+            "{product_url}",
+            "{category}",
+            {{{tags_str}}}
+        }}'''
+        entries.append(entry)
 
-        lines.append(f'        {{')
-        lines.append(f'            "{plugin_id}",')
-        lines.append(f'            "{brand}",')
-        lines.append(f'            "{product}",')
-        lines.append(f'            "{full_name}",')
-        lines.append(f'            "{description}",')
-        lines.append(f'            "{image_url}",')
-        lines.append(f'            "{product_url}",')
-        lines.append(f'            "{category}",')
-        lines.append(f'            {{{tags_str}}}')
-        lines.append(f'        }}{comma}')
+    header += ',\n'.join(entries)
 
-    lines.append("    };")
-    lines.append("}")
-    lines.append("")
-    lines.append("// Normalize a string for fuzzy matching (remove spaces, dashes, underscores, lowercase)")
-    lines.append("inline juce::String normalizeForMatching(const juce::String& str)")
-    lines.append("{")
-    lines.append("    return str.toLowerCase()")
-    lines.append("              .removeCharacters(\" -_\")")
-    lines.append('              .replace(":", "");')
-    lines.append("}")
-    lines.append("")
-    lines.append("// Lookup plugin metadata by various identifiers")
-    lines.append("inline const PluginMetadata* findPluginMetadata(const juce::String& searchName)")
-    lines.append("{")
-    lines.append("    static std::vector<PluginMetadata> database = getPluginDatabase();")
-    lines.append("    static bool initialized = false;")
-    lines.append("    static std::map<juce::String, const PluginMetadata*> lookupByName;")
-    lines.append("    static std::map<juce::String, const PluginMetadata*> lookupById;")
-    lines.append("    static std::map<juce::String, const PluginMetadata*> lookupByProduct;")
-    lines.append("    static std::map<juce::String, const PluginMetadata*> lookupByNormalized;")
-    lines.append("")
-    lines.append("    if (!initialized)")
-    lines.append("    {")
-    lines.append("        for (const auto& plugin : database)")
-    lines.append("        {")
-    lines.append("            lookupByName[plugin.fullName.toLowerCase()] = &plugin;")
-    lines.append("            lookupById[plugin.id.toLowerCase()] = &plugin;")
-    lines.append("            // Also index by brand + product")
-    lines.append("            lookupByName[(plugin.brand + \" \" + plugin.product).toLowerCase()] = &plugin;")
-    lines.append("            // Index by product name alone (for VST3s that report short names)")
-    lines.append("            auto productLower = plugin.product.toLowerCase();")
-    lines.append("            if (lookupByProduct.find(productLower) == lookupByProduct.end())")
-    lines.append("                lookupByProduct[productLower] = &plugin;")
-    lines.append("            // Index by normalized name (handles \"MetricAB\" vs \"Metric AB\")")
-    lines.append("            auto normalized = normalizeForMatching(plugin.fullName);")
-    lines.append("            if (lookupByNormalized.find(normalized) == lookupByNormalized.end())")
-    lines.append("                lookupByNormalized[normalized] = &plugin;")
-    lines.append("            // Also normalized product")
-    lines.append("            auto normalizedProduct = normalizeForMatching(plugin.product);")
-    lines.append("            if (lookupByNormalized.find(normalizedProduct) == lookupByNormalized.end())")
-    lines.append("                lookupByNormalized[normalizedProduct] = &plugin;")
-    lines.append("        }")
-    lines.append("        initialized = true;")
-    lines.append("    }")
-    lines.append("")
-    lines.append("    auto searchLower = searchName.toLowerCase();")
-    lines.append("    auto searchNormalized = normalizeForMatching(searchName);")
-    lines.append("")
-    lines.append("    // Try exact match by full name")
-    lines.append("    auto it = lookupByName.find(searchLower);")
-    lines.append("    if (it != lookupByName.end())")
-    lines.append("        return it->second;")
-    lines.append("")
-    lines.append("    // Try by ID")
-    lines.append("    it = lookupById.find(searchLower);")
-    lines.append("    if (it != lookupById.end())")
-    lines.append("        return it->second;")
-    lines.append("")
-    lines.append("    // Try by product name alone")
-    lines.append("    it = lookupByProduct.find(searchLower);")
-    lines.append("    if (it != lookupByProduct.end())")
-    lines.append("        return it->second;")
-    lines.append("")
-    lines.append("    // Try by normalized name (handles spacing/case variations)")
-    lines.append("    it = lookupByNormalized.find(searchNormalized);")
-    lines.append("    if (it != lookupByNormalized.end())")
-    lines.append("        return it->second;")
-    lines.append("")
-    lines.append("    // Try partial match - search name contains product or vice versa")
-    lines.append("    for (const auto& plugin : database)")
-    lines.append("    {")
-    lines.append("        if (plugin.fullName.containsIgnoreCase(searchName) ||")
-    lines.append("            searchName.containsIgnoreCase(plugin.fullName) ||")
-    lines.append("            plugin.product.containsIgnoreCase(searchName) ||")
-    lines.append("            searchName.containsIgnoreCase(plugin.product))")
-    lines.append("            return &plugin;")
-    lines.append("    }")
-    lines.append("")
-    lines.append("    // Try normalized partial match")
-    lines.append("    for (const auto& plugin : database)")
-    lines.append("    {")
-    lines.append("        auto normalizedFull = normalizeForMatching(plugin.fullName);")
-    lines.append("        auto normalizedProduct = normalizeForMatching(plugin.product);")
-    lines.append("        if (normalizedFull.contains(searchNormalized) ||")
-    lines.append("            searchNormalized.contains(normalizedFull) ||")
-    lines.append("            normalizedProduct.contains(searchNormalized) ||")
-    lines.append("            searchNormalized.contains(normalizedProduct))")
-    lines.append("            return &plugin;")
-    lines.append("    }")
-    lines.append("")
-    lines.append("    return nullptr;")
-    lines.append("}")
-    lines.append("")
-    lines.append("} // namespace PALauncher")
-    lines.append("")
+    # Lookup function - simplified and clear
+    header += '''
+    };
+    return database;
+}
 
-    return '\n'.join(lines)
+// =============================================================================
+// Metadata Lookup Function
+// =============================================================================
+//
+// Finds plugin metadata by matching the VST3's reported name.
+//
+// Matching priority:
+//   1. Exact match on vstFileName (case-insensitive)
+//   2. Exact match on displayName (case-insensitive)
+//   3. Partial match - vstFileName contains search or vice versa
+//
+// Returns nullptr if no match found.
+//
 
+inline const PluginMetadata* findPluginMetadata(const juce::String& vstReportedName)
+{
+    static bool initialized = false;
+    static std::map<juce::String, const PluginMetadata*> vstNameLookup;
+    static std::map<juce::String, const PluginMetadata*> displayNameLookup;
+
+    const auto& database = getPluginDatabase();
+
+    // Build lookup tables on first call
+    if (!initialized)
+    {
+        for (const auto& plugin : database)
+        {
+            // Index by vstFileName (primary match)
+            auto vstLower = plugin.vstFileName.toLowerCase();
+            if (vstNameLookup.find(vstLower) == vstNameLookup.end())
+                vstNameLookup[vstLower] = &plugin;
+
+            // Index by displayName (secondary match)
+            auto displayLower = plugin.displayName.toLowerCase();
+            if (displayNameLookup.find(displayLower) == displayNameLookup.end())
+                displayNameLookup[displayLower] = &plugin;
+        }
+        initialized = true;
+    }
+
+    auto searchLower = vstReportedName.toLowerCase();
+
+    // 1. Try exact match on vstFileName
+    auto it = vstNameLookup.find(searchLower);
+    if (it != vstNameLookup.end())
+        return it->second;
+
+    // 2. Try exact match on displayName
+    it = displayNameLookup.find(searchLower);
+    if (it != displayNameLookup.end())
+        return it->second;
+
+    // 3. Try partial match (for plugins with slightly different names)
+    for (const auto& plugin : database)
+    {
+        if (plugin.vstFileName.containsIgnoreCase(vstReportedName) ||
+            vstReportedName.containsIgnoreCase(plugin.vstFileName))
+            return &plugin;
+    }
+
+    return nullptr;
+}
+
+} // namespace PALauncher
+'''
+
+    return header
+
+# ==============================================================================
+# Main Entry Point
+# ==============================================================================
 
 def main():
-    # Check if plugins.json exists
+    print("=" * 60)
+    print("  Plugin Data Generator")
+    print("=" * 60)
+
+    # Verify source file exists
     if not PLUGINS_JSON.exists():
-        print(f"Error: {PLUGINS_JSON} not found")
-        print("Please create plugins.json or export it from the HTML editor")
+        print(f"\nERROR: {PLUGINS_JSON} not found!")
+        print("Create plugins.json with your plugin data.")
         return 1
 
-    # Load plugins
-    print(f"Reading {PLUGINS_JSON}...")
+    # Load plugin data
+    print(f"\nReading: {PLUGINS_JSON}")
     with open(PLUGINS_JSON, 'r', encoding='utf-8') as f:
         data = json.load(f)
 
     plugins = data.get('plugins', [])
-    print(f"Found {len(plugins)} plugins")
+    print(f"Found: {len(plugins)} plugins")
+
+    # Validate required fields
+    errors = []
+    for i, plugin in enumerate(plugins):
+        missing = []
+        for field in ['id', 'vstFileName', 'displayName', 'brand', 'description', 'category']:
+            if not plugin.get(field):
+                missing.append(field)
+        if missing:
+            errors.append(f"  Plugin #{i+1} ({plugin.get('id', 'unknown')}): missing {', '.join(missing)}")
+
+    if errors:
+        print(f"\nWARNING: Some plugins have missing required fields:")
+        for err in errors[:10]:  # Show first 10
+            print(err)
+        if len(errors) > 10:
+            print(f"  ... and {len(errors) - 10} more")
 
     # Generate header
-    print(f"Generating {OUTPUT_HEADER}...")
-    header_content = generate_header(plugins)
-
-    # Ensure output directory exists
+    print(f"\nGenerating: {OUTPUT_HEADER}")
     OUTPUT_HEADER.parent.mkdir(parents=True, exist_ok=True)
 
-    # Write header
+    header_content = generate_cpp_header(plugins)
+
     with open(OUTPUT_HEADER, 'w', encoding='utf-8') as f:
         f.write(header_content)
 
-    print(f"Successfully generated {OUTPUT_HEADER}")
+    print(f"\nSUCCESS: Generated {OUTPUT_HEADER}")
     print(f"Total plugins: {len(plugins)}")
+    print("\nNext steps:")
+    print("  1. Rebuild the project")
+    print("  2. Launch the app to test")
+    print("=" * 60)
 
     return 0
 

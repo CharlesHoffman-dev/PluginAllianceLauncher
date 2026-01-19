@@ -699,8 +699,8 @@ inline juce::String getOfficialPluginName(const juce::String& pluginName)
     // Look up official name from PluginData.h (generated from plugins.json)
     if (auto* metadata = findPluginMetadata(pluginName))
     {
-        if (metadata->fullName.isNotEmpty())
-            return metadata->fullName;
+        if (metadata->displayName.isNotEmpty())
+            return metadata->displayName;
     }
 
     // Fallback: return the original name
