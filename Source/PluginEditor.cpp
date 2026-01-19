@@ -331,7 +331,7 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
 
     // Set editor size - wider to accommodate details panel
     setSize(1400, 900);
-    setResizable(true, true);
+    setResizable(true, false);
     setResizeLimits(1000, 600, 2200, 1500);
 
     // Defer hosted plugin editor creation to avoid audio stutter on window open
@@ -619,7 +619,12 @@ void PluginAllianceLauncherEditor::resizeForPlugin()
     requiredWidth = juce::jmin(requiredWidth, 2000);
     requiredHeight = juce::jmin(requiredHeight, 1500);
 
+    // Temporarily remove constrainer to prevent aspect ratio enforcement
+    setConstrainer(nullptr);
     setSize(requiredWidth, requiredHeight);
+
+    // Re-apply resize limits without aspect ratio
+    setResizeLimits(400, 300, 2200, 1500);
 }
 
 void PluginAllianceLauncherEditor::resizeForBrowser()

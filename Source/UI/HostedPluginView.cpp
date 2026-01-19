@@ -71,7 +71,7 @@ HostedPluginView::HostedPluginView()
     };
     addAndMakeVisible(unloadButton);
 
-    editorViewport.setScrollBarsShown(true, true);
+    editorViewport.setScrollBarsShown(false, false);
     addAndMakeVisible(editorViewport);
 
     setOpaque(true);
@@ -113,17 +113,8 @@ void HostedPluginView::resized()
     headerBounds.removeFromLeft(8);
     pluginNameLabel.setBounds(headerBounds);
 
-    // Editor viewport
+    // Viewport takes the remaining space
     editorViewport.setBounds(bounds);
-
-    if (pluginEditor != nullptr)
-    {
-        // Center the editor if smaller than viewport, otherwise let viewport scroll
-        auto editorSize = pluginEditor->getBounds();
-        int x = juce::jmax(0, (editorViewport.getWidth() - editorSize.getWidth()) / 2);
-        int y = juce::jmax(0, (editorViewport.getHeight() - editorSize.getHeight()) / 2);
-        pluginEditor->setTopLeftPosition(x, y);
-    }
 }
 
 void HostedPluginView::setPluginHost(PluginHost* host)
@@ -155,9 +146,7 @@ void HostedPluginView::showPluginEditor()
 
         if (pluginEditor != nullptr)
         {
-            pluginEditor->addComponentListener(this);
-
-            // Set initial size
+            // Set initial size based on constrainer
             auto constrainer = pluginEditor->getConstrainer();
             if (constrainer != nullptr)
             {
@@ -166,6 +155,10 @@ void HostedPluginView::showPluginEditor()
                     juce::jlimit(constrainer->getMinimumHeight(), constrainer->getMaximumHeight(), pluginEditor->getHeight())
                 );
             }
+
+            // Cache the initial size to prevent auto-resizing
+            cachedEditorWidth = pluginEditor->getWidth();
+            cachedEditorHeight = pluginEditor->getHeight();
 
             editorViewport.setViewedComponent(pluginEditor.get(), false);
             resized();
@@ -179,11 +172,12 @@ void HostedPluginView::hidePluginEditor()
 {
     if (pluginEditor != nullptr)
     {
-        pluginEditor->removeComponentListener(this);
         editorViewport.setViewedComponent(nullptr, false);
         pluginEditor.reset();
     }
 
+    cachedEditorWidth = 0;
+    cachedEditorHeight = 0;
     pluginNameLabel.setText("", juce::dontSendNotification);
     repaint();
 }
@@ -205,15 +199,6 @@ juce::Rectangle<int> HostedPluginView::getPluginEditorBounds() const
     if (pluginEditor != nullptr)
         return pluginEditor->getBounds();
     return {};
-}
-
-void HostedPluginView::componentMovedOrResized(juce::Component& component, bool, bool wasResized)
-{
-    if (&component == pluginEditor.get() && wasResized)
-    {
-        // Plugin editor changed size, update viewport
-        resized();
-    }
 }
 
 } // namespace PALauncher

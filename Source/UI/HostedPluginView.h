@@ -13,8 +13,7 @@
 namespace PALauncher
 {
 
-class HostedPluginView : public juce::Component,
-                         public juce::ComponentListener
+class HostedPluginView : public juce::Component
 {
 public:
     HostedPluginView();
@@ -41,16 +40,17 @@ public:
     std::function<void()> onUnloadClicked;
 
 private:
-    void componentMovedOrResized(juce::Component& component, bool wasMoved, bool wasResized) override;
-
     PluginHost* pluginHost = nullptr;
     std::unique_ptr<juce::AudioProcessorEditor> pluginEditor;
 
     juce::Label pluginNameLabel;
     juce::TextButton unloadButton;
     juce::TextButton bypassButton;
-
     juce::Viewport editorViewport;
+
+    // Cache the initial editor size to prevent auto-resizing plugins from growing
+    int cachedEditorWidth = 0;
+    int cachedEditorHeight = 0;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(HostedPluginView)
 };
