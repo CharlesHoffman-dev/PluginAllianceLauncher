@@ -206,7 +206,6 @@ enum class ModulationType
 enum class GuitarBassType
 {
     Amp,            // Amp simulators
-    Cabinet,        // Cabinet/IR loaders
     Pedal,          // Pedal effects (overdrive, distortion)
     Preamp,         // Preamp/DI boxes
     Suite,          // Complete amp suites
@@ -440,7 +439,6 @@ inline juce::String getGuitarBassTypeName(GuitarBassType type)
 {
     static const std::map<GuitarBassType, juce::String> names = {
         {GuitarBassType::Amp, "Amplifiers"},
-        {GuitarBassType::Cabinet, "Cabinets"},
         {GuitarBassType::Pedal, "Pedals"},
         {GuitarBassType::Preamp, "Preamps"},
         {GuitarBassType::Suite, "Suites"},

@@ -129,7 +129,6 @@ enum class DisplayCategory
 
     // Effects (alphabetical)
     Amplifiers,         // Amp simulators
-    Cabinets,           // Speaker cabinet emulations
     ChannelStrips,      // Console emulations (SSL, Neve, API, etc.)
     Delays,             // Analog, Digital, Granular, Tape, etc.
     Compressors,        // Compressors, Gates, Transient Shapers, De-Essers
@@ -332,7 +331,6 @@ inline juce::String getDisplayCategoryName(DisplayCategory cat)
 
         // Effects (alphabetical)
         {DisplayCategory::Amplifiers, "Amplifiers"},
-        {DisplayCategory::Cabinets, "Cabinets"},
         {DisplayCategory::ChannelStrips, "Channel Strips"},
         {DisplayCategory::Delays, "Delays"},
         {DisplayCategory::Compressors, "Compressors"},

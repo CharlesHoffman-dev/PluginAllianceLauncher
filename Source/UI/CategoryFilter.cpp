@@ -44,7 +44,6 @@ void CategoryFilter::buildCategoryList()
     categories.push_back({DisplayCategory::Pedals, "Pedals", false});
     categories.push_back({DisplayCategory::Preamps, "Preamps", false});
     categories.push_back({DisplayCategory::Amplifiers, "Amplifiers", false});
-    categories.push_back({DisplayCategory::Cabinets, "Cabinets", false});
     categories.push_back({DisplayCategory::Suites, "Suites", false});
 
     // Effects header
