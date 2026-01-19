@@ -38,8 +38,10 @@
 		280A4C7E8EA5E3D1A680B692 /* IOKit.framework */ = {isa = PBXBuildFile; fileRef = 7AF8429366B8E7F46971F8AA; };
 		2A575BD21A5A368EEAC3739C /* include_juce_audio_formats.mm */ = {isa = PBXBuildFile; fileRef = 674BB34FD02DD22492726171; };
 		2E7EEFF084BA563156EF5060 /* juce_VST3ManifestHelper.mm */ = {isa = PBXBuildFile; fileRef = A8707723E6F20233BB1B7D3C; settings = { COMPILER_FLAGS = "-std=c++17 -fobjc-arc -w -DJUCE_SKIP_PRECOMPILED_HEADER"; }; };
+		32066939D9FCAEE4C0C642B0 /* BinaryData5.cpp */ = {isa = PBXBuildFile; fileRef = 017F5333AB962F98828A0DB7; };
 		3B07A8E6911FAD4DCD7435B7 /* Shared Code */ = {isa = PBXBuildFile; fileRef = FFCF264BAFF4602D2376B306; };
 		4164EC1F7FCD96D99C5D1720 /* AudioToolbox.framework */ = {isa = PBXBuildFile; fileRef = 417B704BAC9F55053CECA514; };
+		4366B5FBD1F3A3AB68CC9EF1 /* BinaryData4.cpp */ = {isa = PBXBuildFile; fileRef = E4C2C0CEA9C0D48FE85E9CAB; };
 		50332B9EB17AA4083CE434EE /* include_juce_audio_plugin_client_AU_1.mm */ = {isa = PBXBuildFile; fileRef = A70E5B57A78C7707F4F98171; };
 		526FE5281C8D74A07470DF47 /* include_juce_gui_extra.mm */ = {isa = PBXBuildFile; fileRef = 423444C2EC6D9FE21ABD6F09; };
 		53DAB72F31AA4A3066F2DB92 /* include_juce_audio_utils.mm */ = {isa = PBXBuildFile; fileRef = 9C9A80E94EFDECD994EE4E14; };
@@ -86,6 +88,7 @@
 /* Begin PBXFileReference section */
 		0018DD5463DA32F1164885B7 /* brainworx_bx_greenscreamer.jpg */ /* brainworx_bx_greenscreamer.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = brainworx_bx_greenscreamer.jpg; path = ../../Resources/Thumbnails/brainworx_bx_greenscreamer.jpg; sourceTree = SOURCE_ROOT; };
 		014471E69981D95AB0B504AE /* shadow_hills_class_a_mastering_comp.jpg */ /* shadow_hills_class_a_mastering_comp.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = shadow_hills_class_a_mastering_comp.jpg; path = ../../Resources/Thumbnails/shadow_hills_class_a_mastering_comp.jpg; sourceTree = SOURCE_ROOT; };
+		017F5333AB962F98828A0DB7 /* BinaryData5.cpp */ /* BinaryData5.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BinaryData5.cpp; path = ../../JuceLibraryCode/BinaryData5.cpp; sourceTree = SOURCE_ROOT; };
 		0201114051228534282CC317 /* bx_boom.jpg */ /* bx_boom.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = bx_boom.jpg; path = ../../Resources/Thumbnails/bx_boom.jpg; sourceTree = SOURCE_ROOT; };
 		02BAF1FA548CC2F6BBDA1204 /* bx_megasingle.jpg */ /* bx_megasingle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = bx_megasingle.jpg; path = ../../Resources/Thumbnails/bx_megasingle.jpg; sourceTree = SOURCE_ROOT; };
 		02E978D9642C9274508D7F7F /* tbtech_trinity_shaper.jpg */ /* tbtech_trinity_shaper.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = tbtech_trinity_shaper.jpg; path = ../../Resources/Thumbnails/tbtech_trinity_shaper.jpg; sourceTree = SOURCE_ROOT; };
@@ -370,6 +373,7 @@
 		E15327AB1205FBA5A7A0CD13 /* SearchBar.cpp */ /* SearchBar.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SearchBar.cpp; path = ../../Source/UI/SearchBar.cpp; sourceTree = SOURCE_ROOT; };
 		E34D91C107C57263F3834197 /* three_body_technology_kirchoff_eq.jpg */ /* three_body_technology_kirchoff_eq.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = three_body_technology_kirchoff_eq.jpg; path = ../../Resources/Thumbnails/three_body_technology_kirchoff_eq.jpg; sourceTree = SOURCE_ROOT; };
 		E357F7791CE0C8A962036C5D /* spl_passeq_single.jpg */ /* spl_passeq_single.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = spl_passeq_single.jpg; path = ../../Resources/Thumbnails/spl_passeq_single.jpg; sourceTree = SOURCE_ROOT; };
+		E4C2C0CEA9C0D48FE85E9CAB /* BinaryData4.cpp */ /* BinaryData4.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BinaryData4.cpp; path = ../../JuceLibraryCode/BinaryData4.cpp; sourceTree = SOURCE_ROOT; };
 		E57E5AF67BC5BD39041D384A /* juce_audio_formats */ /* juce_audio_formats */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_formats; path = C:/Users/charl/JUCE/modules/juce_audio_formats; sourceTree = "<absolute>"; };
 		E61A658A2C7313B0E39F8A6A /* proaudiodsp_dsm_v3.jpg */ /* proaudiodsp_dsm_v3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = proaudiodsp_dsm_v3.jpg; path = ../../Resources/Thumbnails/proaudiodsp_dsm_v3.jpg; sourceTree = SOURCE_ROOT; };
 		EA068E6BA0D4389D027D37EB /* HostedPluginView.h */ /* HostedPluginView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HostedPluginView.h; path = ../../Source/UI/HostedPluginView.h; sourceTree = SOURCE_ROOT; };
@@ -768,6 +772,8 @@
 				A721B7462209C5C9341217E3,
 				1FA01F9F1791712D176E3D71,
 				1C29D2DD6331C4121A4A45CA,
+				E4C2C0CEA9C0D48FE85E9CAB,
+				017F5333AB962F98828A0DB7,
 				0CE89D6447A15E769617B567,
 				B49619A6FE05F4EC66E470F0,
 				674BB34FD02DD22492726171,
@@ -1249,6 +1255,8 @@
 				046C489827C78C55D76E855C,
 				D3D442D6FE179E6617BB5656,
 				01E5DCB94BBEEB2E1515FA1B,
+				4366B5FBD1F3A3AB68CC9EF1,
+				32066939D9FCAEE4C0C642B0,
 				C06CF62C04BE9AF2547F5D64,
 				014609D32F7548DE3006D476,
 				2A575BD21A5A368EEAC3739C,

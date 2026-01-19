@@ -513,7 +513,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Multi-amp guitar processor with cab simulation.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300113_dc4b6b3d-ae2b-445a-9b3f-30e8b97a39d9.png",
             "https://www.plugin-alliance.com/en/products/bx_rockrack_v3.html",
-            "Suites",
+            "Amplifiers",
             {"Original"}
         },
         {
@@ -2339,7 +2339,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Preset player for the bx_rockrack amp suite.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300244_20a2ee7e-c696-432e-ae2f-641cd41b7723.png?v=1745586750",
             "https://www.plugin-alliance.com/en/products/bx_rockrack_v3.html",
-            "Suites",
+            "Amplifiers",
             {"Original"}
         },
         {
