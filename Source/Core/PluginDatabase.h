@@ -21,6 +21,7 @@ struct PluginInfo
     EffectCategory category = EffectCategory::Unknown;
     Era era = Era::Era_Unknown;
     bool isFavorite = false;
+    bool isInstalled = false;  // True if plugin is installed on the system
     int64_t lastUsed = 0;  // Unix timestamp
 
     // Instrument info
@@ -50,7 +51,8 @@ public:
     ~PluginDatabase();
 
     // Database operations
-    void updatePlugins(const juce::Array<juce::PluginDescription>& plugins);
+    void loadAllPluginsFromDatabase();  // Load all plugins from embedded data
+    void updateInstalledPlugins(const juce::Array<juce::PluginDescription>& plugins);  // Mark installed plugins
     void clear();
 
     // Querying

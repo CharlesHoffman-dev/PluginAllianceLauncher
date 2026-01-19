@@ -220,6 +220,7 @@ private:
     int currentSubcategory = -1;  // -1 = all
     Era currentEra = Era::Era_Unknown;  // Unknown = all
     juce::String currentSearchText;
+    bool showOnlyInstalled = false;  // If true, only show installed plugins
     std::unique_ptr<PluginInfo> selectedPlugin;  // Currently selected plugin in browser
     juce::Array<PluginInfo> currentFilteredPlugins;  // Current filtered plugin list for auto-selection
 

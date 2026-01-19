@@ -11,6 +11,7 @@
 #include "Core/PluginHost.h"
 #include "Core/PluginDatabase.h"
 #include "Core/PluginScanner.h"
+#include "Utils/SettingsManager.h"
 
 namespace PALauncher
 {
@@ -95,6 +96,7 @@ public:
     PluginHost& getPluginHost() { return pluginHost; }
     PluginDatabase& getPluginDatabase() { return pluginDatabase; }
     PluginScanner& getPluginScanner() { return pluginScanner; }
+    SettingsManager& getSettingsManager() { return settingsManager; }
 
     // Load a plugin by its description
     bool loadPlugin(const juce::PluginDescription& desc);
@@ -117,6 +119,7 @@ private:
     PluginHost pluginHost;
     PluginDatabase pluginDatabase;
     PluginScanner pluginScanner;
+    SettingsManager settingsManager;
 
     double currentSampleRate = 44100.0;
     int currentBlockSize = 512;

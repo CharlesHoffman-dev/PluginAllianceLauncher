@@ -83,6 +83,16 @@ int SettingsManager::getLastEra() const
     return properties->getIntValue("lastEra", -1);
 }
 
+void SettingsManager::setShowOnlyInstalled(bool showOnlyInstalled)
+{
+    properties->setValue("showOnlyInstalled", showOnlyInstalled);
+}
+
+bool SettingsManager::getShowOnlyInstalled() const
+{
+    return properties->getBoolValue("showOnlyInstalled", false);  // Default: show all plugins
+}
+
 void SettingsManager::save()
 {
     properties->saveIfNeeded();

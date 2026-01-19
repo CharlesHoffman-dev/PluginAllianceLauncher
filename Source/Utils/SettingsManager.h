@@ -38,6 +38,10 @@ public:
     void setLastEra(int era);
     int getLastEra() const;
 
+    // Show only installed plugins
+    void setShowOnlyInstalled(bool showOnlyInstalled);
+    bool getShowOnlyInstalled() const;
+
     // Save/load
     void save();
     void load();

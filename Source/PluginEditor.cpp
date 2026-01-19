@@ -326,6 +326,9 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
             pluginListView.setLoadedPluginId(desc->fileOrIdentifier);
     }
 
+    // Load "show only installed" setting
+    showOnlyInstalled = processor.getSettingsManager().getShowOnlyInstalled();
+
     // Set editor size - wider to accommodate details panel
     setSize(1400, 900);
     setResizable(true, true);
@@ -632,7 +635,7 @@ void PluginAllianceLauncherEditor::changeListenerCallback(juce::ChangeBroadcaste
         juce::MessageManager::callAsync([this]()
         {
             auto scannedPlugins = processor.getPluginScanner().getScannedPlugins();
-            processor.getPluginDatabase().updatePlugins(scannedPlugins);
+            processor.getPluginDatabase().updateInstalledPlugins(scannedPlugins);
             processor.getPluginDatabase().saveToDisk();
             updatePluginList();
         });
@@ -684,6 +687,18 @@ void PluginAllianceLauncherEditor::filterPlugins()
     else
     {
         filtered = processor.getPluginDatabase().getAllPlugins();
+    }
+
+    // Apply "show only installed" filter
+    if (showOnlyInstalled)
+    {
+        juce::Array<PluginInfo> installedOnly;
+        for (const auto& plugin : filtered)
+        {
+            if (plugin.isInstalled)
+                installedOnly.add(plugin);
+        }
+        filtered = installedOnly;
     }
 
     // Apply era filter (unless showing all)
@@ -1132,6 +1147,12 @@ void PluginAllianceLauncherEditor::showSettingsMenu()
     displayMenu.addItem(104, "Show Descriptions", true, true);
     menu.addSubMenu("Display", displayMenu);
 
+    // Plugin Display submenu
+    juce::PopupMenu pluginDisplayMenu;
+    pluginDisplayMenu.addItem(150, "Show All Plugins", true, !showOnlyInstalled);
+    pluginDisplayMenu.addItem(151, "Show Only Installed", true, showOnlyInstalled);
+    menu.addSubMenu("Plugin List", pluginDisplayMenu);
+
     // Scan Settings submenu
     juce::PopupMenu scanMenu;
     scanMenu.addItem(201, "Auto-Scan on Startup", true, false);
@@ -1176,6 +1197,20 @@ void PluginAllianceLauncherEditor::showSettingsMenu()
 
                 case 104: // Show descriptions
                     // TODO: Implement description visibility toggle
+                    break;
+
+                case 150: // Show All Plugins
+                    showOnlyInstalled = false;
+                    processor.getSettingsManager().setShowOnlyInstalled(false);
+                    processor.getSettingsManager().save();
+                    filterPlugins();
+                    break;
+
+                case 151: // Show Only Installed
+                    showOnlyInstalled = true;
+                    processor.getSettingsManager().setShowOnlyInstalled(true);
+                    processor.getSettingsManager().save();
+                    filterPlugins();
                     break;
 
                 case 201: // Auto-scan on startup

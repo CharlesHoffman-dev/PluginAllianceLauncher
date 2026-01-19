@@ -594,17 +594,6 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             {"Original"}
         },
         {
-            "brainworx_bx_xl_v2",
-            "bx_XL V2",
-            "bx_XL V2",
-            "Brainworx",
-            "M/S mastering limiter with XL saturation mode.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300172.png",
-            "https://www.plugin-alliance.com/en/products/bx_xl_v2.html",
-            "Limiters",
-            {"Original"}
-        },
-        {
             "brainworx_bx_xl_v3",
             "bx_XL V3",
             "bx_XL V3",
@@ -759,28 +748,6 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             {"1990s"}
         },
         {
-            "fiedler_audio_dolby_atmos_composer",
-            "Dolby Atmos Composer",
-            "Dolby Atmos Composer",
-            "fiedler audio",
-            "3D audio panning and object-based mixing for Atmos.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300410.png",
-            "https://www.plugin-alliance.com/en/products/fiedler_audio_dolby_atmos_composer.html",
-            "3D & Surround Sound",
-            {"Original"}
-        },
-        {
-            "fiedler_audio_spacelab_interstellar",
-            "Spacelab Interstellar",
-            "Spacelab Interstellar",
-            "fiedler audio",
-            "Multichannel reverb for immersive audio production.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300516_ba88f00a-b2dc-49af-be33-5cdf43d64d51.png",
-            "https://www.plugin-alliance.com/en/products/fiedler_audio_spacelab_interstellar.html",
-            "Reverbs",
-            {"Original"}
-        },
-        {
             "fiedler_audio_stage",
             "fiedler audio stage",
             "STAGE",
@@ -790,17 +757,6 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "https://www.plugin-alliance.com/en/products/fiedler_audio_stage.html",
             "Stereo Imagers",
             {"Original"}
-        },
-        {
-            "focusrite_red2_red3",
-            "Red 2 & Red 3",
-            "Red 2 & Red 3",
-            "Focusrite",
-            "Classic 1993 Red range EQ and compressor with Neve-inspired sound.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300241_9157b7c4-e2b9-4ad3-87f9-58e7e4ac1a02.png",
-            "https://www.plugin-alliance.com/en/products/focusrite_red_2_red_3.html",
-            "Channel Strips",
-            {"1990s"}
         },
         {
             "friedman_be100",
@@ -843,17 +799,6 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Boutique American amp with transparent overdrive.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300256.png",
             "https://www.plugin-alliance.com/en/products/fuchs_overdrive_supreme.html",
-            "Amplifiers",
-            {"2000s"}
-        },
-        {
-            "fuchs_train_45",
-            "Train 45",
-            "Fuchs Train 45",
-            "Fuchs Audio",
-            "Tweed-inspired tone with modern reliability.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300256_c70e1be7-9dc5-4f18-8c76-b4e462f00e45.png",
-            "https://www.plugin-alliance.com/en/products/fuchs_train_45.html",
             "Amplifiers",
             {"2000s"}
         },
@@ -979,28 +924,6 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             {"2010s", "Passive"}
         },
         {
-            "lindell_retro",
-            "RC-20 Retro Color",
-            "Retro",
-            "Lindell Audio",
-            "Complete channel strip with vintage British character.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300535_f4d5b9d7-aba0-4a31-8e0b-61cce47e0a4a.png",
-            "https://www.plugin-alliance.com/en/products/lindell_retro.html",
-            "Channel Strips",
-            {"1970s"}
-        },
-        {
-            "looptrotter_monster",
-            "Monster",
-            "Monster",
-            "Looptrotter",
-            "Aggressive bus compressor with harmonic saturation from 2013.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300459_b4a9c7d4-0f1b-4e2e-8cef-daeee4f8e0a6.png",
-            "https://www.plugin-alliance.com/en/products/looptrotter_monster.html",
-            "Compressors",
-            {"2010s", "Bus"}
-        },
-        {
             "louder_than_liftoff_silver_bullet_mk2",
             "LTL SILVER BULLET mk2",
             "SILVER BULLET mk2",
@@ -1043,17 +966,6 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "https://www.plugin-alliance.com/en/products/millennia_nseq-2.html",
             "Equalizers",
             {"1990s", "Mastering", "Parametric"}
-        },
-        {
-            "millennia_tclv",
-            "TCL-V",
-            "TCL-V",
-            "Millennia",
-            "Tube compressor/limiter for transparent mastering dynamics.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300218.png",
-            "https://www.plugin-alliance.com/en/products/millennia_tclv.html",
-            "Compressors",
-            {"1990s", "Tube", "Mastering"}
         },
         {
             "neold_big_al",
@@ -1177,17 +1089,6 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             {"Original"}
         },
         {
-            "schoeps_mono_upmix",
-            "Schoeps Mono Upmix 1to3",
-            "Mono Upmix",
-            "Schoeps",
-            "Convert mono recordings to immersive stereo and surround.",
-            "https://schoeps.de/fileadmin/user_upload/_processed_/a/c/csm_MonoUpmix_0788687428.jpg",
-            "https://www.plugin-alliance.com/en/products/schoeps_mono_upmix.html",
-            "3D & Surround Sound",
-            {"Original"}
-        },
-        {
             "shadow_hills_mastering_compressor",
             "Shadow Hills Mastering Compressor",
             "Mastering Compressor",
@@ -1204,7 +1105,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Mastering Compressor Class A",
             "Shadow Hills",
             "Class A version of the legendary mastering compressor from 2012.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300081.png",
+            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300477_e8983653-ad69-4077-b345-b55cc0c50e99.png?v=1745586742",
             "https://www.plugin-alliance.com/en/products/shadow_hills_class_a_mastering_comp.html",
             "Compressors",
             {"2010s", "Mastering"}
@@ -1219,17 +1120,6 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "https://www.plugin-alliance.com/en/products/shadow_hills_optomax.html",
             "Compressors",
             {"2020s", "Optical"}
-        },
-        {
-            "sonible_smart:reverb",
-            "smart:reverb",
-            "smart:reverb",
-            "sonible",
-            "AI-powered reverb that adapts to your source material.",
-            "https://www.sonible.com/wp-content/uploads/2025/06/smartReverb2_productpage_header-logo.png",
-            "https://www.plugin-alliance.com/en/products/x-sonible-smart-reverb.html",
-            "Reverbs",
-            {"Original"}
         },
         {
             "spl_attacker_plus",
@@ -1450,17 +1340,6 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "https://www.plugin-alliance.com/en/products/tbt_cenozoix.html",
             "Compressors",
             {"Original"}
-        },
-        {
-            "three_body_technology_kirchoff_eq",
-            "Kirchoff EQ",
-            "Kirchoff EQ",
-            "Three-Body Technology",
-            "32-band parametric EQ with analog curves, dynamics processing, and vintage emulations.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300781_6b333574-9e0f-4247-9d6a-81a75d11eadd.png",
-            "https://www.plugin-alliance.com/en/products/tbt_kirchhoff-eq.html",
-            "Equalizers",
-            {"Original", "Parametric", "Dynamic"}
         },
         {
             "tomo_audiolabs_lisa",
@@ -2134,20 +2013,9 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             {"2000s", "Passive"}
         },
         {
-            "shadow_hills_class_a_mastering_comp",
-            "Shadow Hills Class A Mastering Comp",
-            "Class A Mastering Comp",
-            "Shadow Hills",
-            "Class A discrete version of the mastering compressor.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300477_e8983653-ad69-4077-b345-b55cc0c50e99.png?v=1745586742",
-            "https://www.plugin-alliance.com/en/products/shadow_hills_class_a_mastering_comp.html",
-            "Compressors",
-            {"2010s", "Mastering"}
-        },
-        {
             "tbtech_kirchhoff_eq",
-            "TBTECH Kirchhoff-EQ",
-            "TBTECH Kirchhoff-EQ",
+            "Kirchhoff-EQ",
+            "Kirchhoff-EQ",
             "Three-Body Technology",
             "32-band parametric EQ with analog modeling and dynamics.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300781_6b333574-9e0f-4247-9d6a-81a75d11eadd.png?v=1745586715",

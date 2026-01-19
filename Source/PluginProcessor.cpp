@@ -179,7 +179,10 @@ PluginAllianceLauncherProcessor::PluginAllianceLauncherProcessor()
         addParameter(param);
     }
 
-    // Initialize plugin database from saved state
+    // Load all plugins from embedded database first
+    pluginDatabase.loadAllPluginsFromDatabase();
+
+    // Then load saved state (favorites, recent, etc.)
     pluginDatabase.loadFromDisk();
 
     // Listen for scanner updates
@@ -334,7 +337,7 @@ void PluginAllianceLauncherProcessor::changeListenerCallback(juce::ChangeBroadca
     {
         // Scanner finished, update database
         auto scannedPlugins = pluginScanner.getScannedPlugins();
-        pluginDatabase.updatePlugins(scannedPlugins);
+        pluginDatabase.updateInstalledPlugins(scannedPlugins);
         pluginDatabase.saveToDisk();
     }
 }

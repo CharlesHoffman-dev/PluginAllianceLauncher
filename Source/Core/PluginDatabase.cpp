@@ -710,34 +710,92 @@ PluginDatabase::~PluginDatabase()
 {
 }
 
-void PluginDatabase::updatePlugins(const juce::Array<juce::PluginDescription>& newPlugins)
+void PluginDatabase::loadAllPluginsFromDatabase()
 {
     juce::ScopedLock scopedLock(lock);
 
-    for (const auto& desc : newPlugins)
-    {
-        auto id = getPluginId(desc);
-        auto it = plugins.find(id);
+    // Load all plugins from the embedded database
+    const auto& database = getPluginDatabase();
 
-        if (it == plugins.end())
+    for (const auto& meta : database)
+    {
+        PluginInfo info;
+
+        // Create a plugin description from metadata
+        info.description.name = meta.vstFileName;  // Use vstFileName for matching
+        info.description.descriptiveName = meta.displayName;
+        info.description.manufacturerName = meta.brand;
+        info.description.pluginFormatName = "VST3";
+        info.description.fileOrIdentifier = meta.vstFileName + ".vst3";
+        info.description.uniqueId = meta.id.hashCode();
+
+        info.isInstalled = false;  // Not installed until scan confirms
+
+        categorizePlugin(info);
+        assignEra(info);
+        assignSubcategory(info);
+
+        // Use the plugin ID as the key
+        plugins[meta.id] = info;
+    }
+
+    DBG("Loaded " + juce::String(plugins.size()) + " plugins from embedded database");
+}
+
+void PluginDatabase::updateInstalledPlugins(const juce::Array<juce::PluginDescription>& installedPlugins)
+{
+    juce::ScopedLock scopedLock(lock);
+
+    // First, reset all plugins to not installed
+    for (auto& pair : plugins)
+    {
+        pair.second.isInstalled = false;
+    }
+
+    // Mark installed plugins
+    for (const auto& desc : installedPlugins)
+    {
+        // Try to find matching plugin in our database
+        bool found = false;
+
+        for (auto& pair : plugins)
         {
-            // New plugin
+            // Match by vstFileName (description.name)
+            if (pair.second.description.name.equalsIgnoreCase(desc.name) ||
+                pair.second.description.name.equalsIgnoreCase(desc.descriptiveName))
+            {
+                // Update the description with actual scan data
+                pair.second.description = desc;
+                pair.second.isInstalled = true;
+                found = true;
+                break;
+            }
+        }
+
+        // If not found in embedded database, add it as a new installed plugin
+        if (!found)
+        {
+            auto id = getPluginId(desc);
+
             PluginInfo info;
             info.description = desc;
+            info.isInstalled = true;
             categorizePlugin(info);
             assignEra(info);
             assignSubcategory(info);
             plugins[id] = info;
-        }
-        else
-        {
-            // Existing plugin - re-categorize to pick up updated mappings
-            it->second.description = desc;
-            categorizePlugin(it->second);
-            assignEra(it->second);
-            assignSubcategory(it->second);
+
+            DBG("Added new installed plugin not in database: " + desc.name);
         }
     }
+
+    int installedCount = 0;
+    for (const auto& pair : plugins)
+    {
+        if (pair.second.isInstalled)
+            installedCount++;
+    }
+    DBG("Marked " + juce::String(installedCount) + " plugins as installed out of " + juce::String(plugins.size()) + " total");
 }
 
 void PluginDatabase::clear()
@@ -1513,23 +1571,30 @@ void PluginDatabase::loadFromDisk()
     if (xml == nullptr || !xml->hasTagName("PALauncherDatabase"))
         return;
 
+    // Only update metadata (favorites, lastUsed) for existing plugins
+    // Don't add new plugins - the embedded database is the source of truth
     for (auto* pluginXml : xml->getChildIterator())
     {
         if (pluginXml->hasTagName("Plugin"))
         {
-            PluginInfo info;
-            info.description.name = pluginXml->getStringAttribute("name");
-            info.description.manufacturerName = pluginXml->getStringAttribute("manufacturer");
-            info.description.pluginFormatName = pluginXml->getStringAttribute("format");
-            info.description.fileOrIdentifier = pluginXml->getStringAttribute("fileOrIdentifier");
-            info.description.uniqueId = pluginXml->getStringAttribute("uid").getIntValue();
-            info.category = static_cast<EffectCategory>(pluginXml->getIntAttribute("category", 0));
-            info.era = static_cast<Era>(pluginXml->getIntAttribute("era", 0));
-            info.isFavorite = pluginXml->getBoolAttribute("favorite", false);
-            info.lastUsed = pluginXml->getStringAttribute("lastUsed").getLargeIntValue();
+            auto savedName = pluginXml->getStringAttribute("name");
+            auto isFavorite = pluginXml->getBoolAttribute("favorite", false);
+            auto lastUsed = pluginXml->getStringAttribute("lastUsed").getLargeIntValue();
 
-            auto id = pluginXml->getStringAttribute("id");
-            plugins[id] = info;
+            // Skip if no user data to restore
+            if (!isFavorite && lastUsed == 0)
+                continue;
+
+            // Find matching plugin in the database by name
+            for (auto& pair : plugins)
+            {
+                if (pair.second.description.name.equalsIgnoreCase(savedName))
+                {
+                    pair.second.isFavorite = isFavorite;
+                    pair.second.lastUsed = lastUsed;
+                    break;
+                }
+            }
         }
     }
 }

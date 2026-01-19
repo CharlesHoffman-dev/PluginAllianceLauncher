@@ -6,9 +6,43 @@
 */
 
 #include "PluginImageCache.h"
+#include "BinaryData.h"
 
 namespace PALauncher
 {
+
+// Helper function to convert plugin name to BinaryData resource name
+juce::String getBinaryDataResourceName(const juce::String& pluginName)
+{
+    // Convert plugin name to match BinaryData naming convention:
+    // - Replace spaces, hyphens with underscores
+    // - Convert to lowercase
+    // - Add _jpg suffix
+    juce::String resourceName = pluginName.toLowerCase()
+        .replace(" ", "_")
+        .replace("-", "_")
+        .replace(".", "_");
+
+    // Remove any double underscores
+    while (resourceName.contains("__"))
+        resourceName = resourceName.replace("__", "_");
+
+    return resourceName + "_jpg";
+}
+
+bool loadImageFromBinaryData(const juce::String& resourceName, juce::Image& outImage)
+{
+    int dataSize = 0;
+    const char* data = BinaryData::getNamedResource(resourceName.toRawUTF8(), dataSize);
+
+    if (data != nullptr && dataSize > 0)
+    {
+        outImage = juce::ImageFileFormat::loadFrom(data, static_cast<size_t>(dataSize));
+        return outImage.isValid();
+    }
+
+    return false;
+}
 
 PluginImageCache::PluginImageCache()
     : Thread("PluginImageCache")
@@ -1521,10 +1555,55 @@ void PluginImageCache::run()
 
         if (pluginToLoad.isNotEmpty())
         {
-            // Try loading from cache first
-            if (!loadFromCache(pluginToLoad))
+            bool imageLoaded = false;
+
+            // Try loading from embedded BinaryData first (fastest, always available)
+            auto normalizedName = normalizePluginName(pluginToLoad);
+
+            // Try multiple name variants for BinaryData lookup
+            juce::StringArray nameVariants = getNameVariants(normalizedName);
+
+            for (const auto& variant : nameVariants)
             {
-                // Try direct URL download first
+                auto resourceName = getBinaryDataResourceName(variant);
+                juce::Image image;
+                if (loadImageFromBinaryData(resourceName, image))
+                {
+                    juce::ScopedLock scopedLock(lock);
+                    loadedImages[normalizedName] = image;
+                    imageLoaded = true;
+                    DBG("Loaded from BinaryData: " + resourceName);
+                    break;
+                }
+            }
+
+            // Also try with thumbnail filename mapping
+            if (!imageLoaded)
+            {
+                auto it = thumbnailFilenames.find(normalizedName);
+                if (it != thumbnailFilenames.end())
+                {
+                    auto resourceName = it->second + "_jpg";
+                    juce::Image image;
+                    if (loadImageFromBinaryData(resourceName, image))
+                    {
+                        juce::ScopedLock scopedLock(lock);
+                        loadedImages[normalizedName] = image;
+                        imageLoaded = true;
+                        DBG("Loaded from BinaryData via mapping: " + resourceName);
+                    }
+                }
+            }
+
+            // Fallback: Try loading from cache
+            if (!imageLoaded && loadFromCache(pluginToLoad))
+            {
+                imageLoaded = true;
+            }
+
+            // Fallback: Try downloading from URL
+            if (!imageLoaded)
+            {
                 bool downloaded = false;
                 if (urlToLoad.isNotEmpty())
                 {
