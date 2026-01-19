@@ -20,8 +20,11 @@ static EffectCategory categoryFromString(const juce::String& category)
         // === SIDEBAR CATEGORIES (main categories in plugins.json) ===
         // Guitar and Bass
         {"Amplifiers", EffectCategory::AmpSimulator},
+        {"Amplifier", EffectCategory::AmpSimulator},
         {"Preamps", EffectCategory::Preamp},
+        {"Preamp", EffectCategory::Preamp},
         {"Pedals", EffectCategory::Pedals},
+        {"Pedal", EffectCategory::Pedals},
         {"Suites", EffectCategory::GuitarSuite},
 
         // Channel Strips
@@ -67,10 +70,12 @@ static EffectCategory categoryFromString(const juce::String& category)
 
         // Synthesizers
         {"Synthesizers", EffectCategory::Unknown},  // Handled separately as instrument
+        {"Synthesizer", EffectCategory::Unknown},   // Handled separately as instrument
 
         // === OTHER CATEGORIES (appear under Other in sidebar) ===
         {"3D & Surround Sound", EffectCategory::ThreeDAndSurround},
         {"Gates", EffectCategory::Gates},
+        {"Gate", EffectCategory::Gates},
         {"Lo-Fi", EffectCategory::LoFi},
         {"Modulator", EffectCategory::Modulators},
         {"Multi-FX", EffectCategory::MultiFX},
