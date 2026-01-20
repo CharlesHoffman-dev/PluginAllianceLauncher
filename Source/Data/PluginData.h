@@ -646,7 +646,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300291.png",
             "https://www.plugin-alliance.com/en/products/ds_audio_thorn.html",
             "Synthesizers",
-            {"Original"}
+            {"Synthesizer"}
         },
         {
             "elysia_alpha_compressor_v2",
@@ -1328,7 +1328,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301002_746463f1.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_battalion.html",
             "Synthesizers",
-            {"Original"}
+            {"Synthesizer"}
         },
         {
             "unfiltered_audio_byome",
@@ -1405,7 +1405,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300413_87e9ac60-f714-4a6d-9e6a-7e6cd43a070f.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_lion.html",
             "Synthesizers",
-            {"Original"}
+            {"Synthesizer"}
         },
         {
             "unfiltered_audio_lo_fi_af",
@@ -1680,7 +1680,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300471_d66727a9-586b-47d0-97ed-9f176c296269.png?v=1745586754",
             "https://www.plugin-alliance.com/en/products/knif_audio_knifonium.html",
             "Synthesizers",
-            {"2010s"}
+            {"Synthesizer"}
         },
         {
             "lindell_354e",
@@ -2230,7 +2230,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300404_8690b6b0-99e3-4490-91e0-4dbb9fd154ca.png?v=1745586756",
             "https://www.plugin-alliance.com/en/products/bx_oberhausen.html",
             "Synthesizers",
-            {"Original"}
+            {"Synthesizer"}
         },
         {
             "bx_rockergain100",
