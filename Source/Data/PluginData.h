@@ -546,7 +546,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Precision high-pass filter for sub-bass management.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300266.png",
             "https://www.plugin-alliance.com/en/products/bx_subfilter.html",
-            "Utility",
+            "Saturators",
             {"Original"}
         },
         {
@@ -579,7 +579,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Precision chromatic tuner with strobe and needle modes.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300091_dc9b81bb-a8ef-4f8d-b43f-6ff361d4fc8e.png",
             "https://www.plugin-alliance.com/en/products/bx_tuner.html",
-            "Utility",
+            "Pitch Correction",
             {"Original"}
         },
         {
@@ -799,7 +799,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Personalized frequency correction addressing hearing loss for accurate mix monitoring.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301331.png",
             "https://www.plugin-alliance.com/en/products/hears_perfection.html",
-            "Utility",
+            "Equalizers",
             {"Original"}
         },
         {
@@ -1343,13 +1343,13 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
         },
         {
             "unfiltered_audio_dent_2",
-            "Unfiltered Audio Indent 2",
+            "Unfiltered Audio Dent 2",
             "Dent 2",
             "Unfiltered Audio",
             "Waveform manipulation with clipping algorithms, bit-crushing, and modulation.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300342_49bc2c9c-005d-4e8a-a7ae-f2b85de716c1.png",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_dent_2.html",
-            "Lo-Fi",
+            "Saturators",
             {"Original"}
         },
         {
@@ -1761,8 +1761,8 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
         },
         {
             "lindell_902_de_esser",
-            "Lindell 902 De-esser",
-            "Lindell 902 De-esser",
+            "902 De-esser",
+            "902 De-esser",
             "Lindell Audio",
             "Precision de-esser for vocal processing.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300626_a2edb61f-a1c5-400e-96cb-656bbbda8fa9.png?v=1745586695",
@@ -1965,7 +1965,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Waveform manipulation with clipping and modulation.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300342_49bc2c9c-005d-4e8a-a7ae-f2b85de716c1.png?v=1745586752",
             "https://www.plugin-alliance.com/en/products/unfiltered_audio_dent_2.html",
-            "Lo-Fi",
+            "Saturators",
             {"Original"}
         },
         {
@@ -2097,7 +2097,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Guitar and bass tuner with scale detection.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300564_0f72ee8a-9c4f-43b7-9916-c4e1feca8f07.png?v=1745586728",
             "https://www.plugin-alliance.com/en/products/bx_crispytuner.html",
-            "Utility",
+            "Pitch Correction",
             {"Original"}
         },
         {
@@ -2108,7 +2108,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Real-time vocal pitch correction.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-300564_0f72ee8a-9c4f-43b7-9916-c4e1feca8f07.png?v=1745586728",
             "https://www.plugin-alliance.com/en/products/bx_crispytuner.html",
-            "Vocal Processing",
+            "Pitch Correction",
             {"Original"}
         },
         {
@@ -2383,7 +2383,7 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             "Transient shaper for spatial audio.",
             "https://www.plugin-alliance.com/cdn/shop/files/productimage-301101_81645304-1805-44fb-86a9-f0a6f07eaa01.png?v=1745586712",
             "https://www.plugin-alliance.com/en/products/fiedler_audio_splat.html",
-            "Utility",
+            "Stereo Imagers",
             {"Original"}
         }
     };

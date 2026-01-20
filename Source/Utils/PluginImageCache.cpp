@@ -115,7 +115,8 @@ void PluginImageCache::initializeThumbnailFilenames()
 
     // Shadow Hills
     thumbnailFilenames["shadow hills mastering compressor"] = "shadow_hills_mastering_compressor";
-    thumbnailFilenames["shadow hills mastering compressor class a"] = "shadow_hills_mastering_compressor_class_a";
+    thumbnailFilenames["shadow hills mastering compressor class a"] = "shadow_hills_class_a_mastering_comp";
+    thumbnailFilenames["mastering compressor class a"] = "shadow_hills_class_a_mastering_comp";
     thumbnailFilenames["shadow hills optomax"] = "shadow_hills_optomax";
 
     // SPL
@@ -136,12 +137,14 @@ void PluginImageCache::initializeThumbnailFilenames()
     thumbnailFilenames["spl mo-verb plus"] = "spl_moverb_plus";
     thumbnailFilenames["spl hawkeye"] = "spl_hawkeye";
     thumbnailFilenames["spl pq"] = "spl_pq";
+    thumbnailFilenames["pq"] = "spl_pq";
     thumbnailFilenames["spl free ranger"] = "spl_free_ranger";
 
     // elysia
     thumbnailFilenames["elysia alpha compressor"] = "elysia_alpha_compressor";
     thumbnailFilenames["elysia alpha compressor v2"] = "elysia_alpha_compressor";
     thumbnailFilenames["elysia museq"] = "elysia_museq";
+    thumbnailFilenames["museq"] = "elysia_museq";
     thumbnailFilenames["elysia karacter"] = "elysia_karacter";
     thumbnailFilenames["elysia mpressor"] = "elysia_mpressor";
     thumbnailFilenames["elysia nvelope"] = "elysia_nvelope";
@@ -173,13 +176,36 @@ void PluginImageCache::initializeThumbnailFilenames()
 
     // Three-Body Technology
     thumbnailFilenames["kirchhoff-eq"] = "kirchhoff_eq";
-    thumbnailFilenames["cenozoix compressor"] = "cenozoix_compressor";
+    thumbnailFilenames["cenozoix compressor"] = "three_body_technology_cenozoix_compressor";
+    thumbnailFilenames["cenozoix"] = "three_body_technology_cenozoix_compressor";
     thumbnailFilenames["trinity shaper"] = "trinity_shaper";
 
     // Black Box Analog Design
     thumbnailFilenames["black box analog design hg-2ms"] = "black_box_hg2ms";
     thumbnailFilenames["black box analog design hg-2"] = "black_box_hg2";
     thumbnailFilenames["black box analog design hg-q"] = "black_box_hgq";
+    thumbnailFilenames["hg-2ms"] = "black_box_hg2ms";
+    thumbnailFilenames["hg-2"] = "black_box_hg2";
+
+    // Louder Than Liftoff
+    thumbnailFilenames["silver bullet"] = "louder_than_liftoff_silver_bullet_mk2";
+    thumbnailFilenames["silver bullet mk2"] = "louder_than_liftoff_silver_bullet_mk2";
+    thumbnailFilenames["ltl silver bullet mk2"] = "louder_than_liftoff_silver_bullet_mk2";
+
+    // Dangerous Music
+    thumbnailFilenames["bax eq"] = "dangerous_bax_eq";
+    thumbnailFilenames["bax eq mix"] = "dangerous_bax_eq";
+    thumbnailFilenames["bax eq master"] = "dangerous_bax_eq";
+
+    // Fuchs
+    thumbnailFilenames["overdrive supreme 50"] = "fuchs_overdrive_supreme";
+    thumbnailFilenames["fuchs overdrive supreme 50"] = "fuchs_overdrive_supreme";
+    thumbnailFilenames["train ii"] = "fuchs_train_ii";
+    thumbnailFilenames["fuchs train ii"] = "fuchs_train_ii";
+
+    // Millennia
+    thumbnailFilenames["tcl-v"] = "millennia_tclv";
+    thumbnailFilenames["tcl v"] = "millennia_tclv";
 
     // Brainworx
     thumbnailFilenames["bx_xl v3"] = "bx_xl_v3";
@@ -1570,31 +1596,7 @@ void PluginImageCache::run()
             // Try loading from embedded BinaryData first (fastest, always available)
             auto normalizedName = normalizePluginName(pluginToLoad);
 
-            // Skip BinaryData/cache for plugins that need fresh downloads
-            bool skipCachedSources = (normalizedName == "bx_boom v3" ||
-                                      normalizedName == "hg-2ms" ||
-                                      normalizedName == "museq" ||
-                                      normalizedName == "elysia museq" ||
-                                      normalizedName == "silver bullet" ||
-                                      normalizedName == "silver bullet mk2" ||
-                                      normalizedName == "mastering compressor class a" ||
-                                      normalizedName == "shadow hills mastering compressor class a" ||
-                                      normalizedName == "spl pq" ||
-                                      normalizedName == "pq" ||
-                                      normalizedName == "cenozoix" ||
-                                      normalizedName == "cenozoix compressor" ||
-                                      normalizedName == "bax eq" ||
-                                      normalizedName == "bax eq mix" ||
-                                      normalizedName == "bax eq master" ||
-                                      normalizedName == "overdrive supreme 50" ||
-                                      normalizedName == "fuchs overdrive supreme 50" ||
-                                      normalizedName == "train ii" ||
-                                      normalizedName == "fuchs train ii" ||
-                                      normalizedName == "tcl-v" ||
-                                      normalizedName == "tcl v");
-
-            // Try multiple name variants for BinaryData lookup (unless skipping cached sources)
-            if (!skipCachedSources)
+            // Try multiple name variants for BinaryData lookup
             {
                 juce::StringArray nameVariants = getNameVariants(normalizedName);
 
