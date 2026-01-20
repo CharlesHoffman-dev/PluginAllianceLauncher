@@ -152,9 +152,14 @@ void PluginCard::paint(juce::Graphics& g)
     // Category and Era tags row
     auto tagRow = contentBounds.removeFromTop(18);
 
-    // Category tag
-    juce::String categoryTag = getEffectCategoryName(pluginInfo.category);
-    if (!categoryTag.isEmpty() && pluginInfo.category != EffectCategory::Unknown)
+    // Category tag - check for instrument first, then effect category
+    juce::String categoryTag;
+    if (pluginInfo.isInstrument)
+        categoryTag = "Synthesizer";
+    else
+        categoryTag = getEffectCategoryName(pluginInfo.category);
+
+    if (!categoryTag.isEmpty() && (pluginInfo.isInstrument || pluginInfo.category != EffectCategory::Unknown))
     {
         g.setColour(juce::Colour(0xff0cbff2).withAlpha(0.15f));
         auto tagBounds = tagRow.removeFromLeft(85);
