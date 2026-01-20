@@ -106,6 +106,34 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     toggleModeButton.onClick = [this]() { toggleBrowserMode(); };
     addAndMakeVisible(toggleModeButton);
 
+    // Set up unload button - same style as toggle mode button
+    unloadButton.setButtonText("Unload");
+    unloadButton.setColour(juce::TextButton::buttonColourId, juce::Colours::white);
+    unloadButton.setColour(juce::TextButton::textColourOffId, juce::Colours::black);
+    unloadButton.setLookAndFeel(&buttonLookAndFeel);
+    unloadButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
+    unloadButton.onClick = [this]()
+    {
+        // Hide editor BEFORE unloading to prevent crash
+        hostedPluginView.hidePluginEditor();
+        processor.unloadPlugin();
+
+        // Clear the loaded plugin indicator
+        pluginListView.setLoadedPluginId({});
+
+        // Switch back to browser mode
+        browserMode = true;
+        toggleModeButton.setButtonText("Show Plugin");
+        resizeForBrowser();
+        resized();
+    };
+    addAndMakeVisible(unloadButton);
+
+    // Set up sidebar viewport (scrollable container for category + subcategory filters)
+    sidebarViewport.setScrollBarsShown(true, false);  // Vertical scrollbar only
+    sidebarViewport.setViewedComponent(&sidebarContent, false);  // Don't delete on destruction
+    addAndMakeVisible(sidebarViewport);
+
     // Set up category filter
     categoryFilter.onCategoryChanged = [this](DisplayCategory category)
     {
@@ -113,8 +141,15 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
         subcategoryFilter.setCategory(category);
         filterPlugins();
         resized();  // Update layout to show/hide subcategory filter
+
+        // Save last category if "Remember Last Filter" is enabled
+        if (processor.getSettingsManager().getRememberLastFilter())
+        {
+            processor.getSettingsManager().setLastCategory(static_cast<int>(category));
+            processor.getSettingsManager().save();
+        }
     };
-    addAndMakeVisible(categoryFilter);
+    sidebarContent.addAndMakeVisible(categoryFilter);
 
     // Set up subcategory filter
     subcategoryFilter.onSubcategoryChanged = [this](int subcategory)
@@ -122,7 +157,7 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
         currentSubcategory = subcategory;
         filterPlugins();
     };
-    addAndMakeVisible(subcategoryFilter);
+    sidebarContent.addAndMakeVisible(subcategoryFilter);
 
     // Set up sort combo box
     sortComboBox.addItem("Brand A-Z", 1);
@@ -175,6 +210,13 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
             default: currentEra = Era::Era_Unknown; break;
         }
         filterPlugins();
+
+        // Save last era if "Remember Last Filter" is enabled
+        if (processor.getSettingsManager().getRememberLastFilter())
+        {
+            processor.getSettingsManager().setLastEra(static_cast<int>(currentEra));
+            processor.getSettingsManager().save();
+        }
     };
     addAndMakeVisible(eraComboBox);
 
@@ -286,21 +328,6 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
 
     // Set up hosted plugin view
     hostedPluginView.setPluginHost(&processor.getPluginHost());
-    hostedPluginView.onUnloadClicked = [this]()
-    {
-        // Hide editor BEFORE unloading to prevent crash
-        hostedPluginView.hidePluginEditor();
-        processor.unloadPlugin();
-
-        // Clear the loaded plugin indicator
-        pluginListView.setLoadedPluginId({});
-
-        // Switch back to browser mode
-        browserMode = true;
-        toggleModeButton.setButtonText("Show Plugin");
-        resizeForBrowser();
-        resized();
-    };
     addAndMakeVisible(hostedPluginView);
 
     // Listen to scanner for updates
@@ -308,7 +335,37 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
 
     // Load database and set initial plugin list
     processor.getPluginDatabase().loadFromDisk();
+
+    // Load settings
+    showOnlyInstalled = processor.getSettingsManager().getShowOnlyInstalled();
+
+    // Restore last filter if "Remember Last Filter" is enabled
+    if (processor.getSettingsManager().getRememberLastFilter())
+    {
+        int lastCategory = processor.getSettingsManager().getLastCategory();
+        int lastEra = processor.getSettingsManager().getLastEra();
+
+        if (lastCategory >= 0 && lastCategory < static_cast<int>(DisplayCategory::Other) + 1)
+        {
+            currentCategory = static_cast<DisplayCategory>(lastCategory);
+            categoryFilter.setSelectedCategory(currentCategory);
+            subcategoryFilter.setCategory(currentCategory);
+        }
+
+        if (lastEra >= 0)
+        {
+            currentEra = static_cast<Era>(lastEra);
+            eraComboBox.setSelectedId(lastEra + 1, juce::dontSendNotification);
+        }
+    }
+
     updatePluginList();
+
+    // Auto-scan on startup if enabled
+    if (processor.getSettingsManager().getAutoScanOnStartup())
+    {
+        processor.getPluginScanner().startScan();
+    }
 
     // Timer for scan progress updates
     startTimer(100);
@@ -318,16 +375,13 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     {
         // Switch to plugin mode
         browserMode = false;
-        toggleModeButton.setButtonText("Show Browser");
+        toggleModeButton.setButtonText("Browser");
 
         // Set the loaded plugin ID so it shows as loaded in the browser
         auto* desc = processor.getPluginHost().getLoadedPluginDescription();
         if (desc != nullptr)
             pluginListView.setLoadedPluginId(desc->fileOrIdentifier);
     }
-
-    // Load "show only installed" setting
-    showOnlyInstalled = processor.getSettingsManager().getShowOnlyInstalled();
 
     // Set editor size - wider to accommodate details panel
     setSize(1400, 900);
@@ -475,18 +529,23 @@ void PluginAllianceLauncherEditor::resized()
     topBar.removeFromRight(8);
 
     // Button logic:
-    // - In plugin mode: show "Show Browser"
-    // - In browser mode: hide (Load Plugin button is in the details panel)
+    // - In plugin mode: show "Browser" and "Unload" buttons
+    // - In browser mode: hide both (Load Plugin button is in the details panel)
     if (!browserMode)
     {
-        toggleModeButton.setButtonText("Show Browser");
+        unloadButton.setVisible(true);
+        unloadButton.setBounds(topBar.removeFromRight(70));
+        topBar.removeFromRight(8);
+
+        toggleModeButton.setButtonText("Browser");
         toggleModeButton.setVisible(true);
-        toggleModeButton.setBounds(topBar.removeFromRight(110));
+        toggleModeButton.setBounds(topBar.removeFromRight(80));
         topBar.removeFromRight(8);
     }
     else
     {
         toggleModeButton.setVisible(false);
+        unloadButton.setVisible(false);
     }
 
     searchBar.setBounds(topBar.removeFromLeft(300));
@@ -512,6 +571,7 @@ void PluginAllianceLauncherEditor::resized()
     if (browserMode)
     {
         // Show sidebar and subscription banner in browser mode
+        sidebarViewport.setVisible(true);
         categoryFilter.setVisible(true);
         sortComboBox.setVisible(true);
         eraComboBox.setVisible(true);
@@ -527,29 +587,30 @@ void PluginAllianceLauncherEditor::resized()
         subcategoryFilter.setVisible(hasSubcategories);
 
         auto sidebar = bounds.removeFromLeft(sidebarWidth);
-        sidebar.removeFromBottom(8);  // Only pad bottom, not top
 
-        // Categories take most of the sidebar (more space now that era is removed)
-        int categoryHeight = hasSubcategories
-            ? static_cast<int>(sidebar.getHeight() * 0.6)
-            : sidebar.getHeight();
-        categoryFilter.setBounds(sidebar.removeFromTop(categoryHeight));
+        // Categories: 18 items * 30px row height + 8px padding
+        int categoryHeight = 18 * 30 + 8;
 
-        // Subcategory filter (only if category has subcategories)
+        // Calculate subcategory height if visible
+        int subcategoryHeight = hasSubcategories ? subcategoryFilter.getRequiredHeight() : 0;
+
+        // Total content height
+        int totalContentHeight = categoryHeight + subcategoryHeight;
+
+        // Set the sidebar content size (let it be taller than viewport if needed)
+        sidebarContent.setSize(sidebarWidth - 8, totalContentHeight);  // -8 for scrollbar space
+
+        // Layout filters within the content
+        categoryFilter.setBounds(0, 0, sidebarContent.getWidth(), categoryHeight);
         if (hasSubcategories)
         {
-            subcategoryFilter.setBounds(sidebar);
+            subcategoryFilter.setBounds(0, categoryHeight, sidebarContent.getWidth(), subcategoryHeight);
         }
+
+        // Position the viewport
+        sidebarViewport.setBounds(sidebar);
 
         // Details panel on the right - show if we have plugins
-        // If no selection but we have plugins, auto-select the first one
-        if (selectedPlugin == nullptr && !currentFilteredPlugins.isEmpty())
-        {
-            selectedPlugin = std::make_unique<PluginInfo>(currentFilteredPlugins[0]);
-            detailsPluginImage = PluginImageCache::getInstance().getImage(currentFilteredPlugins[0].description.name);
-            pluginListView.selectPluginAtIndex(0);  // Also select in list view for visual feedback
-        }
-
         bool hasPlugins = !currentFilteredPlugins.isEmpty();
         if (hasPlugins && selectedPlugin != nullptr)
         {
@@ -583,6 +644,7 @@ void PluginAllianceLauncherEditor::resized()
     else
     {
         // Hide sidebar and subscription banner in plugin mode - plugin takes over entire area below top bar
+        sidebarViewport.setVisible(false);
         categoryFilter.setVisible(false);
         subcategoryFilter.setVisible(false);
         sortComboBox.setVisible(false);
@@ -804,16 +866,16 @@ void PluginAllianceLauncherEditor::filterPlugins()
     // Store the current filtered list for auto-selection
     currentFilteredPlugins = filtered;
 
-    // Auto-select the first plugin if we have plugins but nothing selected
-    if (!filtered.isEmpty() && selectedPlugin == nullptr)
+    // Always select the first plugin when filter changes
+    if (!filtered.isEmpty())
     {
         selectedPlugin = std::make_unique<PluginInfo>(filtered[0]);
         detailsPluginImage = PluginImageCache::getInstance().getImage(filtered[0].description.name);
         pluginListView.selectPluginAtIndex(0);  // Also select in list view for visual feedback
     }
-    // Clear selection if no plugins
-    else if (filtered.isEmpty())
+    else
     {
+        // Clear selection if no plugins
         selectedPlugin.reset();
         detailsPluginImage = juce::Image();
     }
@@ -987,7 +1049,7 @@ void PluginAllianceLauncherEditor::loadSelectedPlugin(const PluginInfo& info)
 
             // Switch to plugin mode
             browserMode = false;
-            toggleModeButton.setButtonText("Show Browser");
+            toggleModeButton.setButtonText("Browser");
 
             // Update layout first, then resize to fit plugin
             resized();
@@ -1155,15 +1217,6 @@ void PluginAllianceLauncherEditor::showSettingsMenu()
 {
     juce::PopupMenu menu;
 
-    // Display Settings submenu
-    juce::PopupMenu displayMenu;
-    displayMenu.addItem(101, "Small Cards", true, false);
-    displayMenu.addItem(102, "Medium Cards", true, true);  // Default checked
-    displayMenu.addItem(103, "Large Cards", true, false);
-    displayMenu.addSeparator();
-    displayMenu.addItem(104, "Show Descriptions", true, true);
-    menu.addSubMenu("Display", displayMenu);
-
     // Plugin Display submenu
     juce::PopupMenu pluginDisplayMenu;
     pluginDisplayMenu.addItem(150, "Show All Plugins", true, !showOnlyInstalled);
@@ -1171,19 +1224,15 @@ void PluginAllianceLauncherEditor::showSettingsMenu()
     menu.addSubMenu("Plugin List", pluginDisplayMenu);
 
     // Scan Settings submenu
+    bool autoScanEnabled = processor.getSettingsManager().getAutoScanOnStartup();
     juce::PopupMenu scanMenu;
-    scanMenu.addItem(201, "Auto-Scan on Startup", true, false);
-    scanMenu.addSeparator();
-    scanMenu.addItem(202, "Add Scan Path...");
-    scanMenu.addItem(203, "Manage Scan Paths...");
+    scanMenu.addItem(201, "Auto-Scan on Startup", true, autoScanEnabled);
     menu.addSubMenu("Scanning", scanMenu);
 
     // Behavior submenu
+    bool rememberFilter = processor.getSettingsManager().getRememberLastFilter();
     juce::PopupMenu behaviorMenu;
-    behaviorMenu.addItem(301, "Remember Last Filter", true, true);
-    behaviorMenu.addItem(302, "Remember Scroll Position", true, true);
-    behaviorMenu.addSeparator();
-    behaviorMenu.addItem(303, "Open Links in Browser", true, true);
+    behaviorMenu.addItem(301, "Remember Last Filter", true, rememberFilter);
     menu.addSubMenu("Behavior", behaviorMenu);
 
     menu.addSeparator();
@@ -1206,16 +1255,6 @@ void PluginAllianceLauncherEditor::showSettingsMenu()
         {
             switch (result)
             {
-                case 101: // Small cards
-                case 102: // Medium cards
-                case 103: // Large cards
-                    // TODO: Implement card size setting
-                    break;
-
-                case 104: // Show descriptions
-                    // TODO: Implement description visibility toggle
-                    break;
-
                 case 150: // Show All Plugins
                     showOnlyInstalled = false;
                     processor.getSettingsManager().setShowOnlyInstalled(false);
@@ -1231,22 +1270,20 @@ void PluginAllianceLauncherEditor::showSettingsMenu()
                     break;
 
                 case 201: // Auto-scan on startup
-                    // TODO: Implement auto-scan setting
+                {
+                    bool current = processor.getSettingsManager().getAutoScanOnStartup();
+                    processor.getSettingsManager().setAutoScanOnStartup(!current);
+                    processor.getSettingsManager().save();
                     break;
-
-                case 202: // Add scan path
-                    // TODO: Implement add scan path dialog
-                    break;
-
-                case 203: // Manage scan paths
-                    // TODO: Implement scan paths manager
-                    break;
+                }
 
                 case 301: // Remember last filter
-                case 302: // Remember scroll position
-                case 303: // Open links in browser
-                    // TODO: Implement behavior settings
+                {
+                    bool current = processor.getSettingsManager().getRememberLastFilter();
+                    processor.getSettingsManager().setRememberLastFilter(!current);
+                    processor.getSettingsManager().save();
                     break;
+                }
 
                 case 401: // Clear image cache
                     PluginImageCache::getInstance().clearCache();

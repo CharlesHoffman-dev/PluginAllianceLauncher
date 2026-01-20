@@ -225,7 +225,7 @@ void PluginImageCache::initializeThumbnailFilenames()
     thumbnailFilenames["bx_glue"] = "bx_glue";
     thumbnailFilenames["bx_enhancer"] = "bx_enhancer";
     thumbnailFilenames["bx_boom v3"] = "bx_boom_v3";
-    thumbnailFilenames["bx_boom"] = "bx_boom_v3";
+    thumbnailFilenames["bx_boom"] = "bx_boom";
     thumbnailFilenames["bx_blackdist2"] = "bx_blackdist2";
     thumbnailFilenames["bx_bluechorus2"] = "bx_bluechorus2";
     thumbnailFilenames["bx_greenscreamer"] = "bx_greenscreamer";
@@ -471,7 +471,8 @@ void PluginImageCache::initializeImageUrls()
 
     // Shadow Hills
     imageUrls["shadow hills mastering compressor"] = baseUrl + "productimage-300733_8559dc19-253d-4547-a89c-f15db5e971ac.png";
-    imageUrls["shadow hills mastering compressor class a"] = baseUrl + "productimage-300477_e8983653-ad69-4077-b345-b55cc0c50e99.png";
+    imageUrls["shadow hills mastering compressor class a"] = "https://www.plugin-alliance.com/cdn/shop/files/productimage-300477_e8983653-ad69-4077-b345-b55cc0c50e99.png?v=1745586742";
+    imageUrls["mastering compressor class a"] = "https://www.plugin-alliance.com/cdn/shop/files/productimage-300477_e8983653-ad69-4077-b345-b55cc0c50e99.png?v=1745586742";
     imageUrls["shadow hills optomax"] = baseUrl + "productimage-301332.jpg";
 
     // SPL
@@ -561,7 +562,7 @@ void PluginImageCache::initializeImageUrls()
     imageUrls["bx_crispyscale"] = baseUrl + "productimage-300564_0f72ee8a-9c4f-43b7-9916-c4e1feca8f07.png";
     imageUrls["bx_glue"] = baseUrl + "productimage-300988_dbbe8b26-3676-473a-8766-8a51308d591f.png";
     imageUrls["bx_enhancer"] = baseUrl + "productimage-300927_483a3bdf-0d3a-4970-a5b7-d0b6b37ba07c.png";
-    imageUrls["bx_boom v3"] = baseUrl + "productimage-301127_e9ace067-330a-4797-9b22-85b8cb2bf870.png";
+    imageUrls["bx_boom v3"] = "https://www.plugin-alliance.com/cdn/shop/files/productimage-301127_e9ace067-330a-4797-9b22-85b8cb2bf870.png?v=1749744797&width=1946";
 
     // Vertigo
     imageUrls["vertigo vss-2"] = baseUrl + "productimage-301211_c9e80b87-6931-49a0-a3f3-c4bf0558adbc.png";
@@ -625,8 +626,10 @@ void PluginImageCache::initializeImageUrls()
     imageUrls["gallien-krueger 800rb"] = baseUrl + "productimage-300351_9869025a-e5c3-4f1a-bb8c-8c5e7c1c1791.png";
 
     // Fuchs
-    imageUrls["fuchs train ii"] = baseUrl + "productimage-300486_5bd98aea-95ec-42eb-8701-c60accecc3cf.png";
-    imageUrls["fuchs overdrive supreme 50"] = baseUrl + "productimage-300485_2c642e68-5464-414c-a429-dc89c1ef8300.png";
+    imageUrls["fuchs train ii"] = "https://www.plugin-alliance.com/cdn/shop/files/productimage-300486_5bd98aea-95ec-42eb-8701-c60accecc3cf.png?v=1745586753";
+    imageUrls["train ii"] = "https://www.plugin-alliance.com/cdn/shop/files/productimage-300486_5bd98aea-95ec-42eb-8701-c60accecc3cf.png?v=1745586753";
+    imageUrls["fuchs overdrive supreme 50"] = "https://www.plugin-alliance.com/cdn/shop/files/productimage-300485_2c642e68-5464-414c-a429-dc89c1ef8300.png?v=1745586762";
+    imageUrls["overdrive supreme 50"] = "https://www.plugin-alliance.com/cdn/shop/files/productimage-300485_2c642e68-5464-414c-a429-dc89c1ef8300.png?v=1745586762";
 
     // Unfiltered Audio
     imageUrls["unfiltered audio dent 2"] = baseUrl + "productimage-300342_49bc2c9c-005d-4e8a-a7ae-f2b85de716c1.png";
@@ -739,6 +742,8 @@ void PluginImageCache::initializeImageUrls()
     imageUrls["battalion"] = baseUrl + "productimage-301002_746463f1-14eb-4f80-83c3-5e524df6ffb4.png";
     imageUrls["eq232d"] = baseUrl + "productimage-300421_fef58d06-aa5f-4482-8b6a-58c56f82a79a.png";
     imageUrls["tcl-2"] = baseUrl + "productimage-300143_3c0a78f2-31be-436b-ab39-a877c73d8694.png";
+    imageUrls["tcl-v"] = "https://www.plugin-alliance.com/cdn/shop/files/productimage-300143_3c0a78f2-31be-436b-ab39-a877c73d8694.png";
+    imageUrls["tcl v"] = "https://www.plugin-alliance.com/cdn/shop/files/productimage-300143_3c0a78f2-31be-436b-ab39-a877c73d8694.png";
     imageUrls["high flyer"] = baseUrl + "productimage-301210.png";
     imageUrls["splat"] = baseUrl + "productimage-301101_81645304-1805-44fb-86a9-f0a6f07eaa01.png";
     imageUrls["c502v"] = baseUrl + "productimage-301146_2bdf41cf-d9d8-4294-8d8a-270560c4cc74.png";
@@ -824,7 +829,8 @@ void PluginImageCache::initializeImageUrls()
     // elysia short names
     imageUrls["alpha compressor"] = baseUrl + "productimage-301253.png";
     imageUrls["mpressor"] = baseUrl + "productimage-300018_1635b21e-7b69-439c-ba1b-37ce6236bbfc.png";
-    imageUrls["museq"] = baseUrl + "productimage-300055_aa4bc727-7c4a-4c2c-839e-af90427a44eb.png";
+    imageUrls["museq"] = "https://www.plugin-alliance.com/cdn/shop/files/productimage-300055_aa4bc727-7c4a-4c2c-839e-af90427a44eb.png";
+    imageUrls["elysia museq"] = "https://www.plugin-alliance.com/cdn/shop/files/productimage-300055_aa4bc727-7c4a-4c2c-839e-af90427a44eb.png";
     imageUrls["karacter"] = baseUrl + "productimage-300256_1b500d94-b2ab-4d3d-8537-32ac61b673c9.png";
     imageUrls["nvelope"] = baseUrl + "productimage-300145_9163302c-3621-412f-b57b-86b466130f7a.png";
     imageUrls["niveau filter"] = baseUrl + "productimage-300146_28c03de7-f9ca-42d6-8dc3-7cc60a8f2e54.png";
@@ -882,7 +888,7 @@ void PluginImageCache::initializeImageUrls()
 
     // Black Box short names
     imageUrls["hg-2"] = baseUrl + "productimage-300259_1e8913ea-66da-4ac3-aee0-171e176dfa13.png";
-    imageUrls["hg-2ms"] = baseUrl + "productimage-300541_892dac09-0f4a-4c59-ac02-2419b76d461c.png";
+    imageUrls["hg-2ms"] = "https://www.plugin-alliance.com/cdn/shop/files/productimage-300541_892dac09-0f4a-4c59-ac02-2419b76d461c.png?v=1745586764";
     imageUrls["hg-q"] = baseUrl + "productimage-300902_7f6334fb-d403-47bc-baae-18a9cd266cf3.png";
 
     // ADPTR short names
@@ -896,8 +902,10 @@ void PluginImageCache::initializeImageUrls()
     imageUrls["kirchhoff eq"] = baseUrl + "productimage-300781_6b333574-9e0f-4247-9d6a-81a75d11eadd.png";
 
     // Cenozoix and Trinity
-    imageUrls["cenozoix"] = baseUrl + "productimage-300982_3397fcd0-2e7b-4b96-b08b-5d82fa4c3528.png";
+    imageUrls["cenozoix"] = "https://www.plugin-alliance.com/cdn/shop/files/productimage-300982_3397fcd0-2e7b-4b96-b08b-5d82fa4c3528.png";
+    imageUrls["cenozoix compressor"] = "https://www.plugin-alliance.com/cdn/shop/files/productimage-300982_3397fcd0-2e7b-4b96-b08b-5d82fa4c3528.png";
     imageUrls["trinity"] = baseUrl + "productimage-301099_9368cf32-6c6e-4541-ad84-f96fb8bcddbb.png";
+    imageUrls["trinity shaper"] = baseUrl + "productimage-301099_9368cf32-6c6e-4541-ad84-f96fb8bcddbb.png";
 
     // Lindell short names
     imageUrls["80 series"] = baseUrl + "productimage-300475_de30a79f-c507-4963-9d9f-b09b50e2b91b.png";
@@ -960,10 +968,12 @@ void PluginImageCache::initializeImageUrls()
     imageUrls["dsm v3"] = baseUrl + "productimage-300403_9bb5d6c3-5d94-46d0-86c4-f8c86bd9a7c3.png";
     imageUrls["sa2rate"] = baseUrl + "productimage-300629_fe5b41c8-37fd-4fa6-a20e-831a09f0f481.png";
     imageUrls["sa2rate 2"] = baseUrl + "productimage-300629_fe5b41c8-37fd-4fa6-a20e-831a09f0f481.png";
-    imageUrls["bax eq"] = baseUrl + "productimage-300095_e8339764-5fb2-4554-b4d2-14fee7d1b140.png";
+    imageUrls["bax eq"] = "https://www.plugin-alliance.com/cdn/shop/files/productimage-300095_e8339764-5fb2-4554-b4d2-14fee7d1b140.png";
+    imageUrls["bax eq mix"] = "https://www.plugin-alliance.com/cdn/shop/files/productimage-300095_e8339764-5fb2-4554-b4d2-14fee7d1b140.png";
+    imageUrls["bax eq master"] = "https://www.plugin-alliance.com/cdn/shop/files/productimage-300095_e8339764-5fb2-4554-b4d2-14fee7d1b140.png";
     imageUrls["gav19t"] = baseUrl + "productimage-300114_a26c0820-3eb1-42f1-b72c-81005a988f27.png";
-    imageUrls["silver bullet"] = baseUrl + "productimage-300952_ae72f079-fed9-499f-a15f-c00e2d9fe988.png";
-    imageUrls["silver bullet mk2"] = baseUrl + "productimage-300952_ae72f079-fed9-499f-a15f-c00e2d9fe988.png";
+    imageUrls["silver bullet"] = "https://www.plugin-alliance.com/cdn/shop/files/productimage-300952_ae72f079-fed9-499f-a15f-c00e2d9fe988.png?v=1745586718";
+    imageUrls["silver bullet mk2"] = "https://www.plugin-alliance.com/cdn/shop/files/productimage-300952_ae72f079-fed9-499f-a15f-c00e2d9fe988.png?v=1745586718";
     imageUrls["lisa"] = baseUrl + "productimage-300635_b22c3561-6e15-4c4d-ad52-4ac96b0e9d92.png";
     imageUrls["natalus"] = baseUrl + "productimage-300852_e65cdbad-a648-40b8-88e6-4fb77bb3a976.png";
     imageUrls["the oven"] = baseUrl + "productimage-300653_a16226c9-f5b9-4820-92c2-4240b4adfa66.png";
@@ -976,10 +986,10 @@ void PluginImageCache::initializeImageUrls()
     imageUrls["xtressor"] = baseUrl + "productimage-300800_d2c32a9b-7c2a-4b1e-8a89-4c3a7c8d9e12.png";
 
     // Additional SPL plugins
-    imageUrls["spl pq"] = baseUrl + "productimage-300014_41e6334f-ea81-4115-bcb2-ce021a984aae.png";
+    imageUrls["spl pq"] = "https://www.plugin-alliance.com/cdn/shop/files/productimage-300682_e9888535-781e-4df8-ad82-419b0fddb790.png?v=1745586696";
     imageUrls["spl free ranger"] = baseUrl + "productimage-300186_672ca1e9-1e63-43ec-9c48-8a7cdb66b8d0.png";
     imageUrls["spl hawkeye"] = baseUrl + "productimage-300400_d705cd7c-7087-4680-914b-646d0b0fe801.png";
-    imageUrls["pq"] = baseUrl + "productimage-300014_41e6334f-ea81-4115-bcb2-ce021a984aae.png";
+    imageUrls["pq"] = "https://www.plugin-alliance.com/cdn/shop/files/productimage-300682_e9888535-781e-4df8-ad82-419b0fddb790.png?v=1745586696";
     imageUrls["free ranger"] = baseUrl + "productimage-300186_672ca1e9-1e63-43ec-9c48-8a7cdb66b8d0.png";
 
     // Additional elysia plugins
@@ -1560,45 +1570,71 @@ void PluginImageCache::run()
             // Try loading from embedded BinaryData first (fastest, always available)
             auto normalizedName = normalizePluginName(pluginToLoad);
 
-            // Try multiple name variants for BinaryData lookup
-            juce::StringArray nameVariants = getNameVariants(normalizedName);
+            // Skip BinaryData/cache for plugins that need fresh downloads
+            bool skipCachedSources = (normalizedName == "bx_boom v3" ||
+                                      normalizedName == "hg-2ms" ||
+                                      normalizedName == "museq" ||
+                                      normalizedName == "elysia museq" ||
+                                      normalizedName == "silver bullet" ||
+                                      normalizedName == "silver bullet mk2" ||
+                                      normalizedName == "mastering compressor class a" ||
+                                      normalizedName == "shadow hills mastering compressor class a" ||
+                                      normalizedName == "spl pq" ||
+                                      normalizedName == "pq" ||
+                                      normalizedName == "cenozoix" ||
+                                      normalizedName == "cenozoix compressor" ||
+                                      normalizedName == "bax eq" ||
+                                      normalizedName == "bax eq mix" ||
+                                      normalizedName == "bax eq master" ||
+                                      normalizedName == "overdrive supreme 50" ||
+                                      normalizedName == "fuchs overdrive supreme 50" ||
+                                      normalizedName == "train ii" ||
+                                      normalizedName == "fuchs train ii" ||
+                                      normalizedName == "tcl-v" ||
+                                      normalizedName == "tcl v");
 
-            for (const auto& variant : nameVariants)
+            // Try multiple name variants for BinaryData lookup (unless skipping cached sources)
+            if (!skipCachedSources)
             {
-                auto resourceName = getBinaryDataResourceName(variant);
-                juce::Image image;
-                if (loadImageFromBinaryData(resourceName, image))
-                {
-                    juce::ScopedLock scopedLock(lock);
-                    loadedImages[normalizedName] = image;
-                    imageLoaded = true;
-                    DBG("Loaded from BinaryData: " + resourceName);
-                    break;
-                }
-            }
+                juce::StringArray nameVariants = getNameVariants(normalizedName);
 
-            // Also try with thumbnail filename mapping
-            if (!imageLoaded)
-            {
-                auto it = thumbnailFilenames.find(normalizedName);
-                if (it != thumbnailFilenames.end())
+                for (const auto& variant : nameVariants)
                 {
-                    auto resourceName = it->second + "_jpg";
+                    auto resourceName = getBinaryDataResourceName(variant);
                     juce::Image image;
                     if (loadImageFromBinaryData(resourceName, image))
                     {
                         juce::ScopedLock scopedLock(lock);
                         loadedImages[normalizedName] = image;
                         imageLoaded = true;
-                        DBG("Loaded from BinaryData via mapping: " + resourceName);
+                        DBG("Loaded from BinaryData: " + resourceName);
+                        break;
                     }
                 }
-            }
 
-            // Fallback: Try loading from cache
-            if (!imageLoaded && loadFromCache(pluginToLoad))
-            {
-                imageLoaded = true;
+                // Also try with thumbnail filename mapping
+                if (!imageLoaded)
+                {
+                    auto it = thumbnailFilenames.find(normalizedName);
+                    if (it != thumbnailFilenames.end())
+                    {
+                        auto resourceName = it->second + "_jpg";
+                        juce::Image image;
+                        if (loadImageFromBinaryData(resourceName, image))
+                        {
+                            juce::ScopedLock scopedLock(lock);
+                            loadedImages[normalizedName] = image;
+                            imageLoaded = true;
+                            DBG("Loaded from BinaryData via mapping: " + resourceName);
+                        }
+                    }
+                }
+
+                // Fallback: Try loading from cache
+                if (!imageLoaded && loadFromCache(pluginToLoad))
+                {
+                    imageLoaded = true;
+                }
             }
 
             // Fallback: Try downloading from URL

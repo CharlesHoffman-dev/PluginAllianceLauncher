@@ -209,11 +209,14 @@ private:
     juce::TextButton rescanButton;
     juce::TextButton settingsButton;
     juce::TextButton toggleModeButton;
+    juce::TextButton unloadButton;
 
     // Settings menu
     void showSettingsMenu();
 
-    // Sidebar components
+    // Sidebar components (inside scrollable viewport)
+    juce::Viewport sidebarViewport;
+    juce::Component sidebarContent;
     CategoryFilter categoryFilter;
     SubcategoryFilter subcategoryFilter;
 
@@ -263,7 +266,7 @@ private:
     static constexpr int hostedPluginMinHeight = 300;
     static constexpr int logoWidth = 140;
     static constexpr int logoHeight = 26;
-    static constexpr int hostedPluginHeaderHeight = 36;
+    static constexpr int hostedPluginHeaderHeight = 0;  // Header removed, unload button now in top bar
 
     // Custom look and feel for buttons
     ButtonLookAndFeel buttonLookAndFeel;

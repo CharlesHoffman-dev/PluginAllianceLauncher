@@ -35,6 +35,9 @@ public:
     // Get selected subcategory type (returns -1 for "All")
     int getSelectedSubcategoryType() const;
 
+    // Get the required height to display all items
+    int getRequiredHeight() const;
+
     // Callback when subcategory changes
     std::function<void(int)> onSubcategoryChanged;
 

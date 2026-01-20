@@ -42,6 +42,14 @@ public:
     void setShowOnlyInstalled(bool showOnlyInstalled);
     bool getShowOnlyInstalled() const;
 
+    // Auto-scan on startup
+    void setAutoScanOnStartup(bool autoScan);
+    bool getAutoScanOnStartup() const;
+
+    // Remember last filter
+    void setRememberLastFilter(bool remember);
+    bool getRememberLastFilter() const;
+
     // Save/load
     void save();
     void load();

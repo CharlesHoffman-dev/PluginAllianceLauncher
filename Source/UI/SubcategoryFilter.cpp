@@ -17,6 +17,7 @@ SubcategoryFilter::SubcategoryFilter()
     listBox.setRowHeight(26);
     listBox.setColour(juce::ListBox::backgroundColourId, juce::Colours::transparentBlack);
     listBox.setColour(juce::ListBox::outlineColourId, juce::Colours::transparentBlack);
+    listBox.getViewport()->setScrollBarsShown(false, false);  // No scrollbars - parent viewport handles scrolling
     addAndMakeVisible(listBox);
 
     buildSubcategoryList();
@@ -151,6 +152,14 @@ int SubcategoryFilter::getSelectedSubcategoryType() const
     if (selectedRow >= 0 && selectedRow < static_cast<int>(subcategories.size()))
         return subcategories[selectedRow].typeValue;
     return -1;
+}
+
+int SubcategoryFilter::getRequiredHeight() const
+{
+    // 8px total vertical padding (reduced(4) on both sides)
+    // 28px header
+    // numRows * 26px (row height)
+    return 8 + 28 + static_cast<int>(subcategories.size()) * 26;
 }
 
 } // namespace PALauncher

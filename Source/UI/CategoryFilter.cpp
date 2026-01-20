@@ -18,6 +18,7 @@ CategoryFilter::CategoryFilter()
     listBox.setRowHeight(30);
     listBox.setColour(juce::ListBox::backgroundColourId, juce::Colours::transparentBlack);
     listBox.setColour(juce::ListBox::outlineColourId, juce::Colours::transparentBlack);
+    listBox.getViewport()->setScrollBarsShown(false, false);  // No scrollbars - parent viewport handles scrolling
     addAndMakeVisible(listBox);
 
     listBox.selectRow(0);

@@ -93,6 +93,26 @@ bool SettingsManager::getShowOnlyInstalled() const
     return properties->getBoolValue("showOnlyInstalled", false);  // Default: show all plugins
 }
 
+void SettingsManager::setAutoScanOnStartup(bool autoScan)
+{
+    properties->setValue("autoScanOnStartup", autoScan);
+}
+
+bool SettingsManager::getAutoScanOnStartup() const
+{
+    return properties->getBoolValue("autoScanOnStartup", false);  // Default: don't auto-scan
+}
+
+void SettingsManager::setRememberLastFilter(bool remember)
+{
+    properties->setValue("rememberLastFilter", remember);
+}
+
+bool SettingsManager::getRememberLastFilter() const
+{
+    return properties->getBoolValue("rememberLastFilter", true);  // Default: remember filters
+}
+
 void SettingsManager::save()
 {
     properties->saveIfNeeded();

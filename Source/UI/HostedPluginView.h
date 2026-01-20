@@ -36,16 +36,10 @@ public:
     // Get the preferred size of the hosted plugin
     juce::Rectangle<int> getPluginEditorBounds() const;
 
-    // Callbacks
-    std::function<void()> onUnloadClicked;
-
 private:
     PluginHost* pluginHost = nullptr;
     std::unique_ptr<juce::AudioProcessorEditor> pluginEditor;
 
-    juce::Label pluginNameLabel;
-    juce::TextButton unloadButton;
-    juce::TextButton bypassButton;
     juce::Viewport editorViewport;
 
     // Cache the initial editor size to prevent auto-resizing plugins from growing
