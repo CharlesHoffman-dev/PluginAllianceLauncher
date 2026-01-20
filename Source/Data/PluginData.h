@@ -1925,17 +1925,6 @@ inline const std::vector<PluginMetadata>& getPluginDatabase()
             {"2000s", "Passive"}
         },
         {
-            "shadow_hills_class_a_mastering_comp",
-            "Shadow Hills Class A Mastering Comp",
-            "Class A Mastering Comp",
-            "Shadow Hills",
-            "Class A discrete version of the mastering compressor.",
-            "https://www.plugin-alliance.com/cdn/shop/files/productimage-300477_e8983653-ad69-4077-b345-b55cc0c50e99.png?v=1745586742",
-            "https://www.plugin-alliance.com/en/products/shadow_hills_class_a_mastering_comp.html",
-            "Compressors",
-            {"2010s", "Mastering"}
-        },
-        {
             "tbtech_kirchhoff_eq",
             "Kirchhoff-EQ",
             "Kirchhoff-EQ",
