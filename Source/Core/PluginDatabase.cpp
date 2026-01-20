@@ -73,7 +73,7 @@ static EffectCategory categoryFromString(const juce::String& category)
         {"Synthesizer", EffectCategory::Unknown},   // Handled separately as instrument
 
         // === OTHER CATEGORIES (appear under Other in sidebar) ===
-        {"3D & Surround Sound", EffectCategory::ThreeDAndSurround},
+        {"3D & Surround", EffectCategory::ThreeDAndSurround},
         {"Gates", EffectCategory::Gates},
         {"Gate", EffectCategory::Gates},
         {"Lo-Fi", EffectCategory::LoFi},
@@ -977,7 +977,8 @@ juce::Array<PluginInfo> PluginDatabase::getByDisplayCategory(DisplayCategory cat
                     break;
 
                 case DisplayCategory::Other:
-                    matches = (info.category == EffectCategory::Gates ||
+                    matches = !info.isInstrument &&
+                              (info.category == EffectCategory::Gates ||
                               info.category == EffectCategory::LoFi ||
                               info.category == EffectCategory::Modulators ||
                               info.category == EffectCategory::MultiFX ||

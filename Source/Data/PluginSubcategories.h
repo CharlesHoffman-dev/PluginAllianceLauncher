@@ -470,7 +470,7 @@ inline juce::String getOtherTypeName(OtherType type)
         {OtherType::PitchCorrection, "Pitch Correction"},
         {OtherType::Restoration, "Restoration"},
         {OtherType::StereoImagers, "Stereo Imagers"},
-        {OtherType::ThreeDAndSurround, "3D & Surround Sound"},
+        {OtherType::ThreeDAndSurround, "3D & Surround"},
         {OtherType::TransientShapers, "Transient Shapers"},
         {OtherType::Utility, "Utility"},
         {OtherType::VocalProcessing, "Vocal Processing"},

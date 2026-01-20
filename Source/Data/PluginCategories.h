@@ -284,7 +284,7 @@ inline juce::String getEffectCategoryName(EffectCategory cat)
         {EffectCategory::PitchCorrection, "Pitch Correction"},
         {EffectCategory::Restoration, "Restoration"},
         {EffectCategory::StereoImagers, "Stereo Imager"},
-        {EffectCategory::ThreeDAndSurround, "3D & Surround Sound"},
+        {EffectCategory::ThreeDAndSurround, "3D & Surround"},
         {EffectCategory::TransientShapers, "Transient Shaper"},
         {EffectCategory::Utility, "Utility"},
         {EffectCategory::VocalProcessing, "Vocal Processing"},
