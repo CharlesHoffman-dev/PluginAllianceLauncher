@@ -52,6 +52,92 @@ public:
     }
 };
 
+// Custom A/B switch component - single toggle button that looks like segmented control
+class ABSwitchComponent : public juce::Component
+{
+public:
+    std::function<void()> onClick;
+
+    void setActiveSlot(bool isSlotB)
+    {
+        if (slotBActive != isSlotB)
+        {
+            slotBActive = isSlotB;
+            repaint();
+        }
+    }
+
+    bool isSlotBActive() const { return slotBActive; }
+
+    void paint(juce::Graphics& g) override
+    {
+        auto bounds = getLocalBounds().toFloat();
+        float halfWidth = bounds.getWidth() / 2.0f;
+        float cornerSize = 4.0f;
+
+        auto leftBounds = bounds.withWidth(halfWidth);
+        auto rightBounds = bounds.withLeft(bounds.getX() + halfWidth);
+
+        // Determine colors based on active slot and hover state
+        auto activeColour = juce::Colour(0xff0cbff2);   // Cyan
+        auto inactiveColour = juce::Colour(0xff3a3a3a); // Dark
+
+        if (isMouseOver())
+        {
+            activeColour = activeColour.brighter(0.1f);
+            inactiveColour = inactiveColour.brighter(0.1f);
+        }
+        if (isMouseButtonDown())
+        {
+            activeColour = activeColour.darker(0.2f);
+            inactiveColour = inactiveColour.darker(0.2f);
+        }
+
+        // Draw left side (A) - rounded on left, flat on right
+        juce::Path leftPath;
+        leftPath.addRoundedRectangle(leftBounds.getX(), leftBounds.getY(),
+                                      leftBounds.getWidth(), leftBounds.getHeight(),
+                                      cornerSize, cornerSize,
+                                      true, false, true, false);
+        g.setColour(slotBActive ? inactiveColour : activeColour);
+        g.fillPath(leftPath);
+
+        // Draw right side (B) - flat on left, rounded on right
+        juce::Path rightPath;
+        rightPath.addRoundedRectangle(rightBounds.getX(), rightBounds.getY(),
+                                       rightBounds.getWidth(), rightBounds.getHeight(),
+                                       cornerSize, cornerSize,
+                                       false, true, false, true);
+        g.setColour(slotBActive ? activeColour : inactiveColour);
+        g.fillPath(rightPath);
+
+        // Draw text
+        auto font = juce::Font(getHeight() * 0.5f, juce::Font::bold);
+        g.setFont(font);
+
+        // A text
+        g.setColour(slotBActive ? juce::Colours::grey : juce::Colours::white);
+        g.drawText("A", leftBounds.toNearestInt(), juce::Justification::centred);
+
+        // B text
+        g.setColour(slotBActive ? juce::Colours::white : juce::Colours::grey);
+        g.drawText("B", rightBounds.toNearestInt(), juce::Justification::centred);
+    }
+
+    void mouseUp(const juce::MouseEvent& e) override
+    {
+        if (contains(e.getPosition()) && onClick)
+            onClick();
+    }
+
+    void mouseEnter(const juce::MouseEvent&) override { repaint(); }
+    void mouseExit(const juce::MouseEvent&) override { repaint(); }
+    void mouseDown(const juce::MouseEvent&) override { repaint(); }
+
+private:
+    bool slotBActive = false;
+};
+
 // Custom LookAndFeel for brand combo box with reduced popup height
 class BrandComboBoxLookAndFeel : public juce::LookAndFeel_V4
 {
@@ -197,6 +283,7 @@ private:
     void refreshPluginsPreservingScroll();  // For favorites toggle - doesn't reset scroll
     void loadSelectedPlugin(const PluginInfo& info);
     void toggleBrowserMode();
+    void toggleABSlot();  // Toggle between A and B plugin slots
 
     PluginAllianceLauncherProcessor& processor;
 
@@ -206,6 +293,7 @@ private:
 
     // Top bar components
     SearchBar searchBar;
+    ABSwitchComponent abSwitch;     // A/B comparison toggle
     juce::TextButton rescanButton;
     juce::TextButton settingsButton;
     juce::TextButton toggleModeButton;

@@ -75,6 +75,11 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     };
     addAndMakeVisible(searchBar);
 
+    // Set up A/B switch component
+    abSwitch.setMouseCursor(juce::MouseCursor::PointingHandCursor);
+    abSwitch.onClick = [this]() { toggleABSlot(); };
+    addAndMakeVisible(abSwitch);
+
     // Set up rescan button
     rescanButton.setButtonText("Rescan");
     rescanButton.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff0cbff2));
@@ -116,16 +121,50 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     {
         // Hide editor BEFORE unloading to prevent crash
         hostedPluginView.hidePluginEditor();
-        processor.unloadPlugin();
 
-        // Clear the loaded plugin indicator
-        pluginListView.setLoadedPluginId({});
+        ABSlot currentSlot = processor.getActiveSlot();
+        ABSlot otherSlot = (currentSlot == ABSlot::A) ? ABSlot::B : ABSlot::A;
 
-        // Switch back to browser mode
-        browserMode = true;
-        toggleModeButton.setButtonText("Show Plugin");
-        resizeForBrowser();
-        resized();
+        // Unload the active slot
+        processor.unloadPluginFromSlot(currentSlot);
+
+        // Check if the other slot has a plugin
+        if (processor.hasPluginInSlot(otherSlot))
+        {
+            // Switch to the other slot
+            processor.setActiveSlot(otherSlot);
+            hostedPluginView.setPluginHost(&processor.getActivePluginHost());
+            hostedPluginView.showPluginEditor();
+
+            // Update the loaded plugin ID
+            auto* desc = processor.getActivePluginHost().getLoadedPluginDescription();
+            if (desc != nullptr)
+                pluginListView.setLoadedPluginId(desc->fileOrIdentifier);
+
+            // Update A/B switch appearance
+            abSwitch.setActiveSlot(processor.getActiveSlot() == ABSlot::B);
+
+            // Resize for the new plugin
+            juce::MessageManager::callAsync([this]()
+            {
+                resizeForPlugin();
+            });
+        }
+        else
+        {
+            // No plugin in either slot - go to browser mode
+            pluginListView.setLoadedPluginId({});
+
+            // Reset A/B switch to A
+            processor.setActiveSlot(ABSlot::A);
+            abSwitch.setActiveSlot(false);
+
+            // Switch back to browser mode
+            browserMode = true;
+            toggleModeButton.setButtonText("Show Plugin");
+            resizeForBrowser();
+            resized();
+        }
     };
     addAndMakeVisible(unloadButton);
 
@@ -326,8 +365,8 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     };
     addAndMakeVisible(pluginListView);
 
-    // Set up hosted plugin view
-    hostedPluginView.setPluginHost(&processor.getPluginHost());
+    // Set up hosted plugin view - use active plugin host
+    hostedPluginView.setPluginHost(&processor.getActivePluginHost());
     addAndMakeVisible(hostedPluginView);
 
     // Listen to scanner for updates
@@ -352,12 +391,16 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
             subcategoryFilter.setCategory(currentCategory);
         }
 
-        if (lastEra >= 0)
+        if (lastEra > 0)  // Only restore if a specific era was saved (not "All Eras" / Unknown)
         {
             currentEra = static_cast<Era>(lastEra);
             eraComboBox.setSelectedId(lastEra + 1, juce::dontSendNotification);
         }
     }
+
+    // Ensure era combo box always has a valid selection (default to "All Eras")
+    if (eraComboBox.getSelectedId() == 0)
+        eraComboBox.setSelectedId(1, juce::dontSendNotification);
 
     updatePluginList();
 
@@ -377,8 +420,11 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
         browserMode = false;
         toggleModeButton.setButtonText("Browser");
 
+        // Update A/B switch appearance based on current active slot
+        abSwitch.setActiveSlot(processor.getActiveSlot() == ABSlot::B);
+
         // Set the loaded plugin ID so it shows as loaded in the browser
-        auto* desc = processor.getPluginHost().getLoadedPluginDescription();
+        auto* desc = processor.getActivePluginHost().getLoadedPluginDescription();
         if (desc != nullptr)
             pluginListView.setLoadedPluginId(desc->fileOrIdentifier);
     }
@@ -423,11 +469,11 @@ void PluginAllianceLauncherEditor::paint(juce::Graphics& g)
     g.setColour(juce::Colour(0xff1a1a1a));
     g.fillRect(0, 0, getWidth(), topBarHeight);
 
-    // Draw logo in sidebar area (fills sidebar width)
+    // Draw logo in sidebar area (matches blue selector width in category filter)
     if (logoDrawable != nullptr)
     {
-        auto logoBounds = juce::Rectangle<float>(8.0f, 8.0f,
-                                                   static_cast<float>(sidebarWidth - 16),
+        auto logoBounds = juce::Rectangle<float>(12.0f, 8.0f,
+                                                   static_cast<float>(sidebarWidth - 24),
                                                    static_cast<float>(topBarHeight - 16));
         logoDrawable->drawWithin(g, logoBounds, juce::RectanglePlacement::centred, 1.0f);
     }
@@ -525,14 +571,15 @@ void PluginAllianceLauncherEditor::resized()
     settingsButton.setBounds(topBar.removeFromRight(36));
     topBar.removeFromRight(8);
 
-    rescanButton.setBounds(topBar.removeFromRight(80));
-    topBar.removeFromRight(8);
-
     // Button logic:
-    // - In plugin mode: show "Browser" and "Unload" buttons
-    // - In browser mode: hide both (Load Plugin button is in the details panel)
+    // - In plugin mode: show "Browser", "Unload", and A/B switch; hide search and rescan
+    // - In browser mode: show search, rescan, and A/B switch
     if (!browserMode)
     {
+        // Hide search bar and rescan in plugin mode
+        searchBar.setVisible(false);
+        rescanButton.setVisible(false);
+
         unloadButton.setVisible(true);
         unloadButton.setBounds(topBar.removeFromRight(70));
         topBar.removeFromRight(8);
@@ -541,14 +588,31 @@ void PluginAllianceLauncherEditor::resized()
         toggleModeButton.setVisible(true);
         toggleModeButton.setBounds(topBar.removeFromRight(80));
         topBar.removeFromRight(8);
+
+        // A/B switch to the left of Browser button in plugin mode
+        abSwitch.setVisible(true);
+        abSwitch.setBounds(topBar.removeFromRight(56));
+        topBar.removeFromRight(8);
     }
     else
     {
+        // Show search bar and rescan in browser mode
+        searchBar.setVisible(true);
+        rescanButton.setVisible(true);
+
+        rescanButton.setBounds(topBar.removeFromRight(80));
+        topBar.removeFromRight(8);
+
         toggleModeButton.setVisible(false);
         unloadButton.setVisible(false);
-    }
 
-    searchBar.setBounds(topBar.removeFromLeft(300));
+        // A/B switch to the left of Rescan button in browser mode
+        abSwitch.setVisible(true);
+        abSwitch.setBounds(topBar.removeFromRight(56));
+        topBar.removeFromRight(8);
+
+        searchBar.setBounds(topBar.removeFromLeft(300));
+    }
 
     // Era, Brand, and Sort dropdowns in top bar (right of search, in browser mode)
     if (browserMode)
@@ -1013,18 +1077,27 @@ void PluginAllianceLauncherEditor::loadSelectedPlugin(const PluginInfo& info)
     loadingPluginName = info.description.name;
     repaint();
 
-    // Store the plugin info for the async load
+    // Determine which slot to load into based on A/B switch state
+    // If B is shown as active and B is empty, load to B; otherwise load to active slot
+    ABSlot targetSlot = processor.getActiveSlot();
+    if (abSwitch.isSlotBActive() && !processor.hasPluginInSlot(ABSlot::B))
+    {
+        targetSlot = ABSlot::B;
+    }
+
+    // Store the plugin info and target slot for the async load
     auto pluginToLoad = info;
 
     // Defer the actual loading to allow the UI to update with the loading indicator
-    juce::MessageManager::callAsync([this, pluginToLoad]()
+    juce::MessageManager::callAsync([this, pluginToLoad, targetSlot]()
     {
         // IMPORTANT: Hide the current editor BEFORE loading a new plugin
         // The editor holds a reference to the AudioPluginInstance, so it must be
         // destroyed before we unload/replace the plugin instance
         hostedPluginView.hidePluginEditor();
 
-        bool success = processor.loadPlugin(pluginToLoad.description);
+        // Load to the target slot
+        bool success = processor.loadPluginToSlot(targetSlot, pluginToLoad.description);
 
         // Clear loading state
         isLoadingPlugin = false;
@@ -1032,6 +1105,14 @@ void PluginAllianceLauncherEditor::loadSelectedPlugin(const PluginInfo& info)
 
         if (success)
         {
+            // If we loaded to a different slot than active, switch to it
+            if (targetSlot != processor.getActiveSlot())
+            {
+                processor.setActiveSlot(targetSlot);
+            }
+
+            // Update hosted plugin view to point to the active host
+            hostedPluginView.setPluginHost(&processor.getActivePluginHost());
             hostedPluginView.showPluginEditor();
 
             // Add to recent
@@ -1040,6 +1121,9 @@ void PluginAllianceLauncherEditor::loadSelectedPlugin(const PluginInfo& info)
 
             // Update the plugin list to show this plugin as loaded
             pluginListView.setLoadedPluginId(pluginToLoad.description.fileOrIdentifier);
+
+            // Update A/B switch appearance
+            abSwitch.setActiveSlot(processor.getActiveSlot() == ABSlot::B);
 
             // Store current browser size before switching
             if (browserMode)
@@ -1062,6 +1146,8 @@ void PluginAllianceLauncherEditor::loadSelectedPlugin(const PluginInfo& info)
         }
         else
         {
+            // Reset switch if load failed and we were trying to load to B
+            abSwitch.setActiveSlot(processor.getActiveSlot() == ABSlot::B);
             repaint();  // Clear the loading overlay
             juce::AlertWindow::showMessageBoxAsync(
                 juce::AlertWindow::WarningIcon,
@@ -1092,6 +1178,61 @@ void PluginAllianceLauncherEditor::toggleBrowserMode()
         // Restore browser size
         resizeForBrowser();
         resized();
+    }
+}
+
+void PluginAllianceLauncherEditor::toggleABSlot()
+{
+    ABSlot currentSlot = processor.getActiveSlot();
+    ABSlot newSlot = (currentSlot == ABSlot::A) ? ABSlot::B : ABSlot::A;
+
+    // If switching to a slot that has no plugin, show browser to select one
+    if (!processor.hasPluginInSlot(newSlot))
+    {
+        // Update switch to show target slot visually
+        abSwitch.setActiveSlot(newSlot == ABSlot::B);
+
+        // Switch to browser mode to let user select a plugin
+        if (!browserMode)
+        {
+            browserMode = true;
+            toggleModeButton.setButtonText("Load Plugin");
+            resizeForBrowser();
+            resized();
+        }
+        return;
+    }
+
+    // Hide current plugin editor before switching
+    hostedPluginView.hidePluginEditor();
+
+    // Switch the active slot in the processor
+    processor.setActiveSlot(newSlot);
+
+    // Update hosted plugin view to point to the new active host
+    hostedPluginView.setPluginHost(&processor.getActivePluginHost());
+
+    // Show the new plugin's editor
+    if (processor.hasLoadedPlugin())
+    {
+        hostedPluginView.showPluginEditor();
+
+        // Update the loaded plugin ID in the browser list
+        auto* desc = processor.getActivePluginHost().getLoadedPluginDescription();
+        if (desc != nullptr)
+            pluginListView.setLoadedPluginId(desc->fileOrIdentifier);
+    }
+
+    // Update switch appearance
+    abSwitch.setActiveSlot(newSlot == ABSlot::B);
+
+    // If we're in plugin mode, resize for the new plugin
+    if (!browserMode)
+    {
+        juce::MessageManager::callAsync([this]()
+        {
+            resizeForPlugin();
+        });
     }
 }
 

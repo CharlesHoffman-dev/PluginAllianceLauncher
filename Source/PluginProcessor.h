@@ -16,6 +16,9 @@
 namespace PALauncher
 {
 
+// A/B slot selection for comparing two plugins
+enum class ABSlot { A, B };
+
 // Number of parameter slots to expose to the host DAW
 static constexpr int kMaxParameters = 256;
 
@@ -93,12 +96,21 @@ public:
     void setStateInformation(const void* data, int sizeInBytes) override;
 
     // Plugin hosting
-    PluginHost& getPluginHost() { return pluginHost; }
     PluginDatabase& getPluginDatabase() { return pluginDatabase; }
     PluginScanner& getPluginScanner() { return pluginScanner; }
     SettingsManager& getSettingsManager() { return settingsManager; }
 
-    // Load a plugin by its description
+    // A/B slot management
+    void setActiveSlot(ABSlot slot);
+    ABSlot getActiveSlot() const { return activeSlot; }
+    PluginHost& getActivePluginHost();
+    PluginHost& getPluginHost(ABSlot slot);
+    bool loadPluginToSlot(ABSlot slot, const juce::PluginDescription& desc);
+    void unloadPluginFromSlot(ABSlot slot);
+    bool hasPluginInSlot(ABSlot slot) const;
+
+    // Legacy API - operates on active slot
+    PluginHost& getPluginHost() { return getActivePluginHost(); }
     bool loadPlugin(const juce::PluginDescription& desc);
     void unloadPlugin();
     bool hasLoadedPlugin() const;
@@ -116,7 +128,11 @@ public:
     void unlinkAllParameters();
 
 private:
-    PluginHost pluginHost;
+    // A/B plugin hosts
+    PluginHost pluginHostA;
+    PluginHost pluginHostB;
+    ABSlot activeSlot = ABSlot::A;
+
     PluginDatabase pluginDatabase;
     PluginScanner pluginScanner;
     SettingsManager settingsManager;
