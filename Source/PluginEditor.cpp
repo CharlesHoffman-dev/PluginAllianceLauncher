@@ -112,7 +112,7 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     addAndMakeVisible(toggleModeButton);
 
     // Set up unload button - same style as toggle mode button
-    unloadButton.setButtonText("Unload");
+    unloadButton.setButtonText("Remove");
     unloadButton.setColour(juce::TextButton::buttonColourId, juce::Colours::white);
     unloadButton.setColour(juce::TextButton::textColourOffId, juce::Colours::black);
     unloadButton.setLookAndFeel(&buttonLookAndFeel);
@@ -369,6 +369,162 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     hostedPluginView.setPluginHost(&processor.getActivePluginHost());
     addAndMakeVisible(hostedPluginView);
 
+    // Set up chain button - same style as other buttons
+    chainButton.setButtonText("Chain");
+    chainButton.setColour(juce::TextButton::buttonColourId, juce::Colours::white);
+    chainButton.setColour(juce::TextButton::textColourOffId, juce::Colours::black);
+    chainButton.setLookAndFeel(&buttonLookAndFeel);
+    chainButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
+    chainButton.onClick = [this]()
+    {
+        chainViewVisible = !chainViewVisible;
+        chainView.setVisible(chainViewVisible);
+        chainButton.setButtonText(chainViewVisible ? "Hide Chain" : "Chain");
+
+        // Resize window to account for chain view
+        if (browserMode)
+        {
+            resizeForBrowser();
+        }
+        else
+        {
+            resizeForPlugin();
+        }
+
+        resized();  // Re-layout to adjust space
+    };
+    addAndMakeVisible(chainButton);
+
+    // Set up chain view
+    chainView.onSlotSelected = [this](int slot)
+    {
+        processor.setCurrentSelectedSlot(slot);
+        hostedPluginView.setPluginHost(&processor.getChainSlot(slot).getActiveHost());
+        hostedPluginView.showPluginEditor();
+
+        // Update A/B switch to reflect selected slot's state
+        ABSlot slotAB = processor.getSlotActiveAB(slot);
+        abSwitch.setActiveSlot(slotAB == ABSlot::B);
+
+        if (!browserMode)
+            resizeForPlugin();
+    };
+
+    chainView.onRemoveSlot = [this](int slot)
+    {
+        processor.removeAndCompactSlot(slot);
+        chainView.setChainState(processor);
+
+        // If no plugins left, go to browser mode
+        if (processor.getLoadedSlotCount() == 0)
+        {
+            pluginListView.setLoadedPluginId({});
+            abSwitch.setActiveSlot(false);
+            browserMode = true;
+            toggleModeButton.setButtonText("Show Plugin");
+            resizeForBrowser();
+            resized();
+        }
+    };
+
+    chainView.onAddSlot = [this]()
+    {
+        browserMode = true;
+        resizeForBrowser();
+        searchBar.grabKeyboardFocus();
+        resized();
+    };
+
+    chainView.onSlotReorder = [this](int fromIndex, int toIndex)
+    {
+        processor.reorderSlots(fromIndex, toIndex);
+        processor.updateParameterDistribution();
+        chainView.setChainState(processor);
+    };
+
+    addAndMakeVisible(chainView);
+
+    // Set up preset dropdown
+    presetComboBox.setTextWhenNothingSelected("Default");
+    presetComboBox.setTextWhenNoChoicesAvailable("No Presets");
+    presetComboBox.onChange = [this]()
+    {
+        int selectedId = presetComboBox.getSelectedId();
+        if (selectedId > 0)
+        {
+            auto presetFile = presetManager.getPresetFileById(selectedId);
+            if (presetFile.existsAsFile())
+                loadPresetFromFile(presetFile);
+        }
+    };
+    addAndMakeVisible(presetComboBox);
+
+    // Set up preset save button
+    presetSaveButton.setButtonText("Save");
+    presetSaveButton.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff2a2a2a));
+    presetSaveButton.setColour(juce::TextButton::textColourOffId, juce::Colours::white);
+    presetSaveButton.setLookAndFeel(&buttonLookAndFeel);
+    presetSaveButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
+    presetSaveButton.onClick = [this]()
+    {
+        // Check if chain has any plugins
+        if (processor.getLoadedSlotCount() == 0)
+        {
+            juce::AlertWindow::showMessageBoxAsync(
+                juce::AlertWindow::InfoIcon,
+                "Empty Chain",
+                "Cannot save an empty chain. Load some plugins first.",
+                "OK"
+            );
+            return;
+        }
+
+        auto chooserFlags = juce::FileBrowserComponent::saveMode
+                          | juce::FileBrowserComponent::canSelectFiles
+                          | juce::FileBrowserComponent::warnAboutOverwriting;
+
+        auto* fileChooser = new juce::FileChooser("Save Chain Preset",
+                                                    presetManager.getPresetsDirectory(),
+                                                    "*.palpreset");
+
+        fileChooser->launchAsync(chooserFlags, [this, fileChooser](const juce::FileChooser& fc)
+        {
+            auto file = fc.getResult();
+
+            if (file != juce::File())
+            {
+                auto chainState = processor.getChainState();
+
+                if (presetManager.savePreset(*chainState, file))
+                {
+                    refreshPresetDropdown();
+
+                    juce::AlertWindow::showMessageBoxAsync(
+                        juce::AlertWindow::InfoIcon,
+                        "Preset Saved",
+                        "Chain preset saved successfully:\n" + file.getFileNameWithoutExtension(),
+                        "OK"
+                    );
+                }
+                else
+                {
+                    juce::AlertWindow::showMessageBoxAsync(
+                        juce::AlertWindow::WarningIcon,
+                        "Save Failed",
+                        "Could not save preset file.",
+                        "OK"
+                    );
+                }
+            }
+
+            delete fileChooser;
+        });
+    };
+    addAndMakeVisible(presetSaveButton);
+
+    // Initial preset scan
+    refreshPresetDropdown();
+
     // Listen to scanner for updates
     processor.getPluginScanner().addChangeListener(this);
 
@@ -429,8 +585,12 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
             pluginListView.setLoadedPluginId(desc->fileOrIdentifier);
     }
 
-    // Set editor size - wider to accommodate details panel
-    setSize(1400, 900);
+    // Set editor size - wider to accommodate details panel, plus chain view height
+    int initialHeight = 900;
+    if (chainViewVisible)
+        initialHeight += chainViewHeight;
+
+    setSize(1400, initialHeight);
     setResizable(true, false);
     setResizeLimits(1000, 600, 2200, 1500);
 
@@ -572,26 +732,33 @@ void PluginAllianceLauncherEditor::resized()
     topBar.removeFromRight(8);
 
     // Button logic:
-    // - In plugin mode: show "Browser", "Unload", and A/B switch; hide search and rescan
-    // - In browser mode: show search, rescan, and A/B switch
+    // - In plugin mode: show "Browser", "Chain", "Remove", and A/B switch; hide search and rescan
+    // - In browser mode: show search, rescan, "Browser", "Chain", and A/B switch
     if (!browserMode)
     {
         // Hide search bar and rescan in plugin mode
         searchBar.setVisible(false);
         rescanButton.setVisible(false);
 
+        // A/B switch (rightmost)
+        abSwitch.setVisible(true);
+        abSwitch.setBounds(topBar.removeFromRight(56));
+        topBar.removeFromRight(8);
+
+        // Remove button
         unloadButton.setVisible(true);
         unloadButton.setBounds(topBar.removeFromRight(70));
         topBar.removeFromRight(8);
 
+        // Chain button
+        chainButton.setVisible(true);
+        chainButton.setBounds(topBar.removeFromRight(70));
+        topBar.removeFromRight(8);
+
+        // Browser button
         toggleModeButton.setButtonText("Browser");
         toggleModeButton.setVisible(true);
         toggleModeButton.setBounds(topBar.removeFromRight(80));
-        topBar.removeFromRight(8);
-
-        // A/B switch to the left of Browser button in plugin mode
-        abSwitch.setVisible(true);
-        abSwitch.setBounds(topBar.removeFromRight(56));
         topBar.removeFromRight(8);
     }
     else
@@ -600,16 +767,22 @@ void PluginAllianceLauncherEditor::resized()
         searchBar.setVisible(true);
         rescanButton.setVisible(true);
 
+        // A/B switch (rightmost)
+        abSwitch.setVisible(true);
+        abSwitch.setBounds(topBar.removeFromRight(56));
+        topBar.removeFromRight(8);
+
+        // Chain button
+        chainButton.setVisible(true);
+        chainButton.setBounds(topBar.removeFromRight(70));
+        topBar.removeFromRight(8);
+
+        // Browser button (Rescan in browser mode)
         rescanButton.setBounds(topBar.removeFromRight(80));
         topBar.removeFromRight(8);
 
         toggleModeButton.setVisible(false);
         unloadButton.setVisible(false);
-
-        // A/B switch to the left of Rescan button in browser mode
-        abSwitch.setVisible(true);
-        abSwitch.setBounds(topBar.removeFromRight(56));
-        topBar.removeFromRight(8);
 
         searchBar.setBounds(topBar.removeFromLeft(300));
     }
@@ -625,11 +798,39 @@ void PluginAllianceLauncherEditor::resized()
         sortComboBox.setBounds(topBar.removeFromLeft(100));
     }
 
+    // Center preset controls in the top bar
+    {
+        auto fullTopBar = getLocalBounds().removeFromTop(topBarHeight).reduced(10, 8);
+        int presetDropdownWidth = 120;
+        int saveButtonWidth = 60;
+        int spacing = 8;
+        int totalWidth = presetDropdownWidth + spacing + saveButtonWidth;
+
+        int centerX = fullTopBar.getCentreX() - (totalWidth / 2);
+        int y = fullTopBar.getY();
+        int height = fullTopBar.getHeight();
+
+        presetComboBox.setBounds(centerX, y, presetDropdownWidth, height);
+        presetSaveButton.setBounds(centerX + presetDropdownWidth + spacing, y, saveButtonWidth, height);
+    }
+
     // Only reserve space for status bar when scanning
     if (processor.getPluginScanner().isScanning())
     {
         static constexpr int statusBarHeight = 28;
         bounds.removeFromTop(statusBarHeight);
+    }
+
+    // Chain view - visible in both modes (can be toggled)
+    if (chainViewVisible)
+    {
+        auto chainArea = bounds.removeFromTop(chainViewHeight);
+        chainView.setBounds(chainArea);
+        chainView.setVisible(true);
+    }
+    else
+    {
+        chainView.setVisible(false);
     }
 
     if (browserMode)
@@ -737,6 +938,10 @@ void PluginAllianceLauncherEditor::resizeForPlugin()
     int requiredWidth = editorBounds.getWidth();
     int requiredHeight = editorBounds.getHeight() + topBarHeight + hostedPluginHeaderHeight;
 
+    // Add chain view height if visible
+    if (chainViewVisible)
+        requiredHeight += chainViewHeight;
+
     // Apply minimum sizes and constraints
     requiredWidth = juce::jmax(requiredWidth, 400);
     requiredHeight = juce::jmax(requiredHeight, 300);
@@ -755,7 +960,14 @@ void PluginAllianceLauncherEditor::resizeForPlugin()
 
 void PluginAllianceLauncherEditor::resizeForBrowser()
 {
-    setSize(defaultBrowserSize.getWidth(), defaultBrowserSize.getHeight());
+    int width = defaultBrowserSize.getWidth();
+    int height = defaultBrowserSize.getHeight();
+
+    // Add chain view height if visible
+    if (chainViewVisible)
+        height += chainViewHeight;
+
+    setSize(width, height);
 }
 
 void PluginAllianceLauncherEditor::changeListenerCallback(juce::ChangeBroadcaster* source)
@@ -787,6 +999,34 @@ void PluginAllianceLauncherEditor::timerCallback()
     // Repaint the status area when scanning
     if (isScanning)
         repaint(sidebarWidth, topBarHeight, getWidth() - sidebarWidth, 24);
+
+    // Update chain view if needed
+    static int updateCounter = 0;
+    if (++updateCounter % 10 == 0)  // Update every 10 timer ticks
+    {
+        chainView.setChainState(processor);
+    }
+
+    // Animate chain button LED glow effect
+    bool shouldGlow = !chainViewVisible && processor.getLoadedSlotCount() >= 2;
+
+    if (shouldGlow)
+    {
+        // Breathing animation: 2 second cycle (sine wave)
+        chainButtonGlowPhase += 0.05f;  // Increment per timer tick (assuming ~30 FPS)
+        if (chainButtonGlowPhase > juce::MathConstants<float>::twoPi)
+            chainButtonGlowPhase -= juce::MathConstants<float>::twoPi;
+
+        float glowAlpha = 0.5f + 0.5f * std::sin(chainButtonGlowPhase);
+        chainButtonLookAndFeel.setGlowAlpha(glowAlpha);
+        chainButton.repaint();
+    }
+    else
+    {
+        // No glow
+        chainButtonLookAndFeel.setGlowAlpha(0.0f);
+        chainButtonGlowPhase = 0.0f;
+    }
 }
 
 void PluginAllianceLauncherEditor::updatePluginList()
@@ -1077,27 +1317,47 @@ void PluginAllianceLauncherEditor::loadSelectedPlugin(const PluginInfo& info)
     loadingPluginName = info.description.name;
     repaint();
 
-    // Determine which slot to load into based on A/B switch state
-    // If B is shown as active and B is empty, load to B; otherwise load to active slot
-    ABSlot targetSlot = processor.getActiveSlot();
-    if (abSwitch.isSlotBActive() && !processor.hasPluginInSlot(ABSlot::B))
+    // Find the next available chain slot
+    int targetChainSlot = -1;
+    for (int i = 0; i < kMaxChainSlots; ++i)
     {
-        targetSlot = ABSlot::B;
+        if (!processor.hasPluginInSlot(i))
+        {
+            targetChainSlot = i;
+            break;
+        }
     }
+
+    // If chain is full, show error
+    if (targetChainSlot == -1)
+    {
+        isLoadingPlugin = false;
+        loadingPluginName.clear();
+        juce::AlertWindow::showMessageBoxAsync(
+            juce::AlertWindow::WarningIcon,
+            "Chain Full",
+            "All 8 chain slots are filled. Remove a plugin before adding a new one.",
+            "OK"
+        );
+        return;
+    }
+
+    // Determine which A/B slot to load into based on A/B switch state
+    ABSlot targetABSlot = abSwitch.isSlotBActive() ? ABSlot::B : ABSlot::A;
 
     // Store the plugin info and target slot for the async load
     auto pluginToLoad = info;
 
     // Defer the actual loading to allow the UI to update with the loading indicator
-    juce::MessageManager::callAsync([this, pluginToLoad, targetSlot]()
+    juce::MessageManager::callAsync([this, pluginToLoad, targetChainSlot, targetABSlot]()
     {
         // IMPORTANT: Hide the current editor BEFORE loading a new plugin
         // The editor holds a reference to the AudioPluginInstance, so it must be
         // destroyed before we unload/replace the plugin instance
         hostedPluginView.hidePluginEditor();
 
-        // Load to the target slot
-        bool success = processor.loadPluginToSlot(targetSlot, pluginToLoad.description);
+        // Load to the target chain slot and A/B slot
+        bool success = processor.loadPluginToSlot(targetChainSlot, targetABSlot, pluginToLoad.description);
 
         // Clear loading state
         isLoadingPlugin = false;
@@ -1105,14 +1365,11 @@ void PluginAllianceLauncherEditor::loadSelectedPlugin(const PluginInfo& info)
 
         if (success)
         {
-            // If we loaded to a different slot than active, switch to it
-            if (targetSlot != processor.getActiveSlot())
-            {
-                processor.setActiveSlot(targetSlot);
-            }
+            // Select the newly loaded slot
+            processor.setCurrentSelectedSlot(targetChainSlot);
 
-            // Update hosted plugin view to point to the active host
-            hostedPluginView.setPluginHost(&processor.getActivePluginHost());
+            // Update hosted plugin view to point to the new slot's active host
+            hostedPluginView.setPluginHost(&processor.getChainSlot(targetChainSlot).getActiveHost());
             hostedPluginView.showPluginEditor();
 
             // Add to recent
@@ -1122,8 +1379,11 @@ void PluginAllianceLauncherEditor::loadSelectedPlugin(const PluginInfo& info)
             // Update the plugin list to show this plugin as loaded
             pluginListView.setLoadedPluginId(pluginToLoad.description.fileOrIdentifier);
 
+            // Update chain view to show the new plugin
+            chainView.setChainState(processor);
+
             // Update A/B switch appearance
-            abSwitch.setActiveSlot(processor.getActiveSlot() == ABSlot::B);
+            abSwitch.setActiveSlot(targetABSlot == ABSlot::B);
 
             // Store current browser size before switching
             if (browserMode)
@@ -1146,8 +1406,8 @@ void PluginAllianceLauncherEditor::loadSelectedPlugin(const PluginInfo& info)
         }
         else
         {
-            // Reset switch if load failed and we were trying to load to B
-            abSwitch.setActiveSlot(processor.getActiveSlot() == ABSlot::B);
+            // Reset switch if load failed
+            abSwitch.setActiveSlot(targetABSlot == ABSlot::B);
             repaint();  // Clear the loading overlay
             juce::AlertWindow::showMessageBoxAsync(
                 juce::AlertWindow::WarningIcon,
@@ -1183,48 +1443,36 @@ void PluginAllianceLauncherEditor::toggleBrowserMode()
 
 void PluginAllianceLauncherEditor::toggleABSlot()
 {
-    ABSlot currentSlot = processor.getActiveSlot();
+    int slot = processor.getCurrentSelectedSlot();
+    ABSlot currentSlot = processor.getSlotActiveAB(slot);
     ABSlot newSlot = (currentSlot == ABSlot::A) ? ABSlot::B : ABSlot::A;
-
-    // If switching to a slot that has no plugin, show browser to select one
-    if (!processor.hasPluginInSlot(newSlot))
-    {
-        // Update switch to show target slot visually
-        abSwitch.setActiveSlot(newSlot == ABSlot::B);
-
-        // Switch to browser mode to let user select a plugin
-        if (!browserMode)
-        {
-            browserMode = true;
-            toggleModeButton.setButtonText("Load Plugin");
-            resizeForBrowser();
-            resized();
-        }
-        return;
-    }
 
     // Hide current plugin editor before switching
     hostedPluginView.hidePluginEditor();
 
-    // Switch the active slot in the processor
-    processor.setActiveSlot(newSlot);
+    // Switch the A/B slot for the current selected chain slot
+    processor.setSlotActiveAB(slot, newSlot);
 
     // Update hosted plugin view to point to the new active host
-    hostedPluginView.setPluginHost(&processor.getActivePluginHost());
+    hostedPluginView.setPluginHost(&processor.getChainSlot(slot).getActiveHost());
 
-    // Show the new plugin's editor
-    if (processor.hasLoadedPlugin())
+    // Update chain view to show the new A/B state
+    chainView.updateSlotABButton(slot, newSlot);
+
+    // Update A/B switch appearance
+    abSwitch.setActiveSlot(newSlot == ABSlot::B);
+
+    // Show the plugin's editor
+    if (processor.hasPluginInSlot(slot))
     {
         hostedPluginView.showPluginEditor();
 
         // Update the loaded plugin ID in the browser list
-        auto* desc = processor.getActivePluginHost().getLoadedPluginDescription();
+        auto& activeHost = processor.getChainSlot(slot).getActiveHost();
+        auto* desc = activeHost.getLoadedPluginDescription();
         if (desc != nullptr)
             pluginListView.setLoadedPluginId(desc->fileOrIdentifier);
     }
-
-    // Update switch appearance
-    abSwitch.setActiveSlot(newSlot == ABSlot::B);
 
     // If we're in plugin mode, resize for the new plugin
     if (!browserMode)
@@ -1465,6 +1713,88 @@ void PluginAllianceLauncherEditor::showSettingsMenu()
                     break;
             }
         });
+}
+
+void PluginAllianceLauncherEditor::refreshPresetDropdown()
+{
+    // Scan presets
+    presetManager.scanPresets();
+
+    // Clear and rebuild ComboBox
+    presetComboBox.clear();
+
+    // Add "Default" as first option (ID 0, which means nothing selected)
+    presetComboBox.addItem("Default", 999);
+
+    // Build menu for hierarchical structure
+    currentPresetMenu.clear();
+    int idCounter = 1000;  // Start IDs at 1000
+
+    // Build hierarchical menu from presets directory
+    presetManager.buildPresetMenu(currentPresetMenu, presetManager.getPresetsDirectory(), idCounter);
+
+    // Add flat list to combo box (for simplicity, or we can keep the popup menu approach)
+    // For now, populate with preset files directly
+    auto presetFiles = presetManager.getAllPresetFiles();
+    for (int i = 0; i < presetFiles.size(); ++i)
+    {
+        auto name = presetFiles[i].getFileNameWithoutExtension();
+        presetComboBox.addItem(name, 1000 + i);
+    }
+
+    // Set default selection
+    presetComboBox.setSelectedId(999, juce::dontSendNotification);
+}
+
+void PluginAllianceLauncherEditor::loadPresetFromFile(juce::File presetFile)
+{
+    auto chainState = presetManager.loadPreset(presetFile);
+
+    if (chainState == nullptr)
+    {
+        juce::AlertWindow::showMessageBoxAsync(
+            juce::AlertWindow::WarningIcon,
+            "Load Failed",
+            "Could not load preset. The file may be corrupted or in an unsupported format.",
+            "OK"
+        );
+        return;
+    }
+
+    // Hide current plugin editor before loading preset
+    hostedPluginView.hidePluginEditor();
+
+    // Load the chain state into the processor
+    processor.setChainState(*chainState);
+
+    // Update chain view to reflect the loaded preset
+    chainView.setChainState(processor);
+
+    // If any plugins were loaded, select the first slot and show its plugin
+    if (processor.getLoadedSlotCount() > 0)
+    {
+        processor.setCurrentSelectedSlot(0);
+        hostedPluginView.setPluginHost(&processor.getChainSlot(0).getActiveHost());
+
+        // Update A/B switch to reflect first slot's state
+        ABSlot slotAB = processor.getSlotActiveAB(0);
+        abSwitch.setActiveSlot(slotAB == ABSlot::B);
+
+        // If we're in plugin mode, show the plugin editor
+        if (!browserMode && processor.hasPluginInSlot(0))
+        {
+            hostedPluginView.showPluginEditor();
+
+            juce::MessageManager::callAsync([this]()
+            {
+                resizeForPlugin();
+            });
+        }
+    }
+
+    // Update UI
+    resized();
+    repaint();
 }
 
 } // namespace PALauncher

@@ -266,6 +266,9 @@
         <FILE id="dbH" name="PluginDatabase.h" compile="0" resource="0" file="Source/Core/PluginDatabase.h"/>
         <FILE id="dbCpp" name="PluginDatabase.cpp" compile="1" resource="0"
               file="Source/Core/PluginDatabase.cpp"/>
+        <FILE id="presetMgrH" name="PresetManager.h" compile="0" resource="0" file="Source/Core/PresetManager.h"/>
+        <FILE id="presetMgrCpp" name="PresetManager.cpp" compile="1" resource="0"
+              file="Source/Core/PresetManager.cpp"/>
       </GROUP>
       <GROUP id="uiGroup" name="UI">
         <FILE id="searchH" name="SearchBar.h" compile="0" resource="0" file="Source/UI/SearchBar.h"/>
@@ -285,6 +288,10 @@
               file="Source/UI/PluginListView.cpp"/>
         <FILE id="cardH" name="PluginCard.h" compile="0" resource="0" file="Source/UI/PluginCard.h"/>
         <FILE id="cardCpp" name="PluginCard.cpp" compile="1" resource="0" file="Source/UI/PluginCard.cpp"/>
+        <FILE id="chainSlotCardH" name="ChainSlotCard.h" compile="0" resource="0" file="Source/UI/ChainSlotCard.h"/>
+        <FILE id="chainSlotCardCpp" name="ChainSlotCard.cpp" compile="1" resource="0" file="Source/UI/ChainSlotCard.cpp"/>
+        <FILE id="chainViewH" name="PluginChainView.h" compile="0" resource="0" file="Source/UI/PluginChainView.h"/>
+        <FILE id="chainViewCpp" name="PluginChainView.cpp" compile="1" resource="0" file="Source/UI/PluginChainView.cpp"/>
         <FILE id="hostedH" name="HostedPluginView.h" compile="0" resource="0"
               file="Source/UI/HostedPluginView.h"/>
         <FILE id="hostedCpp" name="HostedPluginView.cpp" compile="1" resource="0"

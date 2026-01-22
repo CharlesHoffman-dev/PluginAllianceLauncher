@@ -35,7 +35,7 @@ public:
     double getTailLengthSeconds() const;
 
     // State management
-    void getPluginState(juce::MemoryBlock& destData);
+    void getPluginState(juce::MemoryBlock& destData) const;
     void setPluginState(const juce::MemoryBlock& data);
 
     // Editor
@@ -67,7 +67,7 @@ private:
     // Temporary buffer for channel count adaptation
     juce::AudioBuffer<float> tempBuffer;
 
-    juce::CriticalSection lock;
+    mutable juce::CriticalSection lock;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginHost)
 };

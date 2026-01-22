@@ -12,6 +12,15 @@ namespace PALauncher
 {
 
 //==============================================================================
+// ChainSlot implementation
+//==============================================================================
+
+bool ChainSlot::hasPlugin() const
+{
+    return hostA.hasLoadedPlugin() || hostB.hasLoadedPlugin();
+}
+
+//==============================================================================
 // HostedPluginParameter implementation
 //==============================================================================
 
@@ -51,6 +60,7 @@ void HostedPluginParameter::unlink()
 
     linkedParam = nullptr;
     cachedValue = 0.0f;
+    customName.clear();
 }
 
 float HostedPluginParameter::getValue() const
@@ -84,9 +94,14 @@ float HostedPluginParameter::getDefaultValue() const
 
 juce::String HostedPluginParameter::getName(int maximumStringLength) const
 {
+    // If we have a custom name (e.g., from chain slots), use that
+    if (customName.isNotEmpty())
+        return customName.substring(0, maximumStringLength);
+
     auto* param = linkedParam;
     if (param != nullptr)
         return param->getName(maximumStringLength);
+
     return "Param " + juce::String(paramIndex + 1);
 }
 
@@ -201,15 +216,23 @@ void PluginAllianceLauncherProcessor::prepareToPlay(double sampleRate, int sampl
     currentBlockSize = samplesPerBlock;
 
     juce::ScopedLock lock(pluginLock);
-    pluginHostA.prepareToPlay(sampleRate, samplesPerBlock);
-    pluginHostB.prepareToPlay(sampleRate, samplesPerBlock);
+    // Prepare all chain slots
+    for (auto& slot : chainSlots)
+    {
+        slot.hostA.prepareToPlay(sampleRate, samplesPerBlock);
+        slot.hostB.prepareToPlay(sampleRate, samplesPerBlock);
+    }
 }
 
 void PluginAllianceLauncherProcessor::releaseResources()
 {
     juce::ScopedLock lock(pluginLock);
-    pluginHostA.releaseResources();
-    pluginHostB.releaseResources();
+    // Release all chain slots
+    for (auto& slot : chainSlots)
+    {
+        slot.hostA.releaseResources();
+        slot.hostB.releaseResources();
+    }
 }
 
 bool PluginAllianceLauncherProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
@@ -246,17 +269,24 @@ void PluginAllianceLauncherProcessor::processBlock(juce::AudioBuffer<float>& buf
     // just pass audio through unchanged to avoid glitches
     if (pluginLock.tryEnter())
     {
-        // Route audio through the active slot only
-        PluginHost& activeHost = (activeSlot == ABSlot::A) ? pluginHostA : pluginHostB;
-
-        if (activeHost.hasLoadedPlugin())
+        // Route audio through all chain slots serially
+        for (int i = 0; i < kMaxChainSlots; ++i)
         {
-            // Forward playhead/transport info to hosted plugin
-            // This is essential for plugins like MetricAB that have internal playback
-            if (auto* hostedPlugin = activeHost.getLoadedPlugin())
-                hostedPlugin->setPlayHead(getPlayHead());
+            // Skip bypassed slots
+            if (chainSlots[i].bypassed)
+                continue;
 
-            activeHost.processBlock(buffer, midiMessages);
+            auto& activeHost = chainSlots[i].getActiveHost();
+
+            if (activeHost.hasLoadedPlugin())
+            {
+                // Forward playhead/transport info to hosted plugin
+                // This is essential for plugins like MetricAB that have internal playback
+                if (auto* hostedPlugin = activeHost.getLoadedPlugin())
+                    hostedPlugin->setPlayHead(getPlayHead());
+
+                activeHost.processBlock(buffer, midiMessages);
+            }
         }
         pluginLock.exit();
     }
@@ -267,69 +297,92 @@ double PluginAllianceLauncherProcessor::getTailLengthSeconds() const
 {
     juce::ScopedLock lock(pluginLock);
 
-    const PluginHost& activeHost = (activeSlot == ABSlot::A) ? pluginHostA : pluginHostB;
+    // Return the maximum tail length from all active, non-bypassed slots
+    double maxTail = 0.0;
 
-    if (activeHost.hasLoadedPlugin())
-        return activeHost.getTailLengthSeconds();
-
-    return 0.0;
-}
-
-// A/B slot management methods
-PluginHost& PluginAllianceLauncherProcessor::getActivePluginHost()
-{
-    return (activeSlot == ABSlot::A) ? pluginHostA : pluginHostB;
-}
-
-PluginHost& PluginAllianceLauncherProcessor::getPluginHost(ABSlot slot)
-{
-    return (slot == ABSlot::A) ? pluginHostA : pluginHostB;
-}
-
-void PluginAllianceLauncherProcessor::setActiveSlot(ABSlot slot)
-{
-    if (activeSlot == slot)
-        return;
-
-    // Unlink parameters from old slot
-    for (auto* param : hostedParameters)
-        param->unlink();
-
-    activeSlot = slot;
-
-    // Link parameters to new active slot
-    PluginHost& newActiveHost = getActivePluginHost();
-    if (newActiveHost.hasLoadedPlugin())
+    for (int i = 0; i < kMaxChainSlots; ++i)
     {
-        auto* loadedPlugin = newActiveHost.getLoadedPlugin();
-        if (loadedPlugin != nullptr)
-        {
-            auto& params = loadedPlugin->getParameters();
-            int numParams = juce::jmin(static_cast<int>(params.size()), kMaxParameters);
+        if (chainSlots[i].bypassed)
+            continue;
 
-            for (int i = 0; i < numParams; ++i)
-            {
-                if (auto* param = params[i])
-                    hostedParameters[i]->linkToParameter(param);
-            }
+        const auto& activeHost = chainSlots[i].getActiveHost();
+
+        if (activeHost.hasLoadedPlugin())
+        {
+            maxTail = juce::jmax(maxTail, activeHost.getTailLengthSeconds());
         }
     }
 
-    // Notify host that parameter info has changed
-    updateHostDisplay(ChangeDetails()
-        .withParameterInfoChanged(true));
+    return maxTail;
 }
 
-bool PluginAllianceLauncherProcessor::loadPluginToSlot(ABSlot slot, const juce::PluginDescription& desc)
-{
-    PluginHost& targetHost = getPluginHost(slot);
+//==============================================================================
+// Chain slot management methods
+//==============================================================================
 
-    // If loading to active slot, unlink parameters first
-    if (slot == activeSlot)
+ChainSlot& PluginAllianceLauncherProcessor::getChainSlot(int index)
+{
+    jassert(index >= 0 && index < kMaxChainSlots);
+    return chainSlots[index];
+}
+
+const ChainSlot& PluginAllianceLauncherProcessor::getChainSlot(int index) const
+{
+    jassert(index >= 0 && index < kMaxChainSlots);
+    return chainSlots[index];
+}
+
+void PluginAllianceLauncherProcessor::setCurrentSelectedSlot(int index)
+{
+    jassert(index >= 0 && index < kMaxChainSlots);
+    if (currentSelectedSlot != index)
     {
-        for (auto* param : hostedParameters)
-            param->unlink();
+        currentSelectedSlot = index;
     }
+}
+
+void PluginAllianceLauncherProcessor::setSlotActiveAB(int slotIndex, ABSlot slot)
+{
+    jassert(slotIndex >= 0 && slotIndex < kMaxChainSlots);
+
+    if (chainSlots[slotIndex].activeSlot == slot)
+        return;
+
+    chainSlots[slotIndex].activeSlot = slot;
+
+    // Update parameter distribution if this affects the active hosts
+    updateParameterDistribution();
+
+    // Notify host that parameter info may have changed
+    updateHostDisplay(ChangeDetails().withParameterInfoChanged(true));
+}
+
+ABSlot PluginAllianceLauncherProcessor::getSlotActiveAB(int slotIndex) const
+{
+    jassert(slotIndex >= 0 && slotIndex < kMaxChainSlots);
+    return chainSlots[slotIndex].activeSlot;
+}
+
+void PluginAllianceLauncherProcessor::bypassSlot(int slotIndex, bool bypass)
+{
+    jassert(slotIndex >= 0 && slotIndex < kMaxChainSlots);
+    chainSlots[slotIndex].bypassed = bypass;
+}
+
+bool PluginAllianceLauncherProcessor::isSlotBypassed(int slotIndex) const
+{
+    jassert(slotIndex >= 0 && slotIndex < kMaxChainSlots);
+    return chainSlots[slotIndex].bypassed;
+}
+
+bool PluginAllianceLauncherProcessor::loadPluginToSlot(int slotIndex, ABSlot abSlot, const juce::PluginDescription& desc)
+{
+    jassert(slotIndex >= 0 && slotIndex < kMaxChainSlots);
+
+    PluginHost& targetHost = (abSlot == ABSlot::A) ? chainSlots[slotIndex].hostA : chainSlots[slotIndex].hostB;
+
+    // Unlink parameters before loading
+    unlinkAllParameters();
 
     bool success = false;
     {
@@ -341,78 +394,163 @@ bool PluginAllianceLauncherProcessor::loadPluginToSlot(ABSlot slot, const juce::
     {
         pluginDatabase.addToRecent(desc);
 
-        // If this is the active slot, sync parameters
-        if (slot == activeSlot)
-        {
-            auto* loadedPlugin = targetHost.getLoadedPlugin();
-            if (loadedPlugin != nullptr)
-            {
-                auto& params = loadedPlugin->getParameters();
-                int numParams = juce::jmin(static_cast<int>(params.size()), kMaxParameters);
+        // Update parameter distribution to include new plugin
+        updateParameterDistribution();
 
-                for (int i = 0; i < numParams; ++i)
-                {
-                    if (auto* param = params[i])
-                        hostedParameters[i]->linkToParameter(param);
-                }
-
-                // Notify host (e.g., Ableton) that parameter info has changed
-                updateHostDisplay(ChangeDetails()
-                    .withParameterInfoChanged(true));
-            }
-        }
+        // Notify host that parameter info has changed
+        updateHostDisplay(ChangeDetails().withParameterInfoChanged(true));
     }
 
     return success;
 }
 
-void PluginAllianceLauncherProcessor::unloadPluginFromSlot(ABSlot slot)
+void PluginAllianceLauncherProcessor::unloadPluginFromSlot(int slotIndex)
 {
-    // If unloading from active slot, unlink parameters first
-    if (slot == activeSlot)
-    {
-        for (auto* param : hostedParameters)
-            param->unlink();
-    }
+    jassert(slotIndex >= 0 && slotIndex < kMaxChainSlots);
+
+    // Unlink parameters first
+    unlinkAllParameters();
 
     {
         juce::ScopedLock lock(pluginLock);
-        getPluginHost(slot).unloadPlugin();
+        chainSlots[slotIndex].hostA.unloadPlugin();
+        chainSlots[slotIndex].hostB.unloadPlugin();
     }
 
-    // If this was the active slot, notify host that parameter info has changed
-    if (slot == activeSlot)
+    // Update parameter distribution
+    updateParameterDistribution();
+
+    // Notify host that parameter info has changed
+    updateHostDisplay(ChangeDetails().withParameterInfoChanged(true));
+}
+
+bool PluginAllianceLauncherProcessor::hasPluginInSlot(int slotIndex) const
+{
+    jassert(slotIndex >= 0 && slotIndex < kMaxChainSlots);
+    return chainSlots[slotIndex].hasPlugin();
+}
+
+void PluginAllianceLauncherProcessor::removeAndCompactSlot(int slotIndex)
+{
+    jassert(slotIndex >= 0 && slotIndex < kMaxChainSlots);
+
+    // Simply unload both A and B hosts
+    // The chain view will handle not showing empty slots
+    unloadPluginFromSlot(slotIndex);
+
+    // If the removed slot was selected, select the first available slot
+    if (currentSelectedSlot == slotIndex)
     {
-        updateHostDisplay(ChangeDetails()
-            .withParameterInfoChanged(true));
+        // Find first slot with a plugin
+        currentSelectedSlot = 0;
+        for (int i = 0; i < kMaxChainSlots; ++i)
+        {
+            if (chainSlots[i].hasPlugin())
+            {
+                currentSelectedSlot = i;
+                break;
+            }
+        }
     }
+
+    // Update parameter distribution
+    updateParameterDistribution();
+}
+
+void PluginAllianceLauncherProcessor::reorderSlots(int fromIndex, int toIndex)
+{
+    jassert(fromIndex >= 0 && fromIndex < kMaxChainSlots);
+    jassert(toIndex >= 0 && toIndex < kMaxChainSlots);
+
+    if (fromIndex == toIndex)
+        return;
+
+    // TODO: Implement reordering without using assignment operator
+    // For now, reordering is disabled since PluginHost doesn't support assignment
+    // This would require manually swapping plugin states and parameters
+    DBG("Reordering not yet implemented");
+
+    // Update parameter distribution after reorder
+    // updateParameterDistribution();
+}
+
+int PluginAllianceLauncherProcessor::getLoadedSlotCount() const
+{
+    int count = 0;
+    for (const auto& slot : chainSlots)
+    {
+        if (slot.hasPlugin())
+            count++;
+    }
+    return count;
+}
+
+//==============================================================================
+// Legacy A/B slot management methods (for backwards compatibility)
+//==============================================================================
+
+PluginHost& PluginAllianceLauncherProcessor::getActivePluginHost()
+{
+    return chainSlots[currentSelectedSlot].getActiveHost();
+}
+
+PluginHost& PluginAllianceLauncherProcessor::getPluginHost(ABSlot slot)
+{
+    return (slot == ABSlot::A) ? chainSlots[currentSelectedSlot].hostA : chainSlots[currentSelectedSlot].hostB;
+}
+
+bool PluginAllianceLauncherProcessor::loadPluginToSlot(ABSlot slot, const juce::PluginDescription& desc)
+{
+    return loadPluginToSlot(currentSelectedSlot, slot, desc);
+}
+
+void PluginAllianceLauncherProcessor::unloadPluginFromSlot(ABSlot slot)
+{
+    // This now only unloads the specified A or B host in the current slot
+    PluginHost& targetHost = getPluginHost(slot);
+
+    unlinkAllParameters();
+
+    {
+        juce::ScopedLock lock(pluginLock);
+        targetHost.unloadPlugin();
+    }
+
+    updateParameterDistribution();
+    updateHostDisplay(ChangeDetails().withParameterInfoChanged(true));
 }
 
 bool PluginAllianceLauncherProcessor::hasPluginInSlot(ABSlot slot) const
 {
-    const PluginHost& host = (slot == ABSlot::A) ? pluginHostA : pluginHostB;
+    const PluginHost& host = (slot == ABSlot::A) ? chainSlots[currentSelectedSlot].hostA : chainSlots[currentSelectedSlot].hostB;
     return host.hasLoadedPlugin();
 }
 
-// Legacy API - operates on active slot
+// Legacy API - operates on current selected slot
 bool PluginAllianceLauncherProcessor::loadPlugin(const juce::PluginDescription& desc)
 {
-    return loadPluginToSlot(activeSlot, desc);
+    // Find next available slot
+    for (int i = 0; i < kMaxChainSlots; ++i)
+    {
+        if (!chainSlots[i].hasPlugin())
+            return loadPluginToSlot(i, chainSlots[i].activeSlot, desc);
+    }
+    return false;  // Chain is full
 }
 
 void PluginAllianceLauncherProcessor::unloadPlugin()
 {
-    unloadPluginFromSlot(activeSlot);
+    unloadPluginFromSlot(currentSelectedSlot);
 }
 
 bool PluginAllianceLauncherProcessor::hasLoadedPlugin() const
 {
-    return hasPluginInSlot(activeSlot);
+    return hasPluginInSlot(chainSlots[currentSelectedSlot].activeSlot);
 }
 
 juce::String PluginAllianceLauncherProcessor::getLoadedPluginName() const
 {
-    const PluginHost& host = (activeSlot == ABSlot::A) ? pluginHostA : pluginHostB;
+    const auto& host = chainSlots[currentSelectedSlot].getActiveHost();
     return host.getLoadedPluginName();
 }
 
@@ -429,108 +567,86 @@ void PluginAllianceLauncherProcessor::changeListenerCallback(juce::ChangeBroadca
 
 void PluginAllianceLauncherProcessor::getStateInformation(juce::MemoryBlock& destData)
 {
-    // Create XML state
-    auto state = std::make_unique<juce::XmlElement>("PALauncherState");
+    // Get chain state (includes all slots)
+    auto chainState = getChainState();
 
-    // Save active slot
-    state->setAttribute("activeSlot", activeSlot == ABSlot::A ? "A" : "B");
-
-    // Helper lambda to save a slot's state
-    auto saveSlotState = [](PluginHost& host, const juce::String& elementName) -> std::unique_ptr<juce::XmlElement>
-    {
-        if (!host.hasLoadedPlugin())
-            return nullptr;
-
-        auto pluginState = std::make_unique<juce::XmlElement>(elementName);
-
-        auto desc = host.getLoadedPluginDescription();
-        if (desc != nullptr)
-        {
-            pluginState->setAttribute("name", desc->name);
-            pluginState->setAttribute("pluginFormatName", desc->pluginFormatName);
-            pluginState->setAttribute("fileOrIdentifier", desc->fileOrIdentifier);
-            pluginState->setAttribute("uid", juce::String(desc->uniqueId));
-
-            // Save hosted plugin state
-            juce::MemoryBlock hostedState;
-            host.getPluginState(hostedState);
-
-            if (hostedState.getSize() > 0)
-            {
-                pluginState->setAttribute("state", hostedState.toBase64Encoding());
-            }
-        }
-
-        return pluginState;
-    };
-
-    // Save slot A
-    if (auto slotAState = saveSlotState(pluginHostA, "SlotA"))
-        state->addChildElement(slotAState.release());
-
-    // Save slot B
-    if (auto slotBState = saveSlotState(pluginHostB, "SlotB"))
-        state->addChildElement(slotBState.release());
-
-    // Save UI state
+    // Add UI state
     auto uiState = std::make_unique<juce::XmlElement>("UIState");
     // Add UI state attributes here
-    state->addChildElement(uiState.release());
+    chainState->addChildElement(uiState.release());
 
-    copyXmlToBinary(*state, destData);
+    copyXmlToBinary(*chainState, destData);
 }
 
 void PluginAllianceLauncherProcessor::setStateInformation(const void* data, int sizeInBytes)
 {
     auto xmlState = getXmlFromBinary(data, sizeInBytes);
 
-    if (xmlState != nullptr && xmlState->hasTagName("PALauncherState"))
+    if (xmlState == nullptr)
+        return;
+
+    // Check if this is the new chain format
+    if (xmlState->hasTagName("PALauncherChain"))
     {
-        // Helper lambda to restore a slot from XML
-        auto restoreSlotState = [this](juce::XmlElement* pluginElement, ABSlot slot, PluginHost& host)
+        // New format - restore chain state directly
+        setChainState(*xmlState);
+    }
+    else if (xmlState->hasTagName("PALauncherState"))
+    {
+        // Check if this has chain slots (newer old format) or single A/B (oldest format)
+        if (xmlState->getChildByName("ChainSlot") != nullptr)
         {
-            if (pluginElement == nullptr)
-                return;
-
-            juce::PluginDescription desc;
-            desc.name = pluginElement->getStringAttribute("name");
-            desc.pluginFormatName = pluginElement->getStringAttribute("pluginFormatName");
-            desc.fileOrIdentifier = pluginElement->getStringAttribute("fileOrIdentifier");
-            desc.uniqueId = pluginElement->getStringAttribute("uid").getIntValue();
-
-            // Try to load the plugin
-            if (loadPluginToSlot(slot, desc))
-            {
-                // Restore hosted plugin state
-                auto stateStr = pluginElement->getStringAttribute("state");
-                if (stateStr.isNotEmpty())
-                {
-                    juce::MemoryBlock hostedState;
-                    hostedState.fromBase64Encoding(stateStr);
-                    host.setPluginState(hostedState);
-                }
-            }
-        };
-
-        // Restore slot A (check both old "LoadedPlugin" format and new "SlotA" format)
-        if (auto* slotAElement = xmlState->getChildByName("SlotA"))
-            restoreSlotState(slotAElement, ABSlot::A, pluginHostA);
-        else if (auto* legacyElement = xmlState->getChildByName("LoadedPlugin"))
-            restoreSlotState(legacyElement, ABSlot::A, pluginHostA);
-
-        // Restore slot B
-        if (auto* slotBElement = xmlState->getChildByName("SlotB"))
-            restoreSlotState(slotBElement, ABSlot::B, pluginHostB);
-
-        // Restore active slot
-        auto activeSlotStr = xmlState->getStringAttribute("activeSlot", "A");
-        ABSlot savedActiveSlot = (activeSlotStr == "B") ? ABSlot::B : ABSlot::A;
-
-        // Only switch to B if B actually has a plugin loaded
-        if (savedActiveSlot == ABSlot::B && hasPluginInSlot(ABSlot::B))
-            setActiveSlot(ABSlot::B);
+            // Has chain slots - restore as chain
+            setChainState(*xmlState);
+        }
         else
-            setActiveSlot(ABSlot::A);
+        {
+            // Old A/B format - migrate to slot 0
+            auto restoreLegacySlot = [this](juce::XmlElement* pluginElement, ABSlot abSlot)
+            {
+                if (pluginElement == nullptr)
+                    return;
+
+                juce::PluginDescription desc;
+                desc.name = pluginElement->getStringAttribute("name");
+                desc.pluginFormatName = pluginElement->getStringAttribute("pluginFormatName");
+                desc.fileOrIdentifier = pluginElement->getStringAttribute("fileOrIdentifier");
+                desc.uniqueId = pluginElement->getStringAttribute("uid").getIntValue();
+
+                // Load to slot 0
+                if (loadPluginToSlot(0, abSlot, desc))
+                {
+                    // Restore plugin state
+                    auto stateStr = pluginElement->getStringAttribute("state");
+                    if (stateStr.isNotEmpty())
+                    {
+                        juce::MemoryBlock hostedState;
+                        hostedState.fromBase64Encoding(stateStr);
+
+                        PluginHost& host = (abSlot == ABSlot::A) ? chainSlots[0].hostA : chainSlots[0].hostB;
+                        host.setPluginState(hostedState);
+                    }
+                }
+            };
+
+            // Migrate old SlotA/SlotB or LoadedPlugin to slot 0
+            if (auto* slotAElement = xmlState->getChildByName("SlotA"))
+                restoreLegacySlot(slotAElement, ABSlot::A);
+            else if (auto* legacyElement = xmlState->getChildByName("LoadedPlugin"))
+                restoreLegacySlot(legacyElement, ABSlot::A);
+
+            if (auto* slotBElement = xmlState->getChildByName("SlotB"))
+                restoreLegacySlot(slotBElement, ABSlot::B);
+
+            // Restore active slot
+            auto activeSlotStr = xmlState->getStringAttribute("activeSlot", "A");
+            chainSlots[0].activeSlot = (activeSlotStr == "B") ? ABSlot::B : ABSlot::A;
+
+            currentSelectedSlot = 0;
+
+            // Update parameters
+            updateParameterDistribution();
+        }
     }
 }
 
@@ -572,6 +688,57 @@ void PluginAllianceLauncherProcessor::unlinkAllParameters()
     }
 }
 
+void PluginAllianceLauncherProcessor::updateParameterDistribution()
+{
+    juce::ScopedLock lock(pluginLock);
+
+    // First, unlink all parameters
+    for (auto* param : hostedParameters)
+        param->unlink();
+
+    // Count how many slots have plugins loaded
+    int numLoadedSlots = 0;
+    for (const auto& slot : chainSlots)
+    {
+        if (slot.hasPlugin())
+            numLoadedSlots++;
+    }
+
+    if (numLoadedSlots == 0)
+        return;
+
+    // Distribute parameters evenly across loaded slots
+    int paramsPerSlot = kMaxParameters / numLoadedSlots;
+    int paramIndex = 0;
+
+    for (int slotIdx = 0; slotIdx < kMaxChainSlots && paramIndex < kMaxParameters; ++slotIdx)
+    {
+        if (!chainSlots[slotIdx].hasPlugin())
+            continue;
+
+        auto& activeHost = chainSlots[slotIdx].getActiveHost();
+        auto* plugin = activeHost.getLoadedPlugin();
+
+        if (plugin == nullptr)
+            continue;
+
+        auto& pluginParams = plugin->getParameters();
+
+        int numToExpose = juce::jmin(paramsPerSlot, static_cast<int>(pluginParams.size()));
+
+        for (int p = 0; p < numToExpose && paramIndex < kMaxParameters; ++p)
+        {
+            if (auto* param = pluginParams[p])
+            {
+                hostedParameters[paramIndex]->linkToParameter(param);
+                // Set parameter name with slot prefix for DAW visibility
+                hostedParameters[paramIndex]->setName("Slot " + juce::String(slotIdx) + " - " + param->getName(32));
+                paramIndex++;
+            }
+        }
+    }
+}
+
 void PluginAllianceLauncherProcessor::parameterValueChanged(int, float)
 {
     // Not used - parameter forwarding is handled directly through linkToParameter
@@ -580,6 +747,140 @@ void PluginAllianceLauncherProcessor::parameterValueChanged(int, float)
 void PluginAllianceLauncherProcessor::parameterGestureChanged(int, bool)
 {
     // Not used - gesture forwarding is handled directly through linkToParameter
+}
+
+//==============================================================================
+// Chain state management for presets
+//==============================================================================
+
+std::unique_ptr<juce::XmlElement> PluginAllianceLauncherProcessor::getChainState() const
+{
+    auto chainState = std::make_unique<juce::XmlElement>("PALauncherChain");
+    chainState->setAttribute("currentSelectedSlot", currentSelectedSlot);
+
+    // Helper lambda to save a plugin host's state
+    auto saveHostState = [](const PluginHost& host, const juce::String& elementName) -> std::unique_ptr<juce::XmlElement>
+    {
+        if (!host.hasLoadedPlugin())
+            return nullptr;
+
+        auto hostState = std::make_unique<juce::XmlElement>(elementName);
+
+        auto desc = host.getLoadedPluginDescription();
+        if (desc != nullptr)
+        {
+            hostState->setAttribute("name", desc->name);
+            hostState->setAttribute("pluginFormatName", desc->pluginFormatName);
+            hostState->setAttribute("fileOrIdentifier", desc->fileOrIdentifier);
+            hostState->setAttribute("uid", juce::String(desc->uniqueId));
+
+            // Save hosted plugin state
+            juce::MemoryBlock hostedState;
+            host.getPluginState(hostedState);
+
+            if (hostedState.getSize() > 0)
+            {
+                hostState->setAttribute("state", hostedState.toBase64Encoding());
+            }
+        }
+
+        return hostState;
+    };
+
+    // Save all chain slots
+    for (int i = 0; i < kMaxChainSlots; ++i)
+    {
+        if (!chainSlots[i].hasPlugin())
+            continue;  // Skip empty slots
+
+        auto slotElement = std::make_unique<juce::XmlElement>("ChainSlot");
+        slotElement->setAttribute("index", i);
+        slotElement->setAttribute("activeSlot", chainSlots[i].activeSlot == ABSlot::A ? "A" : "B");
+        slotElement->setAttribute("bypassed", chainSlots[i].bypassed);
+
+        // Save host A
+        if (auto hostAState = saveHostState(chainSlots[i].hostA, "PluginA"))
+            slotElement->addChildElement(hostAState.release());
+
+        // Save host B
+        if (auto hostBState = saveHostState(chainSlots[i].hostB, "PluginB"))
+            slotElement->addChildElement(hostBState.release());
+
+        chainState->addChildElement(slotElement.release());
+    }
+
+    return chainState;
+}
+
+void PluginAllianceLauncherProcessor::setChainState(const juce::XmlElement& chainState)
+{
+    if (!chainState.hasTagName("PALauncherChain") && !chainState.hasTagName("PALauncherState"))
+        return;
+
+    // Helper lambda to restore a plugin host from XML
+    auto restoreHostState = [this](juce::XmlElement* hostElement, int slotIndex, ABSlot abSlot)
+    {
+        if (hostElement == nullptr)
+            return false;
+
+        juce::PluginDescription desc;
+        desc.name = hostElement->getStringAttribute("name");
+        desc.pluginFormatName = hostElement->getStringAttribute("pluginFormatName");
+        desc.fileOrIdentifier = hostElement->getStringAttribute("fileOrIdentifier");
+        desc.uniqueId = hostElement->getStringAttribute("uid").getIntValue();
+
+        // Try to load the plugin
+        if (loadPluginToSlot(slotIndex, abSlot, desc))
+        {
+            // Restore hosted plugin state
+            auto stateStr = hostElement->getStringAttribute("state");
+            if (stateStr.isNotEmpty())
+            {
+                juce::MemoryBlock hostedState;
+                hostedState.fromBase64Encoding(stateStr);
+
+                PluginHost& host = (abSlot == ABSlot::A) ? chainSlots[slotIndex].hostA : chainSlots[slotIndex].hostB;
+                host.setPluginState(hostedState);
+            }
+            return true;
+        }
+
+        return false;
+    };
+
+    // Clear current chain
+    for (int i = 0; i < kMaxChainSlots; ++i)
+        unloadPluginFromSlot(i);
+
+    // Restore chain slots
+    for (auto* slotElement : chainState.getChildWithTagNameIterator("ChainSlot"))
+    {
+        int slotIndex = slotElement->getIntAttribute("index", 0);
+        if (slotIndex < 0 || slotIndex >= kMaxChainSlots)
+            continue;
+
+        // Restore active slot (A or B)
+        auto activeSlotStr = slotElement->getStringAttribute("activeSlot", "A");
+        chainSlots[slotIndex].activeSlot = (activeSlotStr == "B") ? ABSlot::B : ABSlot::A;
+
+        // Restore bypass state
+        chainSlots[slotIndex].bypassed = slotElement->getBoolAttribute("bypassed", false);
+
+        // Restore plugins
+        if (auto* pluginAElement = slotElement->getChildByName("PluginA"))
+            restoreHostState(pluginAElement, slotIndex, ABSlot::A);
+
+        if (auto* pluginBElement = slotElement->getChildByName("PluginB"))
+            restoreHostState(pluginBElement, slotIndex, ABSlot::B);
+    }
+
+    // Restore selected slot
+    currentSelectedSlot = chainState.getIntAttribute("currentSelectedSlot", 0);
+    if (currentSelectedSlot >= kMaxChainSlots)
+        currentSelectedSlot = 0;
+
+    // Update parameter distribution
+    updateParameterDistribution();
 }
 
 juce::AudioProcessorEditor* PluginAllianceLauncherProcessor::createEditor()

@@ -625,6 +625,9 @@
     <ClCompile Include="..\..\Source\Core\PluginDatabase.cpp">
       <Filter>Plugin Alliance Launcher\Source\Core</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Core\PresetManager.cpp">
+      <Filter>Plugin Alliance Launcher\Source\Core</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\UI\SearchBar.cpp">
       <Filter>Plugin Alliance Launcher\Source\UI</Filter>
     </ClCompile>
@@ -641,6 +644,12 @@
       <Filter>Plugin Alliance Launcher\Source\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\UI\PluginCard.cpp">
+      <Filter>Plugin Alliance Launcher\Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\UI\ChainSlotCard.cpp">
+      <Filter>Plugin Alliance Launcher\Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\UI\PluginChainView.cpp">
       <Filter>Plugin Alliance Launcher\Source\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\UI\HostedPluginView.cpp">
@@ -3111,6 +3120,9 @@
     <ClInclude Include="..\..\Source\Core\PluginDatabase.h">
       <Filter>Plugin Alliance Launcher\Source\Core</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Core\PresetManager.h">
+      <Filter>Plugin Alliance Launcher\Source\Core</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\UI\SearchBar.h">
       <Filter>Plugin Alliance Launcher\Source\UI</Filter>
     </ClInclude>
@@ -3127,6 +3139,12 @@
       <Filter>Plugin Alliance Launcher\Source\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\UI\PluginCard.h">
+      <Filter>Plugin Alliance Launcher\Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\UI\ChainSlotCard.h">
+      <Filter>Plugin Alliance Launcher\Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\UI\PluginChainView.h">
       <Filter>Plugin Alliance Launcher\Source\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\UI\HostedPluginView.h">

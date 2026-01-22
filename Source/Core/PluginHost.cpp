@@ -251,7 +251,7 @@ double PluginHost::getTailLengthSeconds() const
     return 0.0;
 }
 
-void PluginHost::getPluginState(juce::MemoryBlock& destData)
+void PluginHost::getPluginState(juce::MemoryBlock& destData) const
 {
     juce::ScopedLock scopedLock(lock);
 

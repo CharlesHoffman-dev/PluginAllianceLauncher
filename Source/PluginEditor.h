@@ -14,6 +14,8 @@
 #include "UI/SubcategoryFilter.h"
 #include "UI/PluginListView.h"
 #include "UI/HostedPluginView.h"
+#include "UI/PluginChainView.h"
+#include "Core/PresetManager.h"
 
 namespace PALauncher
 {
@@ -160,6 +162,47 @@ public:
     }
 };
 
+// Custom LookAndFeel for chain button with LED glow effect
+class ChainButtonLookAndFeel : public juce::LookAndFeel_V4
+{
+public:
+    void setGlowAlpha(float alpha) { glowAlpha = alpha; }
+
+    void drawButtonBackground(juce::Graphics& g, juce::Button& button,
+                              const juce::Colour& backgroundColour,
+                              bool isMouseOverButton, bool isButtonDown) override
+    {
+        auto bounds = button.getLocalBounds().toFloat().reduced(0.5f);
+        auto baseColour = backgroundColour;
+
+        if (isButtonDown)
+            baseColour = baseColour.darker(0.2f);
+        else if (isMouseOverButton)
+            baseColour = baseColour.brighter(0.1f);
+
+        g.setColour(baseColour);
+        g.fillRoundedRectangle(bounds, 4.0f);
+
+        // Draw LED glow effect if glowAlpha > 0
+        if (glowAlpha > 0.0f)
+        {
+            auto glowColour = juce::Colour(0xff0cbff2).withAlpha(glowAlpha * 0.7f);
+
+            // Outer glow
+            for (int i = 0; i < 3; ++i)
+            {
+                float offset = (i + 1) * 2.0f;
+                auto glowBounds = bounds.expanded(offset);
+                g.setColour(glowColour.withAlpha(glowAlpha * (0.3f - i * 0.1f)));
+                g.drawRoundedRectangle(glowBounds, 4.0f + offset, 2.0f);
+            }
+        }
+    }
+
+private:
+    float glowAlpha = 0.0f;
+};
+
 // Custom LookAndFeel for settings button with gear icon
 class SettingsButtonLookAndFeel : public juce::LookAndFeel_V4
 {
@@ -284,8 +327,12 @@ private:
     void loadSelectedPlugin(const PluginInfo& info);
     void toggleBrowserMode();
     void toggleABSlot();  // Toggle between A and B plugin slots
+    void refreshPresetDropdown();  // Rebuild preset dropdown menu
+    void loadPresetFromFile(juce::File presetFile);  // Load a preset from file
 
     PluginAllianceLauncherProcessor& processor;
+    PresetManager presetManager;
+    juce::PopupMenu currentPresetMenu;  // Current preset menu
 
     // Subscription banner
     juce::Label subscriptionLabel;
@@ -294,6 +341,9 @@ private:
     // Top bar components
     SearchBar searchBar;
     ABSwitchComponent abSwitch;     // A/B comparison toggle
+    juce::TextButton chainButton;    // Toggle chain view visibility
+    juce::ComboBox presetComboBox;     // Preset dropdown menu
+    juce::TextButton presetSaveButton; // Save preset button
     juce::TextButton rescanButton;
     juce::TextButton settingsButton;
     juce::TextButton toggleModeButton;
@@ -324,9 +374,11 @@ private:
     // Main content area
     PluginListView pluginListView;
     HostedPluginView hostedPluginView;
+    PluginChainView chainView;
 
     // State
     bool browserMode = true;  // true = show browser, false = show hosted plugin fullscreen
+    bool chainViewVisible = true;  // true = chain view visible, false = hidden
     bool wasScanning = false;  // Track scanning state for layout updates
     bool isLoadingPlugin = false;  // True while a plugin is being loaded
     juce::String loadingPluginName;  // Name of plugin being loaded
@@ -351,6 +403,7 @@ private:
     static constexpr int sidebarWidth = 180;
     static constexpr int bannerHeight = 50;
     static constexpr int topBarHeight = 48;
+    static constexpr int chainViewHeight = 185;  // 66% of original 280px
     static constexpr int hostedPluginMinHeight = 300;
     static constexpr int logoWidth = 140;
     static constexpr int logoHeight = 26;
@@ -359,7 +412,11 @@ private:
     // Custom look and feel for buttons
     ButtonLookAndFeel buttonLookAndFeel;
     BrandComboBoxLookAndFeel brandComboBoxLookAndFeel;
+    ChainButtonLookAndFeel chainButtonLookAndFeel;
     SettingsButtonLookAndFeel settingsButtonLookAndFeel;
+
+    // LED glow animation state
+    float chainButtonGlowPhase = 0.0f;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginAllianceLauncherEditor)
 };

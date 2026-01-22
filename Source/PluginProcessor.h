@@ -16,11 +16,36 @@
 namespace PALauncher
 {
 
+// Forward declaration
+class PluginHost;
+
 // A/B slot selection for comparing two plugins
 enum class ABSlot { A, B };
 
+// ChainSlot represents a single slot in the plugin chain
+// Each slot has its own A/B hosts for comparison
+struct ChainSlot {
+    PluginHost hostA;
+    PluginHost hostB;
+    ABSlot activeSlot = ABSlot::A;
+    bool bypassed = false;
+
+    PluginHost& getActiveHost() {
+        return (activeSlot == ABSlot::A) ? hostA : hostB;
+    }
+
+    const PluginHost& getActiveHost() const {
+        return (activeSlot == ABSlot::A) ? hostA : hostB;
+    }
+
+    bool hasPlugin() const;
+};
+
 // Number of parameter slots to expose to the host DAW
 static constexpr int kMaxParameters = 256;
+
+// Maximum number of chain slots
+static constexpr int kMaxChainSlots = 8;
 
 // Custom parameter class that forwards to hosted plugin
 class HostedPluginParameter : public juce::AudioProcessorParameter,
@@ -34,6 +59,9 @@ public:
     void linkToParameter(juce::AudioProcessorParameter* param);
     void unlink();
     bool isLinked() const { return linkedParam != nullptr; }
+
+    // Custom parameter naming (for chain slots)
+    void setName(const juce::String& newName) { customName = newName; }
 
     // AudioProcessorParameter interface
     float getValue() const override;
@@ -58,6 +86,7 @@ private:
     juce::AudioProcessorParameter* linkedParam = nullptr;
     float cachedValue = 0.0f;
     bool isForwardingChange = false;  // Prevent feedback loops
+    juce::String customName;  // Custom name for chain slots (e.g., "Slot 0 - Gain")
 };
 
 class PluginAllianceLauncherProcessor : public juce::AudioProcessor,
@@ -95,14 +124,44 @@ public:
     void getStateInformation(juce::MemoryBlock& destData) override;
     void setStateInformation(const void* data, int sizeInBytes) override;
 
+    // Chain state for preset management
+    std::unique_ptr<juce::XmlElement> getChainState() const;
+    void setChainState(const juce::XmlElement& chainState);
+
     // Plugin hosting
     PluginDatabase& getPluginDatabase() { return pluginDatabase; }
     PluginScanner& getPluginScanner() { return pluginScanner; }
     SettingsManager& getSettingsManager() { return settingsManager; }
 
-    // A/B slot management
-    void setActiveSlot(ABSlot slot);
-    ABSlot getActiveSlot() const { return activeSlot; }
+    // Chain slot management
+    void setCurrentSelectedSlot(int index);
+    int getCurrentSelectedSlot() const { return currentSelectedSlot; }
+
+    // Per-slot A/B management
+    void setSlotActiveAB(int slotIndex, ABSlot slot);
+    ABSlot getSlotActiveAB(int slotIndex) const;
+
+    // Bypass management
+    void bypassSlot(int slotIndex, bool bypass);
+    bool isSlotBypassed(int slotIndex) const;
+
+    // Plugin loading/unloading
+    bool loadPluginToSlot(int slotIndex, ABSlot abSlot, const juce::PluginDescription& desc);
+    void unloadPluginFromSlot(int slotIndex);
+    bool hasPluginInSlot(int slotIndex) const;
+
+    // Chain management
+    void removeAndCompactSlot(int slotIndex);
+    void reorderSlots(int fromIndex, int toIndex);
+    int getLoadedSlotCount() const;
+
+    // Get direct access to chain slots
+    ChainSlot& getChainSlot(int index);
+    const ChainSlot& getChainSlot(int index) const;
+
+    // Legacy A/B slot management (for backwards compatibility)
+    void setActiveSlot(ABSlot slot) { setSlotActiveAB(currentSelectedSlot, slot); }
+    ABSlot getActiveSlot() const { return getSlotActiveAB(currentSelectedSlot); }
     PluginHost& getActivePluginHost();
     PluginHost& getPluginHost(ABSlot slot);
     bool loadPluginToSlot(ABSlot slot, const juce::PluginDescription& desc);
@@ -126,12 +185,12 @@ public:
     // Parameter management
     void syncParametersFromHostedPlugin();
     void unlinkAllParameters();
+    void updateParameterDistribution();
 
 private:
-    // A/B plugin hosts
-    PluginHost pluginHostA;
-    PluginHost pluginHostB;
-    ABSlot activeSlot = ABSlot::A;
+    // Chain of plugin slots (each slot has its own A/B hosts)
+    std::array<ChainSlot, kMaxChainSlots> chainSlots;
+    int currentSelectedSlot = 0;  // Which slot is currently selected in UI
 
     PluginDatabase pluginDatabase;
     PluginScanner pluginScanner;
