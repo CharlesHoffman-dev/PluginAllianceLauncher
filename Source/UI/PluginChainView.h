@@ -9,6 +9,7 @@
 
 #include <JuceHeader.h>
 #include "ChainSlotCard.h"
+#include "ChainMeterCard.h"
 #include "../PluginProcessor.h"
 
 namespace PALauncher
@@ -29,11 +30,16 @@ public:
     // Update individual slot's A/B button state
     void updateSlotABButton(int slotIndex, ABSlot newSlot);
 
+    // Update meter levels (called from processor during audio processing)
+    void updateMeterLevels(int meterIndex, float leftPeak, float rightPeak);
+
     // Callbacks
     std::function<void(int slotIndex)> onSlotSelected;
     std::function<void(int slotIndex)> onRemoveSlot;
     std::function<void()> onAddSlot;
+    std::function<void(int slotIndex, ABSlot newSlot)> onToggleAB;
     std::function<void(int fromIndex, int toIndex)> onSlotReorder;
+    std::function<void(int meterIndex, float newGain)> onMeterGainChanged;
 
     // Chain view dimensions
     static constexpr int viewHeight = 280;
@@ -47,10 +53,12 @@ private:
     void handleDragStart(int slotIndex, juce::Point<int> dragPos);
     void handleDragMove(int slotIndex, juce::Point<int> dragPos);
     void handleDragEnd(int slotIndex);
+    void handleMeterGainChanged(int meterIndex, float newGain);
 
     int calculateDropIndex(juce::Point<int> screenPos);
 
     juce::OwnedArray<ChainSlotCard> slotCards;
+    juce::OwnedArray<ChainMeterCard> meterCards;
     juce::TextButton addButton;
 
     int currentSelectedSlot = 0;

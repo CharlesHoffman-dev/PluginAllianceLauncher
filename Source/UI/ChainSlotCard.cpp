@@ -16,6 +16,7 @@ ChainSlotCard::ChainSlotCard(int slotIndex)
 {
     setWantsKeyboardFocus(false);
     setMouseClickGrabsKeyboardFocus(false);
+    setInterceptsMouseClicks(true, false);  // Ensure this component receives mouse clicks
     setSize(cardWidth, cardHeight);
 }
 
@@ -84,7 +85,7 @@ void ChainSlotCard::paint(juce::Graphics& g)
 
     // Bypass button (top-left) - Power icon
     bypassButtonBounds = buttonRow.removeFromLeft(buttonSize).reduced(1);
-    g.setColour(bypassed ? juce::Colour(0xff0cbff2) : juce::Colour(0xff3a3a3a));
+    g.setColour(bypassed ? juce::Colour(0xff0cbff2) : juce::Colours::white);
     g.fillRoundedRectangle(bypassButtonBounds.toFloat(), 2.5f);
 
     // Draw power icon
@@ -93,7 +94,7 @@ void ChainSlotCard::paint(juce::Graphics& g)
     float cy = iconBounds.getCentreY();
     float radius = iconBounds.getWidth() / 2.5f;
 
-    g.setColour(bypassed ? juce::Colours::white : juce::Colours::grey);
+    g.setColour(bypassed ? juce::Colours::white : juce::Colours::black);
     juce::Path powerIcon;
     powerIcon.addCentredArc(cx, cy, radius, radius, 0.0f, -2.2f, 2.2f, true);
     g.strokePath(powerIcon, juce::PathStrokeType(1.2f));
@@ -146,12 +147,13 @@ void ChainSlotCard::paint(juce::Graphics& g)
     g.setColour(abSlot == ABSlot::B ? juce::Colours::white : juce::Colours::grey);
     g.drawText("B", rightBounds.toNearestInt(), juce::Justification::centred);
 
-    // Plugin image - square with padding on each side
+    // Plugin image - square with padding on all sides
     int availableWidth = contentBounds.getWidth();
     int sidePadding = 8;
+    int topBottomPadding = 8;  // Add top/bottom padding like left/right
     int squareSize = availableWidth - (sidePadding * 2);
 
-    auto imageBounds = contentBounds.removeFromTop(squareSize).reduced(sidePadding, 0);
+    auto imageBounds = contentBounds.removeFromTop(squareSize).reduced(sidePadding, topBottomPadding);
     imageBoundsCache = imageBounds;
 
     if (pluginImage.isValid())
@@ -231,27 +233,29 @@ void ChainSlotCard::mouseDown(const juce::MouseEvent& e)
         return;
     }
 
-    // Otherwise, select this slot
+    // Otherwise, select this slot and prepare for potential drag
+    DBG("Mouse down on slot " << slotIdx);
     if (onSelected)
         onSelected(slotIdx);
 
-    // Prepare for potential drag
     dragStartPos = e.getPosition();
 }
 
 void ChainSlotCard::mouseDrag(const juce::MouseEvent& e)
 {
-    // Start drag if moved far enough
-    if (!isDragging && e.getDistanceFromDragStart() > 5)
+    // Start drag if moved far enough (reduced threshold to 2 pixels)
+    if (!isDragging && e.getDistanceFromDragStart() > 2)
     {
         isDragging = true;
+        DBG("Starting drag for slot " << slotIdx);
         if (onDragStart)
             onDragStart(slotIdx, e.getScreenPosition());
     }
 
-    if (isDragging && onDragMove)
+    if (isDragging)
     {
-        onDragMove(slotIdx, e.getScreenPosition());
+        if (onDragMove)
+            onDragMove(slotIdx, e.getScreenPosition());
         setAlpha(0.5f);  // Semi-transparent while dragging
     }
 }

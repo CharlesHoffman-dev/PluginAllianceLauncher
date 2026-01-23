@@ -54,6 +54,46 @@ public:
     }
 };
 
+// Custom LookAndFeel for save button with floppy disk icon
+class SaveButtonLookAndFeel : public ButtonLookAndFeel
+{
+public:
+    void drawButtonText(juce::Graphics& g, juce::TextButton& button,
+                        bool isMouseOverButton, bool isButtonDown) override
+    {
+        // Draw floppy disk icon instead of text
+        auto buttonBounds = button.getLocalBounds().toFloat();
+
+        // Make icon square based on button height
+        float size = buttonBounds.getHeight() * 0.6f;  // Icon size
+        float x = buttonBounds.getCentreX() - size / 2.0f;
+        float y = buttonBounds.getCentreY() - size / 2.0f;
+
+        g.setColour(button.findColour(isButtonDown ? juce::TextButton::textColourOnId
+                                                    : juce::TextButton::textColourOffId)
+                        .withMultipliedAlpha(button.isEnabled() ? 1.0f : 0.5f));
+
+        // Floppy disk icon (square)
+        // Main body
+        juce::Path diskPath;
+        diskPath.addRoundedRectangle(x, y, size, size, 1.5f);
+        g.strokePath(diskPath, juce::PathStrokeType(1.5f));
+
+        // Top tab (label area)
+        juce::Rectangle<float> tab(x + size * 0.15f, y, size * 0.7f, size * 0.25f);
+        g.fillRect(tab);
+
+        // Bottom shutter
+        juce::Rectangle<float> shutter(x + size * 0.15f, y + size * 0.6f, size * 0.7f, size * 0.15f);
+        g.fillRect(shutter);
+
+        // Center circle (spindle hole)
+        float centerX = x + size / 2.0f;
+        float centerY = y + size / 2.0f + size * 0.1f;
+        g.fillEllipse(centerX - size * 0.08f, centerY - size * 0.08f, size * 0.16f, size * 0.16f);
+    }
+};
+
 // Custom A/B switch component - single toggle button that looks like segmented control
 class ABSwitchComponent : public juce::Component
 {
@@ -403,7 +443,7 @@ private:
     static constexpr int sidebarWidth = 180;
     static constexpr int bannerHeight = 50;
     static constexpr int topBarHeight = 48;
-    static constexpr int chainViewHeight = 185;  // 66% of original 280px
+    static constexpr int chainViewHeight = 150;  // Reduced height for compact chain view
     static constexpr int hostedPluginMinHeight = 300;
     static constexpr int logoWidth = 140;
     static constexpr int logoHeight = 26;
@@ -411,6 +451,7 @@ private:
 
     // Custom look and feel for buttons
     ButtonLookAndFeel buttonLookAndFeel;
+    SaveButtonLookAndFeel saveButtonLookAndFeel;
     BrandComboBoxLookAndFeel brandComboBoxLookAndFeel;
     ChainButtonLookAndFeel chainButtonLookAndFeel;
     SettingsButtonLookAndFeel settingsButtonLookAndFeel;

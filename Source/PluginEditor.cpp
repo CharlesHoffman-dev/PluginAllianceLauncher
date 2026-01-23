@@ -82,8 +82,8 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
 
     // Set up rescan button
     rescanButton.setButtonText("Rescan");
-    rescanButton.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff0cbff2));
-    rescanButton.setColour(juce::TextButton::textColourOffId, juce::Colours::white);
+    rescanButton.setColour(juce::TextButton::buttonColourId, juce::Colours::white);
+    rescanButton.setColour(juce::TextButton::textColourOffId, juce::Colours::black);
     rescanButton.setLookAndFeel(&buttonLookAndFeel);
     rescanButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
     rescanButton.onClick = [this]()
@@ -379,7 +379,18 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     {
         chainViewVisible = !chainViewVisible;
         chainView.setVisible(chainViewVisible);
-        chainButton.setButtonText(chainViewVisible ? "Hide Chain" : "Chain");
+
+        // Change background color instead of text
+        if (chainViewVisible)
+        {
+            chainButton.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff0cbff2));  // Cyan when visible
+            chainButton.setColour(juce::TextButton::textColourOffId, juce::Colours::white);
+        }
+        else
+        {
+            chainButton.setColour(juce::TextButton::buttonColourId, juce::Colours::white);
+            chainButton.setColour(juce::TextButton::textColourOffId, juce::Colours::black);
+        }
 
         // Resize window to account for chain view
         if (browserMode)
@@ -435,6 +446,37 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
         resized();
     };
 
+    chainView.onToggleAB = [this](int slotIndex, ABSlot newSlot)
+    {
+        // If this is the currently selected slot, sync the main A/B switch
+        if (slotIndex == processor.getCurrentSelectedSlot())
+        {
+            abSwitch.setActiveSlot(newSlot == ABSlot::B);
+
+            // Check if the newly selected slot has a plugin
+            auto& slot = processor.getChainSlot(slotIndex);
+            auto& activeHost = (newSlot == ABSlot::A) ? slot.hostA : slot.hostB;
+
+            if (activeHost.hasLoadedPlugin())
+            {
+                // Update hosted plugin view to show the new plugin
+                hostedPluginView.setPluginHost(&activeHost);
+                hostedPluginView.showPluginEditor();
+                if (!browserMode)
+                    resizeForPlugin();
+            }
+            else
+            {
+                // No plugin in this slot - switch to browser mode
+                browserMode = true;
+                toggleModeButton.setButtonText("Show Plugin");
+                resizeForBrowser();
+                searchBar.grabKeyboardFocus();
+                resized();
+            }
+        }
+    };
+
     chainView.onSlotReorder = [this](int fromIndex, int toIndex)
     {
         processor.reorderSlots(fromIndex, toIndex);
@@ -459,11 +501,11 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     };
     addAndMakeVisible(presetComboBox);
 
-    // Set up preset save button
-    presetSaveButton.setButtonText("Save");
-    presetSaveButton.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff2a2a2a));
+    // Set up preset save button with floppy disk icon (no background)
+    presetSaveButton.setButtonText("");  // No text, icon only
+    presetSaveButton.setColour(juce::TextButton::buttonColourId, juce::Colours::transparentBlack);
     presetSaveButton.setColour(juce::TextButton::textColourOffId, juce::Colours::white);
-    presetSaveButton.setLookAndFeel(&buttonLookAndFeel);
+    presetSaveButton.setLookAndFeel(&saveButtonLookAndFeel);
     presetSaveButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
     presetSaveButton.onClick = [this]()
     {
@@ -654,9 +696,10 @@ void PluginAllianceLauncherEditor::paint(juce::Graphics& g)
         if (hasPlugins && selectedPlugin != nullptr)
         {
             int statusOffset = processor.getPluginScanner().isScanning() ? 28 : 0;
+            int chainOffset = chainViewVisible ? chainViewHeight : 0;
             // Paint full details column white (including area that aligns with banner)
-            auto detailsBounds = juce::Rectangle<int>(getWidth() - detailsPanelWidth, topBarHeight + statusOffset,
-                                                       detailsPanelWidth, getHeight() - topBarHeight - statusOffset);
+            auto detailsBounds = juce::Rectangle<int>(getWidth() - detailsPanelWidth, topBarHeight + statusOffset + chainOffset,
+                                                       detailsPanelWidth, getHeight() - topBarHeight - statusOffset - chainOffset);
             paintDetailsPanel(g, detailsBounds);
         }
     }
@@ -798,12 +841,13 @@ void PluginAllianceLauncherEditor::resized()
         sortComboBox.setBounds(topBar.removeFromLeft(100));
     }
 
-    // Center preset controls in the top bar
+    // Center preset controls in the top bar (only in plugin mode)
+    if (!browserMode)
     {
         auto fullTopBar = getLocalBounds().removeFromTop(topBarHeight).reduced(10, 8);
         int presetDropdownWidth = 120;
         int saveButtonWidth = 60;
-        int spacing = 8;
+        int spacing = 4;
         int totalWidth = presetDropdownWidth + spacing + saveButtonWidth;
 
         int centerX = fullTopBar.getCentreX() - (totalWidth / 2);
@@ -811,7 +855,15 @@ void PluginAllianceLauncherEditor::resized()
         int height = fullTopBar.getHeight();
 
         presetComboBox.setBounds(centerX, y, presetDropdownWidth, height);
+        presetComboBox.setVisible(true);
         presetSaveButton.setBounds(centerX + presetDropdownWidth + spacing, y, saveButtonWidth, height);
+        presetSaveButton.setVisible(true);
+    }
+    else
+    {
+        // Hide preset controls in browser mode
+        presetComboBox.setVisible(false);
+        presetSaveButton.setVisible(false);
     }
 
     // Only reserve space for status bar when scanning

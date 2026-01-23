@@ -152,6 +152,7 @@
     <ClCompile Include="..\..\Source\UI\PluginListView.cpp"/>
     <ClCompile Include="..\..\Source\UI\PluginCard.cpp"/>
     <ClCompile Include="..\..\Source\UI\ChainSlotCard.cpp"/>
+    <ClCompile Include="..\..\Source\UI\ChainMeterCard.cpp"/>
     <ClCompile Include="..\..\Source\UI\PluginChainView.cpp"/>
     <ClCompile Include="..\..\Source\UI\HostedPluginView.cpp"/>
     <ClCompile Include="..\..\Source\Utils\PAIdentifier.cpp"/>
@@ -2427,6 +2428,7 @@
     <ClInclude Include="..\..\Source\UI\PluginListView.h"/>
     <ClInclude Include="..\..\Source\UI\PluginCard.h"/>
     <ClInclude Include="..\..\Source\UI\ChainSlotCard.h"/>
+    <ClInclude Include="..\..\Source\UI\ChainMeterCard.h"/>
     <ClInclude Include="..\..\Source\UI\PluginChainView.h"/>
     <ClInclude Include="..\..\Source\UI\HostedPluginView.h"/>
     <ClInclude Include="..\..\Source\Data\PluginCategories.h"/>
