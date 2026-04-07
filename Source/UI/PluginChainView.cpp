@@ -300,6 +300,15 @@ void PluginChainView::setChainState(PluginAllianceLauncherProcessor& proc)
     {
         auto* meter = new ChainMeterCard(i);
         meter->onGainChanged = [this](int idx, float gain) { handleMeterGainChanged(idx, gain); };
+        meter->onAutoGainToggled = [this](int idx, bool enabled) { handleAutoGainToggled(idx, enabled); };
+        // Sync auto-gain state: meter i+1 corresponds to slot i
+        if (i > 0 && i - 1 < kMaxChainSlots)
+        {
+            int slotIdx = i - 1;
+            meter->setAutoGainEnabled(proc.isSlotAutoGainEnabled(slotIdx));
+            meter->setAutoGainCorrectionDb(proc.getSlotCorrectionDb(slotIdx));
+        }
+
         addAndMakeVisible(meter);
         meterCards.add(meter);
     }
@@ -504,6 +513,21 @@ void PluginChainView::handleMeterGainChanged(int meterIndex, float newGain)
 {
     if (onMeterGainChanged)
         onMeterGainChanged(meterIndex, newGain);
+}
+
+void PluginChainView::handleAutoGainToggled(int meterIndex, bool enabled)
+{
+    if (onAutoGainToggled)
+        onAutoGainToggled(meterIndex, enabled);
+}
+
+void PluginChainView::updateAutoGainState(int meterIndex, bool enabled, float correctionDb)
+{
+    if (meterIndex >= 0 && meterIndex < meterCards.size())
+    {
+        meterCards[meterIndex]->setAutoGainEnabled(enabled);
+        meterCards[meterIndex]->setAutoGainCorrectionDb(correctionDb);
+    }
 }
 
 } // namespace PALauncher

@@ -257,6 +257,7 @@
       <FILE id="editorCpp" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <GROUP id="coreGroup" name="Core">
+        <FILE id="lufsH" name="LUFSAnalyzer.h" compile="0" resource="0" file="Source/Core/LUFSAnalyzer.h"/>
         <FILE id="hostH" name="PluginHost.h" compile="0" resource="0" file="Source/Core/PluginHost.h"/>
         <FILE id="hostCpp" name="PluginHost.cpp" compile="1" resource="0" file="Source/Core/PluginHost.cpp"/>
         <FILE id="scannerH" name="PluginScanner.h" compile="0" resource="0"

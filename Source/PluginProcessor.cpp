@@ -221,6 +221,8 @@ void PluginAllianceLauncherProcessor::prepareToPlay(double sampleRate, int sampl
     {
         slot.hostA.prepareToPlay(sampleRate, samplesPerBlock);
         slot.hostB.prepareToPlay(sampleRate, samplesPerBlock);
+        slot.lufsAnalyzer.prepare(sampleRate, samplesPerBlock);
+        slot.smoothedGain.reset(sampleRate, 0.3);  // 300ms smoothing
     }
 }
 
@@ -285,7 +287,35 @@ void PluginAllianceLauncherProcessor::processBlock(juce::AudioBuffer<float>& buf
                 if (auto* hostedPlugin = activeHost.getLoadedPlugin())
                     hostedPlugin->setPlayHead(getPlayHead());
 
+                // Measure input LUFS before plugin processing
+                if (chainSlots[i].autoGainEnabled)
+                    chainSlots[i].lufsAnalyzer.measureInput(buffer);
+
                 activeHost.processBlock(buffer, midiMessages);
+
+                // Measure output LUFS and apply auto-gain correction
+                if (chainSlots[i].autoGainEnabled)
+                {
+                    chainSlots[i].lufsAnalyzer.measureOutput(buffer);
+
+                    float correctionDb = chainSlots[i].lufsAnalyzer.getCorrectionDb();
+                    chainSlots[i].currentCorrectionDb = correctionDb;
+
+                    float targetGain = juce::Decibels::decibelsToGain(correctionDb);
+                    chainSlots[i].smoothedGain.setTargetValue(targetGain);
+
+                    // Apply smoothed gain sample-by-sample to avoid clicks
+                    int numSamples = buffer.getNumSamples();
+                    int numChannels = buffer.getNumChannels();
+                    for (int s = 0; s < numSamples; ++s)
+                    {
+                        float gain = chainSlots[i].smoothedGain.getNextValue();
+                        for (int ch = 0; ch < numChannels; ++ch)
+                        {
+                            buffer.getWritePointer(ch)[s] *= gain;
+                        }
+                    }
+                }
             }
         }
         pluginLock.exit();
@@ -373,6 +403,34 @@ bool PluginAllianceLauncherProcessor::isSlotBypassed(int slotIndex) const
 {
     jassert(slotIndex >= 0 && slotIndex < kMaxChainSlots);
     return chainSlots[slotIndex].bypassed;
+}
+
+void PluginAllianceLauncherProcessor::setSlotAutoGain(int slotIndex, bool enabled)
+{
+    jassert(slotIndex >= 0 && slotIndex < kMaxChainSlots);
+    chainSlots[slotIndex].autoGainEnabled = enabled;
+
+    if (enabled)
+    {
+        // Reset analyzer and gain when enabling so it starts fresh
+        chainSlots[slotIndex].lufsAnalyzer.reset();
+        chainSlots[slotIndex].lufsAnalyzer.prepare(currentSampleRate, currentBlockSize);
+        chainSlots[slotIndex].smoothedGain.reset(currentSampleRate, 0.3);
+        chainSlots[slotIndex].smoothedGain.setCurrentAndTargetValue(1.0f);
+        chainSlots[slotIndex].currentCorrectionDb = 0.0f;
+    }
+}
+
+bool PluginAllianceLauncherProcessor::isSlotAutoGainEnabled(int slotIndex) const
+{
+    jassert(slotIndex >= 0 && slotIndex < kMaxChainSlots);
+    return chainSlots[slotIndex].autoGainEnabled;
+}
+
+float PluginAllianceLauncherProcessor::getSlotCorrectionDb(int slotIndex) const
+{
+    jassert(slotIndex >= 0 && slotIndex < kMaxChainSlots);
+    return chainSlots[slotIndex].currentCorrectionDb;
 }
 
 bool PluginAllianceLauncherProcessor::loadPluginToSlot(int slotIndex, ABSlot abSlot, const juce::PluginDescription& desc)
@@ -797,6 +855,7 @@ std::unique_ptr<juce::XmlElement> PluginAllianceLauncherProcessor::getChainState
         slotElement->setAttribute("index", i);
         slotElement->setAttribute("activeSlot", chainSlots[i].activeSlot == ABSlot::A ? "A" : "B");
         slotElement->setAttribute("bypassed", chainSlots[i].bypassed);
+        slotElement->setAttribute("autoGain", chainSlots[i].autoGainEnabled);
 
         // Save host A
         if (auto hostAState = saveHostState(chainSlots[i].hostA, "PluginA"))
@@ -865,6 +924,9 @@ void PluginAllianceLauncherProcessor::setChainState(const juce::XmlElement& chai
 
         // Restore bypass state
         chainSlots[slotIndex].bypassed = slotElement->getBoolAttribute("bypassed", false);
+
+        // Restore auto-gain state
+        chainSlots[slotIndex].autoGainEnabled = slotElement->getBoolAttribute("autoGain", false);
 
         // Restore plugins
         if (auto* pluginAElement = slotElement->getChildByName("PluginA"))

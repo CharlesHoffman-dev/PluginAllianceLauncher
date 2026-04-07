@@ -11,6 +11,7 @@
 #include "Core/PluginHost.h"
 #include "Core/PluginDatabase.h"
 #include "Core/PluginScanner.h"
+#include "Core/LUFSAnalyzer.h"
 #include "Utils/SettingsManager.h"
 
 namespace PALauncher
@@ -29,6 +30,12 @@ struct ChainSlot {
     PluginHost hostB;
     ABSlot activeSlot = ABSlot::A;
     bool bypassed = false;
+
+    // Auto-gain (LUFS matching)
+    bool autoGainEnabled = false;
+    LUFSAnalyzer lufsAnalyzer;
+    juce::SmoothedValue<float, juce::ValueSmoothingTypes::Multiplicative> smoothedGain { 1.0f };
+    float currentCorrectionDb = 0.0f;  // For UI display
 
     PluginHost& getActiveHost() {
         return (activeSlot == ABSlot::A) ? hostA : hostB;
@@ -144,6 +151,11 @@ public:
     // Bypass management
     void bypassSlot(int slotIndex, bool bypass);
     bool isSlotBypassed(int slotIndex) const;
+
+    // Auto-gain (LUFS matching)
+    void setSlotAutoGain(int slotIndex, bool enabled);
+    bool isSlotAutoGainEnabled(int slotIndex) const;
+    float getSlotCorrectionDb(int slotIndex) const;
 
     // Plugin loading/unloading
     bool loadPluginToSlot(int slotIndex, ABSlot abSlot, const juce::PluginDescription& desc);

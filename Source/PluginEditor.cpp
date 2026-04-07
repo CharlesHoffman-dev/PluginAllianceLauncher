@@ -204,9 +204,9 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     sortComboBox.addItem("Name A-Z", 3);
     sortComboBox.addItem("Name Z-A", 4);
     sortComboBox.setSelectedId(1, juce::dontSendNotification);
-    sortComboBox.setColour(juce::ComboBox::backgroundColourId, juce::Colour(0xff2a2a2a));
+    sortComboBox.setColour(juce::ComboBox::backgroundColourId, juce::Colour(0xff383838));
     sortComboBox.setColour(juce::ComboBox::textColourId, juce::Colours::white);
-    sortComboBox.setColour(juce::ComboBox::outlineColourId, juce::Colour(0xff3a3a3a));
+    sortComboBox.setColour(juce::ComboBox::outlineColourId, juce::Colour(0xff4a4a4a));
     sortComboBox.setColour(juce::ComboBox::arrowColourId, juce::Colours::white);
     sortComboBox.onChange = [this]()
     {
@@ -227,9 +227,9 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     eraComboBox.addItem("2020s", 9);
     eraComboBox.addItem("Original", 10);
     eraComboBox.setSelectedId(1, juce::dontSendNotification);
-    eraComboBox.setColour(juce::ComboBox::backgroundColourId, juce::Colour(0xff2a2a2a));
+    eraComboBox.setColour(juce::ComboBox::backgroundColourId, juce::Colour(0xff383838));
     eraComboBox.setColour(juce::ComboBox::textColourId, juce::Colours::white);
-    eraComboBox.setColour(juce::ComboBox::outlineColourId, juce::Colour(0xff3a3a3a));
+    eraComboBox.setColour(juce::ComboBox::outlineColourId, juce::Colour(0xff4a4a4a));
     eraComboBox.setColour(juce::ComboBox::arrowColourId, juce::Colours::white);
     eraComboBox.onChange = [this]()
     {
@@ -310,9 +310,9 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     brandComboBox.addItem("Unfiltered Audio", 48);
     brandComboBox.addItem("Vertigo", 49);
     brandComboBox.setSelectedId(1, juce::dontSendNotification);
-    brandComboBox.setColour(juce::ComboBox::backgroundColourId, juce::Colour(0xff2a2a2a));
+    brandComboBox.setColour(juce::ComboBox::backgroundColourId, juce::Colour(0xff383838));
     brandComboBox.setColour(juce::ComboBox::textColourId, juce::Colours::white);
-    brandComboBox.setColour(juce::ComboBox::outlineColourId, juce::Colour(0xff3a3a3a));
+    brandComboBox.setColour(juce::ComboBox::outlineColourId, juce::Colour(0xff4a4a4a));
     brandComboBox.setColour(juce::ComboBox::arrowColourId, juce::Colours::white);
     brandComboBox.setLookAndFeel(&brandComboBoxLookAndFeel);
     brandComboBox.onChange = [this]()
@@ -482,6 +482,19 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
         processor.reorderSlots(fromIndex, toIndex);
         processor.updateParameterDistribution();
         chainView.setChainState(processor);
+    };
+
+    chainView.onAutoGainToggled = [this](int meterIndex, bool enabled)
+    {
+        // Meter index maps to the slot that precedes it:
+        // Meter 0 is before slot 0 (no slot to control)
+        // Meter 1 is after slot 0, Meter 2 is after slot 1, etc.
+        // So auto-gain on meter N controls slot N-1
+        int slotIndex = meterIndex - 1;
+        if (slotIndex >= 0 && slotIndex < kMaxChainSlots)
+        {
+            processor.setSlotAutoGain(slotIndex, enabled);
+        }
     };
 
     addAndMakeVisible(chainView);
@@ -1057,6 +1070,18 @@ void PluginAllianceLauncherEditor::timerCallback()
     if (++updateCounter % 10 == 0)  // Update every 10 timer ticks
     {
         chainView.setChainState(processor);
+    }
+
+    // Update auto-gain correction display on meter cards (every tick for responsiveness)
+    if (chainViewVisible)
+    {
+        for (int i = 0; i < kMaxChainSlots; ++i)
+        {
+            int meterIndex = i + 1;  // Meter after slot i
+            bool autoEnabled = processor.isSlotAutoGainEnabled(i);
+            float correctionDb = processor.getSlotCorrectionDb(i);
+            chainView.updateAutoGainState(meterIndex, autoEnabled, correctionDb);
+        }
     }
 
     // Animate chain button LED glow effect

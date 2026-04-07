@@ -18,12 +18,14 @@ SearchBar::SearchBar()
     searchField.setScrollbarsShown(false);
     searchField.setCaretVisible(true);
     searchField.setPopupMenuEnabled(true);
-    searchField.setTextToShowWhenEmpty("Search plugins...", juce::Colour(0xff888888));
+    searchField.setTextToShowWhenEmpty("Search plugins...", juce::Colour(0xff999999));
     searchField.setFont(juce::Font(14.0f));
     searchField.setColour(juce::TextEditor::backgroundColourId, juce::Colours::transparentBlack);
-    searchField.setColour(juce::TextEditor::textColourId, juce::Colours::white);
+    searchField.setColour(juce::TextEditor::textColourId, juce::Colour(0xff1a1a1a));
     searchField.setColour(juce::TextEditor::outlineColourId, juce::Colours::transparentBlack);
     searchField.setColour(juce::TextEditor::focusedOutlineColourId, juce::Colours::transparentBlack);
+    searchField.setColour(juce::TextEditor::highlightColourId, juce::Colour(0xff0cbff2));
+    searchField.setColour(juce::TextEditor::highlightedTextColourId, juce::Colours::white);
     searchField.setWantsKeyboardFocus(true);
     searchField.setMouseClickGrabsKeyboardFocus(true);  // Only grab focus when clicking directly on it
     searchField.addListener(this);
@@ -38,12 +40,12 @@ void SearchBar::paint(juce::Graphics& g)
 {
     auto bounds = getLocalBounds().toFloat();
 
-    // Background
-    g.setColour(juce::Colour(0xff1a1a1a));
+    // Background - white
+    g.setColour(juce::Colours::white);
     g.fillRoundedRectangle(bounds, 6.0f);
 
-    // White outline
-    g.setColour(juce::Colours::white);
+    // Subtle grey outline
+    g.setColour(juce::Colour(0xffcccccc));
     g.drawRoundedRectangle(bounds.reduced(0.5f), 6.0f, 1.0f);
 
     // Draw icon on right side - X if has text, magnifying glass otherwise
@@ -54,7 +56,7 @@ void SearchBar::paint(juce::Graphics& g)
     if (hasText)
     {
         // Draw X (clear button)
-        g.setColour(juce::Colour(0xffcccccc));
+        g.setColour(juce::Colour(0xff666666));
         float size = 6.0f;
         g.drawLine(cx - size, cy - size, cx + size, cy + size, 2.0f);
         g.drawLine(cx + size, cy - size, cx - size, cy + size, 2.0f);
@@ -63,7 +65,7 @@ void SearchBar::paint(juce::Graphics& g)
     {
         // Draw magnifying glass icon
         float radius = 6.0f;
-        g.setColour(juce::Colour(0xff888888));
+        g.setColour(juce::Colour(0xff999999));
 
         // Draw circle (lens)
         g.drawEllipse(cx - radius - 2, cy - radius - 2, radius * 2, radius * 2, 2.0f);

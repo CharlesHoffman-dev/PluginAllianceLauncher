@@ -33,6 +33,9 @@ public:
     // Update meter levels (called from processor during audio processing)
     void updateMeterLevels(int meterIndex, float leftPeak, float rightPeak);
 
+    // Update auto-gain display state
+    void updateAutoGainState(int meterIndex, bool enabled, float correctionDb);
+
     // Callbacks
     std::function<void(int slotIndex)> onSlotSelected;
     std::function<void(int slotIndex)> onRemoveSlot;
@@ -40,6 +43,7 @@ public:
     std::function<void(int slotIndex, ABSlot newSlot)> onToggleAB;
     std::function<void(int fromIndex, int toIndex)> onSlotReorder;
     std::function<void(int meterIndex, float newGain)> onMeterGainChanged;
+    std::function<void(int meterIndex, bool enabled)> onAutoGainToggled;
 
     // Chain view dimensions
     static constexpr int viewHeight = 280;
@@ -54,6 +58,7 @@ private:
     void handleDragMove(int slotIndex, juce::Point<int> dragPos);
     void handleDragEnd(int slotIndex);
     void handleMeterGainChanged(int meterIndex, float newGain);
+    void handleAutoGainToggled(int meterIndex, bool enabled);
 
     int calculateDropIndex(juce::Point<int> screenPos);
 

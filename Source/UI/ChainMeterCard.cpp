@@ -25,22 +25,42 @@ void ChainMeterCard::paint(juce::Graphics& g)
     g.setColour(juce::Colours::white);
     g.fillRoundedRectangle(bounds, 6.0f);
 
-    // Border
-    g.setColour(juce::Colour(0xffe0e0e0));
+    // Border - cyan when auto-gain is active
+    if (autoGainEnabled)
+        g.setColour(juce::Colour(0xff0cbff2));
+    else
+        g.setColour(juce::Colour(0xffe0e0e0));
     g.drawRoundedRectangle(bounds, 6.0f, 1.0f);
 
     auto contentBounds = getLocalBounds();
 
-    // Add padding above meter
-    contentBounds.removeFromTop(12);
+    // AUTO button at top
+    contentBounds.removeFromTop(4);
+    autoButtonBounds = contentBounds.removeFromTop(14).reduced(8, 0);
 
-    // Side padding - minimal/none for cleaner look
-    contentBounds = contentBounds.reduced(0, 0);
+    // Draw AUTO button
+    if (autoGainEnabled)
+    {
+        g.setColour(juce::Colour(0xff0cbff2));
+        g.fillRoundedRectangle(autoButtonBounds.toFloat(), 3.0f);
+        g.setColour(juce::Colours::white);
+    }
+    else
+    {
+        bool hoverAuto = autoButtonBounds.contains(getMouseXYRelative());
+        g.setColour(hoverAuto ? juce::Colour(0xffc0c0c0) : juce::Colour(0xffe0e0e0));
+        g.fillRoundedRectangle(autoButtonBounds.toFloat(), 3.0f);
+        g.setColour(juce::Colour(0xff999999));
+    }
+    g.setFont(juce::Font(8.0f, juce::Font::bold));
+    g.drawText("AUTO", autoButtonBounds, juce::Justification::centred);
 
-    // Meter area (L/R side by side) - sized for balanced padding
-    auto meterArea = contentBounds.removeFromTop(84);
+    contentBounds.removeFromTop(2);
 
-    int meterWidth = 16;  // Increased from 12 to reduce side padding
+    // Meter area (L/R side by side)
+    auto meterArea = contentBounds.removeFromTop(76);
+
+    int meterWidth = 16;
     int meterGap = 4;
     int totalMeterWidth = meterWidth * 2 + meterGap;
     int meterX = meterArea.getCentreX() - totalMeterWidth / 2;
@@ -78,21 +98,37 @@ void ChainMeterCard::paint(juce::Graphics& g)
     drawMeter(leftMeterBounds, leftLevel);
     drawMeter(rightMeterBounds, rightLevel);
 
-    // Gain value text below meters (interactive area)
-    contentBounds.removeFromTop(6);  // Increased spacing above dB text
-    sliderBounds = contentBounds.removeFromTop(16);  // The dB text is the slider now
+    // dB text below meters
+    contentBounds.removeFromTop(4);
+    sliderBounds = contentBounds.removeFromTop(16);
 
-    float gainDb = 20.0f * std::log10(juce::jmax(0.001f, gainValue));
-    juce::String gainText = juce::String(gainDb, 1) + " dB";
+    if (autoGainEnabled)
+    {
+        // Show auto-gain correction amount
+        juce::String corrText;
+        if (autoGainCorrectionDb >= 0.0f)
+            corrText = "+" + juce::String(autoGainCorrectionDb, 1);
+        else
+            corrText = juce::String(autoGainCorrectionDb, 1);
 
-    // Highlight text on hover
-    if (sliderBounds.contains(getMouseXYRelative()))
         g.setColour(juce::Colour(0xff0cbff2));
+        g.setFont(juce::Font(10.0f, juce::Font::bold));
+        g.drawText(corrText, sliderBounds, juce::Justification::centred);
+    }
     else
-        g.setColour(juce::Colour(0xff666666));
+    {
+        // Show manual gain
+        float gainDb = 20.0f * std::log10(juce::jmax(0.001f, gainValue));
+        juce::String gainText = juce::String(gainDb, 1) + " dB";
 
-    g.setFont(juce::Font(10.0f, juce::Font::bold));
-    g.drawText(gainText, sliderBounds, juce::Justification::centred);
+        if (sliderBounds.contains(getMouseXYRelative()))
+            g.setColour(juce::Colour(0xff0cbff2));
+        else
+            g.setColour(juce::Colour(0xff666666));
+
+        g.setFont(juce::Font(10.0f, juce::Font::bold));
+        g.drawText(gainText, sliderBounds, juce::Justification::centred);
+    }
 }
 
 void ChainMeterCard::resized()
@@ -118,6 +154,18 @@ void ChainMeterCard::setGainValue(float newGain)
     repaint();
 }
 
+void ChainMeterCard::setAutoGainEnabled(bool enabled)
+{
+    autoGainEnabled = enabled;
+    repaint();
+}
+
+void ChainMeterCard::setAutoGainCorrectionDb(float correctionDb)
+{
+    autoGainCorrectionDb = correctionDb;
+    // No repaint here - timer handles it
+}
+
 void ChainMeterCard::timerCallback()
 {
     // Decay meter levels smoothly
@@ -133,7 +181,18 @@ void ChainMeterCard::timerCallback()
 
 void ChainMeterCard::mouseDown(const juce::MouseEvent& e)
 {
-    if (sliderBounds.contains(e.getPosition()))
+    // Check AUTO button click
+    if (autoButtonBounds.contains(e.getPosition()))
+    {
+        autoGainEnabled = !autoGainEnabled;
+        if (onAutoGainToggled)
+            onAutoGainToggled(meterIdx, autoGainEnabled);
+        repaint();
+        return;
+    }
+
+    // Manual gain slider (disabled when auto-gain is active)
+    if (!autoGainEnabled && sliderBounds.contains(e.getPosition()))
     {
         isDraggingSlider = true;
         dragStartY = e.position.getY();

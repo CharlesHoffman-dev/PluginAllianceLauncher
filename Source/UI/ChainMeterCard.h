@@ -29,8 +29,16 @@ public:
     float getGainValue() const { return gainValue; }
     void setGainValue(float newGain);
 
+    // Auto-gain (LUFS matching)
+    void setAutoGainEnabled(bool enabled);
+    bool isAutoGainEnabled() const { return autoGainEnabled; }
+    void setAutoGainCorrectionDb(float correctionDb);
+
     // Callback when gain changes
     std::function<void(int meterIndex, float newGain)> onGainChanged;
+
+    // Callback when auto-gain is toggled
+    std::function<void(int meterIndex, bool enabled)> onAutoGainToggled;
 
     // Card dimensions
     static constexpr int cardWidth = 60;
@@ -50,10 +58,14 @@ private:
     float rightPeak = 0.0f;
     float gainValue = 1.0f;  // 1.0 = 0dB
 
+    bool autoGainEnabled = false;
+    float autoGainCorrectionDb = 0.0f;
+
     bool isDraggingSlider = false;
     float dragStartY = 0.0f;
     float dragStartGain = 1.0f;
     juce::Rectangle<int> sliderBounds;
+    juce::Rectangle<int> autoButtonBounds;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ChainMeterCard)
 };
