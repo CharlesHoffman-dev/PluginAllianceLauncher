@@ -392,17 +392,12 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
             chainButton.setColour(juce::TextButton::textColourOffId, juce::Colours::black);
         }
 
-        // Resize window to account for chain view
-        if (browserMode)
-        {
-            resizeForBrowser();
-        }
-        else
-        {
+        // In plugin mode, resize the window to fit chain + plugin
+        // In browser mode, just re-layout (chain pushes content down)
+        if (!browserMode)
             resizeForPlugin();
-        }
 
-        resized();  // Re-layout to adjust space
+        resized();
     };
     addAndMakeVisible(chainButton);
 
@@ -440,10 +435,18 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
 
     chainView.onAddSlot = [this]()
     {
-        browserMode = true;
-        resizeForBrowser();
-        searchBar.grabKeyboardFocus();
-        resized();
+        if (browserMode && selectedPlugin != nullptr)
+        {
+            // In browser mode, load the currently selected plugin
+            loadSelectedPlugin(*selectedPlugin);
+        }
+        else
+        {
+            // In plugin mode, switch to browser
+            browserMode = true;
+            resizeForBrowser();
+            resized();
+        }
     };
 
     chainView.onToggleAB = [this](int slotIndex, ABSlot newSlot)
@@ -502,6 +505,10 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     // Set up preset dropdown
     presetComboBox.setTextWhenNothingSelected("Default");
     presetComboBox.setTextWhenNoChoicesAvailable("No Presets");
+    presetComboBox.setColour(juce::ComboBox::backgroundColourId, juce::Colour(0xff383838));
+    presetComboBox.setColour(juce::ComboBox::textColourId, juce::Colours::white);
+    presetComboBox.setColour(juce::ComboBox::outlineColourId, juce::Colour(0xff4a4a4a));
+    presetComboBox.setColour(juce::ComboBox::arrowColourId, juce::Colours::white);
     presetComboBox.onChange = [this]()
     {
         int selectedId = presetComboBox.getSelectedId();
@@ -640,14 +647,13 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
             pluginListView.setLoadedPluginId(desc->fileOrIdentifier);
     }
 
-    // Set editor size - wider to accommodate details panel, plus chain view height
-    int initialHeight = 900;
-    if (chainViewVisible)
-        initialHeight += chainViewHeight;
-
-    setSize(1400, initialHeight);
+    // Set editor size - wider to accommodate details panel
+    // Chain view pushes content down within the window, doesn't extend it
+    setSize(1400, 900);
     setResizable(true, false);
-    setResizeLimits(1000, 600, 2200, 1500);
+    // Minimum width ensures 2 plugin columns in browser mode
+    static constexpr int minBrowserWidth = sidebarWidth + 2 * (PluginCard::preferredWidth + 6) + detailsPanelWidth + 14 + 20;
+    setResizeLimits(minBrowserWidth, 600, 2200, 1500);
 
     // Defer hosted plugin editor creation to avoid audio stutter on window open
     // Creating the hosted plugin's GUI can be heavy, so do it after the window is shown
@@ -833,11 +839,23 @@ void PluginAllianceLauncherEditor::resized()
         chainButton.setBounds(topBar.removeFromRight(70));
         topBar.removeFromRight(8);
 
-        // Browser button (Rescan in browser mode)
+        // Rescan button
         rescanButton.setBounds(topBar.removeFromRight(80));
         topBar.removeFromRight(8);
 
-        toggleModeButton.setVisible(false);
+        // Show Browser/Plugin toggle if a plugin is loaded
+        if (processor.getLoadedSlotCount() > 0)
+        {
+            toggleModeButton.setButtonText("Show Plugin");
+            toggleModeButton.setVisible(true);
+            toggleModeButton.setBounds(topBar.removeFromRight(100));
+            topBar.removeFromRight(8);
+        }
+        else
+        {
+            toggleModeButton.setVisible(false);
+        }
+
         unloadButton.setVisible(false);
 
         searchBar.setBounds(topBar.removeFromLeft(300));
@@ -1028,9 +1046,14 @@ void PluginAllianceLauncherEditor::resizeForBrowser()
     int width = defaultBrowserSize.getWidth();
     int height = defaultBrowserSize.getHeight();
 
-    // Add chain view height if visible
-    if (chainViewVisible)
-        height += chainViewHeight;
+    // Enforce minimum width: sidebar + 2 plugin columns + details panel + scrollbar + padding
+    static constexpr int minBrowserWidth = sidebarWidth + 2 * (PluginCard::preferredWidth + 6) + detailsPanelWidth + 14 + 20;
+
+    // Re-apply resize limits for browser mode
+    setResizeLimits(minBrowserWidth, 600, 2200, 1500);
+
+    // Ensure current size meets the minimum
+    width = juce::jmax(width, minBrowserWidth);
 
     setSize(width, height);
 }
@@ -1500,17 +1523,23 @@ void PluginAllianceLauncherEditor::toggleBrowserMode()
 {
     if (browserMode)
     {
-        // In browser mode - if we have a selected plugin, load it
-        if (selectedPlugin != nullptr)
+        // Switching from browser to plugin mode
+        if (processor.getLoadedSlotCount() > 0)
         {
-            loadSelectedPlugin(*selectedPlugin);
+            browserMode = false;
+            toggleModeButton.setButtonText("Browser");
+
+            hostedPluginView.setPluginHost(&processor.getChainSlot(processor.getCurrentSelectedSlot()).getActiveHost());
+            hostedPluginView.showPluginEditor();
+            resizeForPlugin();
+            resized();
         }
     }
     else
     {
         // Switching from plugin to browser mode
         browserMode = true;
-        toggleModeButton.setButtonText("Load Plugin");
+        toggleModeButton.setButtonText("Show Plugin");
 
         // Restore browser size
         resizeForBrowser();
