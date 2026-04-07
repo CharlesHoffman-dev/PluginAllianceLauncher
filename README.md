@@ -6,7 +6,7 @@ A VST3/AU plugin built with the JUCE framework that provides a searchable browse
 
 ## Features
 
-- **Plugin Browser** - Search and filter 150+ Plugin Alliance plugins by category, subcategory, era, and brand
+- **Plugin Browser** - Search and filter 200+ Plugin Alliance plugins by category, subcategory, era, and brand
 - **8-Slot Plugin Chain** - Load plugins into a serial processing chain with per-slot bypass, reordering, and gain control
 - **A/B Comparison** - Each chain slot has independent A and B hosts, letting you load two different plugins and toggle between them
 - **Auto-Gain (LUFS Matching)** - Automatic loudness-matched output per slot using ITU-R BS.1770 K-weighted LUFS measurement, removing the "louder = better" bias when comparing plugins
