@@ -325,6 +325,7 @@ void PluginChainView::setChainState(PluginAllianceLauncherProcessor& proc)
 
         // Set up callbacks
         card->onSelected = [this](int idx) { handleSlotSelected(idx); };
+        card->onViewPlugin = [this](int idx) { if (onSlotViewPlugin) onSlotViewPlugin(idx); };
         card->onRemove = [this](int idx) { handleRemoveSlot(idx); };
         card->onToggleBypass = [this](int idx, bool bypass) { handleToggleBypass(idx, bypass); };
         card->onToggleAB = [this](int idx, ABSlot ab) { handleToggleAB(idx, ab); };

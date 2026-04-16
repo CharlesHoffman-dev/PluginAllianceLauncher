@@ -63,7 +63,9 @@ void PluginListView::resized()
 {
     auto bounds = getLocalBounds();
 
-    // Scrollbar on right
+    // Scrollbar on right, full height of the view. Internal padding (so the
+    // blue thumb doesn't touch the top/bottom edges of the track) is applied
+    // by CyanScrollBarLookAndFeel::drawScrollbar.
     verticalScrollBar.setBounds(bounds.removeFromRight(14));
 
     contentComponent.setBounds(bounds);
@@ -207,8 +209,9 @@ void PluginListView::updateVisibleCards()
                     onFavoriteToggle(info, favorite);
             };
 
+            int topInset = 6;  // Breathing room inside the grey area, above the first card row
             int x = startX + col * cardWidth;
-            int y = cardSpacing + row * cardHeight - scrollOffset;
+            int y = topInset + cardSpacing + row * cardHeight - scrollOffset;
 
             card->setBounds(x, y, PluginCard::preferredWidth, PluginCard::preferredHeight);
             contentComponent.addAndMakeVisible(card);

@@ -38,6 +38,7 @@ public:
 
     // Callbacks
     std::function<void(int slotIndex)> onSlotSelected;
+    std::function<void(int slotIndex)> onSlotViewPlugin;  // Double-click on slot image
     std::function<void(int slotIndex)> onRemoveSlot;
     std::function<void()> onAddSlot;
     std::function<void(int slotIndex, ABSlot newSlot)> onToggleAB;

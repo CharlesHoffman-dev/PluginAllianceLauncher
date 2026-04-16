@@ -25,6 +25,7 @@ public:
     void mouseEnter(const juce::MouseEvent&) override;
     void mouseExit(const juce::MouseEvent&) override;
     void mouseDown(const juce::MouseEvent&) override;
+    void mouseDoubleClick(const juce::MouseEvent&) override;
     void mouseDrag(const juce::MouseEvent&) override;
     void mouseUp(const juce::MouseEvent&) override;
 
@@ -49,6 +50,7 @@ public:
 
     // Callbacks
     std::function<void(int slotIndex)> onSelected;
+    std::function<void(int slotIndex)> onViewPlugin;  // Fired on double-click of the plugin image (when loaded)
     std::function<void(int slotIndex)> onRemove;
     std::function<void(int slotIndex, bool bypass)> onToggleBypass;
     std::function<void(int slotIndex, ABSlot newSlot)> onToggleAB;

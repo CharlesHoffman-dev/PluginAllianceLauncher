@@ -241,6 +241,19 @@ void ChainSlotCard::mouseDown(const juce::MouseEvent& e)
     dragStartPos = e.getPosition();
 }
 
+void ChainSlotCard::mouseDoubleClick(const juce::MouseEvent& e)
+{
+    // Double-clicking the plugin image opens the plugin's editor (when a plugin is loaded).
+    // Ignore double-clicks on the toolbar buttons - they're handled by mouseDown.
+    if (bypassButtonBounds.contains(e.getPosition())
+        || abButtonBounds.contains(e.getPosition())
+        || removeButtonBounds.contains(e.getPosition()))
+        return;
+
+    if (pluginName.isNotEmpty() && onViewPlugin)
+        onViewPlugin(slotIdx);
+}
+
 void ChainSlotCard::mouseDrag(const juce::MouseEvent& e)
 {
     // Start drag if moved far enough (reduced threshold to 2 pixels)

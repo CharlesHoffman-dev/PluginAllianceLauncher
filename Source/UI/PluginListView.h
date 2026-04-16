@@ -33,7 +33,7 @@ public:
     // Update plugins while preserving scroll position (for favorites, etc.)
     void updatePlugins(const juce::Array<PluginInfo>& plugins);
 
-    // Set the currently loaded plugin (shown with "View" button)
+    // Set the currently loaded plugin (dimmed in the list to indicate what's loaded)
     void setLoadedPluginId(const juce::String& pluginId);
 
     // Get currently selected plugin
@@ -41,6 +41,13 @@ public:
 
     // Select a plugin by index (for auto-selection)
     void selectPluginAtIndex(int index);
+
+    // Apply a custom LookAndFeel to the internal scrollbar (e.g., to keep its
+    // colour constant rather than letting V4 shade it on hover).
+    void setScrollBarLookAndFeel(juce::LookAndFeel* lf) { verticalScrollBar.setLookAndFeel(lf); }
+
+    // Extra top padding for the scrollbar's thumb (read by CyanScrollBarLookAndFeel)
+    void setScrollBarExtraTopPad(int px) { verticalScrollBar.getProperties().set("extraTopPad", px); }
 
     // Callbacks
     std::function<void(const PluginInfo&)> onPluginSelected;

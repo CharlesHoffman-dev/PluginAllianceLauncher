@@ -8,6 +8,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include <optional>
 #include "PluginProcessor.h"
 #include "UI/SearchBar.h"
 #include "UI/CategoryFilter.h"
@@ -243,6 +244,146 @@ private:
     float glowAlpha = 0.0f;
 };
 
+// Custom LookAndFeel for AlertWindows shown by the launcher - matches the cyan
+// accent of the plugin. Solid blue background, white bold text everywhere, white
+// buttons with bold black text for legibility.
+class PluginAlertLookAndFeel : public ButtonLookAndFeel
+{
+public:
+    PluginAlertLookAndFeel()
+    {
+        setColour(juce::AlertWindow::backgroundColourId, juce::Colour(0xff0cbff2));   // cyan accent
+        setColour(juce::AlertWindow::textColourId,       juce::Colours::white);
+        setColour(juce::AlertWindow::outlineColourId,    juce::Colour(0xff0cbff2));
+        setColour(juce::TextButton::buttonColourId,      juce::Colours::white);
+        setColour(juce::TextButton::textColourOffId,     juce::Colours::black);
+        setColour(juce::TextButton::textColourOnId,      juce::Colours::black);
+    }
+
+    void drawAlertBox(juce::Graphics& g, juce::AlertWindow& alert,
+                      const juce::Rectangle<int>& /*textArea*/, juce::TextLayout& /*textLayout*/) override
+    {
+        auto bounds = alert.getLocalBounds().toFloat();
+
+        // Solid blue panel with rounded corners
+        g.setColour(alert.findColour(juce::AlertWindow::backgroundColourId));
+        g.fillRoundedRectangle(bounds, 10.0f);
+
+        // We draw the title + message ourselves so we can centre them and
+        // apply our own padding (JUCE's default textLayout is left-aligned).
+        const int sidePad = 32;
+        const int topPad  = 28;
+        const int titleH  = 32;
+        const int gap     = 18;
+        const int msgH    = 24;
+
+        auto innerW = alert.getWidth() - sidePad * 2;
+
+        g.setColour(juce::Colours::white);
+
+        // Title
+        g.setFont(juce::Font(20.0f, juce::Font::bold));
+        g.drawText(alert.getName(),
+                   juce::Rectangle<int>(sidePad, topPad, innerW, titleH),
+                   juce::Justification::centred, false);
+
+        // Single-line message - we stash it on the AlertWindow as a property
+        // because juce::AlertWindow has no public getter for the message text.
+        auto message = alert.getProperties().getWithDefault("paMessage", juce::String()).toString();
+        g.setFont(juce::Font(15.0f, juce::Font::bold));
+        g.drawText(message,
+                   juce::Rectangle<int>(sidePad, topPad + titleH + gap, innerW, msgH),
+                   juce::Justification::centred, false);
+    }
+
+    int getAlertBoxWindowFlags() override { return 0; }
+    int getAlertWindowButtonHeight() override { return 32; }
+
+    juce::Font getAlertWindowMessageFont() override { return juce::Font(15.0f, juce::Font::bold); }
+    juce::Font getAlertWindowTitleFont()   override { return juce::Font(20.0f, juce::Font::bold); }
+    juce::Font getAlertWindowFont()        override { return juce::Font(15.0f, juce::Font::bold); }
+};
+
+// Custom LookAndFeel for scrollbars - keeps the cyan thumb a constant shade
+// regardless of hover / drag state (the default V4 scrollbar shifts shades).
+class CyanScrollBarLookAndFeel : public juce::LookAndFeel_V4
+{
+public:
+    void drawScrollbar(juce::Graphics& g, juce::ScrollBar& scrollbar,
+                       int x, int y, int width, int height,
+                       bool isScrollbarVertical, int thumbStartPosition, int thumbSize,
+                       bool /*isMouseOver*/, bool /*isMouseDown*/) override
+    {
+        // Track - subtle dark stripe spanning the whole bounds
+        g.setColour(juce::Colour(0xff1f1f1f));
+        g.fillRect(juce::Rectangle<int>(x, y, width, height));
+
+        // Thumb - always solid cyan, no hover / drag shading.
+        // We clamp the thumb into a padded area so the blue never touches the
+        // top/bottom edges of the scrollbar; corners are fully rounded (pill).
+        // An optional "extraTopPad" Component property lets a specific scrollbar
+        // ask for additional top breathing room without affecting others.
+        constexpr int trackPad = 4;
+        constexpr int sidePad  = 3;
+        const int extraTopPad = (int)scrollbar.getProperties().getWithDefault("extraTopPad", 0);
+
+        if (isScrollbarVertical)
+        {
+            // Shift the thumb into the padded area instead of clamping it - that
+            // preserves the thumb's size when scrolled to either extreme.
+            int padTop    = trackPad + extraTopPad;
+            int padBottom = trackPad;
+            int thumbTop  = thumbStartPosition;
+            int thumbBot  = thumbStartPosition + thumbSize;
+
+            if (thumbTop < y + padTop)
+            {
+                int shift = (y + padTop) - thumbTop;
+                thumbTop += shift;
+                thumbBot += shift;
+            }
+            if (thumbBot > y + height - padBottom)
+            {
+                int shift = thumbBot - (y + height - padBottom);
+                thumbTop -= shift;
+                thumbBot -= shift;
+            }
+
+            juce::Rectangle<float> thumbBounds((float)(x + sidePad), (float)thumbTop,
+                                               (float)(width - sidePad * 2), (float)(thumbBot - thumbTop));
+            g.setColour(juce::Colour(0xff0cbff2));
+            float radius = juce::jmin(thumbBounds.getWidth(), thumbBounds.getHeight()) * 0.5f;
+            g.fillRoundedRectangle(thumbBounds, radius);
+        }
+        else
+        {
+            int padLeft  = trackPad;
+            int padRight = trackPad;
+            int thumbLeft  = thumbStartPosition;
+            int thumbRight = thumbStartPosition + thumbSize;
+
+            if (thumbLeft < x + padLeft)
+            {
+                int shift = (x + padLeft) - thumbLeft;
+                thumbLeft  += shift;
+                thumbRight += shift;
+            }
+            if (thumbRight > x + width - padRight)
+            {
+                int shift = thumbRight - (x + width - padRight);
+                thumbLeft  -= shift;
+                thumbRight -= shift;
+            }
+
+            juce::Rectangle<float> thumbBounds((float)thumbLeft, (float)(y + sidePad),
+                                               (float)(thumbRight - thumbLeft), (float)(height - sidePad * 2));
+            g.setColour(juce::Colour(0xff0cbff2));
+            float radius = juce::jmin(thumbBounds.getWidth(), thumbBounds.getHeight()) * 0.5f;
+            g.fillRoundedRectangle(thumbBounds, radius);
+        }
+    }
+};
+
 // Custom LookAndFeel for settings button with gear icon
 class SettingsButtonLookAndFeel : public juce::LookAndFeel_V4
 {
@@ -365,6 +506,8 @@ private:
     void filterPlugins();
     void refreshPluginsPreservingScroll();  // For favorites toggle - doesn't reset scroll
     void loadSelectedPlugin(const PluginInfo& info);
+    void loadSelectedPluginToNextEmpty(const PluginInfo& info);  // + Add button path
+    void performLoad(const PluginInfo& info, int targetChainSlot, ABSlot targetABSlot);
     void toggleBrowserMode();
     void toggleABSlot();  // Toggle between A and B plugin slots
     void refreshPresetDropdown();  // Rebuild preset dropdown menu
@@ -388,6 +531,8 @@ private:
     juce::TextButton settingsButton;
     juce::TextButton toggleModeButton;
     juce::TextButton unloadButton;
+    juce::TextButton undoButton;
+    juce::TextButton redoButton;
 
     // Settings menu
     void showSettingsMenu();
@@ -415,6 +560,26 @@ private:
     PluginListView pluginListView;
     HostedPluginView hostedPluginView;
     PluginChainView chainView;
+
+    // Pending load target — when the user clicks A or B on a chain slot whose host
+    // is empty, the next "Load" click should target THAT slot/host (not the next + slot).
+    struct LoadTarget { int slotIndex; ABSlot abSlot; };
+    std::optional<LoadTarget> pendingLoadTarget;
+    juce::Label loadTargetBanner;  // Shown above the plugin list while a target is pending
+    void updateLoadTargetBanner();
+    void clearPendingLoadTarget();
+
+    // Undo / redo - snapshot-based, using the processor's state serialiser.
+    // Each entry is a full chain-state blob; we cap the stacks to keep memory bounded.
+    static constexpr int kUndoStackCap = 32;
+    std::vector<juce::MemoryBlock> undoStack;
+    std::vector<juce::MemoryBlock> redoStack;
+    bool applyingUndoOrRedo = false;  // Suppresses snapshotting during apply
+    void pushUndoSnapshot();          // Call BEFORE a chain-mutating operation
+    void doUndo();
+    void doRedo();
+    void applyStateBlock(const juce::MemoryBlock& block);
+    void updateUndoButtonStates();
 
     // State
     bool browserMode = true;  // true = show browser, false = show hosted plugin fullscreen
@@ -455,6 +620,8 @@ private:
     BrandComboBoxLookAndFeel brandComboBoxLookAndFeel;
     ChainButtonLookAndFeel chainButtonLookAndFeel;
     SettingsButtonLookAndFeel settingsButtonLookAndFeel;
+    PluginAlertLookAndFeel alertLookAndFeel;
+    CyanScrollBarLookAndFeel scrollBarLookAndFeel;
 
     // LED glow animation state
     float chainButtonGlowPhase = 0.0f;

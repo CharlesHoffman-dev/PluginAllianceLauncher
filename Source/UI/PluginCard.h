@@ -35,7 +35,7 @@ public:
     void setSelected(bool selected);
     bool isSelected() const { return selected; }
 
-    // Loaded state - shows as hovered with "View" button
+    // Loaded state - dims the card so the user can see which plugin is loaded
     void setLoaded(bool loaded);
     bool isLoaded() const { return isLoadedPlugin; }
 

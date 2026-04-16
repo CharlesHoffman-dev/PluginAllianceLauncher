@@ -66,7 +66,7 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
         if (!browserMode && text.isNotEmpty())
         {
             browserMode = true;
-            toggleModeButton.setButtonText("Show Plugin");
+            toggleModeButton.setButtonText("View Plugin");
             resizeForBrowser();
             resized();
         }
@@ -79,6 +79,23 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     abSwitch.setMouseCursor(juce::MouseCursor::PointingHandCursor);
     abSwitch.onClick = [this]() { toggleABSlot(); };
     addAndMakeVisible(abSwitch);
+
+    // Set up Undo / Redo buttons - white with black text, matching the rest of the UI
+    auto setupSecondaryButton = [this](juce::TextButton& b, const juce::String& text)
+    {
+        b.setButtonText(text);
+        b.setColour(juce::TextButton::buttonColourId, juce::Colours::white);
+        b.setColour(juce::TextButton::textColourOffId, juce::Colours::black);
+        b.setLookAndFeel(&buttonLookAndFeel);
+        b.setMouseCursor(juce::MouseCursor::PointingHandCursor);
+    };
+    setupSecondaryButton(undoButton, "Undo");
+    setupSecondaryButton(redoButton, "Redo");
+    undoButton.onClick = [this]() { doUndo(); };
+    redoButton.onClick = [this]() { doRedo(); };
+    addAndMakeVisible(undoButton);
+    addAndMakeVisible(redoButton);
+    updateUndoButtonStates();
 
     // Set up rescan button
     rescanButton.setButtonText("Rescan");
@@ -103,7 +120,7 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     addAndMakeVisible(settingsButton);
 
     // Set up toggle mode button - white with black text
-    toggleModeButton.setButtonText("Show Plugin");
+    toggleModeButton.setButtonText("View Plugin");
     toggleModeButton.setColour(juce::TextButton::buttonColourId, juce::Colours::white);
     toggleModeButton.setColour(juce::TextButton::textColourOffId, juce::Colours::black);
     toggleModeButton.setLookAndFeel(&buttonLookAndFeel);
@@ -119,6 +136,9 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     unloadButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
     unloadButton.onClick = [this]()
     {
+        // Snapshot before removing so the user can undo the unload.
+        pushUndoSnapshot();
+
         // Hide editor BEFORE unloading to prevent crash
         hostedPluginView.hidePluginEditor();
 
@@ -161,7 +181,7 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
 
             // Switch back to browser mode
             browserMode = true;
-            toggleModeButton.setButtonText("Show Plugin");
+            toggleModeButton.setButtonText("View Plugin");
             resizeForBrowser();
             resized();
         }
@@ -170,8 +190,17 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
 
     // Set up sidebar viewport (scrollable container for category + subcategory filters)
     sidebarViewport.setScrollBarsShown(true, false);  // Vertical scrollbar only
+    sidebarViewport.setScrollBarThickness(14);  // Match the plugin list scrollbar width
     sidebarViewport.setViewedComponent(&sidebarContent, false);  // Don't delete on destruction
+    sidebarViewport.getVerticalScrollBar().setLookAndFeel(&scrollBarLookAndFeel);
     addAndMakeVisible(sidebarViewport);
+
+    // Use the constant-shade cyan scrollbar in the plugin list as well.
+    pluginListView.setScrollBarLookAndFeel(&scrollBarLookAndFeel);
+    // Plugin list scrollbar fills the full height of the grey panel, but its
+    // BLUE thumb should start visually in line with the first card row, matching
+    // the gap above the sidebar's scrollbar.
+    pluginListView.setScrollBarExtraTopPad(8);
 
     // Set up category filter
     categoryFilter.onCategoryChanged = [this](DisplayCategory category)
@@ -365,6 +394,16 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     };
     addAndMakeVisible(pluginListView);
 
+    // Load-target banner - sits above the plugin list when the user has clicked
+    // an empty A/B host on a chain slot, so the next "Load" goes to that target
+    // instead of the next + slot.
+    loadTargetBanner.setJustificationType(juce::Justification::centred);
+    loadTargetBanner.setColour(juce::Label::backgroundColourId, juce::Colour(0xff0cbff2));
+    loadTargetBanner.setColour(juce::Label::textColourId, juce::Colours::white);
+    loadTargetBanner.setFont(juce::Font(13.0f, juce::Font::bold));
+    loadTargetBanner.setVisible(false);
+    addAndMakeVisible(loadTargetBanner);
+
     // Set up hosted plugin view - use active plugin host
     hostedPluginView.setPluginHost(&processor.getActivePluginHost());
     addAndMakeVisible(hostedPluginView);
@@ -404,6 +443,10 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     // Set up chain view
     chainView.onSlotSelected = [this](int slot)
     {
+        // Selecting a different slot cancels any pending "load into A/B host" target.
+        if (pendingLoadTarget.has_value() && pendingLoadTarget->slotIndex != slot)
+            clearPendingLoadTarget();
+
         processor.setCurrentSelectedSlot(slot);
         hostedPluginView.setPluginHost(&processor.getChainSlot(slot).getActiveHost());
         hostedPluginView.showPluginEditor();
@@ -418,6 +461,8 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
 
     chainView.onRemoveSlot = [this](int slot)
     {
+        clearPendingLoadTarget();
+        pushUndoSnapshot();
         processor.removeAndCompactSlot(slot);
         chainView.setChainState(processor);
 
@@ -427,7 +472,7 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
             pluginListView.setLoadedPluginId({});
             abSwitch.setActiveSlot(false);
             browserMode = true;
-            toggleModeButton.setButtonText("Show Plugin");
+            toggleModeButton.setButtonText("View Plugin");
             resizeForBrowser();
             resized();
         }
@@ -435,10 +480,14 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
 
     chainView.onAddSlot = [this]()
     {
+        // Clicking + always means "next empty slot", so cancel any pending A/B target.
+        clearPendingLoadTarget();
+
         if (browserMode && selectedPlugin != nullptr)
         {
-            // In browser mode, load the currently selected plugin
-            loadSelectedPlugin(*selectedPlugin);
+            // In browser mode, load the currently selected plugin into the next empty slot
+            // (bypassing the selected-slot replace logic).
+            loadSelectedPluginToNextEmpty(*selectedPlugin);
         }
         else
         {
@@ -451,37 +500,71 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
 
     chainView.onToggleAB = [this](int slotIndex, ABSlot newSlot)
     {
-        // If this is the currently selected slot, sync the main A/B switch
-        if (slotIndex == processor.getCurrentSelectedSlot())
+        // Always select the slot whose A/B was clicked, so the chain card highlights it
+        // and "Load" can target it explicitly.
+        processor.setCurrentSelectedSlot(slotIndex);
+        chainView.setChainState(processor);
+        abSwitch.setActiveSlot(newSlot == ABSlot::B);
+
+        auto& slot = processor.getChainSlot(slotIndex);
+        auto& activeHost = (newSlot == ABSlot::A) ? slot.hostA : slot.hostB;
+
+        if (activeHost.hasLoadedPlugin())
         {
-            abSwitch.setActiveSlot(newSlot == ABSlot::B);
-
-            // Check if the newly selected slot has a plugin
-            auto& slot = processor.getChainSlot(slotIndex);
-            auto& activeHost = (newSlot == ABSlot::A) ? slot.hostA : slot.hostB;
-
-            if (activeHost.hasLoadedPlugin())
-            {
-                // Update hosted plugin view to show the new plugin
-                hostedPluginView.setPluginHost(&activeHost);
-                hostedPluginView.showPluginEditor();
-                if (!browserMode)
-                    resizeForPlugin();
-            }
-            else
-            {
-                // No plugin in this slot - switch to browser mode
-                browserMode = true;
-                toggleModeButton.setButtonText("Show Plugin");
-                resizeForBrowser();
-                searchBar.grabKeyboardFocus();
-                resized();
-            }
+            // Slot already has a plugin in this host - show its editor.
+            clearPendingLoadTarget();
+            hostedPluginView.setPluginHost(&activeHost);
+            hostedPluginView.showPluginEditor();
+            if (!browserMode)
+                resizeForPlugin();
         }
+        else
+        {
+            // Empty host - the next Load click should target THIS slot/host (not the next + slot).
+            pendingLoadTarget = LoadTarget{ slotIndex, newSlot };
+            updateLoadTargetBanner();
+
+            browserMode = true;
+            toggleModeButton.setButtonText("View Plugin");
+            resizeForBrowser();
+            // Actively remove keyboard focus from the search bar so its blinking
+            // caret doesn't appear - the user is browsing, not typing a query.
+            juce::Component::unfocusAllComponents();
+            resized();
+        }
+    };
+
+    chainView.onSlotViewPlugin = [this](int slotIndex)
+    {
+        // Double-clicking a chain slot's image should open that plugin's editor.
+        auto& slot = processor.getChainSlot(slotIndex);
+        auto& activeHost = slot.getActiveHost();
+        if (!activeHost.hasLoadedPlugin())
+            return;
+
+        processor.setCurrentSelectedSlot(slotIndex);
+        chainView.setChainState(processor);
+        clearPendingLoadTarget();
+
+        hostedPluginView.setPluginHost(&activeHost);
+        hostedPluginView.showPluginEditor();
+
+        ABSlot slotAB = processor.getSlotActiveAB(slotIndex);
+        abSwitch.setActiveSlot(slotAB == ABSlot::B);
+
+        if (browserMode)
+        {
+            defaultBrowserSize = getBounds();
+            browserMode = false;
+            toggleModeButton.setButtonText("Browser");
+        }
+        resized();
+        juce::MessageManager::callAsync([this]() { resizeForPlugin(); });
     };
 
     chainView.onSlotReorder = [this](int fromIndex, int toIndex)
     {
+        pushUndoSnapshot();
         processor.reorderSlots(fromIndex, toIndex);
         processor.updateParameterDistribution();
         chainView.setChainState(processor);
@@ -669,6 +752,12 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
 
 PluginAllianceLauncherEditor::~PluginAllianceLauncherEditor()
 {
+    // Drop our LookAndFeel from anything that uses it before its members are destroyed.
+    // (LookAndFeel members are declared after the components, so they would be destroyed
+    // first - leaving children with dangling L&F pointers.)
+    sidebarViewport.getVerticalScrollBar().setLookAndFeel(nullptr);
+    pluginListView.setScrollBarLookAndFeel(nullptr);
+
     processor.getPluginScanner().removeChangeListener(this);
     stopTimer();
 }
@@ -789,6 +878,14 @@ void PluginAllianceLauncherEditor::resized()
     // Skip sidebar area (logo is there)
     topBar.removeFromLeft(sidebarWidth - 10);  // -10 because we already reduced by 10
 
+    // Undo / Redo buttons - sit immediately after the logo, visible in both modes.
+    undoButton.setBounds(topBar.removeFromLeft(60));
+    topBar.removeFromLeft(4);
+    redoButton.setBounds(topBar.removeFromLeft(60));
+    topBar.removeFromLeft(12);
+    undoButton.setVisible(true);
+    redoButton.setVisible(true);
+
     // Settings button (gear icon) - rightmost
     settingsButton.setBounds(topBar.removeFromRight(36));
     topBar.removeFromRight(8);
@@ -846,7 +943,7 @@ void PluginAllianceLauncherEditor::resized()
         // Show Browser/Plugin toggle if a plugin is loaded
         if (processor.getLoadedSlotCount() > 0)
         {
-            toggleModeButton.setButtonText("Show Plugin");
+            toggleModeButton.setButtonText("View Plugin");
             toggleModeButton.setVisible(true);
             toggleModeButton.setBounds(topBar.removeFromRight(100));
             topBar.removeFromRight(8);
@@ -935,6 +1032,7 @@ void PluginAllianceLauncherEditor::resized()
         subcategoryFilter.setVisible(hasSubcategories);
 
         auto sidebar = bounds.removeFromLeft(sidebarWidth);
+        sidebar.removeFromTop(6);  // Breathing room above the sidebar (and its scrollbar)
 
         // Categories: 18 items * 30px row height + 8px padding
         int categoryHeight = 18 * 30 + 8;
@@ -984,7 +1082,21 @@ void PluginAllianceLauncherEditor::resized()
         subscriptionLabel.setBounds(startX, bannerArea.getY() + (bannerHeight - 24) / 2, labelWidth, 24);
         subscribeButton.setBounds(startX + labelWidth + 12, bannerArea.getY() + (bannerHeight - 28) / 2, buttonWidth, 28);
 
-        // Plugin list takes the remaining content area
+        // Load-target banner sits at the top of the plugin list area when active.
+        if (pendingLoadTarget.has_value())
+        {
+            auto banner = bounds.removeFromTop(28);
+            loadTargetBanner.setBounds(banner);
+            loadTargetBanner.setVisible(true);
+        }
+        else
+        {
+            loadTargetBanner.setVisible(false);
+        }
+
+        // Plugin list takes the full remaining content area - the breathing room
+        // above the grid is added INSIDE pluginListView so the grey background
+        // extends all the way up (no dark band behind the cards).
         pluginListView.setBounds(bounds);
         pluginListView.setVisible(true);
         hostedPluginView.setVisible(false);
@@ -1002,6 +1114,7 @@ void PluginAllianceLauncherEditor::resized()
         subscriptionLabel.setVisible(false);
         subscribeButton.setVisible(false);
         detailsLoadButton.setVisible(false);
+        loadTargetBanner.setVisible(false);
 
         // Hosted plugin view takes the full area below top bar
         hostedPluginView.setBounds(bounds);
@@ -1412,27 +1525,46 @@ void PluginAllianceLauncherEditor::loadSelectedPlugin(const PluginInfo& info)
         return;
     }
 
-    // Show loading indicator immediately
-    isLoadingPlugin = true;
-    loadingPluginName = info.description.name;
-    repaint();
-
-    // Find the next available chain slot
+    // Resolve target slot/host:
+    //   1. pendingLoadTarget (set when user clicked an empty A or B on a chain slot)
+    //   2. currently selected slot's active A/B host (so re-selecting + Load replaces it)
+    //   3. next empty + slot (the legacy default)
     int targetChainSlot = -1;
-    for (int i = 0; i < kMaxChainSlots; ++i)
+    ABSlot targetABSlot = ABSlot::A;
+
+    if (pendingLoadTarget.has_value())
     {
-        if (!processor.hasPluginInSlot(i))
+        targetChainSlot = pendingLoadTarget->slotIndex;
+        targetABSlot = pendingLoadTarget->abSlot;
+    }
+    else
+    {
+        int sel = processor.getCurrentSelectedSlot();
+        if (sel >= 0 && sel < kMaxChainSlots && processor.hasPluginInSlot(sel))
         {
-            targetChainSlot = i;
-            break;
+            // The selected chain slot has a plugin in either A or B - target its active host.
+            // The user explicitly picked this slot, so a Load click means "swap THIS slot".
+            targetChainSlot = sel;
+            targetABSlot = processor.getSlotActiveAB(sel);
+        }
+        else
+        {
+            // Fall back to next empty + slot.
+            for (int i = 0; i < kMaxChainSlots; ++i)
+            {
+                if (!processor.hasPluginInSlot(i))
+                {
+                    targetChainSlot = i;
+                    break;
+                }
+            }
+            targetABSlot = abSwitch.isSlotBActive() ? ABSlot::B : ABSlot::A;
         }
     }
 
     // If chain is full, show error
     if (targetChainSlot == -1)
     {
-        isLoadingPlugin = false;
-        loadingPluginName.clear();
         juce::AlertWindow::showMessageBoxAsync(
             juce::AlertWindow::WarningIcon,
             "Chain Full",
@@ -1442,10 +1574,101 @@ void PluginAllianceLauncherEditor::loadSelectedPlugin(const PluginInfo& info)
         return;
     }
 
-    // Determine which A/B slot to load into based on A/B switch state
-    ABSlot targetABSlot = abSwitch.isSlotBActive() ? ABSlot::B : ABSlot::A;
+    // If the target host already has a plugin loaded, ask before replacing - the user
+    // may have unsaved tweaks they don't want to lose.
+    auto& slot = processor.getChainSlot(targetChainSlot);
+    auto& targetHost = (targetABSlot == ABSlot::A) ? slot.hostA : slot.hostB;
+    if (targetHost.hasLoadedPlugin())
+    {
+        auto* existingDesc = targetHost.getLoadedPluginDescription();
+        juce::String existingName = (existingDesc != nullptr) ? existingDesc->name : juce::String("the existing plugin");
+        const char abChar = (targetABSlot == ABSlot::B) ? 'B' : 'A';
+        juce::String message = juce::String::formatted("Replace Slot %d (%c) ", targetChainSlot + 1, abChar)
+            + existingName + " with " + info.description.name + "?";
 
-    // Store the plugin info and target slot for the async load
+        auto pluginCopy = info;
+        int slotCopy = targetChainSlot;
+        ABSlot abCopy = targetABSlot;
+
+        auto* alertWindow = new juce::AlertWindow(
+            "Replace Plugin?", message, juce::AlertWindow::NoIcon);
+        alertWindow->setLookAndFeel(&alertLookAndFeel);
+        alertWindow->getProperties().set("paMessage", message);
+        alertWindow->addButton("Replace", 1, juce::KeyPress(juce::KeyPress::returnKey));
+        alertWindow->addButton("Cancel",  0, juce::KeyPress(juce::KeyPress::escapeKey));
+        // Fixed size with generous padding around the centred title + single-line message + buttons.
+        alertWindow->setSize(520, 200);
+        alertWindow->enterModalState(true,
+            juce::ModalCallbackFunction::create([this, pluginCopy, slotCopy, abCopy](int result)
+            {
+                if (result == 1)
+                    performLoad(pluginCopy, slotCopy, abCopy);
+            }),
+            true);  // deleteWhenDismissed
+        return;
+    }
+
+    performLoad(info, targetChainSlot, targetABSlot);
+}
+
+void PluginAllianceLauncherEditor::loadSelectedPluginToNextEmpty(const PluginInfo& info)
+{
+    // The "+" Add button path - always target the next empty slot, regardless
+    // of which slot is currently selected.
+    if (!info.isInstalled)
+    {
+        juce::AlertWindow::showMessageBoxAsync(
+            juce::AlertWindow::InfoIcon,
+            "Plugin Not Installed",
+            "This plugin is not installed on your system.\n\nVisit plugin-alliance.com to purchase and download it.",
+            "OK"
+        );
+        return;
+    }
+
+    int targetChainSlot = -1;
+    for (int i = 0; i < kMaxChainSlots; ++i)
+    {
+        if (!processor.hasPluginInSlot(i))
+        {
+            targetChainSlot = i;
+            break;
+        }
+    }
+    if (targetChainSlot == -1)
+    {
+        juce::AlertWindow::showMessageBoxAsync(
+            juce::AlertWindow::WarningIcon,
+            "Chain Full",
+            "All 8 chain slots are filled. Remove a plugin before adding a new one.",
+            "OK"
+        );
+        return;
+    }
+
+    ABSlot targetABSlot = abSwitch.isSlotBActive() ? ABSlot::B : ABSlot::A;
+    performLoad(info, targetChainSlot, targetABSlot);
+}
+
+void PluginAllianceLauncherEditor::performLoad(const PluginInfo& info, int targetChainSlot, ABSlot targetABSlot)
+{
+    // Snapshot before mutating the chain so the user can undo this load/replace.
+    pushUndoSnapshot();
+
+    // Consume the pending load target if it was the source of this load.
+    if (pendingLoadTarget.has_value()
+        && pendingLoadTarget->slotIndex == targetChainSlot
+        && pendingLoadTarget->abSlot == targetABSlot)
+    {
+        pendingLoadTarget.reset();
+        updateLoadTargetBanner();
+    }
+
+    // Show loading indicator
+    isLoadingPlugin = true;
+    loadingPluginName = info.description.name;
+    repaint();
+
     auto pluginToLoad = info;
 
     // Defer the actual loading to allow the UI to update with the loading indicator
@@ -1521,6 +1744,8 @@ void PluginAllianceLauncherEditor::loadSelectedPlugin(const PluginInfo& info)
 
 void PluginAllianceLauncherEditor::toggleBrowserMode()
 {
+    clearPendingLoadTarget();
+
     if (browserMode)
     {
         // Switching from browser to plugin mode
@@ -1539,7 +1764,7 @@ void PluginAllianceLauncherEditor::toggleBrowserMode()
     {
         // Switching from plugin to browser mode
         browserMode = true;
-        toggleModeButton.setButtonText("Show Plugin");
+        toggleModeButton.setButtonText("View Plugin");
 
         // Restore browser size
         resizeForBrowser();
@@ -1588,6 +1813,127 @@ void PluginAllianceLauncherEditor::toggleABSlot()
             resizeForPlugin();
         });
     }
+}
+
+void PluginAllianceLauncherEditor::clearPendingLoadTarget()
+{
+    if (pendingLoadTarget.has_value())
+    {
+        pendingLoadTarget.reset();
+        updateLoadTargetBanner();
+    }
+}
+
+void PluginAllianceLauncherEditor::updateLoadTargetBanner()
+{
+    if (pendingLoadTarget.has_value())
+    {
+        const char abChar = (pendingLoadTarget->abSlot == ABSlot::B) ? 'B' : 'A';
+        loadTargetBanner.setText(
+            juce::String::formatted("Loading into Slot %d (%c)    click a plugin's Load button below",
+                                    pendingLoadTarget->slotIndex + 1, abChar),
+            juce::dontSendNotification);
+        loadTargetBanner.setVisible(true);
+    }
+    else
+    {
+        loadTargetBanner.setVisible(false);
+    }
+    resized();
+}
+
+void PluginAllianceLauncherEditor::pushUndoSnapshot()
+{
+    if (applyingUndoOrRedo)
+        return;  // Don't snapshot while applying an undo/redo
+
+    juce::MemoryBlock block;
+    processor.getStateInformation(block);
+    undoStack.push_back(std::move(block));
+    if ((int)undoStack.size() > kUndoStackCap)
+        undoStack.erase(undoStack.begin());
+    redoStack.clear();  // A new branch invalidates the redo history
+    updateUndoButtonStates();
+}
+
+void PluginAllianceLauncherEditor::doUndo()
+{
+    if (undoStack.empty())
+        return;
+
+    juce::MemoryBlock current;
+    processor.getStateInformation(current);
+    redoStack.push_back(std::move(current));
+
+    auto target = std::move(undoStack.back());
+    undoStack.pop_back();
+    applyStateBlock(target);
+    updateUndoButtonStates();
+}
+
+void PluginAllianceLauncherEditor::doRedo()
+{
+    if (redoStack.empty())
+        return;
+
+    juce::MemoryBlock current;
+    processor.getStateInformation(current);
+    undoStack.push_back(std::move(current));
+
+    auto target = std::move(redoStack.back());
+    redoStack.pop_back();
+    applyStateBlock(target);
+    updateUndoButtonStates();
+}
+
+void PluginAllianceLauncherEditor::applyStateBlock(const juce::MemoryBlock& block)
+{
+    applyingUndoOrRedo = true;
+
+    // Tear down the visible plugin editor before swapping plugin instances.
+    hostedPluginView.hidePluginEditor();
+    processor.setStateInformation(block.getData(), (int)block.getSize());
+
+    // Refresh UI to reflect the restored state.
+    chainView.setChainState(processor);
+    clearPendingLoadTarget();
+
+    int sel = processor.getCurrentSelectedSlot();
+    if (sel >= 0 && sel < kMaxChainSlots && processor.hasPluginInSlot(sel))
+    {
+        auto& slot = processor.getChainSlot(sel);
+        auto& host = slot.getActiveHost();
+        hostedPluginView.setPluginHost(&host);
+        if (!browserMode)
+            hostedPluginView.showPluginEditor();
+
+        if (auto* desc = host.getLoadedPluginDescription())
+            pluginListView.setLoadedPluginId(desc->fileOrIdentifier);
+
+        abSwitch.setActiveSlot(processor.getSlotActiveAB(sel) == ABSlot::B);
+    }
+    else
+    {
+        pluginListView.setLoadedPluginId({});
+        abSwitch.setActiveSlot(false);
+        if (!browserMode)
+        {
+            // Nothing to show - fall back to browser
+            browserMode = true;
+            toggleModeButton.setButtonText("View Plugin");
+            resizeForBrowser();
+        }
+    }
+
+    resized();
+    repaint();
+    applyingUndoOrRedo = false;
+}
+
+void PluginAllianceLauncherEditor::updateUndoButtonStates()
+{
+    undoButton.setEnabled(!undoStack.empty());
+    redoButton.setEnabled(!redoStack.empty());
 }
 
 void PluginAllianceLauncherEditor::paintDetailsPanel(juce::Graphics& g, juce::Rectangle<int> bounds)

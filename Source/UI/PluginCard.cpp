@@ -219,8 +219,10 @@ void PluginCard::paint(juce::Graphics& g)
         g.strokePath(starPath, juce::PathStrokeType(1.5f));
     }
 
-    // Darken entire card on hover or when loaded (drawn last, button is a child component so stays bright)
-    if (hovered || isLoadedPlugin)
+    // Darken entire card on hover so the Load button reads better against the dimmed art.
+    // (We intentionally do NOT dim "already loaded" plugins - the user must be free to load
+    // the same plugin into another slot or the B host without the card looking unavailable.)
+    if (hovered)
     {
         g.setColour(juce::Colour(0x40000000));  // Subtle semi-transparent black overlay
         g.fillRoundedRectangle(bounds, 6.0f);
@@ -324,8 +326,6 @@ void PluginCard::setLoaded(bool loaded)
     if (isLoadedPlugin != loaded)
     {
         isLoadedPlugin = loaded;
-        loadButton.setButtonText(loaded ? "View" : "Load");
-        loadButton.setVisible(loaded);  // Always show button when loaded
         repaint();
     }
 }
