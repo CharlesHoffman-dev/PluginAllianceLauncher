@@ -30,6 +30,17 @@ public:
     // Update individual slot's A/B button state
     void updateSlotABButton(int slotIndex, ABSlot newSlot);
 
+    // Highlight the "+" Add button with a solid cyan border to indicate that the
+    // next Load click will land in this empty slot.
+    void setAddButtonHighlighted(bool highlighted)
+    {
+        if (addButton.getToggleState() != highlighted)
+        {
+            addButton.setToggleState(highlighted, juce::dontSendNotification);
+            addButton.repaint();
+        }
+    }
+
     // Update meter levels (called from processor during audio processing)
     void updateMeterLevels(int meterIndex, float leftPeak, float rightPeak);
 

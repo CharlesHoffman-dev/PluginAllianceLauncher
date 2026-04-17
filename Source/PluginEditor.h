@@ -314,8 +314,10 @@ public:
                        bool isScrollbarVertical, int thumbStartPosition, int thumbSize,
                        bool /*isMouseOver*/, bool /*isMouseDown*/) override
     {
-        // Track - subtle dark stripe spanning the whole bounds
-        g.setColour(juce::Colour(0xff1f1f1f));
+        // Track colour - read from the scrollbar's own trackColourId so each bar
+        // can pick a track shade that suits its parent background.
+        g.setColour(scrollbar.findColour(juce::ScrollBar::trackColourId,
+                                         /*inheritFromParent*/ false));
         g.fillRect(juce::Rectangle<int>(x, y, width, height));
 
         // Thumb - always solid cyan, no hover / drag shading.

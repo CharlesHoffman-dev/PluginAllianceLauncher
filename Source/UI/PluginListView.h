@@ -49,6 +49,9 @@ public:
     // Extra top padding for the scrollbar's thumb (read by CyanScrollBarLookAndFeel)
     void setScrollBarExtraTopPad(int px) { verticalScrollBar.getProperties().set("extraTopPad", px); }
 
+    // Track colour for the internal scrollbar (read by CyanScrollBarLookAndFeel).
+    void setScrollBarTrackColour(juce::Colour c) { verticalScrollBar.setColour(juce::ScrollBar::trackColourId, c); }
+
     // Callbacks
     std::function<void(const PluginInfo&)> onPluginSelected;
     std::function<void(const PluginInfo&)> onPluginDoubleClick;

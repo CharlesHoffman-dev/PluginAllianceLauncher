@@ -29,13 +29,27 @@ PluginChainView::PluginChainView()
             g.setColour(juce::Colours::white);
             g.fillRoundedRectangle(bounds, 6.0f);
 
-            // Draw dashed border following the rounded rectangle outline
-            g.setColour(juce::Colour(0xffc0c0c0));
+            // When the button is "highlighted" (toggle state on), draw a solid cyan
+            // border instead of the dashed grey one - this signals that the next
+            // Load click will land in this + slot.
+            const bool highlighted = button.getToggleState();
 
             float cornerRadius = 6.0f;
             float strokeWidth = 2.0f;
             float dashLength = 6.0f;
             float gapLength = 4.0f;
+
+            if (highlighted)
+            {
+                // Solid cyan border, matches the selected chain-slot border.
+                g.setColour(juce::Colour(0xff0cbff2));
+                g.drawRoundedRectangle(bounds, cornerRadius, 2.0f);
+            }
+            else
+            {
+                // Default dashed grey border drawn below.
+                g.setColour(juce::Colour(0xffc0c0c0));
+            }
 
             // Create the rounded rectangle path
             juce::Path borderPath;
@@ -46,9 +60,10 @@ PluginChainView::PluginChainView()
             float height = bounds.getHeight();
             float perimeter = 2.0f * (width + height) - 8.0f * cornerRadius + 2.0f * juce::MathConstants<float>::pi * cornerRadius;
 
-            // Draw dashes along the perimeter
+            // Draw dashes along the perimeter (skipped when highlighted - cyan
+            // border is drawn solid above instead).
             float dashUnit = dashLength + gapLength;
-            int numDashes = static_cast<int>(perimeter / dashUnit);
+            int numDashes = highlighted ? 0 : static_cast<int>(perimeter / dashUnit);
 
             for (int i = 0; i < numDashes; ++i)
             {

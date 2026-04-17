@@ -36,6 +36,7 @@ static HostedViewButtonLookAndFeel hostedViewButtonLookAndFeel;
 HostedPluginView::HostedPluginView()
 {
     editorViewport.setScrollBarsShown(false, false);
+    editorViewport.setViewedComponent(&editorWrapper, false);
     addAndMakeVisible(editorViewport);
 
     setOpaque(true);
@@ -63,6 +64,24 @@ void HostedPluginView::resized()
 {
     // Viewport takes the full space
     editorViewport.setBounds(getLocalBounds());
+
+    // Size the wrapper to at least cover the viewport so we have room to centre
+    // the editor; if the editor is wider than the viewport, the wrapper grows so
+    // the viewport scrolls.
+    int viewW = editorViewport.getWidth();
+    int viewH = editorViewport.getHeight();
+    int editorW = pluginEditor != nullptr ? pluginEditor->getWidth()  : 0;
+    int editorH = pluginEditor != nullptr ? pluginEditor->getHeight() : 0;
+    int wrapperW = juce::jmax(viewW, editorW);
+    int wrapperH = juce::jmax(viewH, editorH);
+    editorWrapper.setSize(wrapperW, wrapperH);
+
+    if (pluginEditor != nullptr)
+    {
+        int x = juce::jmax(0, (wrapperW - editorW) / 2);
+        int y = juce::jmax(0, (wrapperH - editorH) / 2);
+        pluginEditor->setBounds(x, y, editorW, editorH);
+    }
 }
 
 void HostedPluginView::setPluginHost(PluginHost* host)
@@ -99,7 +118,9 @@ void HostedPluginView::showPluginEditor()
             cachedEditorWidth = pluginEditor->getWidth();
             cachedEditorHeight = pluginEditor->getHeight();
 
-            editorViewport.setViewedComponent(pluginEditor.get(), false);
+            // Add the plugin editor inside the wrapper (not directly in the viewport)
+            // so resized() can centre it horizontally.
+            editorWrapper.addAndMakeVisible(pluginEditor.get());
             resized();
         }
     }
@@ -111,7 +132,7 @@ void HostedPluginView::hidePluginEditor()
 {
     if (pluginEditor != nullptr)
     {
-        editorViewport.setViewedComponent(nullptr, false);
+        editorWrapper.removeChildComponent(pluginEditor.get());
         pluginEditor.reset();
     }
 

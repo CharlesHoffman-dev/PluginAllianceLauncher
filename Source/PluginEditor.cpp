@@ -36,6 +36,14 @@ static const char* logoSvgData = R"SVG(
 PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLauncherProcessor& p)
     : AudioProcessorEditor(&p), processor(p)
 {
+    // Route all DBG()/Logger output to a file so we can capture it for debugging
+    // load-target issues. The file lives next to the project root.
+    static juce::FileLogger* fileLogger = juce::FileLogger::createDateStampedLogger(
+        "PluginAllianceLauncher", "launcher-debug-", ".log",
+        "Plugin Alliance Launcher debug log");
+    if (fileLogger != nullptr)
+        juce::Logger::setCurrentLogger(fileLogger);
+
     // Load logo
     loadLogo();
 
@@ -193,6 +201,9 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     sidebarViewport.setScrollBarThickness(14);  // Match the plugin list scrollbar width
     sidebarViewport.setViewedComponent(&sidebarContent, false);  // Don't delete on destruction
     sidebarViewport.getVerticalScrollBar().setLookAndFeel(&scrollBarLookAndFeel);
+    // Sidebar lives on a dark background, so its scrollbar track stays dark.
+    sidebarViewport.getVerticalScrollBar().setColour(
+        juce::ScrollBar::trackColourId, juce::Colour(0xff1f1f1f));
     addAndMakeVisible(sidebarViewport);
 
     // Use the constant-shade cyan scrollbar in the plugin list as well.
@@ -201,6 +212,9 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     // BLUE thumb should start visually in line with the first card row, matching
     // the gap above the sidebar's scrollbar.
     pluginListView.setScrollBarExtraTopPad(8);
+    // The plugin grid background is #f9f9f9; pick a track colour that's a touch
+    // darker than that so the track reads as a subtle divider, not a black bar.
+    pluginListView.setScrollBarTrackColour(juce::Colour(0xffe8e8e8));
 
     // Set up category filter
     categoryFilter.onCategoryChanged = [this](DisplayCategory category)
@@ -480,22 +494,40 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
 
     chainView.onAddSlot = [this]()
     {
-        // Clicking + always means "next empty slot", so cancel any pending A/B target.
-        clearPendingLoadTarget();
+        // Clicking + targets the next empty chain slot. Mark it active (cyan
+        // border around the + button + banner) and switch to the browser so the
+        // user can pick a plugin. The next Load click will land in this slot.
+        int nextEmpty = -1;
+        for (int i = 0; i < kMaxChainSlots; ++i)
+        {
+            if (!processor.hasPluginInSlot(i))
+            {
+                nextEmpty = i;
+                break;
+            }
+        }
+        if (nextEmpty == -1)
+        {
+            juce::AlertWindow::showMessageBoxAsync(
+                juce::AlertWindow::WarningIcon,
+                "Chain Full",
+                "All 8 chain slots are filled. Remove a plugin before adding a new one.",
+                "OK");
+            return;
+        }
 
-        if (browserMode && selectedPlugin != nullptr)
+        pendingLoadTarget = LoadTarget{ nextEmpty, ABSlot::A };
+        chainView.setAddButtonHighlighted(true);
+        updateLoadTargetBanner();
+
+        if (!browserMode)
         {
-            // In browser mode, load the currently selected plugin into the next empty slot
-            // (bypassing the selected-slot replace logic).
-            loadSelectedPluginToNextEmpty(*selectedPlugin);
-        }
-        else
-        {
-            // In plugin mode, switch to browser
             browserMode = true;
+            toggleModeButton.setButtonText("View Plugin");
             resizeForBrowser();
-            resized();
         }
+        juce::Component::unfocusAllComponents();
+        resized();
     };
 
     chainView.onToggleAB = [this](int slotIndex, ABSlot newSlot)
@@ -1138,8 +1170,18 @@ void PluginAllianceLauncherEditor::resizeForPlugin()
     if (chainViewVisible)
         requiredHeight += chainViewHeight;
 
+    // Top bar in plugin mode:
+    //   left  : sidebar/logo (180) + Undo (60) + 4 + Redo (60) + 12   = 316
+    //   right : settings (36) + 8 + A/B (56) + 8 + Remove (70) + 8
+    //         + Chain (70) + 8 + Browser (80) + 8                      = 352
+    //   centre: preset combo (120) + 4 + save (60)                     = 184
+    //   outer padding 10 px each side                                  =  20
+    // Total ~872 px - bump to 900 to leave a little breathing room so
+    // adjacent buttons never visually touch.
+    constexpr int kPluginModeMinWidth = 900;
+
     // Apply minimum sizes and constraints
-    requiredWidth = juce::jmax(requiredWidth, 400);
+    requiredWidth = juce::jmax(requiredWidth, kPluginModeMinWidth);
     requiredHeight = juce::jmax(requiredHeight, 300);
 
     // Limit to reasonable maximums
@@ -1151,7 +1193,7 @@ void PluginAllianceLauncherEditor::resizeForPlugin()
     setSize(requiredWidth, requiredHeight);
 
     // Re-apply resize limits without aspect ratio
-    setResizeLimits(400, 300, 2200, 1500);
+    setResizeLimits(kPluginModeMinWidth, 300, 2200, 1500);
 }
 
 void PluginAllianceLauncherEditor::resizeForBrowser()
@@ -1159,8 +1201,10 @@ void PluginAllianceLauncherEditor::resizeForBrowser()
     int width = defaultBrowserSize.getWidth();
     int height = defaultBrowserSize.getHeight();
 
-    // Enforce minimum width: sidebar + 2 plugin columns + details panel + scrollbar + padding
-    static constexpr int minBrowserWidth = sidebarWidth + 2 * (PluginCard::preferredWidth + 6) + detailsPanelWidth + 14 + 20;
+    // Browser min width matches the default launch width so all top-bar items
+    // (logo + Undo + Redo + search + filters + Browser/Chain/Remove + A/B + settings)
+    // are guaranteed to fit without overlap.
+    const int minBrowserWidth = defaultBrowserSize.getWidth();
 
     // Re-apply resize limits for browser mode
     setResizeLimits(minBrowserWidth, 600, 2200, 1500);
@@ -1513,6 +1557,17 @@ void PluginAllianceLauncherEditor::refreshPluginsPreservingScroll()
 
 void PluginAllianceLauncherEditor::loadSelectedPlugin(const PluginInfo& info)
 {
+    {
+        juce::String s;
+        s << "loadSelectedPlugin: plugin='" << info.description.name
+          << "' pendingLoadTarget=" << (pendingLoadTarget.has_value()
+                ? juce::String("(slot=") + juce::String(pendingLoadTarget->slotIndex)
+                    + ", ab=" + (pendingLoadTarget->abSlot == ABSlot::A ? "A" : "B") + ")"
+                : juce::String("<none>"))
+          << " selectedSlot=" << processor.getCurrentSelectedSlot();
+        juce::Logger::writeToLog(s);
+    }
+
     // Check if the plugin is installed before attempting to load
     if (!info.isInstalled)
     {
@@ -1652,6 +1707,15 @@ void PluginAllianceLauncherEditor::loadSelectedPluginToNextEmpty(const PluginInf
 
 void PluginAllianceLauncherEditor::performLoad(const PluginInfo& info, int targetChainSlot, ABSlot targetABSlot)
 {
+    {
+        juce::String s;
+        s << "performLoad: requested plugin='" << info.description.name
+          << "' fileOrIdentifier='" << info.description.fileOrIdentifier
+          << "' -> slot=" << targetChainSlot
+          << " ab=" << (targetABSlot == ABSlot::A ? "A" : "B");
+        juce::Logger::writeToLog(s);
+    }
+
     // Snapshot before mutating the chain so the user can undo this load/replace.
     pushUndoSnapshot();
 
@@ -1661,6 +1725,7 @@ void PluginAllianceLauncherEditor::performLoad(const PluginInfo& info, int targe
         && pendingLoadTarget->abSlot == targetABSlot)
     {
         pendingLoadTarget.reset();
+        chainView.setAddButtonHighlighted(false);
         updateLoadTargetBanner();
     }
 
@@ -1670,17 +1735,64 @@ void PluginAllianceLauncherEditor::performLoad(const PluginInfo& info, int targe
     repaint();
 
     auto pluginToLoad = info;
+    {
+        juce::String s;
+        s << "performLoad: pluginToLoad COPY name='" << pluginToLoad.description.name
+          << "' fileOrIdentifier='" << pluginToLoad.description.fileOrIdentifier
+          << "' (info.description.name='" << info.description.name << "')";
+        juce::Logger::writeToLog(s);
+    }
 
     // Defer the actual loading to allow the UI to update with the loading indicator
     juce::MessageManager::callAsync([this, pluginToLoad, targetChainSlot, targetABSlot]()
     {
+        {
+            juce::String s;
+            s << "performLoad async ENTRY: pluginToLoad name='" << pluginToLoad.description.name
+              << "' fileOrIdentifier='" << pluginToLoad.description.fileOrIdentifier << "'";
+            juce::Logger::writeToLog(s);
+        }
         // IMPORTANT: Hide the current editor BEFORE loading a new plugin
         // The editor holds a reference to the AudioPluginInstance, so it must be
         // destroyed before we unload/replace the plugin instance
         hostedPluginView.hidePluginEditor();
 
         // Load to the target chain slot and A/B slot
+        {
+            juce::String s;
+            s << "performLoad async: loading '" << pluginToLoad.description.name
+              << "' fileOrIdentifier='" << pluginToLoad.description.fileOrIdentifier
+              << "' into slot=" << targetChainSlot
+              << " ab=" << (targetABSlot == ABSlot::A ? "A" : "B");
+            juce::Logger::writeToLog(s);
+        }
         bool success = processor.loadPluginToSlot(targetChainSlot, targetABSlot, pluginToLoad.description);
+        if (success)
+        {
+            auto& slot = processor.getChainSlot(targetChainSlot);
+            auto& host = (targetABSlot == ABSlot::A) ? slot.hostA : slot.hostB;
+            auto* loadedDesc = host.getLoadedPluginDescription();
+            juce::String s;
+            s << "performLoad async: load OK. slot " << targetChainSlot
+              << " activeAB=" << (slot.activeSlot == ABSlot::A ? "A" : "B")
+              << " stored desc name='" << (loadedDesc ? loadedDesc->name : juce::String("<empty>")) << "'";
+            // The instance's getName() comes from the actually-instantiated VST3,
+            // so if the disk file was mislabelled or JUCE picked the wrong factory
+            // out of a multi-plugin .vst3 bundle, this is where it'd show up.
+            if (auto* instance = host.getLoadedPlugin())
+            {
+                s << " ACTUAL instance name='" << instance->getName() << "'";
+                juce::PluginDescription instDesc;
+                instance->fillInPluginDescription(instDesc);
+                s << " ACTUAL instance fileOrIdentifier='" << instDesc.fileOrIdentifier
+                  << "' uid=" << (int)instDesc.uniqueId;
+            }
+            juce::Logger::writeToLog(s);
+        }
+        else
+        {
+            juce::Logger::writeToLog("performLoad async: load FAILED");
+        }
 
         // Clear loading state
         isLoadingPlugin = false;
@@ -1688,11 +1800,17 @@ void PluginAllianceLauncherEditor::performLoad(const PluginInfo& info, int targe
 
         if (success)
         {
-            // Select the newly loaded slot
+            // Select the newly loaded slot AND mark the host we just loaded into
+            // as the slot's active A/B - otherwise getActiveHost() would still
+            // return the previously-active host (e.g. loading into B but A is
+            // marked active would show A's plugin in the editor).
             processor.setCurrentSelectedSlot(targetChainSlot);
+            processor.setSlotActiveAB(targetChainSlot, targetABSlot);
 
-            // Update hosted plugin view to point to the new slot's active host
-            hostedPluginView.setPluginHost(&processor.getChainSlot(targetChainSlot).getActiveHost());
+            // Update hosted plugin view to point to the just-loaded host
+            auto& slot = processor.getChainSlot(targetChainSlot);
+            auto& loadedHost = (targetABSlot == ABSlot::A) ? slot.hostA : slot.hostB;
+            hostedPluginView.setPluginHost(&loadedHost);
             hostedPluginView.showPluginEditor();
 
             // Add to recent
@@ -1820,6 +1938,7 @@ void PluginAllianceLauncherEditor::clearPendingLoadTarget()
     if (pendingLoadTarget.has_value())
     {
         pendingLoadTarget.reset();
+        chainView.setAddButtonHighlighted(false);
         updateLoadTargetBanner();
     }
 }

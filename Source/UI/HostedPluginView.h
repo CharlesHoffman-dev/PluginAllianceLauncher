@@ -41,6 +41,9 @@ private:
     std::unique_ptr<juce::AudioProcessorEditor> pluginEditor;
 
     juce::Viewport editorViewport;
+    // Wrapper component that the viewport scrolls; we centre the plugin editor
+    // horizontally inside it so narrow plugins don't get pinned to the left edge.
+    juce::Component editorWrapper;
 
     // Cache the initial editor size to prevent auto-resizing plugins from growing
     int cachedEditorWidth = 0;
