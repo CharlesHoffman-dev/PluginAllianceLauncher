@@ -507,9 +507,13 @@ private:
     void updatePluginList();
     void filterPlugins();
     void refreshPluginsPreservingScroll();  // For favorites toggle - doesn't reset scroll
-    void loadSelectedPlugin(const PluginInfo& info);
-    void loadSelectedPluginToNextEmpty(const PluginInfo& info);  // + Add button path
-    void performLoad(const PluginInfo& info, int targetChainSlot, ABSlot targetABSlot);
+    // PluginInfo is taken by value (not const&) so the caller's reference - which
+    // may live inside a PluginCard whose lifetime is shorter than this call when
+    // updateLoadTargetBanner -> resized() rebuilds the visible card grid - cannot
+    // dangle midway through and clobber the descriptor we end up loading.
+    void loadSelectedPlugin(PluginInfo info);
+    void loadSelectedPluginToNextEmpty(PluginInfo info);  // + Add button path
+    void performLoad(PluginInfo info, int targetChainSlot, ABSlot targetABSlot);
     void toggleBrowserMode();
     void toggleABSlot();  // Toggle between A and B plugin slots
     void refreshPresetDropdown();  // Rebuild preset dropdown menu

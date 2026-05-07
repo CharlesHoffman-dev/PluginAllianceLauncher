@@ -34,28 +34,10 @@ void ChainMeterCard::paint(juce::Graphics& g)
 
     auto contentBounds = getLocalBounds();
 
-    // AUTO button at top
-    contentBounds.removeFromTop(4);
-    autoButtonBounds = contentBounds.removeFromTop(14).reduced(8, 0);
-
-    // Draw AUTO button
-    if (autoGainEnabled)
-    {
-        g.setColour(juce::Colour(0xff0cbff2));
-        g.fillRoundedRectangle(autoButtonBounds.toFloat(), 3.0f);
-        g.setColour(juce::Colours::white);
-    }
-    else
-    {
-        bool hoverAuto = autoButtonBounds.contains(getMouseXYRelative());
-        g.setColour(hoverAuto ? juce::Colour(0xffc0c0c0) : juce::Colour(0xffe0e0e0));
-        g.fillRoundedRectangle(autoButtonBounds.toFloat(), 3.0f);
-        g.setColour(juce::Colour(0xff999999));
-    }
-    g.setFont(juce::Font(8.0f, juce::Font::bold));
-    g.drawText("AUTO", autoButtonBounds, juce::Justification::centred);
-
-    contentBounds.removeFromTop(2);
+    // Top breathing room. The AUTO toggle button used to sit here; it now
+    // lives on the slot card to the left of this meter (per-slot control).
+    // Reserve the same vertical space so meters stay aligned with slot cards.
+    contentBounds.removeFromTop(20);
 
     // Meter area (L/R side by side)
     auto meterArea = contentBounds.removeFromTop(76);
@@ -181,17 +163,7 @@ void ChainMeterCard::timerCallback()
 
 void ChainMeterCard::mouseDown(const juce::MouseEvent& e)
 {
-    // Check AUTO button click
-    if (autoButtonBounds.contains(e.getPosition()))
-    {
-        autoGainEnabled = !autoGainEnabled;
-        if (onAutoGainToggled)
-            onAutoGainToggled(meterIdx, autoGainEnabled);
-        repaint();
-        return;
-    }
-
-    // Manual gain slider (disabled when auto-gain is active)
+    // Manual gain slider (disabled when auto-gain is active for this slot)
     if (!autoGainEnabled && sliderBounds.contains(e.getPosition()))
     {
         isDraggingSlider = true;

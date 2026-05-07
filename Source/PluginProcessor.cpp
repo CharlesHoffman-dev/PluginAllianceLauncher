@@ -408,6 +408,8 @@ bool PluginAllianceLauncherProcessor::isSlotBypassed(int slotIndex) const
 void PluginAllianceLauncherProcessor::setSlotAutoGain(int slotIndex, bool enabled)
 {
     jassert(slotIndex >= 0 && slotIndex < kMaxChainSlots);
+
+    juce::ScopedLock lock(pluginLock);
     chainSlots[slotIndex].autoGainEnabled = enabled;
 
     if (enabled)
@@ -925,8 +927,19 @@ void PluginAllianceLauncherProcessor::setChainState(const juce::XmlElement& chai
         // Restore bypass state
         chainSlots[slotIndex].bypassed = slotElement->getBoolAttribute("bypassed", false);
 
-        // Restore auto-gain state
-        chainSlots[slotIndex].autoGainEnabled = slotElement->getBoolAttribute("autoGain", false);
+        // Restore auto-gain state. When enabling, also reset the analyzer and
+        // smoothed gain so leftover energy/gain from prior use does not bleed
+        // into the restored slot.
+        bool restoredAutoGain = slotElement->getBoolAttribute("autoGain", false);
+        chainSlots[slotIndex].autoGainEnabled = restoredAutoGain;
+        if (restoredAutoGain)
+        {
+            chainSlots[slotIndex].lufsAnalyzer.reset();
+            chainSlots[slotIndex].lufsAnalyzer.prepare(currentSampleRate, currentBlockSize);
+            chainSlots[slotIndex].smoothedGain.reset(currentSampleRate, 0.3);
+            chainSlots[slotIndex].smoothedGain.setCurrentAndTargetValue(1.0f);
+            chainSlots[slotIndex].currentCorrectionDb = 0.0f;
+        }
 
         // Restore plugins
         if (auto* pluginAElement = slotElement->getChildByName("PluginA"))

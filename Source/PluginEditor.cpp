@@ -451,6 +451,11 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
             resizeForPlugin();
 
         resized();
+        // Force a full editor repaint. resized() alone only marks the chainView's
+        // own bounds dirty, so the editor's paint() (which draws the right
+        // details panel using a chainOffset-aware Y) wouldn't otherwise run, and
+        // the old details panel pixels would linger below the chain view.
+        repaint();
     };
     addAndMakeVisible(chainButton);
 
@@ -602,13 +607,10 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
         chainView.setChainState(processor);
     };
 
-    chainView.onAutoGainToggled = [this](int meterIndex, bool enabled)
+    chainView.onAutoGainToggled = [this](int slotIndex, bool enabled)
     {
-        // Meter index maps to the slot that precedes it:
-        // Meter 0 is before slot 0 (no slot to control)
-        // Meter 1 is after slot 0, Meter 2 is after slot 1, etc.
-        // So auto-gain on meter N controls slot N-1
-        int slotIndex = meterIndex - 1;
+        // The toggle now lives on the slot card itself, so we receive the slot
+        // index directly - no more meter-N-controls-slot-N-1 indirection.
         if (slotIndex >= 0 && slotIndex < kMaxChainSlots)
         {
             processor.setSlotAutoGain(slotIndex, enabled);
@@ -1252,15 +1254,15 @@ void PluginAllianceLauncherEditor::timerCallback()
         chainView.setChainState(processor);
     }
 
-    // Update auto-gain correction display on meter cards (every tick for responsiveness)
+    // Update auto-gain UI state on the slot card (toggle) and its right-hand
+    // meter (correction-dB readout). updateAutoGainState handles both surfaces.
     if (chainViewVisible)
     {
         for (int i = 0; i < kMaxChainSlots; ++i)
         {
-            int meterIndex = i + 1;  // Meter after slot i
             bool autoEnabled = processor.isSlotAutoGainEnabled(i);
             float correctionDb = processor.getSlotCorrectionDb(i);
-            chainView.updateAutoGainState(meterIndex, autoEnabled, correctionDb);
+            chainView.updateAutoGainState(i, autoEnabled, correctionDb);
         }
     }
 
@@ -1555,7 +1557,7 @@ void PluginAllianceLauncherEditor::refreshPluginsPreservingScroll()
     pluginListView.updatePlugins(filtered);
 }
 
-void PluginAllianceLauncherEditor::loadSelectedPlugin(const PluginInfo& info)
+void PluginAllianceLauncherEditor::loadSelectedPlugin(PluginInfo info)
 {
     {
         juce::String s;
@@ -1666,7 +1668,7 @@ void PluginAllianceLauncherEditor::loadSelectedPlugin(const PluginInfo& info)
     performLoad(info, targetChainSlot, targetABSlot);
 }
 
-void PluginAllianceLauncherEditor::loadSelectedPluginToNextEmpty(const PluginInfo& info)
+void PluginAllianceLauncherEditor::loadSelectedPluginToNextEmpty(PluginInfo info)
 {
     // The "+" Add button path - always target the next empty slot, regardless
     // of which slot is currently selected.
@@ -1705,7 +1707,7 @@ void PluginAllianceLauncherEditor::loadSelectedPluginToNextEmpty(const PluginInf
     performLoad(info, targetChainSlot, targetABSlot);
 }
 
-void PluginAllianceLauncherEditor::performLoad(const PluginInfo& info, int targetChainSlot, ABSlot targetABSlot)
+void PluginAllianceLauncherEditor::performLoad(PluginInfo info, int targetChainSlot, ABSlot targetABSlot)
 {
     {
         juce::String s;

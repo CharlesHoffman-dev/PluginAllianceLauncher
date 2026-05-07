@@ -81,24 +81,37 @@ void ChainSlotCard::paint(juce::Graphics& g)
     // Buttons in toolbar
     auto buttonRow = toolbarBounds.reduced(2);
     int buttonSize = 17;
-    int abButtonWidth = 30;  // Wider for A/B segmented control
+    int abButtonWidth = 30;        // Segmented A/B control
+    int autoButtonWidth = 28;      // Auto-gain toggle, sits beside A/B
 
-    // Bypass button (top-left) - Power icon
+    // Bypass button (top-left) - IEC 60417-5009 power glyph: nearly-full circle
+    // with a small gap at 12 o'clock, plus a vertical bar through that gap.
     bypassButtonBounds = buttonRow.removeFromLeft(buttonSize).reduced(1);
     g.setColour(bypassed ? juce::Colour(0xff0cbff2) : juce::Colours::white);
     g.fillRoundedRectangle(bypassButtonBounds.toFloat(), 2.5f);
 
-    // Draw power icon
-    auto iconBounds = bypassButtonBounds.toFloat().reduced(3.5f);
+    auto iconBounds = bypassButtonBounds.toFloat().reduced(3.0f);
     float cx = iconBounds.getCentreX();
-    float cy = iconBounds.getCentreY();
-    float radius = iconBounds.getWidth() / 2.5f;
+    float cy = iconBounds.getCentreY() + 0.5f;  // visually centre after bar extends above
+    float radius = iconBounds.getWidth() * 0.42f;
+    float strokeWidth = 1.4f;
 
     g.setColour(bypassed ? juce::Colours::white : juce::Colours::black);
-    juce::Path powerIcon;
-    powerIcon.addCentredArc(cx, cy, radius, radius, 0.0f, -2.2f, 2.2f, true);
-    g.strokePath(powerIcon, juce::PathStrokeType(1.2f));
-    g.drawLine(cx, cy - radius, cx, cy - radius * 0.3f, 1.2f);
+
+    const float halfGap = 0.42f;  // ~24° half-gap → ~48° total gap at top
+    juce::Path powerArc;
+    powerArc.addCentredArc(cx, cy, radius, radius, 0.0f,
+                           halfGap,
+                           juce::MathConstants<float>::twoPi - halfGap,
+                           true);
+    g.strokePath(powerArc, juce::PathStrokeType(strokeWidth,
+                                                juce::PathStrokeType::curved,
+                                                juce::PathStrokeType::rounded));
+
+    // Vertical bar: starts slightly above the circle, ends a bit shy of centre.
+    g.drawLine(cx, cy - radius - 1.2f,
+               cx, cy - radius * 0.15f,
+               strokeWidth);
 
     // Remove button (top-right)
     removeButtonBounds = buttonRow.removeFromRight(buttonSize).reduced(1);
@@ -108,8 +121,11 @@ void ChainSlotCard::paint(juce::Graphics& g)
     g.setFont(juce::Font(10.0f, juce::Font::bold));
     g.drawText("X", removeButtonBounds, juce::Justification::centred);
 
-    // A/B button - centered in toolbar
-    int abX = buttonRow.getCentreX() - (abButtonWidth / 2);
+    // A/B + AUTO are visually grouped between Bypass and Remove. Place them as
+    // a single centred unit with a small gap so they read as related controls.
+    int groupGap = 4;
+    int groupWidth = abButtonWidth + groupGap + autoButtonWidth;
+    int abX = buttonRow.getCentreX() - (groupWidth / 2);
     abButtonBounds = juce::Rectangle<int>(abX, buttonRow.getY(), abButtonWidth, buttonRow.getHeight()).reduced(1);
     auto abBounds = abButtonBounds.toFloat();
     float halfWidth = abBounds.getWidth() / 2.0f;
@@ -146,6 +162,25 @@ void ChainSlotCard::paint(juce::Graphics& g)
     g.drawText("A", leftBounds.toNearestInt(), juce::Justification::centred);
     g.setColour(abSlot == ABSlot::B ? juce::Colours::white : juce::Colours::grey);
     g.drawText("B", rightBounds.toNearestInt(), juce::Justification::centred);
+
+    // AUTO button - immediately right of the A/B group with a small gap.
+    int autoX = abButtonBounds.getRight() + groupGap;
+    autoGainButtonBounds = juce::Rectangle<int>(autoX, buttonRow.getY(), autoButtonWidth, buttonRow.getHeight()).reduced(1);
+    auto autoBoundsF = autoGainButtonBounds.toFloat();
+    if (autoGainEnabled)
+    {
+        g.setColour(activeColour);
+        g.fillRoundedRectangle(autoBoundsF, cornerSize);
+        g.setColour(juce::Colours::white);
+    }
+    else
+    {
+        g.setColour(inactiveColour);
+        g.fillRoundedRectangle(autoBoundsF, cornerSize);
+        g.setColour(juce::Colours::grey);
+    }
+    g.setFont(juce::Font(7.5f, juce::Font::bold));
+    g.drawText("AUTO", autoGainButtonBounds, juce::Justification::centred);
 
     // Plugin image - square with padding on all sides
     int availableWidth = contentBounds.getWidth();
@@ -226,6 +261,15 @@ void ChainSlotCard::mouseDown(const juce::MouseEvent& e)
         return;
     }
 
+    if (autoGainButtonBounds.contains(e.getPosition()))
+    {
+        autoGainEnabled = !autoGainEnabled;
+        if (onAutoGainToggled)
+            onAutoGainToggled(slotIdx, autoGainEnabled);
+        repaint();
+        return;
+    }
+
     if (removeButtonBounds.contains(e.getPosition()))
     {
         if (onRemove)
@@ -247,6 +291,7 @@ void ChainSlotCard::mouseDoubleClick(const juce::MouseEvent& e)
     // Ignore double-clicks on the toolbar buttons - they're handled by mouseDown.
     if (bypassButtonBounds.contains(e.getPosition())
         || abButtonBounds.contains(e.getPosition())
+        || autoGainButtonBounds.contains(e.getPosition())
         || removeButtonBounds.contains(e.getPosition()))
         return;
 
@@ -290,6 +335,7 @@ void ChainSlotCard::setSlotData(const ChainSlot& slot, int slotIndex, bool isSel
     slotIdx = slotIndex;
     selected = isSelected;
     bypassed = slot.bypassed;
+    autoGainEnabled = slot.autoGainEnabled;
     abSlot = slot.activeSlot;
 
     // Get plugin name from active host
@@ -335,6 +381,15 @@ void ChainSlotCard::setABSlot(ABSlot slot)
     if (abSlot != slot)
     {
         abSlot = slot;
+        repaint();
+    }
+}
+
+void ChainSlotCard::setAutoGainEnabled(bool enabled)
+{
+    if (autoGainEnabled != enabled)
+    {
+        autoGainEnabled = enabled;
         repaint();
     }
 }

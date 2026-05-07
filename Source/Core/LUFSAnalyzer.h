@@ -27,10 +27,9 @@ struct BiquadFilter
     float process(float input)
     {
         double in = static_cast<double>(input);
-        double out = b0 * in + b1 * z1 + b2 * z2 - a1 * z1 - a2 * z2;
 
         // Direct Form II Transposed
-        out = b0 * in + z1;
+        double out = b0 * in + z1;
         z1 = b1 * in - a1 * out + z2;
         z2 = b2 * in - a2 * out;
 
@@ -140,7 +139,10 @@ public:
         blocksWritten = 0;
     }
 
-    // Call BEFORE the plugin processes the buffer
+    // Call BEFORE the plugin processes the buffer.
+    // Accumulates input energy only; sample counting and flushing are driven by
+    // measureOutput so that input/output energy in each flushed block always
+    // covers the same sample range, regardless of host buffer size.
     void measureInput(const juce::AudioBuffer<float>& buffer)
     {
         int numSamples = buffer.getNumSamples();
@@ -155,14 +157,12 @@ public:
                 energy += static_cast<double>(filtered) * static_cast<double>(filtered);
             }
             currentBlockInputEnergy += energy;
-            samplesInBlock++;
-
-            if (samplesInBlock >= blockSampleCount)
-                flushBlock();
         }
     }
 
-    // Call AFTER the plugin processes the buffer
+    // Call AFTER the plugin processes the buffer.
+    // Drives the per-sample counter and triggers flushBlock at block boundaries,
+    // so input and output are paired for the same samples before averaging.
     void measureOutput(const juce::AudioBuffer<float>& buffer)
     {
         int numSamples = buffer.getNumSamples();
@@ -177,6 +177,10 @@ public:
                 energy += static_cast<double>(filtered) * static_cast<double>(filtered);
             }
             currentBlockOutputEnergy += energy;
+            samplesInBlock++;
+
+            if (samplesInBlock >= blockSampleCount)
+                flushBlock();
         }
     }
 

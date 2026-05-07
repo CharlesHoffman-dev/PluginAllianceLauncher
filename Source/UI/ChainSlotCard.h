@@ -45,6 +45,12 @@ public:
     void setABSlot(ABSlot slot);
     ABSlot getABSlot() const { return abSlot; }
 
+    // Auto-gain (LUFS matching) toggle. The cyan correction-dB readout still
+    // lives on the output meter card to its right; only the toggle moved here
+    // since auto-gain is logically a per-slot control like bypass and A/B.
+    void setAutoGainEnabled(bool enabled);
+    bool isAutoGainEnabled() const { return autoGainEnabled; }
+
     // Update image from cache
     void updateImage();
 
@@ -54,6 +60,7 @@ public:
     std::function<void(int slotIndex)> onRemove;
     std::function<void(int slotIndex, bool bypass)> onToggleBypass;
     std::function<void(int slotIndex, ABSlot newSlot)> onToggleAB;
+    std::function<void(int slotIndex, bool enabled)> onAutoGainToggled;
     std::function<void(int slotIndex, juce::Point<int> dragPos)> onDragStart;
     std::function<void(int slotIndex, juce::Point<int> dragPos)> onDragMove;
     std::function<void(int slotIndex)> onDragEnd;
@@ -67,6 +74,7 @@ private:
     bool selected = false;
     bool hovered = false;
     bool bypassed = false;
+    bool autoGainEnabled = false;
     ABSlot abSlot = ABSlot::A;
     juce::String pluginName;
 
@@ -76,6 +84,7 @@ private:
     // Button areas (small icons ~20×20px)
     juce::Rectangle<int> bypassButtonBounds;
     juce::Rectangle<int> abButtonBounds;
+    juce::Rectangle<int> autoGainButtonBounds;
     juce::Rectangle<int> removeButtonBounds;
 
     bool isDragging = false;

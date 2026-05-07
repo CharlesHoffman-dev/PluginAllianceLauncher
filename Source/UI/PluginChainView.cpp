@@ -315,8 +315,8 @@ void PluginChainView::setChainState(PluginAllianceLauncherProcessor& proc)
     {
         auto* meter = new ChainMeterCard(i);
         meter->onGainChanged = [this](int idx, float gain) { handleMeterGainChanged(idx, gain); };
-        meter->onAutoGainToggled = [this](int idx, bool enabled) { handleAutoGainToggled(idx, enabled); };
-        // Sync auto-gain state: meter i+1 corresponds to slot i
+        // The AUTO toggle now lives on the slot card. This meter only renders
+        // the cyan correction-dB readout, driven by the slot to its left.
         if (i > 0 && i - 1 < kMaxChainSlots)
         {
             int slotIdx = i - 1;
@@ -344,6 +344,7 @@ void PluginChainView::setChainState(PluginAllianceLauncherProcessor& proc)
         card->onRemove = [this](int idx) { handleRemoveSlot(idx); };
         card->onToggleBypass = [this](int idx, bool bypass) { handleToggleBypass(idx, bypass); };
         card->onToggleAB = [this](int idx, ABSlot ab) { handleToggleAB(idx, ab); };
+        card->onAutoGainToggled = [this](int idx, bool enabled) { handleAutoGainToggled(idx, enabled); };
         card->onDragStart = [this](int idx, juce::Point<int> pos) {
             DBG("PluginChainView: onDragStart called for slot " << idx);
             handleDragStart(idx, pos);
@@ -531,14 +532,26 @@ void PluginChainView::handleMeterGainChanged(int meterIndex, float newGain)
         onMeterGainChanged(meterIndex, newGain);
 }
 
-void PluginChainView::handleAutoGainToggled(int meterIndex, bool enabled)
+void PluginChainView::handleAutoGainToggled(int slotIndex, bool enabled)
 {
     if (onAutoGainToggled)
-        onAutoGainToggled(meterIndex, enabled);
+        onAutoGainToggled(slotIndex, enabled);
 }
 
-void PluginChainView::updateAutoGainState(int meterIndex, bool enabled, float correctionDb)
+void PluginChainView::updateAutoGainState(int slotIndex, bool enabled, float correctionDb)
 {
+    // Push the toggle state to the slot card (the AUTO button) and the
+    // correction-dB readout to the meter immediately right of that slot.
+    for (auto* card : slotCards)
+    {
+        if (card->getSlotIndex() == slotIndex)
+        {
+            card->setAutoGainEnabled(enabled);
+            break;
+        }
+    }
+
+    int meterIndex = slotIndex + 1;
     if (meterIndex >= 0 && meterIndex < meterCards.size())
     {
         meterCards[meterIndex]->setAutoGainEnabled(enabled);
