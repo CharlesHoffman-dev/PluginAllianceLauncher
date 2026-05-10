@@ -67,6 +67,8 @@ public:
     // Favorites
     void setFavorite(const juce::String& pluginId, bool isFavorite);
     bool isFavorite(const juce::String& pluginId) const;
+    void setFavorite(const juce::PluginDescription& desc, bool isFavorite);
+    bool isFavorite(const juce::PluginDescription& desc) const;
 
     // Recent
     void addToRecent(const juce::PluginDescription& desc);
@@ -89,6 +91,8 @@ private:
     void assignSubcategory(PluginInfo& info);
     bool matchesBrand(const PluginInfo& info, DisplayCategory brandCategory) const;
     juce::String getPluginId(const juce::PluginDescription& desc) const;
+    PluginInfo* findPluginByDescription(const juce::PluginDescription& desc);
+    const PluginInfo* findPluginByDescription(const juce::PluginDescription& desc) const;
     void sortPluginsByBrandAndName(juce::Array<PluginInfo>& pluginList) const;
 
     juce::File getDatabaseFile() const;

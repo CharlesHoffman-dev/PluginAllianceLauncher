@@ -53,6 +53,12 @@ public:
     void setBypassed(bool shouldBypass) { bypassed = shouldBypass; }
     bool isBypassed() const { return bypassed; }
 
+    // Move the loaded plugin (and its tied state) between hosts. Caller must hold
+    // the processor's pluginLock so the audio thread is excluded for the swap.
+    // Sample-rate / block-size and working buffers stay with the host since both
+    // hosts are prepared in the same processor context.
+    void swap(PluginHost& other) noexcept;
+
 private:
     juce::AudioPluginFormatManager formatManager;
     std::unique_ptr<juce::AudioPluginInstance> loadedPlugin;

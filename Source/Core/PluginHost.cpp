@@ -21,6 +21,17 @@ PluginHost::~PluginHost()
     unloadPlugin();
 }
 
+void PluginHost::swap(PluginHost& other) noexcept
+{
+    // formatManager, lock, sample-rate/block-size, and tempBuffer stay with the
+    // host. Only the loaded plugin and its tied flags travel.
+    std::swap(loadedPlugin, other.loadedPlugin);
+    std::swap(loadedDescription, other.loadedDescription);
+    std::swap(isPrepared, other.isPrepared);
+    std::swap(hasSidechain, other.hasSidechain);
+    std::swap(bypassed, other.bypassed);
+}
+
 bool PluginHost::loadPlugin(const juce::PluginDescription& description,
                             double sampleRate, int blockSize)
 {

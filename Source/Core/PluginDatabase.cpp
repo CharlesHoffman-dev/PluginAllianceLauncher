@@ -1224,17 +1224,57 @@ bool PluginDatabase::isFavorite(const juce::String& pluginId) const
     return false;
 }
 
+void PluginDatabase::setFavorite(const juce::PluginDescription& desc, bool favorite)
+{
+    juce::ScopedLock scopedLock(lock);
+    if (auto* info = findPluginByDescription(desc))
+        info->isFavorite = favorite;
+}
+
+bool PluginDatabase::isFavorite(const juce::PluginDescription& desc) const
+{
+    juce::ScopedLock scopedLock(lock);
+    if (const auto* info = findPluginByDescription(desc))
+        return info->isFavorite;
+    return false;
+}
+
+PluginInfo* PluginDatabase::findPluginByDescription(const juce::PluginDescription& desc)
+{
+    // Direct ID match first (handles installed plugins that aren't in the embedded catalog).
+    auto it = plugins.find(getPluginId(desc));
+    if (it != plugins.end())
+        return &it->second;
+
+    // Fall back to name match. Embedded entries are keyed by their JSON id (e.g.
+    // "bx_console_n"), not by format+fileOrIdentifier, so the direct lookup misses
+    // for catalog plugins. Match the same way updateInstalledPlugins() does.
+    for (auto& pair : plugins)
+    {
+        const auto& storedName = pair.second.description.name;
+        const auto& storedDesc = pair.second.description.descriptiveName;
+        if (storedName.equalsIgnoreCase(desc.name)
+            || storedName.equalsIgnoreCase(desc.descriptiveName)
+            || storedDesc.equalsIgnoreCase(desc.descriptiveName)
+            || storedDesc.equalsIgnoreCase(desc.name))
+        {
+            return &pair.second;
+        }
+    }
+    return nullptr;
+}
+
+const PluginInfo* PluginDatabase::findPluginByDescription(const juce::PluginDescription& desc) const
+{
+    return const_cast<PluginDatabase*>(this)->findPluginByDescription(desc);
+}
+
 void PluginDatabase::addToRecent(const juce::PluginDescription& desc)
 {
     juce::ScopedLock scopedLock(lock);
 
-    auto id = getPluginId(desc);
-    auto it = plugins.find(id);
-
-    if (it != plugins.end())
-    {
-        it->second.lastUsed = juce::Time::currentTimeMillis();
-    }
+    if (auto* info = findPluginByDescription(desc))
+        info->lastUsed = juce::Time::currentTimeMillis();
 }
 
 PluginInfo* PluginDatabase::findPlugin(const juce::String& pluginId)
