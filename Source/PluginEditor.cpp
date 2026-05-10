@@ -400,9 +400,9 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
 
     pluginListView.onFavoriteToggle = [this](const PluginInfo& info, bool favorite)
     {
-        // Database key is pluginFormatName + "_" + fileOrIdentifier
-        auto pluginId = info.description.pluginFormatName + "_" + info.description.fileOrIdentifier;
-        processor.getPluginDatabase().setFavorite(pluginId, favorite);
+        // Embedded catalog entries are keyed by JSON id, not by format+fileOrIdentifier,
+        // so resolve via description match inside the database.
+        processor.getPluginDatabase().setFavorite(info.description, favorite);
         processor.getPluginDatabase().saveToDisk();
         refreshPluginsPreservingScroll(); // Refresh without resetting scroll position
     };
@@ -791,6 +791,18 @@ PluginAllianceLauncherEditor::~PluginAllianceLauncherEditor()
     // first - leaving children with dangling L&F pointers.)
     sidebarViewport.getVerticalScrollBar().setLookAndFeel(nullptr);
     pluginListView.setScrollBarLookAndFeel(nullptr);
+
+    subscribeButton.setLookAndFeel(nullptr);
+    undoButton.setLookAndFeel(nullptr);
+    redoButton.setLookAndFeel(nullptr);
+    rescanButton.setLookAndFeel(nullptr);
+    settingsButton.setLookAndFeel(nullptr);
+    toggleModeButton.setLookAndFeel(nullptr);
+    unloadButton.setLookAndFeel(nullptr);
+    brandComboBox.setLookAndFeel(nullptr);
+    detailsLoadButton.setLookAndFeel(nullptr);
+    chainButton.setLookAndFeel(nullptr);
+    presetSaveButton.setLookAndFeel(nullptr);
 
     processor.getPluginScanner().removeChangeListener(this);
     stopTimer();

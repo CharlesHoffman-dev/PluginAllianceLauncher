@@ -8,6 +8,10 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+#include <algorithm>
+#include <array>
+#include <vector>
+
 namespace PALauncher
 {
 
@@ -18,6 +22,15 @@ namespace PALauncher
 bool ChainSlot::hasPlugin() const
 {
     return hostA.hasLoadedPlugin() || hostB.hasLoadedPlugin();
+}
+
+void ChainSlot::swap(ChainSlot& other) noexcept
+{
+    hostA.swap(other.hostA);
+    hostB.swap(other.hostB);
+    std::swap(activeSlot, other.activeSlot);
+    std::swap(bypassed, other.bypassed);
+    std::swap(autoGainEnabled, other.autoGainEnabled);
 }
 
 //==============================================================================
@@ -207,7 +220,17 @@ PluginAllianceLauncherProcessor::PluginAllianceLauncherProcessor()
 PluginAllianceLauncherProcessor::~PluginAllianceLauncherProcessor()
 {
     pluginScanner.removeChangeListener(this);
-    unloadPlugin();
+
+    // Detach parameter listeners while the hosted plugins are still alive.
+    // chainSlots is declared before hostedParameters / before the AudioProcessor
+    // base, so the plugin instances live on through this call - we just need to
+    // make sure no HostedPluginParameter is still pointing at one.
+    unlinkAllParameters();
+
+    // Don't call unloadPlugin() / updateHostDisplay() here. Notifying the host
+    // about parameter info changes from inside the AudioProcessor destructor has
+    // crashed Ableton when the launcher hosts a plugin. The chainSlots' own
+    // destructors will tear down the hosted plugins safely.
 }
 
 void PluginAllianceLauncherProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
@@ -519,19 +542,76 @@ void PluginAllianceLauncherProcessor::removeAndCompactSlot(int slotIndex)
 
 void PluginAllianceLauncherProcessor::reorderSlots(int fromIndex, int toIndex)
 {
-    jassert(fromIndex >= 0 && fromIndex < kMaxChainSlots);
-    jassert(toIndex >= 0 && toIndex < kMaxChainSlots);
-
-    if (fromIndex == toIndex)
+    if (fromIndex < 0 || fromIndex >= kMaxChainSlots)
         return;
 
-    // TODO: Implement reordering without using assignment operator
-    // For now, reordering is disabled since PluginHost doesn't support assignment
-    // This would require manually swapping plugin states and parameters
-    DBG("Reordering not yet implemented");
+    // Build the list of currently occupied underlying slot indices, in slot order.
+    // The chain view collapses gaps when rendering, so its `toIndex` is a position
+    // in this visible-card list, not an underlying slot index.
+    std::vector<int> occupied;
+    occupied.reserve(kMaxChainSlots);
+    for (int i = 0; i < kMaxChainSlots; ++i)
+        if (chainSlots[i].hasPlugin())
+            occupied.push_back(i);
 
-    // Update parameter distribution after reorder
-    // updateParameterDistribution();
+    if (occupied.empty())
+        return;
+
+    auto fromIt = std::find(occupied.begin(), occupied.end(), fromIndex);
+    if (fromIt == occupied.end())
+        return;
+    const int fromVisible = static_cast<int>(fromIt - occupied.begin());
+
+    const int clampedTo = juce::jlimit(0, static_cast<int>(occupied.size()), toIndex);
+    if (clampedTo == fromVisible || clampedTo == fromVisible + 1)
+        return;  // No-op move (drop on self or adjacent gap)
+
+    // After splice, the destination index in the new visible list. If we're
+    // moving forward, the removal shifts later indices left by one.
+    const int dstVisible = (clampedTo > fromVisible) ? clampedTo - 1 : clampedTo;
+
+    // The set of underlying slot indices stays the same (occupied[]); only the
+    // mapping content -> destination changes. contentForVisible[k] is the
+    // original underlying slot whose content should now sit at occupied[k].
+    std::vector<int> contentForVisible = occupied;
+    const int moved = contentForVisible[fromVisible];
+    contentForVisible.erase(contentForVisible.begin() + fromVisible);
+    contentForVisible.insert(contentForVisible.begin() + dstVisible, moved);
+
+    juce::ScopedLock scoped(pluginLock);
+    unlinkAllParameters();
+
+    // Track where each piece of original content currently lives as we swap.
+    std::array<int, kMaxChainSlots> currentLocation;
+    for (int i = 0; i < kMaxChainSlots; ++i)
+        currentLocation[i] = i;
+
+    for (int k = 0; k < static_cast<int>(occupied.size()); ++k)
+    {
+        const int destSlot = occupied[k];
+        const int srcOriginal = contentForVisible[k];
+        const int srcCurrent = currentLocation[srcOriginal];
+
+        if (srcCurrent == destSlot)
+            continue;
+
+        chainSlots[destSlot].swap(chainSlots[srcCurrent]);
+
+        // Whatever original content sat at destSlot is now at srcCurrent.
+        for (int j = 0; j < kMaxChainSlots; ++j)
+        {
+            if (j != srcOriginal && currentLocation[j] == destSlot)
+            {
+                currentLocation[j] = srcCurrent;
+                break;
+            }
+        }
+        currentLocation[srcOriginal] = destSlot;
+    }
+
+    // Selected slot follows its content to its new home.
+    if (currentSelectedSlot >= 0 && currentSelectedSlot < kMaxChainSlots)
+        currentSelectedSlot = currentLocation[currentSelectedSlot];
 }
 
 int PluginAllianceLauncherProcessor::getLoadedSlotCount() const

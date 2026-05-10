@@ -46,6 +46,12 @@ struct ChainSlot {
     }
 
     bool hasPlugin() const;
+
+    // Swap plugin contents and tied per-slot toggles with another slot. The LUFS
+    // analyzer / smoothed gain / correction-dB stay with their slot; they're
+    // running statistics that re-converge in a beat or two on whatever plugin
+    // now sits there. Caller must hold the processor's pluginLock.
+    void swap(ChainSlot& other) noexcept;
 };
 
 // Number of parameter slots to expose to the host DAW
@@ -213,8 +219,11 @@ private:
 
     juce::CriticalSection pluginLock;
 
-    // Parameter slots for hosted plugin parameters
-    juce::OwnedArray<HostedPluginParameter> hostedParameters;
+    // Parameter slots for hosted plugin parameters.
+    // Non-owning: the AudioProcessor base class owns these via parameterTree
+    // (addParameter() wraps the pointer in a unique_ptr inside parameterTree).
+    // Storing them here as raw pointers gives us O(1) lookup without double-ownership.
+    juce::Array<HostedPluginParameter*> hostedParameters;
     bool isUpdatingParameters = false;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginAllianceLauncherProcessor)
