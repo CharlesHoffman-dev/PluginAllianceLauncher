@@ -394,23 +394,32 @@ void ChainMeterCard::setAutoGainAnalyzing(bool analyzing)
 
 void ChainMeterCard::timerCallback()
 {
-    // Decay meter levels smoothly
-    float decayRate = 0.95f;
-    leftLevel *= decayRate;
-    rightLevel *= decayRate;
+    const float prevLeft  = leftLevel;
+    const float prevRight = rightLevel;
 
-    if (leftLevel < 0.001f) leftLevel = 0.0f;
+    // Decay meter levels smoothly
+    constexpr float decayRate = 0.95f;
+    leftLevel  *= decayRate;
+    rightLevel *= decayRate;
+    if (leftLevel  < 0.001f) leftLevel  = 0.0f;
     if (rightLevel < 0.001f) rightLevel = 0.0f;
+
+    bool needsRepaint = (leftLevel != prevLeft) || (rightLevel != prevRight);
 
     // Flash the AUTO button at ~4Hz while analyzing.
     static int flashCounter = 0;
     if (autoGainAnalyzing && ++flashCounter >= 7)
     {
-        autoFlashOn = !autoFlashOn;
+        autoFlashOn  = !autoFlashOn;
         flashCounter = 0;
+        needsRepaint = true;
     }
 
-    repaint();
+    // Skip the repaint when nothing has changed - meters at rest stop costing
+    // anything. Up to 8 slots * 30 Hz = 240 unnecessary repaints/sec saved
+    // when the playfield is silent.
+    if (needsRepaint)
+        repaint();
 }
 
 void ChainMeterCard::mouseDown(const juce::MouseEvent& e)

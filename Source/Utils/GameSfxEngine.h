@@ -178,7 +178,7 @@ public:
 private:
     static constexpr int   kPendingCap = 32;
     static constexpr int   kMaxVoices  = 16;
-    static constexpr float kMusicGain  = 0.20f;     // background music sits well below FX
+    static constexpr float kMusicGain  = 0.50f;     // background music; sits below FX but clearly audible
     static constexpr float kSfxGain    = 0.85f;
 
     struct Voice

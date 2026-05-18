@@ -302,10 +302,24 @@ void PluginAllianceLauncherProcessor::processBlock(juce::AudioBuffer<float>& buf
     // so a user clicking the in-game keyboard also feeds the chain.
     midiKeyboardState.processNextMidiBuffer(midiMessages, 0, buffer.getNumSamples(), true);
 
+    // While the easter-egg game is open, bypass the chain entirely. We clear
+    // the buffer (so the host's input doesn't bleed into game audio) and let
+    // GameSfxEngine fill it with SFX + background music.
+    if (gameActive.load(std::memory_order_acquire))
+    {
+        buffer.clear();
+        gameSfx.renderInto(buffer);
+        return;
+    }
+
     // Try to acquire lock without blocking - if we can't get it (plugin is loading),
     // just pass audio through unchanged to avoid glitches
     if (pluginLock.tryEnter())
     {
+        // Cache the host's playhead once per block; setPlayHead is called per
+        // slot below, but getPlayHead is a virtual on the AudioProcessor base.
+        auto* hostPlayHead = getPlayHead();
+
         // Route audio through all chain slots serially
         for (int i = 0; i < kMaxChainSlots; ++i)
         {
@@ -320,7 +334,7 @@ void PluginAllianceLauncherProcessor::processBlock(juce::AudioBuffer<float>& buf
                 // Forward playhead/transport info to hosted plugin
                 // This is essential for plugins like MetricAB that have internal playback
                 if (auto* hostedPlugin = activeHost.getLoadedPlugin())
-                    hostedPlugin->setPlayHead(getPlayHead());
+                    hostedPlugin->setPlayHead(hostPlayHead);
 
                 // Measure input LUFS before plugin processing
                 if (chainSlots[i].autoGainEnabled)
@@ -339,17 +353,13 @@ void PluginAllianceLauncherProcessor::processBlock(juce::AudioBuffer<float>& buf
                     float targetGain = juce::Decibels::decibelsToGain(correctionDb);
                     chainSlots[i].smoothedGain.setTargetValue(targetGain);
 
-                    // Apply smoothed gain sample-by-sample to avoid clicks
-                    int numSamples = buffer.getNumSamples();
-                    int numChannels = buffer.getNumChannels();
-                    for (int s = 0; s < numSamples; ++s)
-                    {
-                        float gain = chainSlots[i].smoothedGain.getNextValue();
-                        for (int ch = 0; ch < numChannels; ++ch)
-                        {
-                            buffer.getWritePointer(ch)[s] *= gain;
-                        }
-                    }
+                    // Apply the smoothed gain as a single block-level ramp instead
+                    // of a per-sample / per-channel loop (orders of magnitude fewer
+                    // float ops at 48kHz/2ch/8 slots).
+                    const int numSamples  = buffer.getNumSamples();
+                    const auto startGain  = chainSlots[i].smoothedGain.getCurrentValue();
+                    const auto endGain    = chainSlots[i].smoothedGain.skip(numSamples);
+                    buffer.applyGainRamp(0, numSamples, startGain, endGain);
                 }
                 else
                 {
@@ -358,16 +368,10 @@ void PluginAllianceLauncherProcessor::processBlock(juce::AudioBuffer<float>& buf
                     // engaged - the LUFS correction is the gain in that mode.
                     chainSlots[i].smoothedManualGain.setTargetValue(chainSlots[i].getActiveGain());
 
-                    int numSamples = buffer.getNumSamples();
-                    int numChannels = buffer.getNumChannels();
-                    for (int s = 0; s < numSamples; ++s)
-                    {
-                        float gain = chainSlots[i].smoothedManualGain.getNextValue();
-                        for (int ch = 0; ch < numChannels; ++ch)
-                        {
-                            buffer.getWritePointer(ch)[s] *= gain;
-                        }
-                    }
+                    const int numSamples  = buffer.getNumSamples();
+                    const auto startGain  = chainSlots[i].smoothedManualGain.getCurrentValue();
+                    const auto endGain    = chainSlots[i].smoothedManualGain.skip(numSamples);
+                    buffer.applyGainRamp(0, numSamples, startGain, endGain);
                 }
             }
         }

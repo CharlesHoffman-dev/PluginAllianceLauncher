@@ -33,7 +33,7 @@ juce::String CatGameComponent::powerLabel (PowerType t)
     switch (t)
     {
         case PowerType::Spread: return "SPREAD";
-        case PowerType::Rapid:  return "RAPID";
+        case PowerType::Rapid:  return "SPEED";
         case PowerType::Bomb:   return "BOMB";
         case PowerType::Shield: return "SHIELD";
         case PowerType::Slow:   return "SLOW";
@@ -73,25 +73,52 @@ CatGameComponent::CatGameComponent (juce::MidiKeyboardState& sharedKeyboardState
     addAndMakeVisible (keyboard);
 
     {
-        auto raw = PluginImageCache::getInstance().getAllCachedImages();
-        pluginImagePool.ensureStorageAllocated (raw.size());
-        // Asteroids max out around 180px wide; pre-scaling avoids JUCE's
-        // per-frame resample of full-resolution browser thumbs.
-        for (auto& img : raw)
+        // Seed the pool from the browser cache immediately so the game can
+        // start spawning asteroids on the first frame, then kick a background
+        // job to load every PNG in Resources/Images. The lambda below uses a
+        // SafePointer so it's a no-op if the player exits the game mid-load.
+        auto seed = PluginImageCache::getInstance().getAllCachedImages();
+        pluginImagePool.ensureStorageAllocated (seed.size());
+        const int maxW = 220;
+        auto rescale = [maxW] (const juce::Image& img) -> juce::Image
         {
-            if (! img.isValid()) continue;
-            const int maxW = 220;
-            if (img.getWidth() > maxW)
+            if (img.getWidth() <= maxW) return img;
+            const float ratio = (float) maxW / (float) img.getWidth();
+            return img.rescaled (maxW,
+                                 juce::jmax (1, (int) (img.getHeight() * ratio)),
+                                 juce::Graphics::highResamplingQuality);
+        };
+        for (auto& img : seed)
+            if (img.isValid()) pluginImagePool.add (rescale (img));
+
+        const juce::File imgCandidates[] = {
+            juce::File::getSpecialLocation (juce::File::currentExecutableFile)
+                .getParentDirectory().getChildFile ("Resources/Images"),
+            juce::File ("C:/Users/charl/PluginAllianceLauncher/Resources/Images"),
+        };
+        juce::File imgDir;
+        for (auto& f : imgCandidates)
+            if (f.isDirectory()) { imgDir = f; break; }
+
+        if (imgDir.isDirectory())
+        {
+            auto files = imgDir.findChildFiles (juce::File::findFiles, false, "*.png");
+            juce::Component::SafePointer<CatGameComponent> safeThis (this);
+            juce::Thread::launch ([safeThis, files, rescale]()
             {
-                const float ratio = (float) maxW / (float) img.getWidth();
-                pluginImagePool.add (img.rescaled (maxW,
-                                                   juce::jmax (1, (int) (img.getHeight() * ratio)),
-                                                   juce::Graphics::highResamplingQuality));
-            }
-            else
-            {
-                pluginImagePool.add (img);
-            }
+                for (auto& f : files)
+                {
+                    if (safeThis == nullptr) return;       // component destroyed
+                    auto img = juce::ImageFileFormat::loadFrom (f);
+                    if (! img.isValid()) continue;
+                    auto scaled = rescale (img);
+                    juce::MessageManager::callAsync ([safeThis, scaled]()
+                    {
+                        if (auto* self = safeThis.getComponent())
+                            self->pluginImagePool.add (scaled);
+                    });
+                }
+            });
         }
     }
 
@@ -535,19 +562,33 @@ void CatGameComponent::paint (juce::Graphics& g)
                 12, getHeight() - kKeyboardHeight - 20, getWidth() - 24, 16,
                 juce::Justification::centredLeft);
 
-    // Combo color shift - thin warm rim around the playfield edges (much
-    // cheaper than a full-screen alpha fill).
-    if (state == State::Playing && combo >= 10)
+    // Reload bar - visible only while the shot cooldown is winding down.
+    // Fills left-to-right as cooldown progresses. Float-based so it animates
+    // smoothly every frame instead of jumping in 10% steps.
+    if (state == State::Playing && shotCooldownSec > 0.0f && shotCooldownMaxSec > 0.0f)
     {
-        const float warmth = juce::jmin (1.0f, (float) (combo - 9) / 11.0f);
-        const int   border = 16;
-        const int   pH     = getHeight() - kKeyboardHeight;
-        g.setColour (juce::Colour (0xffff4f1f).withAlpha (warmth * 0.35f));
-        g.fillRect (0, 0, getWidth(), border);                 // top
-        g.fillRect (0, pH - border, getWidth(), border);       // bottom
-        g.fillRect (0, 0, border, pH);                         // left
-        g.fillRect (getWidth() - border, 0, border, pH);       // right
+        const float progress = 1.0f - shotCooldownSec / shotCooldownMaxSec;
+        const int   barW = 200;
+        const int   barH = 8;
+        const int   barX = (getWidth() - barW) / 2;
+        const int   barY = getHeight() - kKeyboardHeight - 36;
+
+        g.setColour (juce::Colours::black.withAlpha (0.55f));
+        g.fillRoundedRectangle ((float) barX, (float) barY,
+                                (float) barW, (float) barH, 3.0f);
+        g.setColour (juce::Colour (0xfff2c91f));      // GAME OVER yellow
+        g.fillRoundedRectangle ((float) barX, (float) barY,
+                                (float) barW * progress, (float) barH, 3.0f);
+        g.setColour (juce::Colours::white.withAlpha (0.65f));
+        g.drawRoundedRectangle ((float) barX, (float) barY,
+                                (float) barW, (float) barH, 3.0f, 1.0f);
+
+        g.setFont (retroFont (12.0f));
+        g.setColour (juce::Colour (0xfff2c91f));
+        g.drawText ("RELOAD", barX, barY - 20, barW, 16,
+                    juce::Justification::centred);
     }
+
 
     // Boss-kill warp streaks - radial white lines bursting from the kill spot.
     if (bossKillFlashTicks > 0)
@@ -789,20 +830,26 @@ void CatGameComponent::drawActivePowerupChips (juce::Graphics& g) const
     if (megaTime    > 0.0f) chips.add ({ PowerType::Mega,    megaTime,    juce::String (megaTime,    1) + "s", false });
     if (shieldStack > 0)    chips.add ({ PowerType::Shield,  0.0f,        "x" + juce::String (shieldStack), true });
 
-    constexpr int chipW = 92;
-    constexpr int chipH = 22;
-    constexpr int gap   = 6;
+    constexpr int chipW = 132;
+    constexpr int chipH = 30;
+    constexpr int gap   = 8;
     int x = 14;
-    const int y = getHeight() - kKeyboardHeight - 50;
+    const int y = getHeight() - kKeyboardHeight - 60;
 
+    constexpr float fontH = 12.0f;
     for (auto& c : chips)
     {
         g.setColour (powerColour (c.type).withAlpha (0.85f));
-        g.fillRoundedRectangle ((float) x, (float) y, (float) chipW, (float) chipH, 5.0f);
+        g.fillRoundedRectangle ((float) x, (float) y, (float) chipW, (float) chipH, 6.0f);
         g.setColour (juce::Colours::white);
-        g.setFont (retroFont (8.0f));
+        g.setFont (retroFont (fontH));
+        // Compute a font-height-tall rect centred vertically inside the chip
+        // so pixel-font glyphs sit perfectly in the middle (drawText's own
+        // vertical-centre logic skews high for Press Start 2P).
+        const int textY = y + (chipH - (int) fontH) / 2;
         g.drawText (powerLabel (c.type) + " " + c.value,
-                    x + 6, y, chipW - 12, chipH, juce::Justification::centredLeft);
+                    x + 8, textY, chipW - 16, (int) fontH,
+                    juce::Justification::centredLeft);
         x += chipW + gap;
     }
 }
@@ -826,12 +873,13 @@ void CatGameComponent::handleNoteOff (juce::MidiKeyboardState*, int, int, float)
 void CatGameComponent::spawnCatHead (int midiNote)
 {
     if (state != State::Playing) return;
-    if (shotCooldownTicks > 0) return;       // enforce reload between shots
+    if (shotCooldownSec > 0.0f) return;       // enforce reload between shots
 
     auto rect = keyboard.getRectangleForKey (midiNote);
     if (rect.isEmpty()) return;
 
-    shotCooldownTicks = (rapidTime > 0.0f) ? kRapidShotCooldown : kBaseShotCooldown;
+    shotCooldownSec    = (rapidTime > 0.0f) ? kRapidShotCooldownSec : kBaseShotCooldownSec;
+    shotCooldownMaxSec = shotCooldownSec;
 
     const float launchX = keyboard.getX() + rect.getCentreX();
     const float launchY = (float) keyboard.getY() - 8.0f;
@@ -868,9 +916,9 @@ void CatGameComponent::spawnFallingPlugin()
     if (pluginImagePool.isEmpty() || state != State::Playing)
         return;
 
-    // Difficulty ramps: +12% fall speed every 10 seconds, capped at 2.6x.
+    // Difficulty ramps: +10% fall speed every 14 seconds, capped at 1.8x.
     const float secondsIn  = (float) ticksSinceStart / (float) kFps;
-    const float speedMul   = juce::jmin (2.6f, 1.0f + secondsIn / 10.0f * 0.12f);
+    const float speedMul   = juce::jmin (1.8f, 1.0f + secondsIn / 14.0f * 0.10f);
 
     FallingPlugin p;
     p.image    = pluginImagePool [rng.nextInt (pluginImagePool.size())];
@@ -880,7 +928,7 @@ void CatGameComponent::spawnFallingPlugin()
     p.x        = rng.nextFloat() * juce::jmax (1.0f, (float) getWidth() - p.w);
     p.y        = -p.h;
     p.vx       = 0.0f;
-    p.vy       = (0.7f + rng.nextFloat() * 1.4f) * speedMul;
+    p.vy       = (0.4f + rng.nextFloat() * 0.7f) * speedMul;
     p.rotation = (rng.nextFloat() - 0.5f) * 0.3f;
     p.spin     = (rng.nextFloat() - 0.5f) * 0.025f;
     falling.add (p);
@@ -922,9 +970,9 @@ void CatGameComponent::spawnShootingStar()
 
 void CatGameComponent::onAsteroidNearMiss()
 {
-    // Brief bullet-time: 200ms of slow-mo by piggybacking on the slow powerup
-    // timer (doesn't visually show a chip because it ticks out immediately).
-    if (slowTime < 0.20f) slowTime = juce::jmax (slowTime, 0.20f);
+    // 200ms of bullet-time, using its OWN timer so it doesn't light up the
+    // SLOW powerup chip or draw the slow-mo tint.
+    bulletTimeSec = juce::jmax (bulletTimeSec, 0.20f);
 }
 
 void CatGameComponent::spawnBoss()
@@ -1163,7 +1211,8 @@ void CatGameComponent::resetGame()
     escaped              = 0;
     spawnCountdownTicks  = 60;
     bossCountdownTicks   = 45 * kFps;
-    shotCooldownTicks    = 0;
+    shotCooldownSec      = 0.0f;
+    bulletTimeSec        = 0.0f;
     shootingStarTicks    = 240;
     bossWarningTicks     = 0;
     bossKillFlashTicks   = 0;
@@ -1222,19 +1271,20 @@ void CatGameComponent::timerCallback()
     }
 
     ++ticksSinceStart;
-    if (shotCooldownTicks > 0) --shotCooldownTicks;
+    if (shotCooldownSec > 0.0f) shotCooldownSec = juce::jmax (0.0f, shotCooldownSec - dt);
+    if (bulletTimeSec  > 0.0f) bulletTimeSec   = juce::jmax (0.0f, bulletTimeSec  - dt);
     const int playfieldBottom = getHeight() - kKeyboardHeight;
-    const float fallMultiplier = (slowTime > 0.0f) ? 0.40f : 1.0f;
+    const float fallMultiplier = (slowTime > 0.0f || bulletTimeSec > 0.0f) ? 0.40f : 1.0f;
 
-    // Spawn cadence accelerates with time. Faster ramp + tighter floor so the
-    // late game gets genuinely overwhelming.
+    // Spawn cadence accelerates gently with time. Floor + ramp are pulled
+    // back so the early game breathes and the late game ramps gradually.
     if (--spawnCountdownTicks <= 0)
     {
         spawnFallingPlugin();
-        const int floor  = 8;
-        const int reduce = ticksSinceStart / (3 * kFps);                       // +1 per 3s
-        const int base   = juce::jmax (floor, 55 - reduce);
-        spawnCountdownTicks = base + rng.nextInt (juce::jmax (3, 25 - reduce));
+        const int floor  = 14;
+        const int reduce = ticksSinceStart / (4 * kFps);                       // +1 per 4s
+        const int base   = juce::jmax (floor, 70 - reduce);
+        spawnCountdownTicks = base + rng.nextInt (juce::jmax (4, 30 - reduce));
     }
 
     // Boss waves: first ~45s, then every ~35–40s scaling slightly faster.

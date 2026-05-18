@@ -55,6 +55,11 @@ PluginCard::PluginCard()
     setWantsKeyboardFocus(false);
     setMouseClickGrabsKeyboardFocus(false);
     setMouseCursor(juce::MouseCursor::PointingHandCursor);
+    // Cache paint output to an image - cards are static 99% of the time so
+    // scroll / parent-repaint events become free blits instead of full
+    // re-rasterizations. Buffer only regenerates on hover, select, image
+    // load, or favourite-toggle (each of which calls repaint()).
+    setBufferedToImage(true);
 
     // Set up Load button - white with black text, pointer cursor, no outline
     loadButton.setButtonText("Load");
@@ -189,38 +194,44 @@ void PluginCard::paint(juce::Graphics& g)
         g.drawText(eraTag, eraBounds, juce::Justification::centred);
     }
 
-    // Favorite star - yellow when active, gray outline when inactive
-    auto starBounds = getLocalBounds().reduced(8).removeFromTop(24).removeFromRight(24);
-    float cx = static_cast<float>(starBounds.getCentreX());
-    float cy = static_cast<float>(starBounds.getCentreY());
-    float outerRadius = 10.0f;
-    float innerRadius = 4.5f;
-
-    // Create 5-point star path
-    juce::Path starPath;
-    for (int i = 0; i < 10; ++i)
+    // Favorite star - yellow when active, gray outline when inactive.
+    // The star geometry is identical for every card, so build the path ONCE
+    // (centred on the origin) at first paint and translate to the per-card
+    // position via setUsingNonZeroWinding/AffineTransform on the fly.
+    static const juce::Path baseStarPath = []
     {
-        float radius = (i % 2 == 0) ? outerRadius : innerRadius;
-        float angle = static_cast<float>(i) * juce::MathConstants<float>::pi / 5.0f - juce::MathConstants<float>::halfPi;
-        float x = cx + radius * std::cos(angle);
-        float y = cy + radius * std::sin(angle);
+        juce::Path p;
+        constexpr float outerRadius = 10.0f;
+        constexpr float innerRadius = 4.5f;
+        for (int i = 0; i < 10; ++i)
+        {
+            const float radius = (i % 2 == 0) ? outerRadius : innerRadius;
+            const float angle  = static_cast<float>(i)
+                                  * juce::MathConstants<float>::pi / 5.0f
+                                  - juce::MathConstants<float>::halfPi;
+            const float x = radius * std::cos(angle);
+            const float y = radius * std::sin(angle);
+            if (i == 0) p.startNewSubPath(x, y);
+            else        p.lineTo(x, y);
+        }
+        p.closeSubPath();
+        return p;
+    }();
 
-        if (i == 0)
-            starPath.startNewSubPath(x, y);
-        else
-            starPath.lineTo(x, y);
-    }
-    starPath.closeSubPath();
+    const auto starBounds = getLocalBounds().reduced(8).removeFromTop(24).removeFromRight(24);
+    const float cx = static_cast<float>(starBounds.getCentreX());
+    const float cy = static_cast<float>(starBounds.getCentreY());
+    const auto starXform = juce::AffineTransform::translation(cx, cy);
 
     if (pluginInfo.isFavorite)
     {
-        g.setColour(Colors::accentSecondary());  // Yellow/gold color
-        g.fillPath(starPath);
+        g.setColour(Colors::accentSecondary());  // Yellow/gold
+        g.fillPath(baseStarPath, starXform);
     }
     else
     {
-        g.setColour(Colors::textPlaceholder());  // Light gray outline
-        g.strokePath(starPath, juce::PathStrokeType(1.5f));
+        g.setColour(Colors::textPlaceholder());  // Light grey outline
+        g.strokePath(baseStarPath, juce::PathStrokeType(1.5f), starXform);
     }
 
     // Darken entire card on hover so the Load button reads better against the dimmed art.

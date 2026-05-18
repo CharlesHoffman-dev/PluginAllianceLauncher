@@ -236,6 +236,11 @@ public:
     void startGameMusic()                        { gameSfx.startMusic(); }
     void stopGameMusic()                         { gameSfx.stopMusic(); }
 
+    // When the easter-egg game is open the editor sets this true; processBlock
+    // then bypasses the entire chain and outputs game audio only (silence + SFX
+    // + background music). Saves the chain's processing cost while playing.
+    void setGameActive (bool active) noexcept    { gameActive.store (active, std::memory_order_release); }
+
 private:
     // Chain of plugin slots (each slot has its own A/B hosts)
     std::array<ChainSlot, kMaxChainSlots> chainSlots;
@@ -255,6 +260,10 @@ private:
 
     // Synth that renders short SFX cues for the easter-egg game.
     GameSfxEngine gameSfx;
+
+    // True while the editor's CatGameComponent is active; bypasses the
+    // chain in processBlock so plugins aren't doing pointless work.
+    std::atomic<bool> gameActive { false };
 
     // Parameter slots for hosted plugin parameters.
     // Non-owning: the AudioProcessor base class owns these via parameterTree

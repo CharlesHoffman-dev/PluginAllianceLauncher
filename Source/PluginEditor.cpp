@@ -983,6 +983,7 @@ void PluginAllianceLauncherEditor::enterGameMode()
 
     processor.loadGameSfxResources();    // first-time load (no-op afterwards)
     processor.startGameMusic();
+    processor.setGameActive(true);       // bypass the plugin chain while playing
 
     catGame = std::make_unique<CatGameComponent> (processor.getMidiKeyboardState(),
                                                   &processor.getSettingsManager());
@@ -1017,6 +1018,7 @@ void PluginAllianceLauncherEditor::exitGameMode()
         return;
     gameActive = false;
     processor.stopGameMusic();
+    processor.setGameActive(false);      // resume normal chain processing
     if (catGame != nullptr)
     {
         removeChildComponent (catGame.get());
@@ -1519,14 +1521,31 @@ void PluginAllianceLauncherEditor::timerCallback()
     if (isScanning)
         repaint(sidebarWidth, topBarHeight, getWidth() - sidebarWidth, 24);
 
-    // Update chain view if needed. setChainState() clears + recreates all
-    // slot/meter cards, so we MUST skip it while the user is mid-drag or the
-    // dragged card disappears under the mouse and the gesture is lost.
+    // Defensive chain-view resync. setChainState() destroys + recreates all
+    // 17 slot/meter cards, so it's expensive - skip the rebuild when the
+    // structural fingerprint (loaded plugin per A/B, bypass, A/B active,
+    // selected slot) is unchanged from last tick. Also skip while dragging
+    // so the dragged card doesn't disappear mid-gesture.
     static int updateCounter = 0;
     if (++updateCounter % 10 == 0
         && !juce::Desktop::getInstance().getMainMouseSource().isDragging())
     {
-        chainView.setChainState(processor);
+        juce::String sig;
+        for (int i = 0; i < kMaxChainSlots; ++i)
+        {
+            const auto& slot = processor.getChainSlot(i);
+            sig << slot.hostA.getLoadedPluginName() << '|'
+                << slot.hostB.getLoadedPluginName() << '|'
+                << (slot.activeSlot == ABSlot::A ? 'A' : 'B')
+                << (slot.bypassed ? '1' : '0') << ';';
+        }
+        sig << "sel=" << processor.getCurrentSelectedSlot();
+        static juce::String lastChainSig;
+        if (sig != lastChainSig)
+        {
+            lastChainSig = sig;
+            chainView.setChainState(processor);
+        }
     }
 
     // Push auto-gain state (toggle, flashing, correction-dB readout) to the

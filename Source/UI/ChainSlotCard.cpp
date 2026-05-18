@@ -46,6 +46,7 @@ ChainSlotCard::ChainSlotCard(int slotIndex)
     setMouseClickGrabsKeyboardFocus(false);
     setInterceptsMouseClicks(true, false);  // Ensure this component receives mouse clicks
     setMouseCursor(juce::MouseCursor::PointingHandCursor);
+    setBufferedToImage(true);   // static between state changes; buffer regens on repaint()
     setSize(cardWidth, cardHeight);
 }
 

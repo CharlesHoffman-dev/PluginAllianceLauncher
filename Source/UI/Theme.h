@@ -107,7 +107,7 @@ namespace Themes
         // Accents
         juce::Colour (0xff0cbff2),       // Cyan
         juce::Colour (0xffffc107),       // Gold
-        juce::Colour (0xff2a2a2a),       // CTA button - dark charcoal (matches default Load)
+        juce::Colour (0xff0cbff2),       // CTA Load button - cyan accent
         juce::Colour (0xff0cbff2),       // highlightAlt - same as accent in default
 
         // Text

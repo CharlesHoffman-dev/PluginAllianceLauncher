@@ -135,90 +135,98 @@ int PluginListView::calculateNumColumns() const
 
 void PluginListView::updateVisibleCards()
 {
-    // Clear existing cards
-    visibleCards.clear();
+    // Pool the PluginCard instances instead of destroying / recreating them on
+    // every scroll. We grow the pool as needed, hide leftovers when fewer
+    // cards fit, and just call setPluginInfo() / setBounds() to repurpose the
+    // existing card objects.
 
     if (allPlugins.isEmpty())
+    {
+        for (auto* c : visibleCards) c->setVisible(false);
         return;
+    }
 
-    int visibleHeight = contentComponent.getHeight();
-    int cardHeight = PluginCard::preferredHeight + cardSpacing;
-    int cardWidth = PluginCard::preferredWidth + cardSpacing;
+    const int visibleHeight = contentComponent.getHeight();
+    const int cardHeight    = PluginCard::preferredHeight + cardSpacing;
+    const int cardWidth     = PluginCard::preferredWidth  + cardSpacing;
 
-    // Calculate which rows are visible
-    int firstVisibleRow = juce::jmax(0, scrollOffset / cardHeight);
-    int lastVisibleRow = (scrollOffset + visibleHeight) / cardHeight + 1;
+    const int firstVisibleRow = juce::jmax(0, scrollOffset / cardHeight);
+    const int lastVisibleRow  = (scrollOffset + visibleHeight) / cardHeight + 1;
 
-    // Calculate grid position - align cards to left with minimal padding
-    int totalCardsWidth = numColumns * cardWidth;
-    int availableWidth = contentComponent.getWidth();
-    int startX = juce::jmax(4, (availableWidth - totalCardsWidth) / 2);
+    const int totalCardsWidth = numColumns * cardWidth;
+    const int availableWidth  = contentComponent.getWidth();
+    const int startX          = juce::jmax(4, (availableWidth - totalCardsWidth) / 2);
+    const int topInset        = 6;
+
+    int slot = 0;  // index into the visibleCards pool
 
     for (int row = firstVisibleRow; row <= lastVisibleRow; ++row)
     {
+        bool rowOutOfRange = false;
         for (int col = 0; col < numColumns; ++col)
         {
-            int pluginIndex = row * numColumns + col;
+            const int pluginIndex = row * numColumns + col;
+            if (pluginIndex >= allPlugins.size()) { rowOutOfRange = true; break; }
 
-            if (pluginIndex >= allPlugins.size())
-                break;
-
-            auto* card = new PluginCard();
-            card->setPluginInfo(allPlugins[pluginIndex]);
-            card->setSelected(pluginIndex == selectedIndex);
-
-            // Check if this is the currently loaded plugin
-            bool isLoaded = loadedPluginId.isNotEmpty() &&
-                           allPlugins[pluginIndex].description.fileOrIdentifier == loadedPluginId;
-            card->setLoaded(isLoaded);
-
-            card->onSelected = [this, pluginIndex](const PluginInfo& info)
+            PluginCard* card;
+            if (slot < visibleCards.size())
             {
-                selectedIndex = pluginIndex;
-                for (auto* c : visibleCards)
-                    c->setSelected(false);
+                card = visibleCards[slot];
+            }
+            else
+            {
+                card = new PluginCard();
+                visibleCards.add(card);
+                contentComponent.addAndMakeVisible(card);
 
-                if (auto* selectedCard = visibleCards[pluginIndex - (scrollOffset / (PluginCard::preferredHeight + cardSpacing)) * numColumns])
+                // Wire callbacks ONCE per card instance. They re-derive the
+                // current plugin from the card itself / the info argument, so
+                // they keep working after the card is reused.
+                card->onSelected = [this](const PluginInfo& info)
                 {
-                    for (auto* c : visibleCards)
+                    selectedIndex = -1;
+                    for (int i = 0; i < allPlugins.size(); ++i)
                     {
-                        if (&c->getPluginInfo() == &info)
-                            c->setSelected(true);
+                        if (allPlugins.getReference(i).description.fileOrIdentifier
+                              == info.description.fileOrIdentifier)
+                        {
+                            selectedIndex = i;
+                            break;
+                        }
                     }
-                }
-
-                // Find and select the right card
-                for (auto* c : visibleCards)
+                    for (auto* c : visibleCards)
+                        c->setSelected(c->getPluginInfo().description.fileOrIdentifier
+                                         == info.description.fileOrIdentifier);
+                    if (onPluginSelected) onPluginSelected(info);
+                };
+                card->onDoubleClick = [this](const PluginInfo& info)
                 {
-                    if (c->getPluginInfo().description.fileOrIdentifier == info.description.fileOrIdentifier)
-                        c->setSelected(true);
-                }
+                    if (onPluginDoubleClick) onPluginDoubleClick(info);
+                };
+                card->onFavoriteToggle = [this](const PluginInfo& info, bool favorite)
+                {
+                    if (onFavoriteToggle) onFavoriteToggle(info, favorite);
+                };
+            }
 
-                if (onPluginSelected)
-                    onPluginSelected(info);
-            };
+            const auto& info = allPlugins.getReference(pluginIndex);
+            card->setPluginInfo(info);
+            card->setSelected(pluginIndex == selectedIndex);
+            card->setLoaded(loadedPluginId.isNotEmpty()
+                              && info.description.fileOrIdentifier == loadedPluginId);
 
-            card->onDoubleClick = [this](const PluginInfo& info)
-            {
-                if (onPluginDoubleClick)
-                    onPluginDoubleClick(info);
-            };
-
-            card->onFavoriteToggle = [this](const PluginInfo& info, bool favorite)
-            {
-                if (onFavoriteToggle)
-                    onFavoriteToggle(info, favorite);
-            };
-
-            int topInset = 6;  // Breathing room inside the grey area, above the first card row
-            int x = startX + col * cardWidth;
-            int y = topInset + cardSpacing + row * cardHeight - scrollOffset;
-
+            const int x = startX + col * cardWidth;
+            const int y = topInset + cardSpacing + row * cardHeight - scrollOffset;
             card->setBounds(x, y, PluginCard::preferredWidth, PluginCard::preferredHeight);
-            contentComponent.addAndMakeVisible(card);
-            visibleCards.add(card);
+            card->setVisible(true);
+            ++slot;
         }
+        if (rowOutOfRange) break;
     }
+
+    // Hide any pooled cards we didn't need this frame.
+    for (int i = slot; i < visibleCards.size(); ++i)
+        visibleCards[i]->setVisible(false);
 }
 
 void PluginListView::scrollBarMoved(juce::ScrollBar*, double newRangeStart)

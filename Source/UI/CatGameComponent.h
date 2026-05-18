@@ -219,7 +219,9 @@ private:
 
     int   spawnCountdownTicks = 60;
     int   bossCountdownTicks  = 45 * 60;   // first boss ~45s in
-    int   shotCooldownTicks   = 0;         // gates spawnCatHead; ticks down each frame
+    float shotCooldownSec     = 0.0f;      // gates spawnCatHead; decremented by dt
+    float shotCooldownMaxSec  = 0.01f;     // the value set last shot, for reload-bar fill ratio
+    float bulletTimeSec       = 0.0f;      // independent of the SLOW powerup; brief near-miss slow-mo
     int   shootingStarTicks   = 240;       // countdown to next shooting star
     int   bossWarningTicks    = 0;         // >0 = lightning + flash before boss spawns
     int   bossKillFlashTicks  = 0;         // >0 = white warp streaks after boss kill
@@ -255,8 +257,8 @@ private:
     static constexpr int   kComboCap         = 20;
     static constexpr float kPowerupDropChance= 0.05f;
     // Shot cooldown: ~165ms baseline, ~80ms under Rapid powerup.
-    static constexpr int   kBaseShotCooldown = 10;     // ticks @ 60fps
-    static constexpr int   kRapidShotCooldown= 5;
+    static constexpr float kBaseShotCooldownSec  = 0.165f;
+    static constexpr float kRapidShotCooldownSec = 0.083f;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CatGameComponent)
 };
