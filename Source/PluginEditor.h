@@ -17,6 +17,7 @@
 #include "UI/HostedPluginView.h"
 #include "UI/PluginChainView.h"
 #include "Core/PresetManager.h"
+#include "UI/Colors.h"
 
 namespace PALauncher
 {
@@ -123,7 +124,7 @@ public:
 
         // Determine colors based on active slot and hover state
         auto activeColour = juce::Colour(0xff0cbff2);   // Cyan
-        auto inactiveColour = juce::Colour(0xff3a3a3a); // Dark
+        auto inactiveColour = Colors::buttonSurface;
 
         if (isMouseOver())
         {
@@ -158,12 +159,10 @@ public:
         auto font = juce::Font(getHeight() * 0.5f, juce::Font::bold);
         g.setFont(font);
 
-        // A text
-        g.setColour(slotBActive ? juce::Colours::grey : juce::Colours::white);
+        // Both letters white; the cyan vs charcoal background tells you
+        // which side is active.
+        g.setColour(juce::Colours::white);
         g.drawText("A", leftBounds.toNearestInt(), juce::Justification::centred);
-
-        // B text
-        g.setColour(slotBActive ? juce::Colours::white : juce::Colours::grey);
         g.drawText("B", rightBounds.toNearestInt(), juce::Justification::centred);
     }
 
@@ -181,25 +180,155 @@ private:
     bool slotBActive = false;
 };
 
-// Custom LookAndFeel for brand combo box with reduced popup height
-class BrandComboBoxLookAndFeel : public juce::LookAndFeel_V4
+// LookAndFeel for the top-bar preset dropdown. Replaces the JUCE-default flat
+// look with a rounded charcoal body, slim chevron, dark popup with cyan
+// highlight on hover, and a left-side tick for the active item.
+class TopBarComboBoxLookAndFeel : public juce::LookAndFeel_V4
+{
+public:
+    TopBarComboBoxLookAndFeel()
+    {
+        setColour(juce::PopupMenu::backgroundColourId,           juce::Colour(0xff2a2a2a));
+        setColour(juce::PopupMenu::textColourId,                 juce::Colours::white);
+        setColour(juce::PopupMenu::highlightedBackgroundColourId, juce::Colour(0xff0cbff2));
+        setColour(juce::PopupMenu::highlightedTextColourId,      juce::Colours::white);
+        setColour(juce::PopupMenu::headerTextColourId,           juce::Colour(0xffb0b0b0));
+    }
+
+    void drawComboBox(juce::Graphics& g, int width, int height, bool /*isButtonDown*/,
+                      int /*buttonX*/, int /*buttonY*/, int /*buttonW*/, int /*buttonH*/,
+                      juce::ComboBox& box) override
+    {
+        auto bounds = juce::Rectangle<float>(0.0f, 0.0f, (float)width, (float)height).reduced(0.5f);
+
+        g.setColour(box.findColour(juce::ComboBox::backgroundColourId));
+        g.fillRoundedRectangle(bounds, 4.0f);
+
+        g.setColour(box.findColour(juce::ComboBox::outlineColourId));
+        g.drawRoundedRectangle(bounds, 4.0f, 1.0f);
+
+        // Slim chevron on the right
+        float cx = bounds.getRight() - 11.0f;
+        float cy = bounds.getCentreY();
+        float r  = 3.5f;
+        juce::Path arrow;
+        arrow.startNewSubPath(cx - r, cy - r * 0.55f);
+        arrow.lineTo(cx,         cy + r * 0.55f);
+        arrow.lineTo(cx + r,     cy - r * 0.55f);
+        g.setColour(box.findColour(juce::ComboBox::arrowColourId));
+        g.strokePath(arrow, juce::PathStrokeType(1.4f, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
+    }
+
+    juce::Font getComboBoxFont(juce::ComboBox&) override
+    {
+        return juce::Font(13.0f, juce::Font::plain);
+    }
+
+    void positionComboBoxText(juce::ComboBox& box, juce::Label& label) override
+    {
+        label.setBounds(10, 1, box.getWidth() - 24, box.getHeight() - 2);
+        label.setFont(getComboBoxFont(box));
+    }
+
+    juce::PopupMenu::Options getOptionsForComboBoxPopupMenu(juce::ComboBox& box, juce::Label&) override
+    {
+        return juce::PopupMenu::Options()
+            .withTargetComponent(&box)
+            .withMinimumWidth(box.getWidth())
+            .withStandardItemHeight(26)
+            .withItemThatMustBeVisible(box.getSelectedId());
+    }
+
+    void drawPopupMenuBackgroundWithOptions(juce::Graphics& g, int width, int height,
+                                            const juce::PopupMenu::Options&) override
+    {
+        auto bounds = juce::Rectangle<float>(0.0f, 0.0f, (float)width, (float)height).reduced(0.5f);
+        g.setColour(juce::Colour(0xff2a2a2a));
+        g.fillRoundedRectangle(bounds, 6.0f);
+        g.setColour(juce::Colour(0xff4a4a4a));
+        g.drawRoundedRectangle(bounds, 6.0f, 1.0f);
+    }
+
+    void getIdealPopupMenuItemSize(const juce::String& text, bool isSeparator,
+                                   int standardMenuItemHeight, int& idealWidth, int& idealHeight) override
+    {
+        juce::LookAndFeel_V4::getIdealPopupMenuItemSize(text, isSeparator, standardMenuItemHeight, idealWidth, idealHeight);
+        idealHeight = isSeparator ? 8 : 28;
+        idealWidth  = juce::jmax(idealWidth + 24, 160);
+    }
+
+    void drawPopupMenuItem(juce::Graphics& g, const juce::Rectangle<int>& area,
+                           bool isSeparator, bool isActive, bool isHighlighted,
+                           bool isTicked, bool /*hasSubMenu*/,
+                           const juce::String& text,
+                           const juce::String& /*shortcutKeyText*/,
+                           const juce::Drawable* /*icon*/,
+                           const juce::Colour* const /*textColourToUse*/) override
+    {
+        auto bounds = area.toFloat().reduced(4.0f, 2.0f);
+
+        if (isSeparator)
+        {
+            g.setColour(juce::Colour(0xff3a3a3a));
+            auto line = bounds.withSizeKeepingCentre(bounds.getWidth() - 8.0f, 1.0f);
+            g.fillRect(line);
+            return;
+        }
+
+        if (isHighlighted && isActive)
+        {
+            g.setColour(juce::Colour(0xff0cbff2));
+            g.fillRoundedRectangle(bounds, 4.0f);
+            g.setColour(juce::Colours::white);
+        }
+        else if (! isActive)
+        {
+            g.setColour(juce::Colour(0xff666666));
+        }
+        else
+        {
+            g.setColour(juce::Colours::white);
+        }
+
+        auto textBounds = bounds.reduced(8.0f, 0.0f);
+        auto tickZone   = textBounds.removeFromLeft(14.0f);
+
+        if (isTicked)
+        {
+            juce::Path check;
+            float tx = tickZone.getCentreX();
+            float ty = tickZone.getCentreY();
+            check.startNewSubPath(tx - 4.0f, ty);
+            check.lineTo(tx - 1.0f, ty + 3.0f);
+            check.lineTo(tx + 4.0f, ty - 3.0f);
+            g.strokePath(check, juce::PathStrokeType(1.6f, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
+        }
+
+        g.setFont(juce::Font(13.0f));
+        g.drawText(text, textBounds.toNearestInt(), juce::Justification::centredLeft, true);
+    }
+};
+
+// Brand combo box: shares the dark/cyan top-bar combo styling, but pops up in
+// two columns since the brand list is long and would otherwise run off-screen.
+class BrandComboBoxLookAndFeel : public TopBarComboBoxLookAndFeel
 {
 public:
     juce::PopupMenu::Options getOptionsForComboBoxPopupMenu(juce::ComboBox& box, juce::Label&) override
     {
         return juce::PopupMenu::Options()
             .withTargetComponent(&box)
-            .withMaximumNumColumns(1)
-            .withMinimumNumColumns(1)
-            .withStandardItemHeight(20)
+            .withMinimumNumColumns(2)
+            .withMaximumNumColumns(2)
+            .withStandardItemHeight(24)
             .withItemThatMustBeVisible(box.getSelectedId());
     }
 
     void getIdealPopupMenuItemSize(const juce::String& text, bool isSeparator, int standardMenuItemHeight,
                                    int& idealWidth, int& idealHeight) override
     {
-        juce::LookAndFeel_V4::getIdealPopupMenuItemSize(text, isSeparator, standardMenuItemHeight, idealWidth, idealHeight);
-        idealHeight = 20;  // Smaller row height
+        TopBarComboBoxLookAndFeel::getIdealPopupMenuItemSize(text, isSeparator, standardMenuItemHeight, idealWidth, idealHeight);
+        idealHeight = isSeparator ? 8 : 24;
     }
 };
 
@@ -624,6 +753,7 @@ private:
     ButtonLookAndFeel buttonLookAndFeel;
     SaveButtonLookAndFeel saveButtonLookAndFeel;
     BrandComboBoxLookAndFeel brandComboBoxLookAndFeel;
+    TopBarComboBoxLookAndFeel topBarComboBoxLookAndFeel;
     ChainButtonLookAndFeel chainButtonLookAndFeel;
     SettingsButtonLookAndFeel settingsButtonLookAndFeel;
     PluginAlertLookAndFeel alertLookAndFeel;

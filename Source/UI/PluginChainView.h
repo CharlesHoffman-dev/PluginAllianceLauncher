@@ -45,9 +45,10 @@ public:
     void updateMeterLevels(int meterIndex, float leftPeak, float rightPeak);
 
     // Update auto-gain display state for a given slot. Pushes the toggle state
-    // to the slot card's AUTO button and the cyan correction-dB readout to the
-    // meter card immediately to that slot's right.
-    void updateAutoGainState(int slotIndex, bool enabled, float correctionDb);
+    // (and "still analyzing" flag, which drives the AUTO button's flash) to the
+    // slot card, and the cyan correction-dB readout to the meter card to that
+    // slot's right.
+    void updateAutoGainState(int slotIndex, bool enabled, bool analyzing, float correctionDb);
 
     // Callbacks
     std::function<void(int slotIndex)> onSlotSelected;
@@ -72,7 +73,6 @@ private:
     void handleDragMove(int slotIndex, juce::Point<int> dragPos);
     void handleDragEnd(int slotIndex);
     void handleMeterGainChanged(int meterIndex, float newGain);
-    void handleAutoGainToggled(int slotIndex, bool enabled);
 
     int calculateDropIndex(juce::Point<int> screenPos);
 

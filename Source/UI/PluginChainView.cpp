@@ -61,9 +61,15 @@ PluginChainView::PluginChainView()
             float perimeter = 2.0f * (width + height) - 8.0f * cornerRadius + 2.0f * juce::MathConstants<float>::pi * cornerRadius;
 
             // Draw dashes along the perimeter (skipped when highlighted - cyan
-            // border is drawn solid above instead).
+            // border is drawn solid above instead). dashUnit is rescaled so
+            // numDashes * dashUnit == perimeter exactly; otherwise the leftover
+            // slack from integer truncation leaves a visible gap at the top-left
+            // corner where the perimeter loops back to its start.
             float dashUnit = dashLength + gapLength;
-            int numDashes = highlighted ? 0 : static_cast<int>(perimeter / dashUnit);
+            int numDashes = highlighted ? 0
+                : juce::jmax(1, static_cast<int>(std::round(perimeter / dashUnit)));
+            if (numDashes > 0)
+                dashUnit = perimeter / static_cast<float>(numDashes);
 
             for (int i = 0; i < numDashes; ++i)
             {
@@ -207,18 +213,17 @@ void PluginChainView::paint(juce::Graphics& g)
     // If dragging, draw drop zone indicator
     if (draggedSlotIndex >= 0 && dropTargetIndex >= 0)
     {
-        // Draw vertical cyan line at drop position, accounting for meters
-        // Layout: Meter(60) - Slot(140) - Meter(60) - Slot(140) - ...
+        // Layout: InputMeter [gap] Slot [no gap] OutputMeter [gap] Slot ...
+        // Drop position is the X of the next slot's left edge.
         int cardSpacing = 4;
         int startX = 12;
 
-        // Start after first meter
         float dropX = startX + ChainMeterCard::cardWidth + cardSpacing;
 
-        // Add each previous slot + meter pair
+        // Each preceding slot consumes slot + output-meter + spacing.
         for (int i = 0; i < dropTargetIndex; ++i)
         {
-            dropX += ChainSlotCard::cardWidth + cardSpacing;
+            dropX += ChainSlotCard::cardWidth;
             dropX += ChainMeterCard::cardWidth + cardSpacing;
         }
 
@@ -232,7 +237,7 @@ void PluginChainView::paint(juce::Graphics& g)
         g.setColour(juce::Colour(0xff999999));
         g.setFont(juce::Font(16.0f));
         auto textBounds = getLocalBounds().reduced(20);
-        g.drawText("Add plugins from browser to build your chain",
+        g.drawText("Add plugins from the browser to build a chain",
                    textBounds,
                    juce::Justification::centred);
     }
@@ -250,8 +255,8 @@ void PluginChainView::resized()
     auto contentBounds = bounds.reduced(12, 0);
     contentBounds.removeFromTop(topPadding);
 
-    // Layout cards horizontally with spacing: Meter - Slot - Meter - Slot - ...
-    int cardSpacing = 4;  // Spacing between cards
+    // Layout: input meter [gap] slot [no gap, attached] output meter [gap] slot ...
+    int cardSpacing = 4;
     int x = contentBounds.getX();
     int y = contentBounds.getY();
 
@@ -259,45 +264,40 @@ void PluginChainView::resized()
     for (auto* meter : meterCards)
         meter->setVisible(false);
 
-    // Always show at least the first meter (before any slots)
+    // Input meter (no AUTO, no gain, no attachment)
     if (meterCards.size() > 0)
     {
         auto* meter = meterCards[0];
+        meter->setAutoGainSupported(false);
+        meter->setAttachedLeft(false);
+        meter->setGainEditable(false);
         meter->setVisible(true);
         meter->setBounds(x, y, ChainMeterCard::cardWidth, ChainMeterCard::cardHeight);
         x += ChainMeterCard::cardWidth + cardSpacing;
     }
 
-    // Alternate between slot cards and meter cards
+    // Each slot is immediately followed (no gap) by its output meter, which is
+    // visually attached to the slot's right side.
     for (int i = 0; i < slotCards.size(); ++i)
     {
-        // Place slot card
         auto* slotCard = slotCards[i];
         slotCard->setBounds(x, y, ChainSlotCard::cardWidth, ChainSlotCard::cardHeight);
-        x += ChainSlotCard::cardWidth + cardSpacing;
+        x += ChainSlotCard::cardWidth;  // No gap before the attached meter
 
-        // Place meter card after this slot (if it exists)
         int meterIdx = i + 1;
         if (meterIdx < meterCards.size())
         {
             auto* meter = meterCards[meterIdx];
+            meter->setAutoGainSupported(true);
+            meter->setAttachedLeft(true);
+            meter->setGainEditable(true);
             meter->setVisible(true);
             meter->setBounds(x, y, ChainMeterCard::cardWidth, ChainMeterCard::cardHeight);
             x += ChainMeterCard::cardWidth + cardSpacing;
         }
     }
 
-    // Position add button in a card-sized area
-    if (slotCards.isEmpty())
-    {
-        // Center the add button card if no cards (but after first meter)
-        addButton.setBounds(x, y, ChainSlotCard::cardWidth, ChainSlotCard::cardHeight);
-    }
-    else
-    {
-        // Position add button card after last meter
-        addButton.setBounds(x, y, ChainSlotCard::cardWidth, ChainSlotCard::cardHeight);
-    }
+    addButton.setBounds(x, y, ChainSlotCard::cardWidth, ChainSlotCard::cardHeight);
 }
 
 void PluginChainView::setChainState(PluginAllianceLauncherProcessor& proc)
@@ -309,19 +309,46 @@ void PluginChainView::setChainState(PluginAllianceLauncherProcessor& proc)
     slotCards.clear();
     meterCards.clear();
 
-    // Create meter cards (one before each slot, plus one at the end)
-    // For 8 slots, we need 9 meters: M0-S0-M1-S1-M2-S2-M3-S3-M4-S4-M5-S5-M6-S6-M7-S7-M8
+    // Create meter cards. For 8 slots we need 9 meters arranged as:
+    //   M0 - S0 - M1 - S1 - M2 - ... - M8
+    // where M_{i+1} is the output meter for slot S_i. M0 is the chain input
+    // meter (no AUTO, no gain).
     for (int i = 0; i <= kMaxChainSlots; ++i)
     {
         auto* meter = new ChainMeterCard(i);
         meter->onGainChanged = [this](int idx, float gain) { handleMeterGainChanged(idx, gain); };
-        // The AUTO toggle now lives on the slot card. This meter only renders
-        // the cyan correction-dB readout, driven by the slot to its left.
+        meter->onAutoGainToggled = [this](int meterIndex, bool enabled)
+        {
+            // AUTO on meter[i+1] controls slot[i].
+            int slotIndex = meterIndex - 1;
+            if (slotIndex >= 0 && slotIndex < kMaxChainSlots && onAutoGainToggled)
+                onAutoGainToggled(slotIndex, enabled);
+        };
+        meter->onSelectRequest = [this](int meterIndex)
+        {
+            // Clicks on the meter select the slot to its left - slot + meter
+            // are treated as one logical module.
+            int slotIndex = meterIndex - 1;
+            if (slotIndex >= 0 && slotIndex < kMaxChainSlots)
+                handleSlotSelected(slotIndex);
+        };
+        meter->onRemoveRequest = [this](int meterIndex)
+        {
+            // The X button on the meter removes the whole module (the slot
+            // immediately to its left and this meter together).
+            int slotIndex = meterIndex - 1;
+            if (slotIndex >= 0 && slotIndex < kMaxChainSlots)
+                handleRemoveSlot(slotIndex);
+        };
+
         if (i > 0 && i - 1 < kMaxChainSlots)
         {
             int slotIdx = i - 1;
             meter->setAutoGainEnabled(proc.isSlotAutoGainEnabled(slotIdx));
             meter->setAutoGainCorrectionDb(proc.getSlotCorrectionDb(slotIdx));
+            meter->setGainValue(proc.getSlotActiveGain(slotIdx));
+            meter->setSelected(slotIdx == currentSelectedSlot);
+            meter->setBypassed(proc.isSlotBypassed(slotIdx));
         }
 
         addAndMakeVisible(meter);
@@ -344,7 +371,11 @@ void PluginChainView::setChainState(PluginAllianceLauncherProcessor& proc)
         card->onRemove = [this](int idx) { handleRemoveSlot(idx); };
         card->onToggleBypass = [this](int idx, bool bypass) { handleToggleBypass(idx, bypass); };
         card->onToggleAB = [this](int idx, ABSlot ab) { handleToggleAB(idx, ab); };
-        card->onAutoGainToggled = [this](int idx, bool enabled) { handleAutoGainToggled(idx, enabled); };
+        card->onAutoGainToggled = [this](int idx, bool enabled)
+        {
+            if (onAutoGainToggled)
+                onAutoGainToggled(idx, enabled);
+        };
         card->onDragStart = [this](int idx, juce::Point<int> pos) {
             DBG("PluginChainView: onDragStart called for slot " << idx);
             handleDragStart(idx, pos);
@@ -388,10 +419,16 @@ void PluginChainView::handleSlotSelected(int slotIndex)
 
     currentSelectedSlot = slotIndex;
 
-    // Update card selection states
+    // Slot + its right-hand output meter form one module; both halves get the
+    // cyan border when this slot is selected.
     for (auto* card : slotCards)
-    {
         card->setSelected(card->getSlotIndex() == slotIndex);
+
+    for (int i = 0; i < meterCards.size(); ++i)
+    {
+        // meter[i+1] is the output meter for slot[i].
+        int ownedSlot = i - 1;
+        meterCards[i]->setSelected(ownedSlot == slotIndex);
     }
 
     if (onSlotSelected)
@@ -411,7 +448,8 @@ void PluginChainView::handleToggleBypass(int slotIndex, bool bypass)
 
     processor->bypassSlot(slotIndex, bypass);
 
-    // Update the card's bypass state
+    // Update the slot card's bypass state and mirror it on the right-hand
+    // meter so both halves of the module tint together.
     for (auto* card : slotCards)
     {
         if (card->getSlotIndex() == slotIndex)
@@ -420,6 +458,10 @@ void PluginChainView::handleToggleBypass(int slotIndex, bool bypass)
             break;
         }
     }
+
+    int meterIndex = slotIndex + 1;
+    if (meterIndex >= 0 && meterIndex < meterCards.size())
+        meterCards[meterIndex]->setBypassed(bypass);
 }
 
 void PluginChainView::handleToggleAB(int slotIndex, ABSlot newSlot)
@@ -438,6 +480,12 @@ void PluginChainView::handleToggleAB(int slotIndex, ABSlot newSlot)
             break;
         }
     }
+
+    // The output meter shows whichever host is active, so flip its displayed
+    // gain to the now-active host's stored value.
+    int meterIndex = slotIndex + 1;
+    if (meterIndex >= 0 && meterIndex < meterCards.size())
+        meterCards[meterIndex]->setGainValue(processor->getSlotActiveGain(slotIndex));
 
     // Notify parent (editor) so it can sync main A/B switch
     if (onToggleAB)
@@ -482,37 +530,30 @@ void PluginChainView::handleDragEnd(int slotIndex)
 
 int PluginChainView::calculateDropIndex(juce::Point<int> screenPos)
 {
-    // Convert screen position to local position
     auto localPos = getLocalPoint(nullptr, screenPos);
 
-    // Calculate which slot position this corresponds to, accounting for meters
-    // Layout: Meter(60) - Slot(140) - Meter(60) - Slot(140) - ...
-    // Spacing between each card is 4px
-
+    // Layout: InputMeter [4] Slot [0] OutputMeter [4] Slot [0] OutputMeter ...
     int cardSpacing = 4;
-    int startX = 12;  // contentBounds left padding
+    int startX = 12;
 
-    // Start position accounts for first meter
     int firstMeterWidth = ChainMeterCard::cardWidth + cardSpacing;
     int x = localPos.getX() - startX - firstMeterWidth;
 
     if (x < 0)
         return 0;  // Before first slot
 
-    // Each slot + meter pair is: Slot(140) + spacing(4) + Meter(60) + spacing(4) = 208
-    int slotMeterPairWidth = ChainSlotCard::cardWidth + cardSpacing + ChainMeterCard::cardWidth + cardSpacing;
+    // Each slot + attached output meter consumes:
+    //   Slot(120) + Meter(48) + spacing(4) = 172
+    int slotMeterPairWidth = ChainSlotCard::cardWidth + ChainMeterCard::cardWidth + cardSpacing;
 
-    // Find which pair we're in
     int pairIndex = x / slotMeterPairWidth;
     int posInPair = x % slotMeterPairWidth;
 
-    // If we're in the first half of the pair (on the slot), insert before next
-    // If we're in the second half (on the meter), insert after current
+    // If the pointer is past the slot's centre line, drop after this pair.
     int index = pairIndex;
-    if (posInPair > (ChainSlotCard::cardWidth + cardSpacing) / 2)
+    if (posInPair > ChainSlotCard::cardWidth / 2)
         index = pairIndex + 1;
 
-    // Clamp to valid range
     index = juce::jlimit(0, slotCards.size(), index);
 
     return index;
@@ -528,25 +569,31 @@ void PluginChainView::updateMeterLevels(int meterIndex, float leftPeak, float ri
 
 void PluginChainView::handleMeterGainChanged(int meterIndex, float newGain)
 {
+    // Push the change straight into the processor so the audio thread picks it
+    // up on the next block. Editor still gets notified for things like undo.
+    if (processor != nullptr && meterIndex >= 1)
+    {
+        int slotIndex = meterIndex - 1;
+        if (slotIndex < kMaxChainSlots)
+            processor->setSlotActiveGain(slotIndex, newGain);
+    }
+
     if (onMeterGainChanged)
         onMeterGainChanged(meterIndex, newGain);
 }
 
-void PluginChainView::handleAutoGainToggled(int slotIndex, bool enabled)
+void PluginChainView::updateAutoGainState(int slotIndex, bool enabled, bool analyzing, float correctionDb)
 {
-    if (onAutoGainToggled)
-        onAutoGainToggled(slotIndex, enabled);
-}
-
-void PluginChainView::updateAutoGainState(int slotIndex, bool enabled, float correctionDb)
-{
-    // Push the toggle state to the slot card (the AUTO button) and the
-    // correction-dB readout to the meter immediately right of that slot.
+    // AUTO toggle (+ analyzing flash) now lives on the slot card so all four
+    // header buttons sit at evenly-spaced positions. The cyan correction-dB
+    // readout still belongs to the output meter where the auto-gain math is
+    // visualised.
     for (auto* card : slotCards)
     {
         if (card->getSlotIndex() == slotIndex)
         {
             card->setAutoGainEnabled(enabled);
+            card->setAutoGainAnalyzing(enabled && analyzing);
             break;
         }
     }

@@ -13,7 +13,8 @@
 namespace PALauncher
 {
 
-class ChainSlotCard : public juce::Component
+class ChainSlotCard : public juce::Component,
+                      private juce::Timer
 {
 public:
     ChainSlotCard(int slotIndex);
@@ -45,11 +46,13 @@ public:
     void setABSlot(ABSlot slot);
     ABSlot getABSlot() const { return abSlot; }
 
-    // Auto-gain (LUFS matching) toggle. The cyan correction-dB readout still
-    // lives on the output meter card to its right; only the toggle moved here
-    // since auto-gain is logically a per-slot control like bypass and A/B.
+    // Auto-gain toggle lives in the slot's portion of the unified header so
+    // all four buttons (Power, A/B, AUTO, X) can be evenly distributed across
+    // the module. The actual LUFS work still happens on the slot's processor
+    // side; this card just owns the toggle UI.
     void setAutoGainEnabled(bool enabled);
     bool isAutoGainEnabled() const { return autoGainEnabled; }
+    void setAutoGainAnalyzing(bool analyzing);
 
     // Update image from cache
     void updateImage();
@@ -70,11 +73,15 @@ public:
     static constexpr int cardHeight = 128;  // Toolbar (24) + square image (98) + padding
 
 private:
+    void timerCallback() override;
+
     int slotIdx;
     bool selected = false;
     bool hovered = false;
     bool bypassed = false;
     bool autoGainEnabled = false;
+    bool autoGainAnalyzing = false;
+    bool autoFlashOn = false;
     ABSlot abSlot = ABSlot::A;
     juce::String pluginName;
 
@@ -84,7 +91,7 @@ private:
     // Button areas (small icons ~20×20px)
     juce::Rectangle<int> bypassButtonBounds;
     juce::Rectangle<int> abButtonBounds;
-    juce::Rectangle<int> autoGainButtonBounds;
+    juce::Rectangle<int> autoButtonBounds;
     juce::Rectangle<int> removeButtonBounds;
 
     bool isDragging = false;

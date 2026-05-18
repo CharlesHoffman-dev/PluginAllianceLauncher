@@ -7,9 +7,37 @@
 
 #include "ChainSlotCard.h"
 #include "../Utils/PluginImageCache.h"
+#include "Colors.h"
+#include "ModuleHeaderLayout.h"
 
 namespace PALauncher
 {
+
+namespace
+{
+    // Builds an OPEN rounded-rectangle path for the LEFT half of a unified
+    // module: rounded top-left + bottom-left, flat right (no right edge drawn
+    // by the stroke). The slot card uses this so its border stops exactly at
+    // the seam, where the meter card picks it up with its mirror path.
+    static juce::Path horseshoeLeftPath(juce::Rectangle<float> b, float r)
+    {
+        const float L = b.getX();
+        const float R = b.getRight();
+        const float T = b.getY();
+        const float B = b.getBottom();
+        const float halfPi = juce::MathConstants<float>::halfPi;
+        const float pi     = juce::MathConstants<float>::pi;
+
+        juce::Path p;
+        p.startNewSubPath(R, T);                                  // top-right (flat seam)
+        p.lineTo(L + r, T);                                       // top edge
+        p.addCentredArc(L + r, T + r, r, r, 0.0f,  0.0f, -halfPi);// top-left arc
+        p.lineTo(L, B - r);                                       // left edge
+        p.addCentredArc(L + r, B - r, r, r, 0.0f, -halfPi, -pi);  // bottom-left arc
+        p.lineTo(R, B);                                           // bottom edge
+        return p;
+    }
+}
 
 ChainSlotCard::ChainSlotCard(int slotIndex)
     : slotIdx(slotIndex)
@@ -22,71 +50,78 @@ ChainSlotCard::ChainSlotCard(int slotIndex)
 
 void ChainSlotCard::paint(juce::Graphics& g)
 {
-    auto bounds = getLocalBounds().toFloat().reduced(2.0f);
+    // The slot and its output meter form one visual module. We pad top/bottom/
+    // left for the border and shadow, but extend flush to the right edge so the
+    // meter sits seamlessly against us.
+    auto bounds = getLocalBounds().toFloat();
+    bounds.removeFromTop(2.0f);
+    bounds.removeFromBottom(2.0f);
+    bounds.removeFromLeft(2.0f);
 
-    // Background - white, with different tints for states
+    // Background colour - white; selection is signaled by the cyan border
+    // alone (no body tint). Bypass and hover still tint subtly.
     juce::Colour bgColor = juce::Colours::white;
+    if (bypassed)     bgColor = juce::Colour(0xfff0f0f0);
+    else if (hovered) bgColor = juce::Colour(0xfffafafa);
 
-    if (bypassed)
-    {
-        // Grayed out when bypassed
-        bgColor = juce::Colour(0xfff0f0f0);
-    }
-    else if (selected)
-    {
-        bgColor = juce::Colour(0xffe8f4fc);  // Light blue when selected
-    }
-    else if (hovered)
-    {
-        bgColor = juce::Colour(0xfffafafa);  // Slightly off-white on hover
-    }
+    constexpr float cardRadius = 6.0f;
 
-    // Drop shadow
+    // Card body fill: rounded left, FLAT right (bool corner variant). The
+    // meter card fills its half the same way mirrored, so the two flat seams
+    // abut without a gap.
+    juce::Path cardFill;
+    cardFill.addRoundedRectangle(bounds.getX(), bounds.getY(),
+                                 bounds.getWidth(), bounds.getHeight(),
+                                 cardRadius, cardRadius,
+                                 true,  false,   // top-left rounded, top-right flat
+                                 true,  false);  // bottom-left rounded, bottom-right flat
+
+    // Drop shadow under just the slot's half.
     g.setColour(juce::Colour(0x15000000));
-    g.fillRoundedRectangle(bounds.translated(1.0f, 2.0f), 6.0f);
+    {
+        juce::Path shadow;
+        auto sb = bounds.translated(1.0f, 2.0f);
+        shadow.addRoundedRectangle(sb.getX(), sb.getY(), sb.getWidth(), sb.getHeight(),
+                                   cardRadius, cardRadius,
+                                   true, false, true, false);
+        g.fillPath(shadow);
+    }
 
     g.setColour(bgColor);
-    g.fillRoundedRectangle(bounds, 6.0f);
+    g.fillPath(cardFill);
 
-    // Border
-    if (selected)
-    {
-        // Cyan border when selected
-        g.setColour(juce::Colour(0xff0cbff2));
-        g.drawRoundedRectangle(bounds, 6.0f, 2.0f);
-    }
-    else
-    {
-        // Subtle border
-        g.setColour(juce::Colour(0xffe0e0e0));
-        g.drawRoundedRectangle(bounds, 6.0f, 1.0f);
-    }
+    // Border: 3-sided horseshoe (no right edge) so the slot's outline merges
+    // seamlessly with the meter's mirror horseshoe at the seam.
+    g.setColour(selected ? juce::Colour(0xff0cbff2) : juce::Colour(0xffe0e0e0));
+    g.strokePath(horseshoeLeftPath(bounds, cardRadius),
+                 juce::PathStrokeType(selected ? 2.0f : 1.0f));
 
-    // Content area - minimal padding
-    auto contentBounds = getLocalBounds().reduced(3);
+    // Content area - 3px padding on top/left/bottom, flush to the slot's
+    // right edge so the charcoal toolbar continues into the meter.
+    auto contentBounds = getLocalBounds();
+    contentBounds.removeFromLeft(3);
+    contentBounds.removeFromTop(3);
+    contentBounds.removeFromBottom(3);
+    // No right padding here.
 
-    // Top toolbar with charcoal background - rounded on top only
     auto toolbarBounds = contentBounds.removeFromTop(24);
-    g.setColour(juce::Colour(0xff2a2a2a));  // Charcoal like main toolbar
 
-    // Create path with rounded top corners only
+    // Toolbar background - rounded top-left only; flat top-right meets the
+    // meter's toolbar at the seam.
     juce::Path toolbarPath;
-    auto tbBounds = toolbarBounds.toFloat();
-    toolbarPath.addRoundedRectangle(tbBounds.getX(), tbBounds.getY(),
-                                     tbBounds.getWidth(), tbBounds.getHeight(),
-                                     3.0f, 3.0f,
-                                     true, true, false, false);
+    auto tbF = toolbarBounds.toFloat();
+    toolbarPath.addRoundedRectangle(tbF.getX(), tbF.getY(),
+                                    tbF.getWidth(), tbF.getHeight(),
+                                    3.0f, 3.0f,
+                                    true,  false,   // top-left rounded, top-right flat
+                                    false, false);  // bottom corners flat
+    g.setColour(juce::Colour(0xff2a2a2a));
     g.fillPath(toolbarPath);
 
-    // Buttons in toolbar
-    auto buttonRow = toolbarBounds.reduced(2);
-    int buttonSize = 17;
-    int abButtonWidth = 30;        // Segmented A/B control
-    int autoButtonWidth = 28;      // Auto-gain toggle, sits beside A/B
-
-    // Bypass button (top-left) - IEC 60417-5009 power glyph: nearly-full circle
-    // with a small gap at 12 o'clock, plus a vertical bar through that gap.
-    bypassButtonBounds = buttonRow.removeFromLeft(buttonSize).reduced(1);
+    // All four header-button rects come from ModuleHeaderLayout so the layout
+    // lives in one file. The slot card owns Power, A/B, and AUTO; X lives in
+    // the meter card and reads the same constants.
+    bypassButtonBounds = ModuleHeader::toSlotRect(ModuleHeader::power, toolbarBounds.getY());
     g.setColour(bypassed ? juce::Colour(0xff0cbff2) : juce::Colours::white);
     g.fillRoundedRectangle(bypassButtonBounds.toFloat(), 2.5f);
 
@@ -113,20 +148,11 @@ void ChainSlotCard::paint(juce::Graphics& g)
                cx, cy - radius * 0.15f,
                strokeWidth);
 
-    // Remove button (top-right)
-    removeButtonBounds = buttonRow.removeFromRight(buttonSize).reduced(1);
-    g.setColour(juce::Colour(0xffcc0000));
-    g.fillRoundedRectangle(removeButtonBounds.toFloat(), 2.5f);
-    g.setColour(juce::Colours::white);
-    g.setFont(juce::Font(10.0f, juce::Font::bold));
-    g.drawText("X", removeButtonBounds, juce::Justification::centred);
+    // Remove button has moved to the meter's half of the header.
+    removeButtonBounds = {};
 
-    // A/B + AUTO are visually grouped between Bypass and Remove. Place them as
-    // a single centred unit with a small gap so they read as related controls.
-    int groupGap = 4;
-    int groupWidth = abButtonWidth + groupGap + autoButtonWidth;
-    int abX = buttonRow.getCentreX() - (groupWidth / 2);
-    abButtonBounds = juce::Rectangle<int>(abX, buttonRow.getY(), abButtonWidth, buttonRow.getHeight()).reduced(1);
+    // A/B segmented control
+    abButtonBounds = ModuleHeader::toSlotRect(ModuleHeader::ab, toolbarBounds.getY());
     auto abBounds = abButtonBounds.toFloat();
     float halfWidth = abBounds.getWidth() / 2.0f;
     float cornerSize = 2.5f;
@@ -135,7 +161,7 @@ void ChainSlotCard::paint(juce::Graphics& g)
     auto rightBounds = abBounds.withLeft(abBounds.getX() + halfWidth);
 
     auto activeColour = juce::Colour(0xff0cbff2);   // Cyan
-    auto inactiveColour = juce::Colour(0xff3a3a3a); // Dark
+    auto inactiveColour = Colors::buttonSurface;
 
     // Draw left side (A) - rounded on left, flat on right
     juce::Path leftPath;
@@ -155,32 +181,37 @@ void ChainSlotCard::paint(juce::Graphics& g)
     g.setColour(abSlot == ABSlot::B ? activeColour : inactiveColour);
     g.fillPath(rightPath);
 
-    // Draw A/B text
+    // Draw A/B text - both letters white; the cyan vs charcoal background
+    // tells you which side is active.
     auto font = juce::Font(8.0f, juce::Font::bold);
     g.setFont(font);
-    g.setColour(abSlot == ABSlot::B ? juce::Colours::grey : juce::Colours::white);
+    g.setColour(juce::Colours::white);
     g.drawText("A", leftBounds.toNearestInt(), juce::Justification::centred);
-    g.setColour(abSlot == ABSlot::B ? juce::Colours::white : juce::Colours::grey);
     g.drawText("B", rightBounds.toNearestInt(), juce::Justification::centred);
 
-    // AUTO button - immediately right of the A/B group with a small gap.
-    int autoX = abButtonBounds.getRight() + groupGap;
-    autoGainButtonBounds = juce::Rectangle<int>(autoX, buttonRow.getY(), autoButtonWidth, buttonRow.getHeight()).reduced(1);
-    auto autoBoundsF = autoGainButtonBounds.toFloat();
-    if (autoGainEnabled)
+    // AUTO button - third evenly-spaced position in the unified header.
+    autoButtonBounds = ModuleHeader::toSlotRect(ModuleHeader::autoBtn, toolbarBounds.getY());
+    auto autoBoundsF = autoButtonBounds.toFloat();
+    if (autoGainEnabled && autoGainAnalyzing)
+    {
+        g.setColour(autoFlashOn ? activeColour : inactiveColour);
+        g.fillRoundedRectangle(autoBoundsF, 2.5f);
+        g.setColour(autoFlashOn ? juce::Colours::white : juce::Colours::grey);
+    }
+    else if (autoGainEnabled)
     {
         g.setColour(activeColour);
-        g.fillRoundedRectangle(autoBoundsF, cornerSize);
+        g.fillRoundedRectangle(autoBoundsF, 2.5f);
         g.setColour(juce::Colours::white);
     }
     else
     {
         g.setColour(inactiveColour);
-        g.fillRoundedRectangle(autoBoundsF, cornerSize);
-        g.setColour(juce::Colours::grey);
+        g.fillRoundedRectangle(autoBoundsF, 2.5f);
+        g.setColour(juce::Colours::white);
     }
-    g.setFont(juce::Font(7.5f, juce::Font::bold));
-    g.drawText("AUTO", autoGainButtonBounds, juce::Justification::centred);
+    g.setFont(juce::Font(8.0f, juce::Font::bold));
+    g.drawText("AUTO", autoButtonBounds, juce::Justification::centred);
 
     // Plugin image - square with padding on all sides
     int availableWidth = contentBounds.getWidth();
@@ -261,7 +292,7 @@ void ChainSlotCard::mouseDown(const juce::MouseEvent& e)
         return;
     }
 
-    if (autoGainButtonBounds.contains(e.getPosition()))
+    if (autoButtonBounds.contains(e.getPosition()))
     {
         autoGainEnabled = !autoGainEnabled;
         if (onAutoGainToggled)
@@ -270,12 +301,8 @@ void ChainSlotCard::mouseDown(const juce::MouseEvent& e)
         return;
     }
 
-    if (removeButtonBounds.contains(e.getPosition()))
-    {
-        if (onRemove)
-            onRemove(slotIdx);
-        return;
-    }
+    // The Remove (X) button lives on the meter half of the module; the chain
+    // view wires its click through to onRemoveSlot for this slot.
 
     // Otherwise, select this slot and prepare for potential drag
     DBG("Mouse down on slot " << slotIdx);
@@ -291,8 +318,7 @@ void ChainSlotCard::mouseDoubleClick(const juce::MouseEvent& e)
     // Ignore double-clicks on the toolbar buttons - they're handled by mouseDown.
     if (bypassButtonBounds.contains(e.getPosition())
         || abButtonBounds.contains(e.getPosition())
-        || autoGainButtonBounds.contains(e.getPosition())
-        || removeButtonBounds.contains(e.getPosition()))
+        || autoButtonBounds.contains(e.getPosition()))
         return;
 
     if (pluginName.isNotEmpty() && onViewPlugin)
@@ -335,8 +361,8 @@ void ChainSlotCard::setSlotData(const ChainSlot& slot, int slotIndex, bool isSel
     slotIdx = slotIndex;
     selected = isSelected;
     bypassed = slot.bypassed;
-    autoGainEnabled = slot.autoGainEnabled;
     abSlot = slot.activeSlot;
+    autoGainEnabled = slot.autoGainEnabled;
 
     // Get plugin name from active host
     const auto& activeHost = slot.getActiveHost();
@@ -390,8 +416,35 @@ void ChainSlotCard::setAutoGainEnabled(bool enabled)
     if (autoGainEnabled != enabled)
     {
         autoGainEnabled = enabled;
+        if (!enabled)
+            setAutoGainAnalyzing(false);
         repaint();
     }
+}
+
+void ChainSlotCard::setAutoGainAnalyzing(bool analyzing)
+{
+    if (autoGainAnalyzing == analyzing)
+        return;
+
+    autoGainAnalyzing = analyzing;
+    if (analyzing)
+    {
+        autoFlashOn = true;
+        startTimer(250);  // ~2 Hz flash
+    }
+    else
+    {
+        stopTimer();
+        autoFlashOn = false;
+    }
+    repaint();
+}
+
+void ChainSlotCard::timerCallback()
+{
+    autoFlashOn = !autoFlashOn;
+    repaint();
 }
 
 void ChainSlotCard::updateImage()

@@ -117,6 +117,11 @@ public:
         currentBlockOutputEnergy = 0.0;
         blockSampleCount = blockSize;
 
+        // Capture a static correction after this much signal-bearing audio. The
+        // ring buffer is sized for the same window so the captured value is the
+        // mean over a fully populated short-term integration window.
+        analysisBlocksRequired = blocksFor3Seconds;
+
         reset();
     }
 
@@ -137,7 +142,21 @@ public:
         inputLUFS = -100.0f;
         outputLUFS = -100.0f;
         blocksWritten = 0;
+        analyzing = true;
+        signalBlockCount = 0;
+        capturedCorrectionDb = 0.0f;
     }
+
+    // Begin a fresh capture pass. Called when AUTO is turned on. The button
+    // flashes (driven from the UI) while analyzing == true; once enough
+    // signal-bearing blocks have accumulated, the captured correction is
+    // frozen and `analyzing` flips to false.
+    void startAnalysis()
+    {
+        reset();
+    }
+
+    bool isAnalyzing() const { return analyzing; }
 
     // Call BEFORE the plugin processes the buffer.
     // Accumulates input energy only; sample counting and flushing are driven by
@@ -188,17 +207,16 @@ public:
     float getInputLUFS() const { return inputLUFS; }
     float getOutputLUFS() const { return outputLUFS; }
 
-    // Get the auto-gain correction in dB (input - output)
+    // Get the auto-gain correction in dB. While `analyzing` is true the
+    // analyzer is still gathering signal-bearing audio and applies no
+    // correction (returns 0). Once enough signal has accumulated the
+    // capture is frozen and the same static value is returned thereafter.
     float getCorrectionDb() const
     {
-        // Gate: if either measurement is very quiet, return 0 correction
-        if (inputLUFS < gateThreshold || outputLUFS < gateThreshold)
+        if (analyzing)
             return 0.0f;
 
-        float correction = inputLUFS - outputLUFS;
-
-        // Clamp correction range to avoid runaway
-        return juce::jlimit(-maxCorrectionDb, maxCorrectionDb, correction);
+        return capturedCorrectionDb;
     }
 
 private:
@@ -240,6 +258,23 @@ private:
         else
             outputLUFS = -100.0f;
 
+        // Analysis accumulator: only count blocks where both input and output
+        // are above the gate, so silence between phrases doesn't dilute the
+        // capture and keeps the AUTO button flashing through dead air.
+        if (analyzing
+            && inputLUFS > gateThreshold
+            && outputLUFS > gateThreshold)
+        {
+            ++signalBlockCount;
+
+            if (signalBlockCount >= analysisBlocksRequired)
+            {
+                float correction = inputLUFS - outputLUFS;
+                capturedCorrectionDb = juce::jlimit(-maxCorrectionDb, maxCorrectionDb, correction);
+                analyzing = false;
+            }
+        }
+
         // Reset block accumulator
         currentBlockInputEnergy = 0.0;
         currentBlockOutputEnergy = 0.0;
@@ -268,6 +303,13 @@ private:
     // Current LUFS values
     float inputLUFS = -100.0f;
     float outputLUFS = -100.0f;
+
+    // One-shot analysis state. Counts only blocks whose input AND output are
+    // above the gate so silence between phrases doesn't credit the capture.
+    bool analyzing = true;
+    int signalBlockCount = 0;
+    int analysisBlocksRequired = 0;
+    float capturedCorrectionDb = 0.0f;
 
     // Thresholds
     static constexpr float gateThreshold = -70.0f;   // Below this LUFS, hold gain steady

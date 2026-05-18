@@ -9,8 +9,35 @@
 
 #include <JuceHeader.h>
 
+#include <vector>
+
 namespace PALauncher
 {
+
+// Background worker that destroys AudioPluginInstance objects off the message
+// thread. unloadPlugin() takes microseconds; the long part is the plugin's
+// destructor (releasing GUI handles, freeing internal DSP state, calling
+// IPlugView::removed for VST3, etc.). Doing that synchronously on the message
+// thread leaves the removed slot's card visible for hundreds of ms after the
+// user clicks X. Enqueueing into the graveyard makes the UI refresh
+// immediately.
+class PluginGraveyard : private juce::Thread
+{
+public:
+    static PluginGraveyard& getInstance();
+
+    void enqueue(std::unique_ptr<juce::AudioPluginInstance> plugin);
+
+private:
+    PluginGraveyard();
+    ~PluginGraveyard() override;
+
+    void run() override;
+
+    juce::CriticalSection queueLock;
+    std::vector<std::unique_ptr<juce::AudioPluginInstance>> pending;
+    juce::WaitableEvent wake { false };  // auto-reset
+};
 
 class PluginHost
 {

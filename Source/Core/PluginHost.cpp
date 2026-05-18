@@ -10,6 +10,68 @@
 namespace PALauncher
 {
 
+//==============================================================================
+// PluginGraveyard
+//==============================================================================
+
+PluginGraveyard& PluginGraveyard::getInstance()
+{
+    static PluginGraveyard instance;
+    return instance;
+}
+
+PluginGraveyard::PluginGraveyard()
+    : juce::Thread("PluginGraveyard")
+{
+    startThread();
+}
+
+PluginGraveyard::~PluginGraveyard()
+{
+    signalThreadShouldExit();
+    wake.signal();
+    stopThread(5000);
+}
+
+void PluginGraveyard::enqueue(std::unique_ptr<juce::AudioPluginInstance> plugin)
+{
+    if (plugin == nullptr)
+        return;
+
+    {
+        juce::ScopedLock sl(queueLock);
+        pending.push_back(std::move(plugin));
+    }
+    wake.signal();
+}
+
+void PluginGraveyard::run()
+{
+    while (!threadShouldExit())
+    {
+        std::vector<std::unique_ptr<juce::AudioPluginInstance>> batch;
+        {
+            juce::ScopedLock sl(queueLock);
+            std::swap(batch, pending);
+        }
+
+        // Destructors run here - releases GUI handles, internal DSP, etc.
+        for (auto& p : batch)
+        {
+            if (p != nullptr)
+                p->releaseResources();
+        }
+        batch.clear();
+
+        if (!threadShouldExit())
+            wake.wait(-1);
+    }
+}
+
+//==============================================================================
+// PluginHost
+//==============================================================================
+
 PluginHost::PluginHost()
 {
     // Register all plugin formats
@@ -37,12 +99,12 @@ bool PluginHost::loadPlugin(const juce::PluginDescription& description,
 {
     juce::ScopedLock scopedLock(lock);
 
-    // Unload current plugin if any
+    // Unload current plugin if any. Move it to the graveyard so its destructor
+    // doesn't block load() and stutter audio while the replacement is created.
     if (loadedPlugin != nullptr)
     {
-        if (isPrepared)
-            loadedPlugin->releaseResources();
-        loadedPlugin = nullptr;
+        isPrepared = false;
+        PluginGraveyard::getInstance().enqueue(std::move(loadedPlugin));
     }
 
     // Create new plugin instance
@@ -119,19 +181,25 @@ bool PluginHost::loadPlugin(const juce::PluginDescription& description,
 
 void PluginHost::unloadPlugin()
 {
-    juce::ScopedLock scopedLock(lock);
+    std::unique_ptr<juce::AudioPluginInstance> toDestroy;
 
-    if (loadedPlugin != nullptr)
     {
-        if (isPrepared)
+        juce::ScopedLock scopedLock(lock);
+
+        if (loadedPlugin != nullptr)
         {
-            loadedPlugin->releaseResources();
+            toDestroy = std::move(loadedPlugin);
             isPrepared = false;
         }
-        loadedPlugin = nullptr;
+
+        loadedDescription = juce::PluginDescription();
     }
 
-    loadedDescription = juce::PluginDescription();
+    // Defer the actual plugin destruction to a background thread so the slot
+    // card disappears from the UI immediately instead of waiting on the plugin
+    // destructor (which can take 100s of ms for plugins with heavy GUIs).
+    if (toDestroy != nullptr)
+        PluginGraveyard::getInstance().enqueue(std::move(toDestroy));
 }
 
 bool PluginHost::hasLoadedPlugin() const

@@ -247,10 +247,11 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     sortComboBox.addItem("Name A-Z", 3);
     sortComboBox.addItem("Name Z-A", 4);
     sortComboBox.setSelectedId(1, juce::dontSendNotification);
-    sortComboBox.setColour(juce::ComboBox::backgroundColourId, juce::Colour(0xff383838));
+    sortComboBox.setColour(juce::ComboBox::backgroundColourId, Colors::buttonSurface);
     sortComboBox.setColour(juce::ComboBox::textColourId, juce::Colours::white);
     sortComboBox.setColour(juce::ComboBox::outlineColourId, juce::Colour(0xff4a4a4a));
     sortComboBox.setColour(juce::ComboBox::arrowColourId, juce::Colours::white);
+    sortComboBox.setLookAndFeel(&topBarComboBoxLookAndFeel);
     sortComboBox.onChange = [this]()
     {
         currentSortOrder = sortComboBox.getSelectedId() - 1;  // 0-indexed
@@ -270,10 +271,11 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     eraComboBox.addItem("2020s", 9);
     eraComboBox.addItem("Original", 10);
     eraComboBox.setSelectedId(1, juce::dontSendNotification);
-    eraComboBox.setColour(juce::ComboBox::backgroundColourId, juce::Colour(0xff383838));
+    eraComboBox.setColour(juce::ComboBox::backgroundColourId, Colors::buttonSurface);
     eraComboBox.setColour(juce::ComboBox::textColourId, juce::Colours::white);
     eraComboBox.setColour(juce::ComboBox::outlineColourId, juce::Colour(0xff4a4a4a));
     eraComboBox.setColour(juce::ComboBox::arrowColourId, juce::Colours::white);
+    eraComboBox.setLookAndFeel(&topBarComboBoxLookAndFeel);
     eraComboBox.onChange = [this]()
     {
         int selected = eraComboBox.getSelectedId();
@@ -353,7 +355,7 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     brandComboBox.addItem("Unfiltered Audio", 48);
     brandComboBox.addItem("Vertigo", 49);
     brandComboBox.setSelectedId(1, juce::dontSendNotification);
-    brandComboBox.setColour(juce::ComboBox::backgroundColourId, juce::Colour(0xff383838));
+    brandComboBox.setColour(juce::ComboBox::backgroundColourId, Colors::buttonSurface);
     brandComboBox.setColour(juce::ComboBox::textColourId, juce::Colours::white);
     brandComboBox.setColour(juce::ComboBox::outlineColourId, juce::Colour(0xff4a4a4a));
     brandComboBox.setColour(juce::ComboBox::arrowColourId, juce::Colours::white);
@@ -482,6 +484,12 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     {
         clearPendingLoadTarget();
         pushUndoSnapshot();
+
+        // Tear down any open editor for this slot before the plugin instance is
+        // destroyed - the editor holds back-references to its processor and would
+        // be left dangling otherwise.
+        hostedPluginView.hidePluginEditor();
+
         processor.removeAndCompactSlot(slot);
         chainView.setChainState(processor);
 
@@ -609,8 +617,6 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
 
     chainView.onAutoGainToggled = [this](int slotIndex, bool enabled)
     {
-        // The toggle now lives on the slot card itself, so we receive the slot
-        // index directly - no more meter-N-controls-slot-N-1 indirection.
         if (slotIndex >= 0 && slotIndex < kMaxChainSlots)
         {
             processor.setSlotAutoGain(slotIndex, enabled);
@@ -622,10 +628,11 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     // Set up preset dropdown
     presetComboBox.setTextWhenNothingSelected("Default");
     presetComboBox.setTextWhenNoChoicesAvailable("No Presets");
-    presetComboBox.setColour(juce::ComboBox::backgroundColourId, juce::Colour(0xff383838));
+    presetComboBox.setColour(juce::ComboBox::backgroundColourId, Colors::buttonSurface);
     presetComboBox.setColour(juce::ComboBox::textColourId, juce::Colours::white);
     presetComboBox.setColour(juce::ComboBox::outlineColourId, juce::Colour(0xff4a4a4a));
     presetComboBox.setColour(juce::ComboBox::arrowColourId, juce::Colours::white);
+    presetComboBox.setLookAndFeel(&topBarComboBoxLookAndFeel);
     presetComboBox.onChange = [this]()
     {
         int selectedId = presetComboBox.getSelectedId();
@@ -800,6 +807,9 @@ PluginAllianceLauncherEditor::~PluginAllianceLauncherEditor()
     toggleModeButton.setLookAndFeel(nullptr);
     unloadButton.setLookAndFeel(nullptr);
     brandComboBox.setLookAndFeel(nullptr);
+    sortComboBox.setLookAndFeel(nullptr);
+    eraComboBox.setLookAndFeel(nullptr);
+    presetComboBox.setLookAndFeel(nullptr);
     detailsLoadButton.setLookAndFeel(nullptr);
     chainButton.setLookAndFeel(nullptr);
     presetSaveButton.setLookAndFeel(nullptr);
@@ -1259,22 +1269,26 @@ void PluginAllianceLauncherEditor::timerCallback()
     if (isScanning)
         repaint(sidebarWidth, topBarHeight, getWidth() - sidebarWidth, 24);
 
-    // Update chain view if needed
+    // Update chain view if needed. setChainState() clears + recreates all
+    // slot/meter cards, so we MUST skip it while the user is mid-drag or the
+    // dragged card disappears under the mouse and the gesture is lost.
     static int updateCounter = 0;
-    if (++updateCounter % 10 == 0)  // Update every 10 timer ticks
+    if (++updateCounter % 10 == 0
+        && !juce::Desktop::getInstance().getMainMouseSource().isDragging())
     {
         chainView.setChainState(processor);
     }
 
-    // Update auto-gain UI state on the slot card (toggle) and its right-hand
-    // meter (correction-dB readout). updateAutoGainState handles both surfaces.
+    // Push auto-gain state (toggle, flashing, correction-dB readout) to the
+    // output meter card for each slot. AUTO lives on the meter now.
     if (chainViewVisible)
     {
         for (int i = 0; i < kMaxChainSlots; ++i)
         {
             bool autoEnabled = processor.isSlotAutoGainEnabled(i);
+            bool analyzing = processor.isSlotAutoGainAnalyzing(i);
             float correctionDb = processor.getSlotCorrectionDb(i);
-            chainView.updateAutoGainState(i, autoEnabled, correctionDb);
+            chainView.updateAutoGainState(i, autoEnabled, analyzing, correctionDb);
         }
     }
 
@@ -1917,33 +1931,65 @@ void PluginAllianceLauncherEditor::toggleABSlot()
     processor.setSlotActiveAB(slot, newSlot);
 
     // Update hosted plugin view to point to the new active host
-    hostedPluginView.setPluginHost(&processor.getChainSlot(slot).getActiveHost());
+    auto& newActiveHost = processor.getChainSlot(slot).getActiveHost();
+    hostedPluginView.setPluginHost(&newActiveHost);
 
-    // Update chain view to show the new A/B state
-    chainView.updateSlotABButton(slot, newSlot);
+    // Rebuild the chain view so the slot card immediately picks up the new
+    // active host's plugin image. updateSlotABButton on its own only swaps the
+    // A/B chip; the slot thumbnail otherwise had to wait for the next periodic
+    // refresh tick before reflecting the change.
+    chainView.setChainState(processor);
 
     // Update A/B switch appearance
     abSwitch.setActiveSlot(newSlot == ABSlot::B);
 
-    // Show the plugin's editor
-    if (processor.hasPluginInSlot(slot))
+    if (newActiveHost.hasLoadedPlugin())
     {
+        // New host has a plugin - show its editor.
+        clearPendingLoadTarget();
         hostedPluginView.showPluginEditor();
 
         // Update the loaded plugin ID in the browser list
-        auto& activeHost = processor.getChainSlot(slot).getActiveHost();
-        auto* desc = activeHost.getLoadedPluginDescription();
+        auto* desc = newActiveHost.getLoadedPluginDescription();
         if (desc != nullptr)
             pluginListView.setLoadedPluginId(desc->fileOrIdentifier);
-    }
 
-    // If we're in plugin mode, resize for the new plugin
-    if (!browserMode)
-    {
-        juce::MessageManager::callAsync([this]()
+        // If we're in plugin mode, resize for the new plugin
+        if (!browserMode)
         {
-            resizeForPlugin();
-        });
+            juce::MessageManager::callAsync([this]()
+            {
+                resizeForPlugin();
+            });
+        }
+    }
+    else
+    {
+        // New host is empty - flip to the browser with the chain visible and
+        // prime the "Loading into Slot N (X)" banner so the next Load click
+        // targets this empty A/B host.
+        pendingLoadTarget = LoadTarget{ slot, newSlot };
+        updateLoadTargetBanner();
+
+        if (!chainViewVisible)
+        {
+            chainViewVisible = true;
+            chainView.setVisible(true);
+            chainButton.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff0cbff2));
+            chainButton.setColour(juce::TextButton::textColourOffId, juce::Colours::white);
+        }
+
+        if (!browserMode)
+        {
+            browserMode = true;
+            toggleModeButton.setButtonText("View Plugin");
+            resizeForBrowser();
+        }
+
+        pluginListView.setLoadedPluginId({});
+        juce::Component::unfocusAllComponents();
+        resized();
+        repaint();
     }
 }
 
@@ -1963,7 +2009,7 @@ void PluginAllianceLauncherEditor::updateLoadTargetBanner()
     {
         const char abChar = (pendingLoadTarget->abSlot == ABSlot::B) ? 'B' : 'A';
         loadTargetBanner.setText(
-            juce::String::formatted("Loading into Slot %d (%c)    click a plugin's Load button below",
+            juce::String::formatted("Loading into Slot %d (%c) - Click a plugin's Load button below",
                                     pendingLoadTarget->slotIndex + 1, abChar),
             juce::dontSendNotification);
         loadTargetBanner.setVisible(true);

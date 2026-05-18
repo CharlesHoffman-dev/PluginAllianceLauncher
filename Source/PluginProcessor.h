@@ -37,6 +37,14 @@ struct ChainSlot {
     juce::SmoothedValue<float, juce::ValueSmoothingTypes::Multiplicative> smoothedGain { 1.0f };
     float currentCorrectionDb = 0.0f;  // For UI display
 
+    // Per-host manual output gain (linear, 1.0 = 0dB). The UI's output meter
+    // shows/edits the value belonging to whichever host is currently active so
+    // A and B remember independent gain trims. Smoothed in the audio thread so
+    // slider drags don't zipper.
+    float gainA = 1.0f;
+    float gainB = 1.0f;
+    juce::SmoothedValue<float, juce::ValueSmoothingTypes::Linear> smoothedManualGain { 1.0f };
+
     PluginHost& getActiveHost() {
         return (activeSlot == ABSlot::A) ? hostA : hostB;
     }
@@ -44,6 +52,9 @@ struct ChainSlot {
     const PluginHost& getActiveHost() const {
         return (activeSlot == ABSlot::A) ? hostA : hostB;
     }
+
+    float getActiveGain() const { return (activeSlot == ABSlot::A) ? gainA : gainB; }
+    void  setActiveGain(float g) { (activeSlot == ABSlot::A ? gainA : gainB) = g; }
 
     bool hasPlugin() const;
 
@@ -161,7 +172,14 @@ public:
     // Auto-gain (LUFS matching)
     void setSlotAutoGain(int slotIndex, bool enabled);
     bool isSlotAutoGainEnabled(int slotIndex) const;
+    bool isSlotAutoGainAnalyzing(int slotIndex) const;
     float getSlotCorrectionDb(int slotIndex) const;
+
+    // Per-A/B manual gain on each slot's output meter. Reads/writes whichever
+    // host (A or B) is currently active in that slot. Linear units (1.0 = 0dB).
+    float getSlotActiveGain(int slotIndex) const;
+    void  setSlotActiveGain(int slotIndex, float gain);
+    float getSlotGainForAB(int slotIndex, ABSlot ab) const;
 
     // Plugin loading/unloading
     bool loadPluginToSlot(int slotIndex, ABSlot abSlot, const juce::PluginDescription& desc);
