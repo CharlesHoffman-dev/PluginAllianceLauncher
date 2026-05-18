@@ -123,6 +123,17 @@ juce::String SettingsManager::getThemeId() const
     return properties->getValue("themeId", "default");
 }
 
+void SettingsManager::setCatGameHighScore(int score)
+{
+    properties->setValue("catGameHighScore", score);
+    properties->saveIfNeeded();
+}
+
+int SettingsManager::getCatGameHighScore() const
+{
+    return properties->getIntValue("catGameHighScore", 0);
+}
+
 void SettingsManager::save()
 {
     properties->saveIfNeeded();

@@ -18,6 +18,7 @@
 #include "UI/PluginChainView.h"
 #include "Core/PresetManager.h"
 #include "UI/Colors.h"
+#include "UI/CatGameComponent.h"
 
 namespace PALauncher
 {
@@ -742,6 +743,13 @@ private:
     // State
     bool browserMode = true;  // true = show browser, false = show hosted plugin fullscreen
     bool chainViewVisible = false;  // chain hidden on launch; user reveals via Chain button
+
+    // ─── "ilovecats" easter-egg game ────────────────────────────────────────
+    std::unique_ptr<CatGameComponent> catGame;
+    bool gameActive = false;
+    void enterGameMode();
+    void exitGameMode();
+    void hideMainUI (bool hide);     // toggles every top-level child for game overlay
     bool wasScanning = false;  // Track scanning state for layout updates
     bool isLoadingPlugin = false;  // True while a plugin is being loaded
     juce::String loadingPluginName;  // Name of plugin being loaded

@@ -13,6 +13,7 @@
 #include "Core/PluginScanner.h"
 #include "Core/LUFSAnalyzer.h"
 #include "Utils/SettingsManager.h"
+#include "Utils/GameSfxEngine.h"
 
 namespace PALauncher
 {
@@ -223,6 +224,15 @@ public:
     void unlinkAllParameters();
     void updateParameterDistribution();
 
+    // Shared MidiKeyboardState fed from every processBlock so the UI
+    // (specifically the easter-egg game) can listen to live MIDI input
+    // alongside its own on-screen keyboard.
+    juce::MidiKeyboardState& getMidiKeyboardState() { return midiKeyboardState; }
+
+    // SFX cues for the easter-egg game. The editor triggers from the message
+    // thread; processBlock sums the audio output into the buffer.
+    void triggerGameSfx (GameSfxEngine::Sound s) { gameSfx.trigger (s); }
+
 private:
     // Chain of plugin slots (each slot has its own A/B hosts)
     std::array<ChainSlot, kMaxChainSlots> chainSlots;
@@ -236,6 +246,12 @@ private:
     int currentBlockSize = 512;
 
     juce::CriticalSection pluginLock;
+
+    // Mirrors incoming MIDI for UI consumption (game easter egg keyboard).
+    juce::MidiKeyboardState midiKeyboardState;
+
+    // Synth that renders short SFX cues for the easter-egg game.
+    GameSfxEngine gameSfx;
 
     // Parameter slots for hosted plugin parameters.
     // Non-owning: the AudioProcessor base class owns these via parameterTree

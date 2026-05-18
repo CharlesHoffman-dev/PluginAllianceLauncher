@@ -240,6 +240,8 @@ void PluginAllianceLauncherProcessor::prepareToPlay(double sampleRate, int sampl
     currentSampleRate = sampleRate;
     currentBlockSize = samplesPerBlock;
 
+    gameSfx.prepare(sampleRate);
+
     juce::ScopedLock lock(pluginLock);
     // Prepare all chain slots
     for (auto& slot : chainSlots)
@@ -293,6 +295,12 @@ void PluginAllianceLauncherProcessor::processBlock(juce::AudioBuffer<float>& buf
     // Clear unused output channels
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear(i, 0, buffer.getNumSamples());
+
+    // Mirror incoming MIDI into our shared MidiKeyboardState so the editor
+    // (in particular the easter-egg game) can react to live key presses.
+    // The fourth arg (true) injects on-screen-keyboard events INTO midiMessages
+    // so a user clicking the in-game keyboard also feeds the chain.
+    midiKeyboardState.processNextMidiBuffer(midiMessages, 0, buffer.getNumSamples(), true);
 
     // Try to acquire lock without blocking - if we can't get it (plugin is loading),
     // just pass audio through unchanged to avoid glitches
@@ -366,6 +374,10 @@ void PluginAllianceLauncherProcessor::processBlock(juce::AudioBuffer<float>& buf
         pluginLock.exit();
     }
     // If lock not acquired or no plugin loaded, audio passes through unchanged
+
+    // Sum game SFX onto whatever's in the buffer (early-exits when no voices
+    // are active, so the cost is a handful of atomic loads per block).
+    gameSfx.renderInto(buffer);
 }
 
 double PluginAllianceLauncherProcessor::getTailLengthSeconds() const

@@ -26,6 +26,11 @@ public:
     // Check if an image is available
     bool hasImage(const juce::String& pluginName) const;
 
+    // Snapshot every currently-loaded image. Used by the easter-egg game
+    // to populate its pool of "asteroids". Returns a copy of the image
+    // handles (juce::Image is internally reference-counted).
+    juce::Array<juce::Image> getAllCachedImages() const;
+
     // Request an image to be loaded (async)
     void requestImage(const juce::String& pluginName);
 

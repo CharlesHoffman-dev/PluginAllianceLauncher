@@ -1308,6 +1308,17 @@ bool PluginImageCache::hasImage(const juce::String& pluginName) const
     return loadedImages.find(normalizedName) != loadedImages.end();
 }
 
+juce::Array<juce::Image> PluginImageCache::getAllCachedImages() const
+{
+    juce::ScopedLock scopedLock(lock);
+    juce::Array<juce::Image> images;
+    images.ensureStorageAllocated((int) loadedImages.size());
+    for (const auto& entry : loadedImages)
+        if (entry.second.isValid())
+            images.add(entry.second);
+    return images;
+}
+
 void PluginImageCache::requestImage(const juce::String& pluginName)
 {
     juce::ScopedLock scopedLock(lock);

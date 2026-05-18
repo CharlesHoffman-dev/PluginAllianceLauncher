@@ -297,6 +297,10 @@
               file="Source/UI/HostedPluginView.h"/>
         <FILE id="hostedCpp" name="HostedPluginView.cpp" compile="1" resource="0"
               file="Source/UI/HostedPluginView.cpp"/>
+        <FILE id="catGameH" name="CatGameComponent.h" compile="0" resource="0"
+              file="Source/UI/CatGameComponent.h"/>
+        <FILE id="catGameCpp" name="CatGameComponent.cpp" compile="1" resource="0"
+              file="Source/UI/CatGameComponent.cpp"/>
       </GROUP>
       <GROUP id="dataGroup" name="Data">
         <FILE id="catDataH" name="PluginCategories.h" compile="0" resource="0"

@@ -155,6 +155,7 @@
     <ClCompile Include="..\..\Source\UI\ChainMeterCard.cpp"/>
     <ClCompile Include="..\..\Source\UI\PluginChainView.cpp"/>
     <ClCompile Include="..\..\Source\UI\HostedPluginView.cpp"/>
+    <ClCompile Include="..\..\Source\UI\CatGameComponent.cpp"/>
     <ClCompile Include="..\..\Source\Utils\PAIdentifier.cpp"/>
     <ClCompile Include="..\..\Source\Utils\SettingsManager.cpp"/>
     <ClCompile Include="..\..\Source\Utils\PluginImageCache.cpp"/>

@@ -9,6 +9,11 @@
 #include "Utils/PluginImageCache.h"
 #include "Data/PluginData.h"
 
+// Pulled in for the "Audio/MIDI Settings..." menu item in standalone builds.
+// StandalonePluginHolder::getInstance() returns nullptr when not running
+// inside the JUCE standalone wrapper, so the same code is safe in VST3.
+#include <juce_audio_plugin_client/Standalone/juce_StandaloneFilterWindow.h>
+
 namespace PALauncher
 {
 
@@ -120,6 +125,17 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     // Set up search bar
     searchBar.onSearchChanged = [this](const juce::String& text)
     {
+        // ── Easter egg: typing "ilovecats" anywhere in the search swaps the
+        //    UI for the cat-asteroid game until Esc.
+        if (text.containsIgnoreCase("ilovecats"))
+        {
+            searchBar.clear();
+            currentSearchText.clear();
+            filterPlugins();
+            enterGameMode();
+            return;
+        }
+
         currentSearchText = text;
 
         // Switch to browser mode if user starts typing while viewing a plugin
@@ -958,6 +974,74 @@ void PluginAllianceLauncherEditor::applyThemedControlColours()
     pluginListView.setScrollBarTrackColour(Colors::scrollTrackOnLight());
 }
 
+void PluginAllianceLauncherEditor::enterGameMode()
+{
+    if (gameActive)
+        return;
+    gameActive = true;
+    hideMainUI (true);
+
+    catGame = std::make_unique<CatGameComponent> (processor.getMidiKeyboardState(),
+                                                  &processor.getSettingsManager());
+    catGame->onExitRequested = [this]() { exitGameMode(); };
+    catGame->onSfxRequested  = [this] (CatGameComponent::Sfx s)
+    {
+        using GS = CatGameComponent::Sfx;
+        using ES = GameSfxEngine::Sound;
+        ES mapped = ES::Hit;
+        switch (s)
+        {
+            case GS::Shoot:       mapped = ES::Shoot;       break;
+            case GS::Hit:         mapped = ES::Hit;         break;
+            case GS::Powerup:     mapped = ES::Powerup;     break;
+            case GS::BossHit:     mapped = ES::BossHit;     break;
+            case GS::BossKill:    mapped = ES::BossKill;    break;
+            case GS::ShieldBlock: mapped = ES::ShieldBlock; break;
+            case GS::LifeLost:    mapped = ES::LifeLost;    break;
+            case GS::GameOver:    mapped = ES::GameOver;    break;
+        }
+        processor.triggerGameSfx (mapped);
+    };
+    addAndMakeVisible (catGame.get());
+    catGame->setBounds (getLocalBounds());
+    catGame->toFront (true);
+    catGame->grabKeyboardFocus();   // so Esc gets here
+}
+
+void PluginAllianceLauncherEditor::exitGameMode()
+{
+    if (! gameActive)
+        return;
+    gameActive = false;
+    if (catGame != nullptr)
+    {
+        removeChildComponent (catGame.get());
+        catGame.reset();
+    }
+    hideMainUI (false);
+    resized();
+}
+
+void PluginAllianceLauncherEditor::hideMainUI (bool hide)
+{
+    // Hide/show every top-level child while the game overlay owns the view.
+    // We don't dig into hostedPluginView's children - it manages itself.
+    const bool show = ! hide;
+    for (auto* c : getChildren())
+    {
+        if (catGame != nullptr && c == catGame.get())
+            continue;
+        c->setVisible (show);
+    }
+    if (hide)
+    {
+        // Force-hide a few that are conditionally shown by resized()
+        detailsLoadButton.setVisible (false);
+        promoAdButton    .setVisible (false);
+        loadTargetBanner .setVisible (false);
+    }
+}
+
 void PluginAllianceLauncherEditor::loadLogo()
 {
     auto xmlDoc = juce::XmlDocument::parse(logoSvgData);
@@ -1065,6 +1149,13 @@ void PluginAllianceLauncherEditor::paint(juce::Graphics& g)
 
 void PluginAllianceLauncherEditor::resized()
 {
+    // Easter-egg game takes the whole view when active.
+    if (gameActive && catGame != nullptr)
+    {
+        catGame->setBounds (getLocalBounds());
+        return;
+    }
+
     auto bounds = getLocalBounds();
 
     // Top bar - always visible
@@ -2476,6 +2567,16 @@ void PluginAllianceLauncherEditor::showSettingsMenu()
     themeMenu.addItem(602, Themes::seventiesTheme.displayName, true, currentThemeId == Themes::seventiesTheme.id);
     menu.addSubMenu("Theme", themeMenu);
 
+    // Audio/MIDI settings - only meaningful when running as standalone;
+    // hidden when the plugin is embedded in a DAW (which owns the routing).
+   #if JucePlugin_Build_Standalone
+    if (juce::StandalonePluginHolder::getInstance() != nullptr)
+    {
+        menu.addSeparator();
+        menu.addItem(701, "Audio/MIDI Settings...");
+    }
+   #endif
+
     menu.addSeparator();
 
     // Data section
@@ -2568,6 +2669,13 @@ void PluginAllianceLauncherEditor::showSettingsMenu()
                 case 602: // Theme: 70s Vibe
                     applyTheme(Themes::seventiesTheme.id);
                     break;
+
+               #if JucePlugin_Build_Standalone
+                case 701: // Audio/MIDI Settings
+                    if (auto* holder = juce::StandalonePluginHolder::getInstance())
+                        holder->showAudioSettingsDialog();
+                    break;
+               #endif
 
                 default:
                     break;

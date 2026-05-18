@@ -93,7 +93,11 @@ namespace Themes
         juce::Colour (0xff3a3a3a),
 
         // Cards
-        juce::Colours::white,
+        // Use hex literal for white instead of juce::Colours::white - the latter
+        // is a global Colour whose init order vs. these inline theme structs is
+        // unspecified, and on MSVC it sometimes initializes AFTER the theme, so
+        // the theme captures a default Colour() (transparent black).
+        juce::Colour (0xffffffff),
         juce::Colour (0xfffafafa),
         juce::Colour (0xfff0f0f0),
         juce::Colour (0xffe8f4fc),
@@ -105,7 +109,7 @@ namespace Themes
         juce::Colour (0xff2a2a2a),       // CTA button - dark charcoal (matches default Load)
 
         // Text
-        juce::Colours::white,
+        juce::Colour (0xffffffff),       // textOnDark - white (hex literal, see note above)
         juce::Colour (0xff1a1a1a),
         juce::Colour (0xff999999),
         juce::Colour (0xffb0b0b0),
@@ -151,7 +155,7 @@ namespace Themes
         juce::Colour (0xff4a3328),       // Divider         - dark brown
 
         // Cards — card body stays WHITE; "light grey" tints become cream.
-        juce::Colours::white,            // Card body       - stays WHITE
+        juce::Colour (0xffffffff),       // Card body - WHITE (hex literal, not Colours::white; see note above)
         juce::Colour (0xffffdba7),       // Hover           - brighter cream
         juce::Colour (0xffffd195),       // Bypassed        - cream (palette)
         juce::Colour (0xffc9e8dd),       // Selected        - pale teal wash
@@ -163,7 +167,7 @@ namespace Themes
         juce::Colour (0xffde7e44),       // CTA Load button - orange (palette)
 
         // Text
-        juce::Colours::white,            // On dark
+        juce::Colour (0xffffffff),       // On dark - white
         juce::Colour (0xff3d2a20),       // On cream cards - deep brown
         juce::Colour (0xff8b6a50),       // Muted - mid brown
         juce::Colour (0xffa88864),       // Placeholder

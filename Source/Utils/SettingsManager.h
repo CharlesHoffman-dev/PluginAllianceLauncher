@@ -54,6 +54,10 @@ public:
     void setThemeId(const juce::String& themeId);
     juce::String getThemeId() const;
 
+    // Easter-egg game persistent high score
+    void setCatGameHighScore(int score);
+    int  getCatGameHighScore() const;
+
     // Save/load
     void save();
     void load();
