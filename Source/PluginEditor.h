@@ -243,11 +243,12 @@ public:
     void drawPopupMenuBackgroundWithOptions(juce::Graphics& g, int width, int height,
                                             const juce::PopupMenu::Options&) override
     {
-        auto bounds = juce::Rectangle<float>(0.0f, 0.0f, (float)width, (float)height).reduced(0.5f);
-        g.setColour(Colors::toolbarBackground());
-        g.fillRoundedRectangle(bounds, 6.0f);
+        // Square, fully opaque fill - matches the OS popup window's opaque
+        // rect so there's no white corner bleed-through. A 1px accent outline
+        // sells the "themed popup" without requiring transparent corners.
+        g.fillAll(Colors::toolbarBackground());
         g.setColour(Colors::buttonOutline());
-        g.drawRoundedRectangle(bounds, 6.0f, 1.0f);
+        g.drawRect(0, 0, width, height, 1);
     }
 
     void getIdealPopupMenuItemSize(const juce::String& text, bool isSeparator,
@@ -626,7 +627,12 @@ public:
     ~PluginAllianceLauncherEditor() override;
 
     void paint(juce::Graphics&) override;
+    void paintOverChildren(juce::Graphics&) override;
     void resized() override;
+
+    // Allow the (cpp-local) settings dialog to reach our internals
+    // (themed filters, applyTheme, etc.).
+    friend class SettingsPanel;
 
     // ChangeListener - for scanner updates
     void changeListenerCallback(juce::ChangeBroadcaster* source) override;
@@ -684,8 +690,10 @@ private:
     juce::TextButton undoButton;
     juce::TextButton redoButton;
 
-    // Settings menu
+    // Settings panel - in-plugin modal overlay (locked inside the editor).
     void showSettingsMenu();
+    void closeSettingsPanel();
+    std::unique_ptr<juce::Component> settingsPanel;
 
     // Sidebar components (inside scrollable viewport)
     juce::Viewport sidebarViewport;

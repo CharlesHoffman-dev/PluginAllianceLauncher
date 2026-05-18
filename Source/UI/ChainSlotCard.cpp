@@ -202,19 +202,19 @@ void ChainSlotCard::paint(juce::Graphics& g)
     {
         g.setColour(autoFlashOn ? activeColour : inactiveColour);
         g.fillRoundedRectangle(autoBoundsF, 2.5f);
-        g.setColour(autoFlashOn ? Colors::textOnDark() : Colors::textMuted());
+        g.setColour(autoFlashOn ? Colors::textOnDark() : Colors::textOnLight());
     }
     else if (autoGainEnabled)
     {
-        g.setColour(activeColour);
+        g.setColour(activeColour);                  // accent body, light text
         g.fillRoundedRectangle(autoBoundsF, 2.5f);
         g.setColour(Colors::textOnDark());
     }
     else
     {
-        g.setColour(inactiveColour);
+        g.setColour(inactiveColour);                // white body, dark text
         g.fillRoundedRectangle(autoBoundsF, 2.5f);
-        g.setColour(Colors::textOnDark());
+        g.setColour(Colors::textOnLight());
     }
     g.setFont(juce::Font(8.0f, juce::Font::bold));
     g.drawText("AUTO", autoButtonBounds, juce::Justification::centred);
@@ -368,7 +368,7 @@ void ChainSlotCard::setSlotData(const ChainSlot& slot, int slotIndex, bool isSel
     selected = isSelected;
     bypassed = slot.bypassed;
     abSlot = slot.activeSlot;
-    autoGainEnabled = slot.autoGainEnabled;
+    autoGainEnabled = slot.activeAutoGainEnabled();   // per active A/B
 
     // Get plugin name from active host
     const auto& activeHost = slot.getActiveHost();

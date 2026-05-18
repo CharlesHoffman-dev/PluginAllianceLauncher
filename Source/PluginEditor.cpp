@@ -1151,6 +1151,21 @@ void PluginAllianceLauncherEditor::paint(juce::Graphics& g)
 
         // Animated dots would require timer-based repainting, so keep it simple
     }
+
+}
+
+void PluginAllianceLauncherEditor::paintOverChildren(juce::Graphics& g)
+{
+    // Default theme only: 1px divider under the chain, full window width, in
+    // the scrollbar-track grey. Painted AFTER the children so the browser and
+    // the details pane don't overdraw it. 70s already has enough contrast.
+    if (chainViewVisible && ThemeManager::get().current().id == "default")
+    {
+        const int statusOffset = processor.getPluginScanner().isScanning() ? 28 : 0;
+        const int dividerY     = topBarHeight + statusOffset + chainViewHeight;
+        g.setColour(Colors::scrollTrackOnLight());
+        g.fillRect(0, dividerY, getWidth(), 1);
+    }
 }
 
 void PluginAllianceLauncherEditor::resized()
@@ -1161,6 +1176,10 @@ void PluginAllianceLauncherEditor::resized()
         catGame->setBounds (getLocalBounds());
         return;
     }
+
+    // Keep the settings overlay covering the full editor area.
+    if (settingsPanel != nullptr)
+        settingsPanel->setBounds (getLocalBounds());
 
     auto bounds = getLocalBounds();
 
@@ -2561,149 +2580,473 @@ void PluginAllianceLauncherEditor::paintDetailsPanel(juce::Graphics& g, juce::Re
     // so it can handle clicks. resized() positions it at computeAdBounds().
 }
 
+// ── Settings dialog ─────────────────────────────────────────────────────────
+// SettingsPanel sits in the PALauncher namespace (not anonymous) so the
+// editor's `friend class SettingsPanel` declaration can find it.
+class SettingsPanel : public juce::Component,
+                      public ThemeManager::Listener
+    {
+    public:
+        SettingsPanel (PluginAllianceLauncherEditor& ed, PluginAllianceLauncherProcessor& proc)
+            : editor (ed), processor (proc)
+        {
+            setInterceptsMouseClicks (true, true);
+
+            auto& s = processor.getSettingsManager();
+
+            auto setSectionLabelText = [] (juce::Label& l, const juce::String& text)
+            {
+                l.setText (text, juce::dontSendNotification);
+                l.setFont (juce::Font (12.0f, juce::Font::bold));
+            };
+
+            auto setToggleText = [] (juce::ToggleButton& tb, const juce::String& text)
+            {
+                tb.setButtonText (text);
+                tb.setMouseCursor (juce::MouseCursor::PointingHandCursor);
+            };
+
+            auto setButtonText = [this] (juce::TextButton& b, const juce::String& text)
+            {
+                b.setButtonText (text);
+                b.setMouseCursor (juce::MouseCursor::PointingHandCursor);
+                b.setLookAndFeel (&editor.buttonLookAndFeel);
+            };
+
+            // ── General tab ────────────────────────────────────────────
+            generalPanel.addAndMakeVisible (pluginListLabel);
+            setSectionLabelText (pluginListLabel, "PLUGIN LIST");
+
+            generalPanel.addAndMakeVisible (showAllPluginsToggle);
+            generalPanel.addAndMakeVisible (showOnlyInstalledToggle);
+            setToggleText (showAllPluginsToggle,    "Show all plugins");
+            setToggleText (showOnlyInstalledToggle, "Show only installed plugins");
+            showAllPluginsToggle   .setRadioGroupId (1);
+            showOnlyInstalledToggle.setRadioGroupId (1);
+            showAllPluginsToggle   .setToggleState (! s.getShowOnlyInstalled(), juce::dontSendNotification);
+            showOnlyInstalledToggle.setToggleState (  s.getShowOnlyInstalled(), juce::dontSendNotification);
+            showAllPluginsToggle.onClick = [this]
+            {
+                editor.showOnlyInstalled = false;
+                processor.getSettingsManager().setShowOnlyInstalled (false);
+                processor.getSettingsManager().save();
+                editor.filterPlugins();
+            };
+            showOnlyInstalledToggle.onClick = [this]
+            {
+                editor.showOnlyInstalled = true;
+                processor.getSettingsManager().setShowOnlyInstalled (true);
+                processor.getSettingsManager().save();
+                editor.filterPlugins();
+            };
+
+            generalPanel.addAndMakeVisible (behaviourLabel);
+            setSectionLabelText (behaviourLabel, "BEHAVIOUR");
+            generalPanel.addAndMakeVisible (autoScanToggle);
+            generalPanel.addAndMakeVisible (rememberFilterToggle);
+            setToggleText (autoScanToggle,       "Auto-scan plugin folder on startup");
+            setToggleText (rememberFilterToggle, "Remember last filter selection");
+            autoScanToggle      .setToggleState (s.getAutoScanOnStartup(),  juce::dontSendNotification);
+            rememberFilterToggle.setToggleState (s.getRememberLastFilter(), juce::dontSendNotification);
+            autoScanToggle.onClick = [this]
+            {
+                processor.getSettingsManager().setAutoScanOnStartup (autoScanToggle.getToggleState());
+                processor.getSettingsManager().save();
+            };
+            rememberFilterToggle.onClick = [this]
+            {
+                processor.getSettingsManager().setRememberLastFilter (rememberFilterToggle.getToggleState());
+                processor.getSettingsManager().save();
+            };
+
+            generalPanel.addAndMakeVisible (themeLabel);
+            setSectionLabelText (themeLabel, "THEME");
+            generalPanel.addAndMakeVisible (themeDefaultToggle);
+            generalPanel.addAndMakeVisible (themeSeventiesToggle);
+            setToggleText (themeDefaultToggle,   Themes::defaultTheme.displayName);
+            setToggleText (themeSeventiesToggle, Themes::seventiesTheme.displayName);
+            themeDefaultToggle   .setRadioGroupId (2);
+            themeSeventiesToggle .setRadioGroupId (2);
+            const auto curThemeId = ThemeManager::get().current().id;
+            themeDefaultToggle  .setToggleState (curThemeId == Themes::defaultTheme.id,   juce::dontSendNotification);
+            themeSeventiesToggle.setToggleState (curThemeId == Themes::seventiesTheme.id, juce::dontSendNotification);
+            themeDefaultToggle.onClick = [this]
+            {
+                if (themeDefaultToggle.getToggleState())
+                    editor.applyTheme (Themes::defaultTheme.id);
+            };
+            themeSeventiesToggle.onClick = [this]
+            {
+                if (themeSeventiesToggle.getToggleState())
+                    editor.applyTheme (Themes::seventiesTheme.id);
+            };
+
+            generalPanel.addAndMakeVisible (actionsLabel);
+            setSectionLabelText (actionsLabel, "ACTIONS");
+            generalPanel.addAndMakeVisible (clearCacheButton);
+            generalPanel.addAndMakeVisible (resetFiltersButton);
+            setButtonText (clearCacheButton,   "Clear Image Cache");
+            setButtonText (resetFiltersButton, "Reset All Filters");
+            clearCacheButton.onClick = [this]
+            {
+                PluginImageCache::getInstance().clearCache();
+                editor.filterPlugins();
+            };
+            resetFiltersButton.onClick = [this]
+            {
+                editor.currentCategory   = DisplayCategory::All;
+                editor.currentSubcategory = -1;
+                editor.currentEra        = Era::Era_Unknown;
+                editor.currentBrandFilter = "";
+                editor.currentSearchText  = "";
+                editor.searchBar.clear();
+                editor.categoryFilter.setSelectedCategory (DisplayCategory::All);
+                editor.subcategoryFilter.setCategory (DisplayCategory::All);
+                editor.eraComboBox.setSelectedId  (1, juce::dontSendNotification);
+                editor.brandComboBox.setSelectedId (1, juce::dontSendNotification);
+                editor.sortComboBox.setSelectedId  (1, juce::dontSendNotification);
+                editor.currentSortOrder = 0;
+                editor.filterPlugins();
+            };
+
+            // ── Audio / MIDI tab (standalone only) ──────────────────────
+           #if JucePlugin_Build_Standalone
+            if (auto* holder = juce::StandalonePluginHolder::getInstance())
+            {
+                hasAudioTab = true;
+                audioSelector = std::make_unique<juce::AudioDeviceSelectorComponent>(
+                    holder->deviceManager,
+                    /* minInputCh  */ 0,
+                    /* maxInputCh  */ 2,
+                    /* minOutputCh */ 2,
+                    /* maxOutputCh */ 2,
+                    /* showMidiIn  */ true,
+                    /* showMidiOut */ false,
+                    /* stereoPairs */ true,
+                    /* hideAdvanced*/ false);
+                audioPanel.addAndMakeVisible (audioSelector.get());
+            }
+           #endif
+
+            // ── About tab ──────────────────────────────────────────────
+            aboutPanel.addAndMakeVisible (aboutVersionLabel);
+            aboutVersionLabel.setText ("Plugin Alliance Launcher v1.0.0",
+                                       juce::dontSendNotification);
+            aboutVersionLabel.setFont (juce::Font (15.0f, juce::Font::bold));
+            aboutVersionLabel.setJustificationType (juce::Justification::centred);
+
+            aboutPanel.addAndMakeVisible (aboutBodyLabel);
+            aboutBodyLabel.setText (
+                "Developed by Charles Hoffman, Matt Lara, and Tolmie MacRae",
+                juce::dontSendNotification);
+            aboutBodyLabel.setFont (juce::Font (16.0f));
+            aboutBodyLabel.setJustificationType (juce::Justification::centredTop);
+
+            aboutPanel.addAndMakeVisible (updatesButton);
+            aboutPanel.addAndMakeVisible (websiteButton);
+            setButtonText (updatesButton, "Check for Updates");
+            setButtonText (websiteButton, "Visit plugin-alliance.com");
+            updatesButton.onClick = []
+            {
+                juce::URL ("https://www.plugin-alliance.com/pages/downloads").launchInDefaultBrowser();
+            };
+            websiteButton.onClick = []
+            {
+                juce::URL ("https://www.plugin-alliance.com").launchInDefaultBrowser();
+            };
+
+            // ── Tab strip ──────────────────────────────────────────────
+            auto setupTab = [this] (juce::TextButton& b, const juce::String& text, int idx)
+            {
+                b.setButtonText (text);
+                b.setClickingTogglesState (true);
+                b.setRadioGroupId (200);
+                b.setMouseCursor (juce::MouseCursor::PointingHandCursor);
+                b.setLookAndFeel (&editor.buttonLookAndFeel);
+                b.onClick = [this, idx] { showTab (idx); };
+                addAndMakeVisible (b);
+            };
+            setupTab (tabGeneral, "General",      0);
+            if (hasAudioTab)
+                setupTab (tabAudio, "Audio / MIDI", 1);
+            setupTab (tabAbout, "About",          hasAudioTab ? 2 : 1);
+
+            addChildComponent (generalPanel);
+            addChildComponent (audioPanel);
+            addChildComponent (aboutPanel);
+
+            // ── Done button (themed via ButtonLookAndFeel - no JUCE default grey border) ──
+            closeButton.setButtonText ("Done");
+            closeButton.setMouseCursor (juce::MouseCursor::PointingHandCursor);
+            closeButton.setLookAndFeel (&editor.buttonLookAndFeel);
+            addAndMakeVisible (closeButton);
+            closeButton.onClick = [this] { editor.closeSettingsPanel(); };
+
+            applyThemedColours();
+            ThemeManager::get().addListener (this);
+
+            cardW = 500;
+            cardH = 620;
+            showTab (0);
+        }
+
+        ~SettingsPanel() override
+        {
+            ThemeManager::get().removeListener (this);
+
+            // Detach themed L&Fs before the editor's instance dies.
+            tabGeneral        .setLookAndFeel (nullptr);
+            tabAudio          .setLookAndFeel (nullptr);
+            tabAbout          .setLookAndFeel (nullptr);
+            closeButton       .setLookAndFeel (nullptr);
+            clearCacheButton  .setLookAndFeel (nullptr);
+            resetFiltersButton.setLookAndFeel (nullptr);
+            updatesButton     .setLookAndFeel (nullptr);
+            websiteButton     .setLookAndFeel (nullptr);
+        }
+
+        void themeChanged() override
+        {
+            applyThemedColours();
+            repaint();
+        }
+
+        void paint (juce::Graphics& g) override
+        {
+            // Dim backdrop over the rest of the editor.
+            g.fillAll (juce::Colours::black.withAlpha (0.55f));
+
+            // Centred card body.
+            const auto card = getCardBounds().toFloat();
+            g.setColour (Colors::panelBackground());
+            g.fillRoundedRectangle (card, 10.0f);
+            g.setColour (Colors::accent());
+            g.drawRoundedRectangle (card, 10.0f, 1.5f);
+
+            // Plugin Alliance logo at top of the card.
+            if (editor.logoDrawable != nullptr)
+            {
+                auto logoArea = getCardBounds().removeFromTop (kLogoStripH)
+                                               .reduced (32, 14)
+                                               .toFloat();
+                editor.logoDrawable->drawWithin (g, logoArea,
+                                                 juce::RectanglePlacement::centred, 1.0f);
+            }
+        }
+
+        void mouseDown (const juce::MouseEvent& e) override
+        {
+            // Click outside the card dismisses the panel.
+            if (! getCardBounds().contains (e.getPosition()))
+                editor.closeSettingsPanel();
+        }
+
+        void resized() override
+        {
+            auto card = getCardBounds();
+            card.removeFromTop (kLogoStripH);  // painted in paint()
+
+            // Tab strip
+            auto tabRow = card.removeFromTop (36).reduced (20, 2);
+            const int tabCount = hasAudioTab ? 3 : 2;
+            const int tabW     = tabRow.getWidth() / tabCount;
+            tabGeneral.setBounds (tabRow.removeFromLeft (tabW).reduced (2, 0));
+            if (hasAudioTab)
+                tabAudio.setBounds (tabRow.removeFromLeft (tabW).reduced (2, 0));
+            tabAbout.setBounds (tabRow.reduced (2, 0));
+
+            card.removeFromTop (10);
+
+            // Done button reserved at bottom (40px tall, comfortably wide).
+            auto bottom = card.removeFromBottom (56);
+            closeButton.setBounds (bottom.reduced (140, 8));
+
+            // Content area - the three tab panels overlap here, visibility swaps.
+            auto content = card.reduced (20, 4);
+            generalPanel.setBounds (content);
+            audioPanel  .setBounds (content);
+            aboutPanel  .setBounds (content);
+
+            layoutGeneralTab();
+            layoutAboutTab();
+
+            if (audioSelector != nullptr)
+                audioSelector->setBounds (audioPanel.getLocalBounds());
+        }
+
+    private:
+        void applyThemedColours()
+        {
+            auto themeSectionLabel = [] (juce::Label& l)
+            {
+                l.setColour (juce::Label::textColourId, Colors::textMuted());
+            };
+            themeSectionLabel (pluginListLabel);
+            themeSectionLabel (behaviourLabel);
+            themeSectionLabel (themeLabel);
+            themeSectionLabel (actionsLabel);
+
+            auto themeToggle = [] (juce::ToggleButton& tb)
+            {
+                tb.setColour (juce::ToggleButton::textColourId,         Colors::textOnDark());
+                tb.setColour (juce::ToggleButton::tickColourId,         Colors::accent());
+                tb.setColour (juce::ToggleButton::tickDisabledColourId, Colors::buttonOutline());
+            };
+            themeToggle (showAllPluginsToggle);
+            themeToggle (showOnlyInstalledToggle);
+            themeToggle (autoScanToggle);
+            themeToggle (rememberFilterToggle);
+            themeToggle (themeDefaultToggle);
+            themeToggle (themeSeventiesToggle);
+
+            auto themeSurfaceButton = [] (juce::TextButton& b)
+            {
+                b.setColour (juce::TextButton::buttonColourId,   Colors::buttonSurface());
+                b.setColour (juce::TextButton::textColourOffId,  Colors::textOnDark());
+                b.setColour (juce::TextButton::textColourOnId,   Colors::textOnDark());
+            };
+            themeSurfaceButton (clearCacheButton);
+            themeSurfaceButton (resetFiltersButton);
+            themeSurfaceButton (updatesButton);
+            themeSurfaceButton (websiteButton);
+
+            auto themeTab = [] (juce::TextButton& b)
+            {
+                b.setColour (juce::TextButton::buttonColourId,   Colors::buttonSurface());
+                b.setColour (juce::TextButton::buttonOnColourId, Colors::accent());
+                b.setColour (juce::TextButton::textColourOffId,  Colors::textOnDark());
+                b.setColour (juce::TextButton::textColourOnId,   Colors::textOnDark());
+            };
+            themeTab (tabGeneral);
+            themeTab (tabAudio);
+            themeTab (tabAbout);
+
+            closeButton.setColour (juce::TextButton::buttonColourId,  Colors::accent());
+            closeButton.setColour (juce::TextButton::textColourOffId, Colors::textOnDark());
+            closeButton.setColour (juce::TextButton::textColourOnId,  Colors::textOnDark());
+
+            aboutVersionLabel.setColour (juce::Label::textColourId, Colors::textOnDark());
+            aboutBodyLabel   .setColour (juce::Label::textColourId, Colors::textMuted());
+        }
+
+        void layoutGeneralTab()
+        {
+            auto r = generalPanel.getLocalBounds();
+            constexpr int sectionGap  = 12;
+            constexpr int rowHeight   = 26;
+            constexpr int labelHeight = 18;
+
+            pluginListLabel        .setBounds (r.removeFromTop (labelHeight));
+            r.removeFromTop (4);
+            showAllPluginsToggle   .setBounds (r.removeFromTop (rowHeight));
+            showOnlyInstalledToggle.setBounds (r.removeFromTop (rowHeight));
+            r.removeFromTop (sectionGap);
+
+            behaviourLabel         .setBounds (r.removeFromTop (labelHeight));
+            r.removeFromTop (4);
+            autoScanToggle         .setBounds (r.removeFromTop (rowHeight));
+            rememberFilterToggle   .setBounds (r.removeFromTop (rowHeight));
+            r.removeFromTop (sectionGap);
+
+            themeLabel             .setBounds (r.removeFromTop (labelHeight));
+            r.removeFromTop (4);
+            themeDefaultToggle     .setBounds (r.removeFromTop (rowHeight));
+            themeSeventiesToggle   .setBounds (r.removeFromTop (rowHeight));
+            r.removeFromTop (sectionGap);
+
+            actionsLabel           .setBounds (r.removeFromTop (labelHeight));
+            r.removeFromTop (4);
+            {
+                auto row = r.removeFromTop (32);
+                clearCacheButton  .setBounds (row.removeFromLeft (row.getWidth() / 2 - 4));
+                row.removeFromLeft (8);
+                resetFiltersButton.setBounds (row);
+            }
+        }
+
+        void layoutAboutTab()
+        {
+            auto r = aboutPanel.getLocalBounds().reduced (8, 0);
+            r.removeFromTop (12);
+            aboutVersionLabel.setBounds (r.removeFromTop (24));
+            r.removeFromTop (12);
+            aboutBodyLabel   .setBounds (r.removeFromTop (84));
+            r.removeFromTop (24);
+            auto row = r.removeFromTop (36);
+            updatesButton.setBounds (row.removeFromLeft (row.getWidth() / 2 - 6));
+            row.removeFromLeft (12);
+            websiteButton.setBounds (row);
+        }
+
+        void showTab (int idx)
+        {
+            const int generalIdx = 0;
+            const int audioIdx   = hasAudioTab ? 1 : -1;
+            const int aboutIdx   = hasAudioTab ? 2 : 1;
+
+            generalPanel.setVisible (idx == generalIdx);
+            audioPanel  .setVisible (idx == audioIdx);
+            aboutPanel  .setVisible (idx == aboutIdx);
+
+            tabGeneral.setToggleState (idx == generalIdx, juce::dontSendNotification);
+            if (hasAudioTab)
+                tabAudio.setToggleState (idx == audioIdx, juce::dontSendNotification);
+            tabAbout.setToggleState (idx == aboutIdx, juce::dontSendNotification);
+        }
+
+        juce::Rectangle<int> getCardBounds() const
+        {
+            return juce::Rectangle<int> (0, 0, cardW, cardH)
+                       .withCentre (getLocalBounds().getCentre());
+        }
+
+        static constexpr int kLogoStripH = 72;
+        int cardW = 500;
+        int cardH = 620;
+        bool hasAudioTab = false;
+
+        PluginAllianceLauncherEditor& editor;
+        PluginAllianceLauncherProcessor& processor;
+
+        // Tab buttons
+        juce::TextButton tabGeneral, tabAudio, tabAbout;
+
+        // Tab content panels (lightweight containers - visibility swaps via showTab).
+        juce::Component generalPanel, audioPanel, aboutPanel;
+
+        // General tab controls
+        juce::Label        pluginListLabel, behaviourLabel, themeLabel, actionsLabel;
+        juce::ToggleButton showAllPluginsToggle, showOnlyInstalledToggle;
+        juce::ToggleButton autoScanToggle, rememberFilterToggle;
+        juce::ToggleButton themeDefaultToggle, themeSeventiesToggle;
+        juce::TextButton   clearCacheButton, resetFiltersButton;
+
+        // Audio / MIDI tab
+        std::unique_ptr<juce::AudioDeviceSelectorComponent> audioSelector;
+
+        // About tab controls
+        juce::Label      aboutVersionLabel, aboutBodyLabel;
+        juce::TextButton updatesButton, websiteButton;
+
+        // Footer
+        juce::TextButton closeButton;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SettingsPanel)
+};
+
 void PluginAllianceLauncherEditor::showSettingsMenu()
 {
-    juce::PopupMenu menu;
+    if (settingsPanel != nullptr) return;          // already open
 
-    // Plugin Display submenu
-    juce::PopupMenu pluginDisplayMenu;
-    pluginDisplayMenu.addItem(150, "Show All Plugins", true, !showOnlyInstalled);
-    pluginDisplayMenu.addItem(151, "Show Only Installed", true, showOnlyInstalled);
-    menu.addSubMenu("Plugin List", pluginDisplayMenu);
+    settingsPanel = std::make_unique<SettingsPanel> (*this, processor);
+    settingsPanel->setBounds (getLocalBounds());
+    addAndMakeVisible (settingsPanel.get());
+    settingsPanel->toFront (false);
+}
 
-    // Scan Settings submenu
-    bool autoScanEnabled = processor.getSettingsManager().getAutoScanOnStartup();
-    juce::PopupMenu scanMenu;
-    scanMenu.addItem(201, "Auto-Scan on Startup", true, autoScanEnabled);
-    menu.addSubMenu("Scanning", scanMenu);
-
-    // Behavior submenu
-    bool rememberFilter = processor.getSettingsManager().getRememberLastFilter();
-    juce::PopupMenu behaviorMenu;
-    behaviorMenu.addItem(301, "Remember Last Filter", true, rememberFilter);
-    menu.addSubMenu("Behavior", behaviorMenu);
-
-    // Theme submenu
-    juce::String currentThemeId = ThemeManager::get().current().id;
-    juce::PopupMenu themeMenu;
-    themeMenu.addItem(601, Themes::defaultTheme.displayName,   true, currentThemeId == Themes::defaultTheme.id);
-    themeMenu.addItem(602, Themes::seventiesTheme.displayName, true, currentThemeId == Themes::seventiesTheme.id);
-    menu.addSubMenu("Theme", themeMenu);
-
-    // Audio/MIDI settings - only meaningful when running as standalone;
-    // hidden when the plugin is embedded in a DAW (which owns the routing).
-   #if JucePlugin_Build_Standalone
-    if (juce::StandalonePluginHolder::getInstance() != nullptr)
-    {
-        menu.addSeparator();
-        menu.addItem(701, "Audio/MIDI Settings...");
-    }
-   #endif
-
-    menu.addSeparator();
-
-    // Data section
-    menu.addItem(401, "Clear Image Cache");
-    menu.addItem(402, "Reset All Filters");
-
-    menu.addSeparator();
-
-    // About section
-    menu.addItem(501, "About Plugin Alliance Launcher...");
-    menu.addItem(502, "Check for Updates...");
-
-    // Show menu and handle selection
-    menu.showMenuAsync(juce::PopupMenu::Options()
-        .withTargetComponent(&settingsButton)
-        .withMinimumWidth(180),
-        [this](int result)
-        {
-            switch (result)
-            {
-                case 150: // Show All Plugins
-                    showOnlyInstalled = false;
-                    processor.getSettingsManager().setShowOnlyInstalled(false);
-                    processor.getSettingsManager().save();
-                    filterPlugins();
-                    break;
-
-                case 151: // Show Only Installed
-                    showOnlyInstalled = true;
-                    processor.getSettingsManager().setShowOnlyInstalled(true);
-                    processor.getSettingsManager().save();
-                    filterPlugins();
-                    break;
-
-                case 201: // Auto-scan on startup
-                {
-                    bool current = processor.getSettingsManager().getAutoScanOnStartup();
-                    processor.getSettingsManager().setAutoScanOnStartup(!current);
-                    processor.getSettingsManager().save();
-                    break;
-                }
-
-                case 301: // Remember last filter
-                {
-                    bool current = processor.getSettingsManager().getRememberLastFilter();
-                    processor.getSettingsManager().setRememberLastFilter(!current);
-                    processor.getSettingsManager().save();
-                    break;
-                }
-
-                case 401: // Clear image cache
-                    PluginImageCache::getInstance().clearCache();
-                    filterPlugins();  // Refresh to reload images
-                    break;
-
-                case 402: // Reset all filters
-                    currentCategory = DisplayCategory::All;
-                    currentSubcategory = -1;
-                    currentEra = Era::Era_Unknown;
-                    currentBrandFilter = "";
-                    currentSearchText = "";
-                    searchBar.clear();
-                    categoryFilter.setSelectedCategory(DisplayCategory::All);
-                    subcategoryFilter.setCategory(DisplayCategory::All);
-                    eraComboBox.setSelectedId(1, juce::dontSendNotification);
-                    brandComboBox.setSelectedId(1, juce::dontSendNotification);
-                    sortComboBox.setSelectedId(1, juce::dontSendNotification);
-                    currentSortOrder = 0;
-                    filterPlugins();
-                    break;
-
-                case 501: // About
-                    juce::AlertWindow::showMessageBoxAsync(
-                        juce::AlertWindow::InfoIcon,
-                        "About Plugin Alliance Launcher",
-                        "Plugin Alliance Launcher v1.0.0\n\n"
-                        "A plugin browser and host for Plugin Alliance plugins.\n\n"
-                        "Visit plugin-alliance.com for more information.",
-                        "OK");
-                    break;
-
-                case 502: // Check for updates
-                    juce::URL("https://www.plugin-alliance.com/pages/downloads").launchInDefaultBrowser();
-                    break;
-
-                case 601: // Theme: Default
-                    applyTheme(Themes::defaultTheme.id);
-                    break;
-
-                case 602: // Theme: 70s Vibe
-                    applyTheme(Themes::seventiesTheme.id);
-                    break;
-
-               #if JucePlugin_Build_Standalone
-                case 701: // Audio/MIDI Settings
-                    if (auto* holder = juce::StandalonePluginHolder::getInstance())
-                        holder->showAudioSettingsDialog();
-                    break;
-               #endif
-
-                default:
-                    break;
-            }
-        });
+void PluginAllianceLauncherEditor::closeSettingsPanel()
+{
+    settingsPanel.reset();
 }
 
 void PluginAllianceLauncherEditor::refreshPresetDropdown()

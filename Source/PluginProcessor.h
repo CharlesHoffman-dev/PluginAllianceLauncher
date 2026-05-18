@@ -32,11 +32,39 @@ struct ChainSlot {
     ABSlot activeSlot = ABSlot::A;
     bool bypassed = false;
 
-    // Auto-gain (LUFS matching)
-    bool autoGainEnabled = false;
-    LUFSAnalyzer lufsAnalyzer;
-    juce::SmoothedValue<float, juce::ValueSmoothingTypes::Multiplicative> smoothedGain { 1.0f };
-    float currentCorrectionDb = 0.0f;  // For UI display
+    // Auto-gain (LUFS matching) - tracked PER A/B host so toggling AUTO on
+    // slot A leaves slot B unaffected, and each host gets its own running
+    // LUFS measurement and gain correction.
+    bool autoGainEnabledA = false;
+    bool autoGainEnabledB = false;
+    LUFSAnalyzer lufsAnalyzerA;
+    LUFSAnalyzer lufsAnalyzerB;
+    juce::SmoothedValue<float, juce::ValueSmoothingTypes::Multiplicative> smoothedGainA { 1.0f };
+    juce::SmoothedValue<float, juce::ValueSmoothingTypes::Multiplicative> smoothedGainB { 1.0f };
+    float currentCorrectionDbA = 0.0f;
+    float currentCorrectionDbB = 0.0f;
+
+    // Convenience accessors that route to whichever host is currently active.
+    bool& activeAutoGainEnabled()
+    {
+        return (activeSlot == ABSlot::A) ? autoGainEnabledA : autoGainEnabledB;
+    }
+    bool activeAutoGainEnabled() const
+    {
+        return (activeSlot == ABSlot::A) ? autoGainEnabledA : autoGainEnabledB;
+    }
+    LUFSAnalyzer& activeLufsAnalyzer()
+    {
+        return (activeSlot == ABSlot::A) ? lufsAnalyzerA : lufsAnalyzerB;
+    }
+    juce::SmoothedValue<float, juce::ValueSmoothingTypes::Multiplicative>& activeSmoothedGain()
+    {
+        return (activeSlot == ABSlot::A) ? smoothedGainA : smoothedGainB;
+    }
+    float& activeCorrectionDb()
+    {
+        return (activeSlot == ABSlot::A) ? currentCorrectionDbA : currentCorrectionDbB;
+    }
 
     // Per-host manual output gain (linear, 1.0 = 0dB). The UI's output meter
     // shows/edits the value belonging to whichever host is currently active so
