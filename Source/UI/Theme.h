@@ -50,6 +50,7 @@ struct Theme
     juce::Colour accent;                 // Primary highlight (cyan in dark, teal in 70s)
     juce::Colour accentSecondary;        // Star / favourite / secondary highlight
     juce::Colour ctaButton;              // Primary call-to-action button body (Load)
+    juce::Colour highlightAlt;           // Secondary highlight: selected-card border, scrollbar thumb
 
     // ── Text ───────────────────────────────────────────────────────────────
     juce::Colour textOnDark;             // White-on-dark labels
@@ -107,6 +108,7 @@ namespace Themes
         juce::Colour (0xff0cbff2),       // Cyan
         juce::Colour (0xffffc107),       // Gold
         juce::Colour (0xff2a2a2a),       // CTA button - dark charcoal (matches default Load)
+        juce::Colour (0xff0cbff2),       // highlightAlt - same as accent in default
 
         // Text
         juce::Colour (0xffffffff),       // textOnDark - white (hex literal, see note above)
@@ -142,15 +144,16 @@ namespace Themes
         juce::Colour (0xff0d0d0d),       // App bg          - near-black
         juce::Colour (0xff161616),       // Panel / top bar - one notch lighter
         juce::Colour (0xff262626),       // Toolbar / popup - one more notch lighter
-        juce::Colour (0xffde7e44),       // Sidebar header  - orange (palette)
+        juce::Colour (0xff5d9b84),       // Sidebar header  - teal/green (palette)
         juce::Colour (0xfff5efe0),       // Grid light bg   - off-white tan
         juce::Colour (0xfff2c91f),       // Chain (fallback - stripes drawn over)
-        juce::Colour (0xff1a1a1a),       // Scroll on dark
-        juce::Colour (0xffe6bc86),       // Scroll on light - dimmer cream
+        juce::Colour (0xffc9e8dd),       // Scroll on dark  - pale teal (matches selected card)
+        juce::Colour (0xffc9e8dd),       // Scroll on light - pale teal (matches selected card)
 
-        // Buttons / dropdowns
-        juce::Colour (0xffde7e44),       // Button surface  - orange (palette)
-        juce::Colour (0xffb26536),       // Outline         - darker orange
+        // Buttons / dropdowns - combo body sits on teal/green so combos read as
+        // calm surfaces; orange is reserved for active/selected state.
+        juce::Colour (0xff5d9b84),       // Button surface  - teal/green
+        juce::Colour (0xff4a7a6a),       // Outline         - darker teal
         juce::Colour (0xffe6bc86),       // Subtle border   - dimmer cream
         juce::Colour (0xff4a3328),       // Divider         - dark brown
 
@@ -161,10 +164,13 @@ namespace Themes
         juce::Colour (0xffc9e8dd),       // Selected        - pale teal wash
         juce::Colour (0xffffd195),       // Placeholder     - cream (palette)
 
-        // Accents
-        juce::Colour (0xff5d9b84),       // Teal (palette)
+        // Accents - orange is the "active / selected" colour in 70s. Used by
+        // sidebar selection, Subscribe banner, A/B active side, + button, the
+        // "Chain on" pill, and tag chips.
+        juce::Colour (0xffde7e44),       // Accent - orange (palette)
         juce::Colour (0xfff2c91f),       // Yellow (palette) - star
-        juce::Colour (0xffde7e44),       // CTA Load button - orange (palette)
+        juce::Colour (0xffde7e44),       // CTA Load button - orange (matches accent + banner)
+        juce::Colour (0xff5d9b84),       // highlightAlt - teal/green (selected-card border, scrollbar thumb)
 
         // Text
         juce::Colour (0xffffffff),       // On dark - white

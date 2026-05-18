@@ -28,16 +28,23 @@ class ButtonLookAndFeel : public juce::LookAndFeel_V4
 {
 public:
     void drawButtonBackground(juce::Graphics& g, juce::Button& button,
-                              const juce::Colour& backgroundColour,
+                              const juce::Colour& /*backgroundColour*/,
                               bool isMouseOverButton, bool isButtonDown) override
     {
         auto bounds = button.getLocalBounds().toFloat().reduced(0.5f);
-        auto baseColour = backgroundColour;
+        // JUCE multiplies the passed-in colour's saturation by 0.9 (or 1.3
+        // when focused), which desaturates themed buttons vs. their fillRect
+        // siblings. Read the button's own colour directly so the Load button
+        // exactly matches the Subscribe banner / accent strip.
+        auto baseColour = button.findColour(button.getToggleState()
+                                                 ? juce::TextButton::buttonOnColourId
+                                                 : juce::TextButton::buttonColourId);
 
+        // Press darkens slightly; hover is a no-op so themed buttons sit at the
+        // exact accent value at rest (matches the Subscribe banner's fillRect).
         if (isButtonDown)
             baseColour = baseColour.darker(0.2f);
-        else if (isMouseOverButton)
-            baseColour = baseColour.brighter(0.1f);
+        juce::ignoreUnused (isMouseOverButton);
 
         g.setColour(baseColour);
         g.fillRoundedRectangle(bounds, 4.0f);
@@ -123,20 +130,11 @@ public:
         auto leftBounds = bounds.withWidth(halfWidth);
         auto rightBounds = bounds.withLeft(bounds.getX() + halfWidth);
 
-        // Determine colors based on active slot and hover state
-        auto activeColour = Colors::accent();   // Cyan
-        auto inactiveColour = Colors::buttonSurface();
-
-        if (isMouseOver())
-        {
-            activeColour = activeColour.brighter(0.1f);
-            inactiveColour = inactiveColour.brighter(0.1f);
-        }
-        if (isMouseButtonDown())
-        {
-            activeColour = activeColour.darker(0.2f);
-            inactiveColour = inactiveColour.darker(0.2f);
-        }
+        // Active side picks up the theme accent (cyan in default, teal in 70s);
+        // the inactive side is white (cardBackground) so the pair reads as a
+        // clean green/white toggle in 70s rather than orange/teal.
+        auto activeColour = Colors::accent();
+        auto inactiveColour = Colors::cardBackground();
 
         // Draw left side (A) - rounded on left, flat on right
         juce::Path leftPath;
@@ -156,14 +154,16 @@ public:
         g.setColour(slotBActive ? activeColour : inactiveColour);
         g.fillPath(rightPath);
 
-        // Draw text
+        // Draw text - active side gets white-on-accent, inactive side gets
+        // dark-on-white so both letters read clearly regardless of theme.
         auto font = juce::Font(getHeight() * 0.5f, juce::Font::bold);
         g.setFont(font);
 
-        // Both letters white; the cyan vs charcoal background tells you
-        // which side is active.
-        g.setColour(Colors::textOnDark());
+        const auto activeText   = Colors::textOnDark();
+        const auto inactiveText = Colors::textOnLight();
+        g.setColour(slotBActive ? inactiveText : activeText);
         g.drawText("A", leftBounds.toNearestInt(), juce::Justification::centred);
+        g.setColour(slotBActive ? activeText : inactiveText);
         g.drawText("B", rightBounds.toNearestInt(), juce::Justification::centred);
     }
 
@@ -483,7 +483,7 @@ public:
 
             juce::Rectangle<float> thumbBounds((float)(x + sidePad), (float)thumbTop,
                                                (float)(width - sidePad * 2), (float)(thumbBot - thumbTop));
-            g.setColour(Colors::accent());
+            g.setColour(Colors::highlightAlt());
             float radius = juce::jmin(thumbBounds.getWidth(), thumbBounds.getHeight()) * 0.5f;
             g.fillRoundedRectangle(thumbBounds, radius);
         }

@@ -53,7 +53,7 @@ public:
     void handleNoteOff (juce::MidiKeyboardState*, int midiChannel, int midiNote, float velocity) override;
 
 private:
-    enum class State { Playing, GameOver };
+    enum class State { Splash, Playing, GameOver };
     enum class PowerType { Spread, Rapid, Bomb, Shield, Slow, Mega };
 
     struct CatHead
@@ -64,6 +64,7 @@ private:
         float rotation;
         float spin;
         int   sourceNote;     // MIDI note that fired this shot (for melody bonus)
+        int   headImageIndex; // -1 = procedural draw; otherwise index into catHeadImages
     };
 
     struct FallingPlugin
@@ -168,10 +169,17 @@ private:
     static juce::Colour    powerColour (PowerType);
     static juce::String    powerLabel  (PowerType);
 
+    juce::Font retroFont (float height, int styleFlags = 0) const;
+
     juce::MidiKeyboardState& kbState;
     SettingsManager* settingsManager = nullptr;
     juce::MidiKeyboardComponent keyboard;
     juce::Array<juce::Image> pluginImagePool;
+    juce::Array<juce::Image> catHeadImages;     // pre-scaled cat-head sprites
+    juce::Image              splashCatImage;    // sphynx, mascot for the splash screen
+    juce::Array<juce::Image> splashHeads;       // three distinct heads shown on splash
+    juce::Image              backdropCache;     // static stars + nebulas + gradient, rebuilt on resize
+    juce::Typeface::Ptr      retroTypeface;     // pixel font (Press Start 2P) used everywhere in-game
 
     juce::Array<CatHead> projectiles;
     juce::Array<FallingPlugin> falling;
@@ -186,10 +194,11 @@ private:
 
     juce::Random rng { (juce::int64) juce::Time::currentTimeMillis() };
 
-    State state = State::Playing;
+    State state = State::Splash;
 
     int   spawnCountdownTicks = 60;
     int   bossCountdownTicks  = 45 * 60;   // first boss ~45s in
+    int   shotCooldownTicks   = 0;         // gates spawnCatHead; ticks down each frame
     int   ticksSinceStart     = 0;
     int   score               = 0;
     int   combo               = 1;
@@ -203,7 +212,6 @@ private:
     int   lastHitNote     = -1;
     int   ascendingRun    = 0;
 
-    float shakeMagnitude = 0.0f;
     float globalTime     = 0.0f;
 
     // Active powerup state. Float = seconds remaining (timed); shields stack.
@@ -214,12 +222,15 @@ private:
     int   shieldStack = 0;
 
     static constexpr int   kFirstNote        = 36;     // C2
-    static constexpr int   kLastNote         = 84;     // C6  → 4 octaves
+    static constexpr int   kLastNote         = 83;     // B5  → 4 octaves, no trailing C
     static constexpr int   kKeyboardHeight   = 100;
     static constexpr int   kFps              = 60;
-    static constexpr int   kMaxEscapes       = 5;
+    static constexpr int   kMaxEscapes       = 9;
     static constexpr int   kComboCap         = 20;
     static constexpr float kPowerupDropChance= 0.05f;
+    // Shot cooldown: ~165ms baseline, ~80ms under Rapid powerup.
+    static constexpr int   kBaseShotCooldown = 10;     // ticks @ 60fps
+    static constexpr int   kRapidShotCooldown= 5;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CatGameComponent)
 };

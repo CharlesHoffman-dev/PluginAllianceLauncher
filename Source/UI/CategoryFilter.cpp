@@ -106,6 +106,13 @@ void CategoryFilter::paintListBoxItem(int rowNumber, juce::Graphics& g, int widt
     }
 }
 
+juce::MouseCursor CategoryFilter::getMouseCursorForRow(int row)
+{
+    if (row >= 0 && row < (int) categories.size() && ! categories[row].isHeader)
+        return juce::MouseCursor::PointingHandCursor;
+    return juce::MouseCursor::NormalCursor;
+}
+
 void CategoryFilter::listBoxItemClicked(int row, const juce::MouseEvent&)
 {
     if (row < 0 || row >= static_cast<int>(categories.size()))

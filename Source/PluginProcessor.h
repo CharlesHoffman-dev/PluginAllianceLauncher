@@ -232,6 +232,9 @@ public:
     // SFX cues for the easter-egg game. The editor triggers from the message
     // thread; processBlock sums the audio output into the buffer.
     void triggerGameSfx (GameSfxEngine::Sound s) { gameSfx.trigger (s); }
+    void loadGameSfxResources()                  { gameSfx.loadResourcesIfNeeded(); }
+    void startGameMusic()                        { gameSfx.startMusic(); }
+    void stopGameMusic()                         { gameSfx.stopMusic(); }
 
 private:
     // Chain of plugin slots (each slot has its own A/B hosts)

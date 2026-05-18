@@ -42,6 +42,18 @@ juce::String CatGameComponent::powerLabel (PowerType t)
     return {};
 }
 
+juce::Font CatGameComponent::retroFont (float height, int styleFlags) const
+{
+    if (retroTypeface != nullptr)
+    {
+        juce::Font f (retroTypeface);
+        f.setHeight (height);
+        if (styleFlags != 0) f.setStyleFlags (styleFlags);
+        return f;
+    }
+    return juce::Font (height, styleFlags);
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 //  Construction
 // ─────────────────────────────────────────────────────────────────────────────
@@ -60,7 +72,87 @@ CatGameComponent::CatGameComponent (juce::MidiKeyboardState& sharedKeyboardState
     keyboard.setKeyPressBaseOctave (4);
     addAndMakeVisible (keyboard);
 
-    pluginImagePool = PluginImageCache::getInstance().getAllCachedImages();
+    {
+        auto raw = PluginImageCache::getInstance().getAllCachedImages();
+        pluginImagePool.ensureStorageAllocated (raw.size());
+        // Asteroids max out around 180px wide; pre-scaling avoids JUCE's
+        // per-frame resample of full-resolution browser thumbs.
+        for (auto& img : raw)
+        {
+            if (! img.isValid()) continue;
+            const int maxW = 220;
+            if (img.getWidth() > maxW)
+            {
+                const float ratio = (float) maxW / (float) img.getWidth();
+                pluginImagePool.add (img.rescaled (maxW,
+                                                   juce::jmax (1, (int) (img.getHeight() * ratio)),
+                                                   juce::Graphics::highResamplingQuality));
+            }
+            else
+            {
+                pluginImagePool.add (img);
+            }
+        }
+    }
+
+    // Load cat-head PNGs once. Try a few candidate locations so it works from
+    // the source tree, the standalone exe folder, and a future installer.
+    {
+        const juce::File candidates[] = {
+            juce::File::getSpecialLocation (juce::File::currentExecutableFile)
+                .getParentDirectory().getChildFile ("Resources/CatHeads"),
+            juce::File ("C:/Users/charl/PluginAllianceLauncher/Resources/CatHeads"),
+        };
+        for (auto& dir : candidates)
+        {
+            if (! dir.isDirectory()) continue;
+            auto files = dir.findChildFiles (juce::File::findFiles, false, "*.png");
+            files.sort();
+            for (auto& f : files)
+            {
+                auto img = juce::ImageFileFormat::loadFrom (f);
+                if (! img.isValid()) continue;
+                // Pre-scale source PNGs (often 256x256+) down to a sprite-sized
+                // texture so per-frame rotate+draw stays cheap.
+                catHeadImages.add (img.rescaled (96, 96, juce::Graphics::highResamplingQuality));
+
+                // The sphynx is the splash-screen mascot; load a higher-res
+                // copy so it stays sharp at title size.
+                if (f.getFileNameWithoutExtension() == "cat_r2_c4")
+                    splashCatImage = img.rescaled (220, 220, juce::Graphics::highResamplingQuality);
+            }
+            if (! catHeadImages.isEmpty()) break;
+        }
+    }
+
+    // Three distinct heads for the splash trio: first, sphynx, last - gives
+    // good visual variety across the row.
+    if (splashCatImage.isValid())
+        splashHeads.add (splashCatImage);
+    if (! catHeadImages.isEmpty())
+    {
+        splashHeads.add (catHeadImages.getReference (0));
+        splashHeads.add (catHeadImages.getReference (catHeadImages.size() - 1));
+    }
+
+    // Load the retro pixel font (Press Start 2P) from Resources/Fonts.
+    {
+        const juce::File fontCandidates[] = {
+            juce::File::getSpecialLocation (juce::File::currentExecutableFile)
+                .getParentDirectory().getChildFile ("Resources/Fonts/PressStart2P-Regular.ttf"),
+            juce::File ("C:/Users/charl/PluginAllianceLauncher/Resources/Fonts/PressStart2P-Regular.ttf"),
+        };
+        for (auto& f : fontCandidates)
+        {
+            if (! f.existsAsFile()) continue;
+            juce::MemoryBlock mb;
+            if (f.loadFileAsData (mb))
+            {
+                retroTypeface = juce::Typeface::createSystemTypefaceFor (mb.getData(), mb.getSize());
+                if (retroTypeface != nullptr) break;
+            }
+        }
+    }
 
     if (settingsManager != nullptr)
         sessionHighScore = settingsManager->getCatGameHighScore();
@@ -84,7 +176,8 @@ void CatGameComponent::resized()
     auto bounds = getLocalBounds();
     auto kbBounds = bounds.removeFromBottom (kKeyboardHeight);
     keyboard.setBounds (kbBounds);
-    const int whiteKeysVisible = ((kLastNote - kFirstNote) / 12) * 7 + 1;
+    // Range now ends on B (no trailing C), so the simple "octaves * 7" math works.
+    const int whiteKeysVisible = ((kLastNote - kFirstNote + 1) / 12) * 7;
     keyboard.setKeyWidth ((float) kbBounds.getWidth() / (float) whiteKeysVisible);
 
     buildStarfield();
@@ -123,6 +216,40 @@ void CatGameComponent::buildStarfield()
         s.twinklePhase = starRng.nextFloat() * juce::MathConstants<float>::twoPi;
         stars.add (s);
     }
+
+    // Bake the static layers (gradient + nebulas + non-twinkling stars) into
+    // one image so paint() can blit instead of re-rasterizing every frame.
+    const int W = getWidth();
+    const int H = getHeight();
+    if (W <= 0 || H <= 0) { backdropCache = {}; return; }
+
+    backdropCache = juce::Image (juce::Image::ARGB, W, H, true);
+    juce::Graphics bg (backdropCache);
+
+    juce::ColourGradient grad (juce::Colour (0xff04020a), 0.0f, 0.0f,
+                               juce::Colour (0xff200c2e), 0.0f, (float) H,
+                               false);
+    grad.addColour (0.5f, juce::Colour (0xff140828));
+    bg.setGradientFill (grad);
+    bg.fillAll();
+
+    for (auto& n : nebulas)
+    {
+        juce::ColourGradient ngrad (n.colour, n.cx, n.cy,
+                                    n.colour.withAlpha (0.0f),
+                                    n.cx + n.radius, n.cy,
+                                    true);
+        bg.setGradientFill (ngrad);
+        bg.fillEllipse (n.cx - n.radius, n.cy - n.radius, n.radius * 2.0f, n.radius * 2.0f);
+    }
+
+    bg.setOpacity (1.0f);
+    for (auto& s : stars)
+    {
+        if (s.twinkles) continue;     // twinkling stars are overlaid live
+        bg.setColour (s.colour.withAlpha (0.9f));
+        bg.fillEllipse (s.x - s.radius, s.y - s.radius, s.radius * 2.0f, s.radius * 2.0f);
+    }
 }
 
 bool CatGameComponent::keyPressed (const juce::KeyPress& key)
@@ -130,6 +257,11 @@ bool CatGameComponent::keyPressed (const juce::KeyPress& key)
     if (key == juce::KeyPress::escapeKey)
     {
         if (onExitRequested) onExitRequested();
+        return true;
+    }
+    if (state == State::Splash)
+    {
+        state = State::Playing;
         return true;
     }
     if (state == State::GameOver && key == juce::KeyPress::returnKey)
@@ -145,38 +277,19 @@ bool CatGameComponent::keyPressed (const juce::KeyPress& key)
 // ─────────────────────────────────────────────────────────────────────────────
 void CatGameComponent::paint (juce::Graphics& g)
 {
-    if (shakeMagnitude > 0.1f)
-    {
-        const float dx = (rng.nextFloat() * 2.0f - 1.0f) * shakeMagnitude;
-        const float dy = (rng.nextFloat() * 2.0f - 1.0f) * shakeMagnitude;
-        g.addTransform (juce::AffineTransform::translation (dx, dy));
-    }
+    // Static layers (gradient + nebulas + non-twinkling stars) come from the
+    // cache so 60fps repaints don't re-rasterize them.
+    if (backdropCache.isValid())
+        g.drawImageAt (backdropCache, 0, 0);
+    else
+        g.fillAll (juce::Colour (0xff140828));
 
-    // ── Galaxy backdrop: 3-stop gradient spanning the FULL height so there's
-    //    no visible seam where the gradient ends.
-    juce::ColourGradient bg (juce::Colour (0xff04020a), 0.0f, 0.0f,
-                             juce::Colour (0xff200c2e), 0.0f, (float) getHeight(),
-                             false);
-    bg.addColour (0.5f, juce::Colour (0xff140828));
-    g.setGradientFill (bg);
-    g.fillAll();
-
-    for (auto& n : nebulas)
-    {
-        juce::ColourGradient grad (n.colour, n.cx, n.cy,
-                                   n.colour.withAlpha (0.0f),
-                                   n.cx + n.radius, n.cy,
-                                   true);
-        g.setGradientFill (grad);
-        g.fillEllipse (n.cx - n.radius, n.cy - n.radius, n.radius * 2.0f, n.radius * 2.0f);
-    }
-
+    // Only the twinkling subset needs live drawing.
     g.setOpacity (1.0f);
     for (auto& s : stars)
     {
-        float alpha = 0.9f;
-        if (s.twinkles)
-            alpha = 0.45f + 0.55f * (0.5f + 0.5f * std::sin (globalTime * 3.0f + s.twinklePhase));
+        if (! s.twinkles) continue;
+        const float alpha = 0.45f + 0.55f * (0.5f + 0.5f * std::sin (globalTime * 3.0f + s.twinklePhase));
         g.setColour (s.colour.withAlpha (alpha));
         g.fillEllipse (s.x - s.radius, s.y - s.radius, s.radius * 2.0f, s.radius * 2.0f);
     }
@@ -244,7 +357,20 @@ void CatGameComponent::paint (juce::Graphics& g)
                                                   h.size, h.size);
         juce::Graphics::ScopedSaveState save (g);
         g.addTransform (juce::AffineTransform::rotation (h.rotation, h.x, h.y));
-        drawCatHead (g, rect);
+
+        if (h.headImageIndex >= 0 && h.headImageIndex < catHeadImages.size())
+        {
+            g.setOpacity (1.0f);
+            g.setColour (juce::Colours::white);
+            g.drawImageWithin (catHeadImages.getReference (h.headImageIndex),
+                               (int) rect.getX(), (int) rect.getY(),
+                               (int) rect.getWidth(), (int) rect.getHeight(),
+                               juce::RectanglePlacement::centred);
+        }
+        else
+        {
+            drawCatHead (g, rect);
+        }
     }
 
     // ── Toasts (floating text feedback) ─────────────────────────────────────
@@ -252,7 +378,7 @@ void CatGameComponent::paint (juce::Graphics& g)
     {
         const float alpha = juce::jlimit (0.0f, 1.0f, t.life);
         g.setColour (juce::Colours::black.withAlpha (alpha * 0.45f));
-        g.setFont (juce::Font (t.fontSize, juce::Font::bold));
+        g.setFont (retroFont (t.fontSize * 0.7f));
         g.drawText (t.text, (int) t.x - 199, (int) t.y - 14, 400, 30, juce::Justification::centred);
         g.setColour (t.colour.withAlpha (alpha));
         g.drawText (t.text, (int) t.x - 200, (int) t.y - 15, 400, 30, juce::Justification::centred);
@@ -260,39 +386,148 @@ void CatGameComponent::paint (juce::Graphics& g)
 
     // ── HUD ─────────────────────────────────────────────────────────────────
     g.setColour (juce::Colours::white.withAlpha (0.9f));
-    g.setFont (juce::Font (16.0f, juce::Font::bold));
-    g.drawText ("SCORE  " + juce::String (score), 14, 10, 240, 22, juce::Justification::topLeft);
+    g.setFont (retroFont (20.0f));
+    g.drawText ("SCORE  " + juce::String (score), 14, 10, 420, 28, juce::Justification::topLeft);
 
-    g.setFont (juce::Font (12.0f, juce::Font::bold));
-    g.setColour (juce::Colours::white.withAlpha (0.6f));
-    g.drawText ("HIGH  " + juce::String (sessionHighScore), 14, 32, 240, 16, juce::Justification::topLeft);
+    g.setFont (retroFont (12.0f));
+    g.setColour (juce::Colour (0xff4fd5ff));
+    g.drawText ("HISCORE  " + juce::String (sessionHighScore), 14, 46, 420, 20, juce::Justification::topLeft);
 
     if (combo >= 2)
     {
         const float scale = 1.0f + juce::jmin (0.65f, (float) (combo - 1) * 0.06f);
         g.setColour (juce::Colour (0xfff2c91f));
-        g.setFont (juce::Font (juce::Font::getDefaultSansSerifFontName(), 22.0f * scale, juce::Font::bold));
+        g.setFont (retroFont (16.0f * scale));
         g.drawText ("x" + juce::String (combo) + "  COMBO",
                     getWidth() / 2 - 200, 14, 400, 32,
                     juce::Justification::centred);
     }
 
-    // Lives (filled / hollow diamonds)
-    g.setFont (juce::Font (16.0f, juce::Font::bold));
-    g.setColour (juce::Colours::white.withAlpha (0.75f));
-    juce::String dots;
-    for (int i = 0; i < kMaxEscapes; ++i)
-        dots += juce::String::fromUTF8 (i < (kMaxEscapes - escaped) ? "\xe2\x97\x86 "    // ◆
-                                                                     : "\xe2\x97\x87 "); // ◇
-    g.drawText (dots, getWidth() - 150, 10, 136, 22, juce::Justification::topRight);
+    // Lives - cat-head icons, bottom-right above the keyboard. Remaining lives
+    // draw fully opaque; lost lives draw as a dim silhouette.
+    {
+        const int   iconSize = 24;
+        const int   gap      = 4;
+        const int   totalW   = kMaxEscapes * iconSize + (kMaxEscapes - 1) * gap;
+        const int   startX   = getWidth()  - totalW - 14;
+        const int   yPos     = getHeight() - kKeyboardHeight - iconSize - 6;
+        for (int i = 0; i < kMaxEscapes; ++i)
+        {
+            const int x = startX + i * (iconSize + gap);
+            // Lives deplete left-to-right: index 0 dies first, the rightmost
+            // (index kMaxEscapes-1) is the last cat standing.
+            const bool alive = i >= escaped;
+
+            if (! catHeadImages.isEmpty())
+            {
+                // Same head each session (index 0) so the readout reads as one
+                // unified row of "lives" rather than a chaotic mix.
+                const auto& img = catHeadImages.getReference (0);
+                g.setOpacity (alive ? 1.0f : 0.18f);
+                g.drawImageWithin (img, x, yPos, iconSize, iconSize,
+                                   juce::RectanglePlacement::centred);
+            }
+            else
+            {
+                g.setOpacity (1.0f);
+                g.setColour (juce::Colours::white.withAlpha (alive ? 0.85f : 0.20f));
+                g.fillEllipse ((float) x, (float) yPos,
+                               (float) iconSize, (float) iconSize);
+            }
+        }
+        g.setOpacity (1.0f);
+    }
 
     drawActivePowerupChips (g);
 
-    g.setFont (juce::Font (11.0f));
+    g.setFont (retroFont (8.0f));
     g.setColour (juce::Colours::white.withAlpha (0.45f));
-    g.drawText ("Play a note to shoot   ·   shoot powerup badges to grab them   ·   Esc to exit",
+    g.drawText ("PLAY A NOTE TO SHOOT   SHOOT POWERUPS TO GRAB THEM   ESC TO EXIT",
                 12, getHeight() - kKeyboardHeight - 20, getWidth() - 24, 16,
                 juce::Justification::centredLeft);
+
+    // ── Splash overlay ──────────────────────────────────────────────────────
+    if (state == State::Splash)
+    {
+        g.setColour (juce::Colours::black.withAlpha (0.55f));
+        g.fillRect (0, 0, getWidth(), getHeight() - kKeyboardHeight);
+
+        const int cx = getWidth() / 2;
+        const int cy = (getHeight() - kKeyboardHeight) / 2;
+
+        // Three distinct rumbling cat heads above the title. Rumble = small
+        // per-frame sin-driven jitter, much faster than the previous spin.
+        if (! splashHeads.isEmpty())
+        {
+            const int faceSize = 110;
+            const int gap      = 32;
+            const int totalW   = faceSize * 3 + gap * 2;
+            int x = cx - totalW / 2;
+            const int y = cy - 220;
+            for (int i = 0; i < 3; ++i)
+            {
+                const auto& img = splashHeads.getReference (i % splashHeads.size());
+
+                // True per-frame random jitter - reads as a hard vibration
+                // rather than the smooth sin-wobble it was before.
+                const float jx = (rng.nextFloat() * 2.0f - 1.0f) * 6.0f;
+                const float jy = (rng.nextFloat() * 2.0f - 1.0f) * 6.0f;
+                const float ja = (rng.nextFloat() * 2.0f - 1.0f) * 0.12f;
+
+                juce::Graphics::ScopedSaveState save (g);
+                g.addTransform (juce::AffineTransform::translation (jx, jy));
+                g.addTransform (juce::AffineTransform::rotation (ja,
+                                    (float) (x + faceSize * 0.5f),
+                                    (float) (y + faceSize * 0.5f)));
+                g.setOpacity (1.0f);
+                g.setColour (juce::Colours::white);
+                g.drawImageWithin (img, x, y, faceSize, faceSize,
+                                   juce::RectanglePlacement::centred);
+                x += faceSize + gap;
+            }
+        }
+
+        // Title - arcade yellow with a shadow drop for chunky CRT vibes.
+        g.setFont (retroFont (52.0f));
+        g.setColour (juce::Colour (0xff2a2a2a));
+        g.drawText ("PLUGIN BLASTER", cx - 500 + 4, cy - 70 + 4, 1000, 80,
+                    juce::Justification::centred);
+        g.setColour (juce::Colour (0xfff2c91f));
+        g.drawText ("PLUGIN BLASTER", cx - 500, cy - 70, 1000, 80,
+                    juce::Justification::centred);
+
+        // Subtitle - bumped up for legibility on the splash.
+        g.setColour (juce::Colours::white);
+        g.setFont (retroFont (16.0f));
+        g.drawText ("PLAY NOTES TO LAUNCH CATS",
+                    cx - 600, cy + 20, 1200, 24, juce::Justification::centred);
+        g.drawText ("SHOOT THE FALLING PLUGINS - DON'T LET THEM ESCAPE",
+                    cx - 600, cy + 52, 1200, 24, juce::Justification::centred);
+
+        if (sessionHighScore > 0)
+        {
+            g.setColour (juce::Colour (0xff4fd5ff));
+            g.setFont (retroFont (14.0f));
+            g.drawText ("HI " + juce::String (sessionHighScore),
+                        cx - 400, cy + 102, 800, 22, juce::Justification::centred);
+        }
+
+        // Bright yellow + dark shadow pulses for "press any key" - reads
+        // strongly over the dark-purple galaxy without blending in.
+        const float pulse = 0.6f + 0.4f * (0.5f + 0.5f * std::sin (globalTime * 3.5f));
+        g.setFont (retroFont (18.0f));
+        g.setColour (juce::Colour (0xff000000).withAlpha (pulse * 0.7f));
+        g.drawText ("PRESS ANY KEY TO START",
+                    cx - 600 + 3, cy + 152 + 3, 1200, 24, juce::Justification::centred);
+        g.setColour (juce::Colour (0xfff2c91f).withAlpha (pulse));
+        g.drawText ("PRESS ANY KEY TO START",
+                    cx - 600, cy + 152, 1200, 24, juce::Justification::centred);
+
+        g.setColour (juce::Colours::white.withAlpha (0.5f));
+        g.setFont (retroFont (10.0f));
+        g.drawText ("ESC TO EXIT",
+                    cx - 300, cy + 196, 600, 16, juce::Justification::centred);
+    }
 
     // ── Game-over overlay ───────────────────────────────────────────────────
     if (state == State::GameOver)
@@ -303,25 +538,36 @@ void CatGameComponent::paint (juce::Graphics& g)
         const int cx = getWidth() / 2;
         const int cy = (getHeight() - kKeyboardHeight) / 2;
 
+        // Black drop-shadow then yellow GAME OVER on top.
+        g.setFont (retroFont (40.0f));
+        g.setColour (juce::Colour (0xff2a2a2a));
+        g.drawText ("GAME OVER", cx - 400 + 4, cy - 90 + 4, 800, 56, juce::Justification::centred);
         g.setColour (juce::Colour (0xfff2c91f));
-        g.setFont (juce::Font (48.0f, juce::Font::bold));
-        g.drawText ("GAME OVER", cx - 250, cy - 90, 500, 56, juce::Justification::centred);
+        g.drawText ("GAME OVER", cx - 400, cy - 90, 800, 56, juce::Justification::centred);
 
         g.setColour (juce::Colours::white);
-        g.setFont (juce::Font (20.0f, juce::Font::bold));
-        g.drawText ("Score: "       + juce::String (score),
-                    cx - 200, cy - 24, 400, 28, juce::Justification::centred);
-        g.drawText ("Best combo: x" + juce::String (comboBest),
-                    cx - 200, cy + 4,  400, 24, juce::Justification::centred);
-        g.drawText ("High score: "  + juce::String (sessionHighScore),
-                    cx - 200, cy + 30, 400, 24, juce::Justification::centred);
+        g.setFont (retroFont (14.0f));
+        g.drawText ("SCORE "      + juce::String (score),
+                    cx - 300, cy - 20, 600, 22, juce::Justification::centred);
+        g.drawText ("BEST COMBO X" + juce::String (comboBest),
+                    cx - 300, cy + 8,  600, 22, juce::Justification::centred);
+        g.setColour (juce::Colour (0xff4fd5ff));
+        g.drawText ("HISCORE "    + juce::String (sessionHighScore),
+                    cx - 300, cy + 36, 600, 22, juce::Justification::centred);
 
-        g.setColour (juce::Colours::white.withAlpha (0.7f));
-        g.setFont (juce::Font (14.0f));
-        g.drawText ("Press Enter to play again",
-                    cx - 250, cy + 70, 500, 22, juce::Justification::centred);
-        g.drawText ("Esc to exit",
-                    cx - 250, cy + 92, 500, 22, juce::Justification::centred);
+        const float pulse = 0.6f + 0.4f * (0.5f + 0.5f * std::sin (globalTime * 3.5f));
+        g.setFont (retroFont (14.0f));
+        g.setColour (juce::Colour (0xff000000).withAlpha (pulse * 0.7f));
+        g.drawText ("PRESS ENTER TO PLAY AGAIN",
+                    cx - 400 + 3, cy + 84 + 3, 800, 22, juce::Justification::centred);
+        g.setColour (juce::Colour (0xfff2c91f).withAlpha (pulse));
+        g.drawText ("PRESS ENTER TO PLAY AGAIN",
+                    cx - 400, cy + 84, 800, 22, juce::Justification::centred);
+
+        g.setColour (juce::Colours::white.withAlpha (0.45f));
+        g.setFont (retroFont (8.0f));
+        g.drawText ("ESC TO EXIT",
+                    cx - 300, cy + 116, 600, 16, juce::Justification::centred);
     }
 }
 
@@ -430,8 +676,8 @@ void CatGameComponent::drawActivePowerupChips (juce::Graphics& g) const
         g.setColour (powerColour (c.type).withAlpha (0.85f));
         g.fillRoundedRectangle ((float) x, (float) y, (float) chipW, (float) chipH, 5.0f);
         g.setColour (juce::Colours::white);
-        g.setFont (juce::Font (11.0f, juce::Font::bold));
-        g.drawText (powerLabel (c.type) + "  " + c.value,
+        g.setFont (retroFont (8.0f));
+        g.drawText (powerLabel (c.type) + " " + c.value,
                     x + 6, y, chipW - 12, chipH, juce::Justification::centredLeft);
         x += chipW + gap;
     }
@@ -444,7 +690,11 @@ void CatGameComponent::handleNoteOn (juce::MidiKeyboardState*, int /*midiChannel
                                      int midiNote, float /*velocity*/)
 {
     if (midiNote < kFirstNote || midiNote > kLastNote) return;
-    juce::MessageManager::callAsync ([this, midiNote]() { spawnCatHead (midiNote); });
+    juce::MessageManager::callAsync ([this, midiNote]()
+    {
+        if (state == State::Splash) { state = State::Playing; return; }
+        spawnCatHead (midiNote);
+    });
 }
 
 void CatGameComponent::handleNoteOff (juce::MidiKeyboardState*, int, int, float) {}
@@ -452,9 +702,12 @@ void CatGameComponent::handleNoteOff (juce::MidiKeyboardState*, int, int, float)
 void CatGameComponent::spawnCatHead (int midiNote)
 {
     if (state != State::Playing) return;
+    if (shotCooldownTicks > 0) return;       // enforce reload between shots
 
     auto rect = keyboard.getRectangleForKey (midiNote);
     if (rect.isEmpty()) return;
+
+    shotCooldownTicks = (rapidTime > 0.0f) ? kRapidShotCooldown : kBaseShotCooldown;
 
     const float launchX = keyboard.getX() + rect.getCentreX();
     const float launchY = (float) keyboard.getY() - 8.0f;
@@ -470,14 +723,16 @@ void CatGameComponent::spawnCatHead (int midiNote)
     for (float vx : sideKicks)
     {
         CatHead h;
-        h.x          = launchX;
-        h.y          = launchY;
-        h.vx         = vx;
-        h.vy         = baseSpeed;
-        h.size       = baseSize;
-        h.rotation   = 0.0f;
-        h.spin       = (rng.nextFloat() * 2.0f - 1.0f) * 0.35f;
-        h.sourceNote = midiNote;
+        h.x              = launchX;
+        h.y              = launchY;
+        h.vx             = vx;
+        h.vy             = baseSpeed;
+        h.size           = baseSize;
+        h.rotation       = 0.0f;
+        h.spin           = (rng.nextFloat() * 2.0f - 1.0f) * 0.35f;
+        h.sourceNote     = midiNote;
+        h.headImageIndex = catHeadImages.isEmpty() ? -1
+                                                   : rng.nextInt (catHeadImages.size());
         projectiles.add (h);
     }
 
@@ -579,7 +834,6 @@ void CatGameComponent::onBossDestroyed (BossPlugin& boss)
     spawnToast ("+" + juce::String (reward), cx, cy - 20.0f,
                 juce::Colour (0xfff2c91f), 32.0f);
 
-    shakeMagnitude = juce::jmax (shakeMagnitude, 22.0f);
     spawnPowerup (cx, cy);          // guaranteed drop
     postSfx (Sfx::BossKill);
 }
@@ -673,7 +927,6 @@ void CatGameComponent::applyPowerup (PowerType type, float pickupX, float pickup
                 score += 1;
             }
             sessionHighScore = juce::jmax (sessionHighScore, score);
-            shakeMagnitude   = juce::jmax (shakeMagnitude, 16.0f);
             falling.clearQuick();
             break;
         }
@@ -717,7 +970,6 @@ void CatGameComponent::registerHit (float cx, float cy, int /*sizeTier*/, int mi
         }
     }
 
-    shakeMagnitude = juce::jmax (shakeMagnitude, 6.0f + (float) combo * 0.3f);
     spawnExplosion (cx, cy, 90.0f, juce::Colour (0xfffff5cc));
     postSfx (Sfx::Hit);
 
@@ -744,7 +996,6 @@ void CatGameComponent::onAsteroidEscaped()
     ascendingRun = 0;
     lastHitNote  = -1;
     ++escaped;
-    shakeMagnitude = juce::jmax (shakeMagnitude, 9.0f);
     postSfx (Sfx::LifeLost);
     if (escaped >= kMaxEscapes)
     {
@@ -762,6 +1013,7 @@ void CatGameComponent::resetGame()
     escaped              = 0;
     spawnCountdownTicks  = 60;
     bossCountdownTicks   = 45 * kFps;
+    shotCooldownTicks    = 0;
     ticksSinceStart      = 0;
     ascendingRun         = 0;
     lastHitNote          = -1;
@@ -784,9 +1036,6 @@ void CatGameComponent::timerCallback()
 {
     const float dt = 1.0f / (float) kFps;
     globalTime    += dt;
-
-    shakeMagnitude *= 0.85f;
-    if (shakeMagnitude < 0.05f) shakeMagnitude = 0.0f;
 
     // Always animate visuals so the game-over screen still has movement.
     for (int i = particles.size(); --i >= 0;)
@@ -818,6 +1067,7 @@ void CatGameComponent::timerCallback()
     }
 
     ++ticksSinceStart;
+    if (shotCooldownTicks > 0) --shotCooldownTicks;
     const int playfieldBottom = getHeight() - kKeyboardHeight;
     const float fallMultiplier = (slowTime > 0.0f) ? 0.40f : 1.0f;
 
@@ -899,7 +1149,6 @@ void CatGameComponent::timerCallback()
             ascendingRun = 0;
             lastHitNote  = -1;
             ++escaped;
-            shakeMagnitude = juce::jmax (shakeMagnitude, 14.0f);
             spawnToast ("BOSS ESCAPED!", (float) getWidth() * 0.5f, 80.0f,
                         juce::Colour (0xffe34a3a), 26.0f);
             postSfx (Sfx::LifeLost);

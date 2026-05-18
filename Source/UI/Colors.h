@@ -44,6 +44,7 @@ namespace PALauncher::Colors
     inline juce::Colour accent()                 { return ThemeManager::get().current().accent; }
     inline juce::Colour accentSecondary()        { return ThemeManager::get().current().accentSecondary; }
     inline juce::Colour ctaButton()              { return ThemeManager::get().current().ctaButton; }
+    inline juce::Colour highlightAlt()           { return ThemeManager::get().current().highlightAlt; }
 
     // ── Text ────────────────────────────────────────────────────────────────
     inline juce::Colour textOnDark()             { return ThemeManager::get().current().textOnDark; }

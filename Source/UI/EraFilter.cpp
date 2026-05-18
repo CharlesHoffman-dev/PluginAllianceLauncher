@@ -89,6 +89,13 @@ void EraFilter::paintListBoxItem(int rowNumber, juce::Graphics& g, int width, in
     g.drawText(item.name, 8, 0, width - 16, height, juce::Justification::centredLeft);
 }
 
+juce::MouseCursor EraFilter::getMouseCursorForRow(int row)
+{
+    if (row >= 0 && row < static_cast<int>(eras.size()))
+        return juce::MouseCursor::PointingHandCursor;
+    return juce::MouseCursor::NormalCursor;
+}
+
 void EraFilter::listBoxItemClicked(int row, const juce::MouseEvent&)
 {
     if (row < 0 || row >= static_cast<int>(eras.size()))

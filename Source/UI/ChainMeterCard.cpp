@@ -41,6 +41,7 @@ ChainMeterCard::ChainMeterCard(int meterIndex)
     : meterIdx(meterIndex)
 {
     setSize(cardWidth, cardHeight);
+    setMouseCursor(juce::MouseCursor::PointingHandCursor);
     startTimerHz(30);  // 30 FPS refresh for smooth meter decay
 }
 

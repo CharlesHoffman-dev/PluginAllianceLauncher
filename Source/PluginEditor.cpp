@@ -125,9 +125,9 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     // Set up search bar
     searchBar.onSearchChanged = [this](const juce::String& text)
     {
-        // ── Easter egg: typing "ilovecats" anywhere in the search swaps the
-        //    UI for the cat-asteroid game until Esc.
-        if (text.containsIgnoreCase("ilovecats"))
+        // ── Easter egg: typing "ilovecats" (with or without spaces) anywhere
+        //    in the search swaps the UI for the cat-asteroid game until Esc.
+        if (text.removeCharacters(" ").containsIgnoreCase("ilovecats"))
         {
             searchBar.clear();
             currentSearchText.clear();
@@ -981,6 +981,9 @@ void PluginAllianceLauncherEditor::enterGameMode()
     gameActive = true;
     hideMainUI (true);
 
+    processor.loadGameSfxResources();    // first-time load (no-op afterwards)
+    processor.startGameMusic();
+
     catGame = std::make_unique<CatGameComponent> (processor.getMidiKeyboardState(),
                                                   &processor.getSettingsManager());
     catGame->onExitRequested = [this]() { exitGameMode(); };
@@ -1013,6 +1016,7 @@ void PluginAllianceLauncherEditor::exitGameMode()
     if (! gameActive)
         return;
     gameActive = false;
+    processor.stopGameMusic();
     if (catGame != nullptr)
     {
         removeChildComponent (catGame.get());

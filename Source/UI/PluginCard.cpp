@@ -54,6 +54,7 @@ PluginCard::PluginCard()
     // Prevent focus grabbing - don't steal focus from other components
     setWantsKeyboardFocus(false);
     setMouseClickGrabsKeyboardFocus(false);
+    setMouseCursor(juce::MouseCursor::PointingHandCursor);
 
     // Set up Load button - white with black text, pointer cursor, no outline
     loadButton.setButtonText("Load");
@@ -91,7 +92,9 @@ void PluginCard::paint(juce::Graphics& g)
     // Border
     if (selected)
     {
-        g.setColour(Colors::accent());
+        // Use highlightAlt (teal in 70s, cyan in default) so the selected card
+        // stays distinguishable from the orange "active / selection" accent.
+        g.setColour(Colors::highlightAlt());
         g.drawRoundedRectangle(bounds, 6.0f, 2.0f);
     }
     else

@@ -45,6 +45,7 @@ ChainSlotCard::ChainSlotCard(int slotIndex)
     setWantsKeyboardFocus(false);
     setMouseClickGrabsKeyboardFocus(false);
     setInterceptsMouseClicks(true, false);  // Ensure this component receives mouse clicks
+    setMouseCursor(juce::MouseCursor::PointingHandCursor);
     setSize(cardWidth, cardHeight);
 }
 
@@ -160,8 +161,10 @@ void ChainSlotCard::paint(juce::Graphics& g)
     auto leftBounds = abBounds.withWidth(halfWidth);
     auto rightBounds = abBounds.withLeft(abBounds.getX() + halfWidth);
 
-    auto activeColour = Colors::accent();   // Cyan
-    auto inactiveColour = Colors::buttonSurface();
+    // Active side = accent (orange in 70s, cyan in default). Inactive = white
+    // card surface so the pair reads as a clean active/white toggle.
+    auto activeColour   = Colors::accent();
+    auto inactiveColour = Colors::cardBackground();
 
     // Draw left side (A) - rounded on left, flat on right
     juce::Path leftPath;
@@ -181,12 +184,14 @@ void ChainSlotCard::paint(juce::Graphics& g)
     g.setColour(abSlot == ABSlot::B ? activeColour : inactiveColour);
     g.fillPath(rightPath);
 
-    // Draw A/B text - both letters white; the cyan vs charcoal background
-    // tells you which side is active.
+    // Active letter: white on accent. Inactive letter: dark on white.
     auto font = juce::Font(8.0f, juce::Font::bold);
     g.setFont(font);
-    g.setColour(Colors::textOnDark());
+    const auto activeText   = Colors::textOnDark();
+    const auto inactiveText = Colors::textOnLight();
+    g.setColour(abSlot == ABSlot::B ? inactiveText : activeText);
     g.drawText("A", leftBounds.toNearestInt(), juce::Justification::centred);
+    g.setColour(abSlot == ABSlot::B ? activeText : inactiveText);
     g.drawText("B", rightBounds.toNearestInt(), juce::Justification::centred);
 
     // AUTO button - third evenly-spaced position in the unified header.

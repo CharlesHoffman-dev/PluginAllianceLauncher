@@ -28,6 +28,7 @@ public:
     int getNumRows() override;
     void paintListBoxItem(int rowNumber, juce::Graphics& g, int width, int height, bool rowIsSelected) override;
     void listBoxItemClicked(int row, const juce::MouseEvent&) override;
+    juce::MouseCursor getMouseCursorForRow(int row) override;
 
     // Set the parent category to show relevant subcategories
     void setCategory(DisplayCategory category);

@@ -137,6 +137,13 @@ void SubcategoryFilter::paintListBoxItem(int rowNumber, juce::Graphics& g, int w
     g.drawText(item.name, 8, 0, width - 16, height, juce::Justification::centredLeft);
 }
 
+juce::MouseCursor SubcategoryFilter::getMouseCursorForRow(int row)
+{
+    if (row >= 0 && row < static_cast<int>(subcategories.size()))
+        return juce::MouseCursor::PointingHandCursor;
+    return juce::MouseCursor::NormalCursor;
+}
+
 void SubcategoryFilter::listBoxItemClicked(int row, const juce::MouseEvent&)
 {
     if (row < 0 || row >= static_cast<int>(subcategories.size()))

@@ -26,8 +26,9 @@ PluginChainView::PluginChainView()
         {
             auto bounds = button.getLocalBounds().toFloat().reduced(2.0f);
 
-            // Draw card background
-            g.setColour(Colors::cardBackground());
+            // Body picks up the theme accent (orange in 70s, cyan in default)
+            // so the + button reads as a clear primary call-to-action.
+            g.setColour(Colors::accent());
             g.fillRoundedRectangle(bounds, 6.0f);
 
             // When the button is "highlighted" (toggle state on), draw a solid cyan
