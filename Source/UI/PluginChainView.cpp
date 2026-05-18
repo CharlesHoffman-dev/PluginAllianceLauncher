@@ -213,9 +213,8 @@ void PluginChainView::paint(juce::Graphics& g)
             juce::Colour (0xffffd195),   // cream
             juce::Colour (0xff5d9b84),   // teal
             juce::Colour (0xffde7e44),   // orange
-            juce::Colour (0xfff2c91f),   // yellow
         };
-        constexpr int n = 4;
+        constexpr int n = 3;
         const int h = getHeight();
         const int w = getWidth();
         for (int i = 0; i < n; ++i)
@@ -231,10 +230,10 @@ void PluginChainView::paint(juce::Graphics& g)
         g.fillAll (Colors::chainBackground());
     }
 
-    // Top and bottom borders
+    // Top border only - bottom border was rendering as a stray 1px line
+    // against whatever sits below the chain section.
     g.setColour(Colors::borderSubtle());
     g.drawHorizontalLine(0, 0.0f, static_cast<float>(getWidth()));
-    g.drawHorizontalLine(getHeight() - 1, 0.0f, static_cast<float>(getWidth()));
 
     // If dragging, draw drop zone indicator
     if (draggedSlotIndex >= 0 && dropTargetIndex >= 0)
@@ -261,7 +260,7 @@ void PluginChainView::paint(juce::Graphics& g)
     if (slotCards.isEmpty())
     {
         g.setColour(Colors::textOnDark());
-        g.setFont(juce::Font(16.0f));
+        g.setFont(juce::Font(16.0f, juce::Font::bold));
         auto textBounds = getLocalBounds().reduced(20);
         g.drawText("Add plugins from the browser to build a chain",
                    textBounds,

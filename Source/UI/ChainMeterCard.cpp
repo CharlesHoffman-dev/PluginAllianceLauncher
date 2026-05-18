@@ -182,8 +182,8 @@ void ChainMeterCard::paint(juce::Graphics& g)
         auto faderArea        = juce::Rectangle<int>(x + barWidth * 2 + barGap + innerGap,
                                                      meterArea.getY(), faderWidth, meterArea.getHeight());
 
-        // L/R bar backgrounds
-        g.setColour(Colors::placeholderImage());
+        // L/R bar backgrounds - match the plugin browser grid tan/grey
+        g.setColour(Colors::gridBackground());
         g.fillRoundedRectangle(leftMeterBounds.toFloat(),  2.0f);
         g.fillRoundedRectangle(rightMeterBounds.toFloat(), 2.0f);
 
@@ -256,7 +256,8 @@ void ChainMeterCard::paint(juce::Graphics& g)
         auto leftMeterBounds  = juce::Rectangle<int>(x,                       meterArea.getY(), barWidth, meterArea.getHeight());
         auto rightMeterBounds = juce::Rectangle<int>(x + barWidth + barGap,   meterArea.getY(), barWidth, meterArea.getHeight());
 
-        g.setColour(Colors::placeholderImage());
+        // L/R bar backgrounds - match the plugin browser grid tan/grey
+        g.setColour(Colors::gridBackground());
         g.fillRoundedRectangle(leftMeterBounds.toFloat(),  2.0f);
         g.fillRoundedRectangle(rightMeterBounds.toFloat(), 2.0f);
 

@@ -221,7 +221,7 @@ public:
 
     juce::Font getComboBoxFont(juce::ComboBox&) override
     {
-        return juce::Font(13.0f, juce::Font::plain);
+        return juce::Font(13.0f, juce::Font::bold);
     }
 
     void positionComboBoxText(juce::ComboBox& box, juce::Label& label) override
@@ -711,6 +711,7 @@ private:
     juce::TextButton detailsLoadButton;
     juce::Image detailsPluginImage;
     juce::Image promoAdImage;  // Promotional banner shown in the bottom of the details pane
+    juce::ImageButton promoAdButton;  // Clickable wrapper around promoAdImage
     static constexpr int detailsPanelWidth = 280;
 
     // Main content area

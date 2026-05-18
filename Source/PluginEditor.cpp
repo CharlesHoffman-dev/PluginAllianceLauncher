@@ -80,6 +80,25 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
         }
     }
 
+    // Wrap the ad image in an ImageButton so it's clickable. Same image for
+    // all three states; slight brightness lift on hover and a dim on press
+    // give the user feedback that it's interactive. resized() positions it
+    // via computeAdBounds(); hidden when no plugin is selected.
+    if (promoAdImage.isValid())
+    {
+        promoAdButton.setImages(false, true, true,
+                                promoAdImage, 1.0f,  juce::Colours::transparentBlack,
+                                promoAdImage, 1.0f,  juce::Colours::white.withAlpha(0.08f),
+                                promoAdImage, 0.85f, juce::Colours::transparentBlack);
+        promoAdButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
+        promoAdButton.onClick = []()
+        {
+            juce::URL("https://www.plugin-alliance.com/pages/subscriptions")
+                .launchInDefaultBrowser();
+        };
+        addAndMakeVisible(promoAdButton);
+    }
+
     // Set up subscription banner (sticky at bottom of plugin list)
     subscriptionLabel.setText("Access all plugins for $14.99/month", juce::dontSendNotification);
     subscriptionLabel.setFont(juce::Font(16.0f, juce::Font::bold));
@@ -1246,10 +1265,21 @@ void PluginAllianceLauncherEditor::resized()
                                         buttonY,
                                         detailsPanelWidth - 2 * kDetailsSidePad,
                                         kDetailsButtonHeight);
+            auto adBounds = computeAdBounds(detailsPanel);
+            if (! adBounds.isEmpty())
+            {
+                promoAdButton.setVisible(true);
+                promoAdButton.setBounds(adBounds);
+            }
+            else
+            {
+                promoAdButton.setVisible(false);
+            }
         }
         else
         {
             detailsLoadButton.setVisible(false);
+            promoAdButton.setVisible(false);
         }
 
         // Subscription banner at bottom of plugin list area (not over details panel)
@@ -1294,6 +1324,7 @@ void PluginAllianceLauncherEditor::resized()
         subscriptionLabel.setVisible(false);
         subscribeButton.setVisible(false);
         detailsLoadButton.setVisible(false);
+        promoAdButton.setVisible(false);
         loadTargetBanner.setVisible(false);
 
         // Hosted plugin view takes the full area below top bar
@@ -2412,17 +2443,8 @@ void PluginAllianceLauncherEditor::paintDetailsPanel(juce::Graphics& g, juce::Re
     textLayout.createLayout(attrStr, static_cast<float>(contentBounds.getWidth()));
     textLayout.draw(g, contentBounds.toFloat());
 
-    auto adBounds = computeAdBounds(bounds);
-
-    // Promotional ad pinned to the bottom of the details pane, spanning
-    // the full panel width (minus side padding). Square aspect ratio.
-    if (!adBounds.isEmpty())
-    {
-        g.drawImageWithin(promoAdImage,
-                          adBounds.getX(), adBounds.getY(),
-                          adBounds.getWidth(), adBounds.getHeight(),
-                          juce::RectanglePlacement::centred | juce::RectanglePlacement::onlyReduceInSize);
-    }
+    // The promotional ad is drawn by promoAdButton (an ImageButton child)
+    // so it can handle clicks. resized() positions it at computeAdBounds().
 }
 
 void PluginAllianceLauncherEditor::showSettingsMenu()
