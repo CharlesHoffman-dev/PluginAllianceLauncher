@@ -135,8 +135,9 @@ private:
         float x, y;
         float radius;
         juce::Colour colour;
-        bool twinkles;
-        float twinklePhase;
+        bool   twinkles;
+        float  twinklePhase;
+        int    layer;          // 0=slow distant, 1=mid, 2=fast near (parallax)
     };
 
     struct Nebula
@@ -144,6 +145,22 @@ private:
         float cx, cy;
         float radius;
         juce::Colour colour;
+    };
+
+    struct ShootingStar
+    {
+        float x, y;
+        float vx, vy;
+        float life;            // 1 → 0
+        float length;          // pixels of trail
+    };
+
+    struct SmokePuff
+    {
+        float x, y;
+        float vy;
+        float life;
+        float radius;
     };
 
     void timerCallback() override;
@@ -154,7 +171,9 @@ private:
     void spawnExplosion (float cx, float cy, float size, juce::Colour primary);
     void spawnToast (juce::String text, float cx, float cy, juce::Colour colour, float fontSize = 22.0f);
     void spawnBoss();
+    void spawnShootingStar();
     void onAsteroidEscaped();
+    void onAsteroidNearMiss();
     void registerHit (float cx, float cy, int sizeTier, int midiNote);
     void onBossDestroyed (BossPlugin& boss);
     void applyPowerup (PowerType type, float pickupX, float pickupY);
@@ -191,6 +210,8 @@ private:
 
     juce::Array<Star> stars;
     juce::Array<Nebula> nebulas;
+    juce::Array<ShootingStar> shootingStars;
+    juce::Array<SmokePuff> smokeTrail;
 
     juce::Random rng { (juce::int64) juce::Time::currentTimeMillis() };
 
@@ -199,6 +220,11 @@ private:
     int   spawnCountdownTicks = 60;
     int   bossCountdownTicks  = 45 * 60;   // first boss ~45s in
     int   shotCooldownTicks   = 0;         // gates spawnCatHead; ticks down each frame
+    int   shootingStarTicks   = 240;       // countdown to next shooting star
+    int   bossWarningTicks    = 0;         // >0 = lightning + flash before boss spawns
+    int   bossKillFlashTicks  = 0;         // >0 = white warp streaks after boss kill
+    float bossKillFlashCx     = 0.0f;
+    float bossKillFlashCy     = 0.0f;
     int   ticksSinceStart     = 0;
     int   score               = 0;
     int   combo               = 1;

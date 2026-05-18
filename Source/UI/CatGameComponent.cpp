@@ -197,28 +197,40 @@ void CatGameComponent::buildStarfield()
     nebulas.add ({ playW * 0.75f, playH * 0.50f, playH * 0.50f, juce::Colour (0x55502080) });
     nebulas.add ({ playW * 0.55f, playH * 0.78f, playH * 0.45f, juce::Colour (0x4530a0a0) });
 
-    const int starCount = 180;
-    for (int i = 0; i < starCount; ++i)
+    // Three parallax layers. Slow distant stars are dim and tiny; fast near
+    // stars are brighter and larger. Counts kept modest so 60 fps holds in
+    // Debug as well as Release.
+    const int counts[3]    = { 40, 22, 12 };           // distant, mid, near
+    const float speeds[3]  = { 0.30f, 0.70f, 1.40f };  // px / frame (used in update)
+    juce::ignoreUnused (speeds);
+    for (int layer = 0; layer < 3; ++layer)
     {
-        Star s;
-        s.x = starRng.nextFloat() * (float) playW;
-        s.y = starRng.nextFloat() * (float) playH;
-        const float rRand = starRng.nextFloat();
-        s.radius = 0.5f + rRand * rRand * rRand * 2.8f;
+        for (int i = 0; i < counts[layer]; ++i)
+        {
+            Star s;
+            s.x = starRng.nextFloat() * (float) playW;
+            s.y = starRng.nextFloat() * (float) playH;
+            const float rRand = starRng.nextFloat();
+            s.radius = (layer == 0 ? 0.5f + rRand * 0.9f
+                       : layer == 1 ? 0.8f + rRand * 1.4f
+                                    : 1.4f + rRand * 1.8f);
 
-        const int colourPick = starRng.nextInt (10);
-        if      (colourPick < 6) s.colour = juce::Colours::white;
-        else if (colourPick < 8) s.colour = juce::Colour (0xffaecbff);
-        else if (colourPick < 9) s.colour = juce::Colour (0xfffff5cc);
-        else                     s.colour = juce::Colour (0xffffd1d1);
+            const int colourPick = starRng.nextInt (10);
+            if      (colourPick < 6) s.colour = juce::Colours::white;
+            else if (colourPick < 8) s.colour = juce::Colour (0xffaecbff);
+            else if (colourPick < 9) s.colour = juce::Colour (0xfffff5cc);
+            else                     s.colour = juce::Colour (0xffffd1d1);
 
-        s.twinkles     = (starRng.nextInt (6) == 0);
-        s.twinklePhase = starRng.nextFloat() * juce::MathConstants<float>::twoPi;
-        stars.add (s);
+            s.twinkles     = (starRng.nextInt (8) == 0);
+            s.twinklePhase = starRng.nextFloat() * juce::MathConstants<float>::twoPi;
+            s.layer        = layer;
+            stars.add (s);
+        }
     }
 
-    // Bake the static layers (gradient + nebulas + non-twinkling stars) into
-    // one image so paint() can blit instead of re-rasterizing every frame.
+    // Bake static decoration (gradient + nebulas + dim cat silhouettes +
+    // scanlines + vignette) into the backdrop image. Stars are NOT cached
+    // anymore because they parallax-scroll downward.
     const int W = getWidth();
     const int H = getHeight();
     if (W <= 0 || H <= 0) { backdropCache = {}; return; }
@@ -226,6 +238,7 @@ void CatGameComponent::buildStarfield()
     backdropCache = juce::Image (juce::Image::ARGB, W, H, true);
     juce::Graphics bg (backdropCache);
 
+    // Gradient
     juce::ColourGradient grad (juce::Colour (0xff04020a), 0.0f, 0.0f,
                                juce::Colour (0xff200c2e), 0.0f, (float) H,
                                false);
@@ -233,6 +246,7 @@ void CatGameComponent::buildStarfield()
     bg.setGradientFill (grad);
     bg.fillAll();
 
+    // Nebulas
     for (auto& n : nebulas)
     {
         juce::ColourGradient ngrad (n.colour, n.cx, n.cy,
@@ -243,12 +257,46 @@ void CatGameComponent::buildStarfield()
         bg.fillEllipse (n.cx - n.radius, n.cy - n.radius, n.radius * 2.0f, n.radius * 2.0f);
     }
 
-    bg.setOpacity (1.0f);
-    for (auto& s : stars)
+    // Three large, dim cat silhouettes baked into the backdrop as static
+    // deep-space decoration. Picks are fixed and spacing is even across the
+    // playfield (left / centre / right at staggered heights).
+    if (catHeadImages.size() >= 3)
     {
-        if (s.twinkles) continue;     // twinkling stars are overlaid live
-        bg.setColour (s.colour.withAlpha (0.9f));
-        bg.fillEllipse (s.x - s.radius, s.y - s.radius, s.radius * 2.0f, s.radius * 2.0f);
+        struct DriftCat { int idx; float relX, relY, sizeRel; };
+        const DriftCat layout[3] = {
+            { 0,                              0.18f, 0.18f, 0.28f },
+            { catHeadImages.size() / 2,       0.50f, 0.62f, 0.34f },
+            { catHeadImages.size() - 1,       0.82f, 0.30f, 0.30f },
+        };
+
+        bg.setOpacity (0.08f);
+        for (auto& d : layout)
+        {
+            const auto& img = catHeadImages.getReference (d.idx);
+            const int size  = (int) (juce::jmin (W, playH) * d.sizeRel);
+            const int x     = (int) (W * d.relX) - size / 2;
+            const int y     = (int) (playH * d.relY) - size / 2;
+            bg.drawImageWithin (img, x, y, size, size,
+                                juce::RectanglePlacement::centred);
+        }
+        bg.setOpacity (1.0f);
+    }
+
+    // CRT scanlines - very subtle dark horizontal lines every 2 px.
+    bg.setColour (juce::Colour (0x12000000));
+    for (int y = 0; y < H; y += 2)
+        bg.fillRect (0, y, W, 1);
+
+    // Vignette - darken the screen edges with a radial gradient.
+    {
+        const float cx = W * 0.5f;
+        const float cy = H * 0.5f;
+        const float r  = std::sqrt ((float) (W * W + H * H)) * 0.55f;
+        juce::ColourGradient vg (juce::Colour (0x00000000), cx, cy,
+                                 juce::Colour (0x88000000), cx + r, cy,
+                                 true);
+        bg.setGradientFill (vg);
+        bg.fillRect (0, 0, W, H);
     }
 }
 
@@ -277,21 +325,62 @@ bool CatGameComponent::keyPressed (const juce::KeyPress& key)
 // ─────────────────────────────────────────────────────────────────────────────
 void CatGameComponent::paint (juce::Graphics& g)
 {
-    // Static layers (gradient + nebulas + non-twinkling stars) come from the
-    // cache so 60fps repaints don't re-rasterize them.
+    // Static layers (gradient + nebulas + silhouettes + scanlines + vignette).
     if (backdropCache.isValid())
         g.drawImageAt (backdropCache, 0, 0);
     else
         g.fillAll (juce::Colour (0xff140828));
 
-    // Only the twinkling subset needs live drawing.
+    // Parallax stars - drawn live since they scroll downward.
     g.setOpacity (1.0f);
     for (auto& s : stars)
     {
-        if (! s.twinkles) continue;
-        const float alpha = 0.45f + 0.55f * (0.5f + 0.5f * std::sin (globalTime * 3.0f + s.twinklePhase));
+        float alpha = (s.layer == 0 ? 0.55f : s.layer == 1 ? 0.80f : 0.95f);
+        if (s.twinkles)
+            alpha *= 0.5f + 0.5f * (0.5f + 0.5f * std::sin (globalTime * 3.0f + s.twinklePhase));
         g.setColour (s.colour.withAlpha (alpha));
         g.fillEllipse (s.x - s.radius, s.y - s.radius, s.radius * 2.0f, s.radius * 2.0f);
+    }
+
+    // Shooting stars - bright streak with a tapered tail.
+    for (auto& ss : shootingStars)
+    {
+        const float speed = std::sqrt (ss.vx * ss.vx + ss.vy * ss.vy);
+        const float ux    = (speed > 0.001f) ? -ss.vx / speed : -1.0f;
+        const float uy    = (speed > 0.001f) ? -ss.vy / speed :  0.0f;
+        for (int i = 0; i < 8; ++i)
+        {
+            const float t  = (float) i / 8.0f;
+            const float px = ss.x + ux * ss.length * t;
+            const float py = ss.y + uy * ss.length * t;
+            const float a  = (1.0f - t) * ss.life;
+            g.setColour (juce::Colours::white.withAlpha (a * 0.85f));
+            g.fillEllipse (px - 1.5f, py - 1.5f, 3.0f, 3.0f);
+        }
+        // Bright head
+        g.setColour (juce::Colours::white.withAlpha (ss.life));
+        g.fillEllipse (ss.x - 2.5f, ss.y - 2.5f, 5.0f, 5.0f);
+    }
+
+    // Smoke trails behind asteroids - soft grey puffs that fade.
+    for (auto& sp : smokeTrail)
+    {
+        const float a = juce::jlimit (0.0f, 1.0f, sp.life * 0.35f);
+        g.setColour (juce::Colour (0xffb0a0c8).withAlpha (a));
+        g.fillEllipse (sp.x - sp.radius, sp.y - sp.radius, sp.radius * 2.0f, sp.radius * 2.0f);
+    }
+
+    // Boss warning flash - flicker only on the top/bottom bands so the play
+    // area stays clear and we don't pay a full-screen fillRect each frame.
+    if (bossWarningTicks > 0)
+    {
+        const float t        = (float) bossWarningTicks / (float) (2 * kFps);
+        const float flashAmp = (std::sin (globalTime * 22.0f) > 0.0f) ? 0.50f : 0.10f;
+        const int   pH       = getHeight() - kKeyboardHeight;
+        const int   band     = 14;
+        g.setColour (juce::Colours::white.withAlpha (flashAmp * t));
+        g.fillRect (0, 0, getWidth(), band);
+        g.fillRect (0, pH - band, getWidth(), band);
     }
 
     // Slow-mo overlay tint
@@ -445,6 +534,41 @@ void CatGameComponent::paint (juce::Graphics& g)
     g.drawText ("PLAY A NOTE TO SHOOT   SHOOT POWERUPS TO GRAB THEM   ESC TO EXIT",
                 12, getHeight() - kKeyboardHeight - 20, getWidth() - 24, 16,
                 juce::Justification::centredLeft);
+
+    // Combo color shift - thin warm rim around the playfield edges (much
+    // cheaper than a full-screen alpha fill).
+    if (state == State::Playing && combo >= 10)
+    {
+        const float warmth = juce::jmin (1.0f, (float) (combo - 9) / 11.0f);
+        const int   border = 16;
+        const int   pH     = getHeight() - kKeyboardHeight;
+        g.setColour (juce::Colour (0xffff4f1f).withAlpha (warmth * 0.35f));
+        g.fillRect (0, 0, getWidth(), border);                 // top
+        g.fillRect (0, pH - border, getWidth(), border);       // bottom
+        g.fillRect (0, 0, border, pH);                         // left
+        g.fillRect (getWidth() - border, 0, border, pH);       // right
+    }
+
+    // Boss-kill warp streaks - radial white lines bursting from the kill spot.
+    if (bossKillFlashTicks > 0)
+    {
+        const float t   = (float) bossKillFlashTicks / 30.0f;
+        const int   n   = 16;
+        const float r0  = 30.0f * (1.0f - t) + 10.0f;
+        const float r1  = 700.0f * (1.0f - t) + 60.0f;
+        g.setColour (juce::Colours::white.withAlpha (t));
+        for (int i = 0; i < n; ++i)
+        {
+            const float a  = (float) i / (float) n * juce::MathConstants<float>::twoPi;
+            const float c  = std::cos (a);
+            const float s  = std::sin (a);
+            const float x1 = bossKillFlashCx + c * r0;
+            const float y1 = bossKillFlashCy + s * r0;
+            const float x2 = bossKillFlashCx + c * r1;
+            const float y2 = bossKillFlashCy + s * r1;
+            g.drawLine (x1, y1, x2, y2, 2.5f);
+        }
+    }
 
     // ── Splash overlay ──────────────────────────────────────────────────────
     if (state == State::Splash)
@@ -781,6 +905,28 @@ void CatGameComponent::spawnSplit (const FallingPlugin& src)
     }
 }
 
+void CatGameComponent::spawnShootingStar()
+{
+    if (getWidth() <= 0) return;
+    ShootingStar ss;
+    const bool leftToRight = rng.nextBool();
+    ss.x      = leftToRight ? -40.0f : (float) getWidth() + 40.0f;
+    ss.y      = rng.nextFloat() * (float) ((getHeight() - kKeyboardHeight) * 0.5f);
+    const float speed = 9.0f + rng.nextFloat() * 6.0f;
+    ss.vx     = (leftToRight ? 1.0f : -1.0f) * speed * 0.9f;
+    ss.vy     = speed * 0.5f;
+    ss.life   = 1.0f;
+    ss.length = 90.0f + rng.nextFloat() * 60.0f;
+    shootingStars.add (ss);
+}
+
+void CatGameComponent::onAsteroidNearMiss()
+{
+    // Brief bullet-time: 200ms of slow-mo by piggybacking on the slow powerup
+    // timer (doesn't visually show a chip because it ticks out immediately).
+    if (slowTime < 0.20f) slowTime = juce::jmax (slowTime, 0.20f);
+}
+
 void CatGameComponent::spawnBoss()
 {
     if (pluginImagePool.isEmpty() || state != State::Playing)
@@ -833,6 +979,10 @@ void CatGameComponent::onBossDestroyed (BossPlugin& boss)
 
     spawnToast ("+" + juce::String (reward), cx, cy - 20.0f,
                 juce::Colour (0xfff2c91f), 32.0f);
+
+    bossKillFlashTicks = 30;        // ~0.5s of warp streaks
+    bossKillFlashCx    = cx;
+    bossKillFlashCy    = cy;
 
     spawnPowerup (cx, cy);          // guaranteed drop
     postSfx (Sfx::BossKill);
@@ -1014,6 +1164,9 @@ void CatGameComponent::resetGame()
     spawnCountdownTicks  = 60;
     bossCountdownTicks   = 45 * kFps;
     shotCooldownTicks    = 0;
+    shootingStarTicks    = 240;
+    bossWarningTicks     = 0;
+    bossKillFlashTicks   = 0;
     ticksSinceStart      = 0;
     ascendingRun         = 0;
     lastHitNote          = -1;
@@ -1027,6 +1180,8 @@ void CatGameComponent::resetGame()
     explosions.clearQuick();
     particles.clearQuick();
     toasts.clearQuick();
+    shootingStars.clearQuick();
+    smokeTrail.clearQuick();
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1083,13 +1238,63 @@ void CatGameComponent::timerCallback()
     }
 
     // Boss waves: first ~45s, then every ~35–40s scaling slightly faster.
+    // Spend the last 2s of the countdown showing a flickering warning so the
+    // player knows a boss is incoming.
     if (--bossCountdownTicks <= 0)
     {
         spawnBoss();
+        bossWarningTicks = 0;
         const int floor  = 25 * kFps;
         const int reduce = ticksSinceStart / (15 * kFps);          // -1s per 15s of play
         const int base   = juce::jmax (floor, 40 * kFps - reduce * kFps);
         bossCountdownTicks = base;
+    }
+    else if (bossCountdownTicks <= 2 * kFps && bossWarningTicks == 0)
+    {
+        bossWarningTicks = 2 * kFps;
+    }
+    if (bossWarningTicks > 0) --bossWarningTicks;
+    if (bossKillFlashTicks > 0) --bossKillFlashTicks;
+
+    // Shooting stars: average one every ~5s.
+    if (--shootingStarTicks <= 0)
+    {
+        spawnShootingStar();
+        shootingStarTicks = (int) (kFps * (3.5f + rng.nextFloat() * 4.0f));
+    }
+
+    // Parallax-scroll stars. Wrap each layer when it falls off the bottom.
+    const float layerSpeeds[3] = { 0.30f, 0.70f, 1.40f };
+    for (auto& s : stars)
+    {
+        s.y += layerSpeeds[s.layer] * fallMultiplier;
+        if (s.y > (float) playfieldBottom + 2.0f)
+        {
+            s.y = -2.0f;
+            s.x = rng.nextFloat() * (float) getWidth();
+        }
+    }
+
+    // Shooting stars move + fade.
+    for (int i = shootingStars.size(); --i >= 0;)
+    {
+        auto& ss = shootingStars.getReference (i);
+        ss.x    += ss.vx * fallMultiplier;
+        ss.y    += ss.vy * fallMultiplier;
+        ss.life -= 0.012f;
+        if (ss.life <= 0.0f || ss.x < -200.0f || ss.x > getWidth() + 200.0f
+            || ss.y > (float) playfieldBottom + 50.0f)
+            shootingStars.remove (i);
+    }
+
+    // Smoke trail puffs fade & rise.
+    for (int i = smokeTrail.size(); --i >= 0;)
+    {
+        auto& sp = smokeTrail.getReference (i);
+        sp.y     -= sp.vy;
+        sp.radius += 0.20f;
+        sp.life  -= 0.020f;
+        if (sp.life <= 0.0f) smokeTrail.remove (i);
     }
 
     // Tick down active powerup timers
@@ -1113,12 +1318,30 @@ void CatGameComponent::timerCallback()
     for (int i = falling.size(); --i >= 0;)
     {
         auto& p = falling.getReference (i);
+        const float prevY = p.y;
         p.x        += p.vx * fallMultiplier;
         p.y        += p.vy * fallMultiplier;
         p.rotation += p.spin;
 
+        // Emit a smoke puff every few ticks from the trailing edge.
+        if ((ticksSinceStart % 4) == (i % 4))
+        {
+            SmokePuff sp;
+            sp.x      = p.x + p.w * 0.5f + (rng.nextFloat() - 0.5f) * p.w * 0.3f;
+            sp.y      = p.y + p.h * 0.2f;
+            sp.vy     = 0.15f + rng.nextFloat() * 0.25f;
+            sp.life   = 0.9f;
+            sp.radius = 4.0f + rng.nextFloat() * 4.0f;
+            if (smokeTrail.size() < 80) smokeTrail.add (sp);
+        }
+
         if (p.x < 0.0f && p.vx < 0.0f)                       p.vx = -p.vx * 0.6f;
         if (p.x + p.w > (float) getWidth() && p.vx > 0.0f)   p.vx = -p.vx * 0.6f;
+
+        // Near-miss bullet-time: asteroid enters the bottom 40px band.
+        if (prevY + p.h < (float) playfieldBottom - 40.0f
+            && p.y    + p.h >= (float) playfieldBottom - 40.0f)
+            onAsteroidNearMiss();
 
         if (p.y > (float) playfieldBottom)
         {
