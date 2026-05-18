@@ -6,6 +6,7 @@
 */
 
 #include "CategoryFilter.h"
+#include "Colors.h"
 
 namespace PALauncher
 {
@@ -58,7 +59,7 @@ void CategoryFilter::buildCategoryList()
 
 void CategoryFilter::paint(juce::Graphics& g)
 {
-    g.fillAll(juce::Colour(0xff121212));
+    g.fillAll(Colors::appBackground());
 }
 
 void CategoryFilter::resized()
@@ -80,11 +81,11 @@ void CategoryFilter::paintListBoxItem(int rowNumber, juce::Graphics& g, int widt
 
     if (item.isHeader)
     {
-        // Draw header style - grey background with white text
-        g.setColour(juce::Colour(0xff2a2a2a));
+        // Draw header style - charcoal/burnt-orange background with white text
+        g.setColour(Colors::sidebarHeader());
         g.fillRect(4, 2, width - 8, height - 4);
 
-        g.setColour(juce::Colours::white);
+        g.setColour(Colors::textOnDark());
         g.setFont(juce::Font(12.0f, juce::Font::bold));
         g.drawText(item.name, 12, 0, width - 24, height, juce::Justification::centredLeft);
     }
@@ -93,11 +94,11 @@ void CategoryFilter::paintListBoxItem(int rowNumber, juce::Graphics& g, int widt
         // Draw item style
         if (rowIsSelected)
         {
-            g.setColour(juce::Colour(0xff0cbff2));
+            g.setColour(Colors::accent());
             g.fillRoundedRectangle(4.0f, 2.0f, width - 8.0f, height - 4.0f, 4.0f);
         }
 
-        g.setColour(rowIsSelected ? juce::Colours::white : juce::Colour(0xfff9f9f9));
+        g.setColour(Colors::textOnDark());
         g.setFont(juce::Font(14.0f));
 
         // Consistent indent for all items

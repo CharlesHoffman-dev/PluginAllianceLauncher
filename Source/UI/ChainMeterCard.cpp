@@ -7,6 +7,7 @@
 
 #include "ChainMeterCard.h"
 #include "ModuleHeaderLayout.h"
+#include "Colors.h"
 
 namespace PALauncher
 {
@@ -70,7 +71,7 @@ void ChainMeterCard::paint(juce::Graphics& g)
     // Drop shadow under the meter's half of the module. Same flat-left shape.
     if (attachedLeft)
     {
-        g.setColour(juce::Colour(0x15000000));
+        g.setColour(Colors::shadow());
         juce::Path shadow;
         auto sb = bounds.translated(1.0f, 2.0f);
         shadow.addRoundedRectangle(sb.getX(), sb.getY(), sb.getWidth(), sb.getHeight(),
@@ -81,16 +82,16 @@ void ChainMeterCard::paint(juce::Graphics& g)
 
     // Tint matches the slot so the combined module reads as one body.
     // Selection has no body tint - only the cyan border indicates it.
-    juce::Colour bgColour = juce::Colours::white;
+    juce::Colour bgColour = Colors::cardBackground();
     if (attachedLeft && bypassed)
-        bgColour = juce::Colour(0xfff0f0f0);
+        bgColour = Colors::cardBackgroundBypassed();
     g.setColour(bgColour);
     g.fillPath(cardFill);
 
     // Border: cyan when the parent slot is selected. For the attached output
     // meter we use the mirror horseshoe (no left edge) so the slot's border
     // continues across uninterrupted; the input meter draws a full ring.
-    g.setColour(selected ? juce::Colour(0xff0cbff2) : juce::Colour(0xffe0e0e0));
+    g.setColour(selected ? Colors::accent() : Colors::borderSubtle());
     if (attachedLeft)
     {
         g.strokePath(horseshoeRightPath(bounds, cardRadius),
@@ -129,7 +130,7 @@ void ChainMeterCard::paint(juce::Graphics& g)
                                         3.0f, 3.0f,
                                         !attachedLeft, true,    // top-left, top-right
                                         false,         false);  // bottom corners flat
-        g.setColour(juce::Colour(0xff2a2a2a));
+        g.setColour(Colors::toolbarBackground());
         g.fillPath(toolbarPath);
 
         // AUTO lives in the slot card. X is the only button in the meter
@@ -138,9 +139,9 @@ void ChainMeterCard::paint(juce::Graphics& g)
         autoButtonBounds = {};
         removeButtonBounds = ModuleHeader::toMeterRect(ModuleHeader::remove, toolbarBounds.getY());
 
-        g.setColour(juce::Colour(0xffcc0000));
+        g.setColour(Colors::meterHigh());
         g.fillRoundedRectangle(removeButtonBounds.toFloat(), 2.5f);
-        g.setColour(juce::Colours::white);
+        g.setColour(Colors::textOnDark());
         g.setFont(juce::Font(10.0f, juce::Font::bold));
         g.drawText("X", removeButtonBounds, juce::Justification::centred);
     }
@@ -182,7 +183,7 @@ void ChainMeterCard::paint(juce::Graphics& g)
                                                      meterArea.getY(), faderWidth, meterArea.getHeight());
 
         // L/R bar backgrounds
-        g.setColour(juce::Colour(0xffeeeeee));
+        g.setColour(Colors::placeholderImage());
         g.fillRoundedRectangle(leftMeterBounds.toFloat(),  2.0f);
         g.fillRoundedRectangle(rightMeterBounds.toFloat(), 2.0f);
 
@@ -191,9 +192,9 @@ void ChainMeterCard::paint(juce::Graphics& g)
             if (level <= 0.0f) return;
             int fillH = static_cast<int>(level * b.getHeight());
             auto fillBounds = b.removeFromBottom(fillH).toFloat();
-            juce::Colour c = (level < 0.7f) ? juce::Colour(0xff00cc00)
-                           : (level < 0.9f) ? juce::Colour(0xffffaa00)
-                                            : juce::Colour(0xffcc0000);
+            juce::Colour c = (level < 0.7f) ? Colors::meterLow()
+                           : (level < 0.9f) ? Colors::meterMid()
+                                            : Colors::meterHigh();
             g.setColour(c);
             g.fillRoundedRectangle(fillBounds, 2.0f);
         };
@@ -211,14 +212,14 @@ void ChainMeterCard::paint(juce::Graphics& g)
                                                 4,
                                                 faderArea.getHeight() - thumbH);
         faderTrackBounds = faderArea;  // Whole column is draggable, not just the 4px track
-        g.setColour(juce::Colour(0xffdedede));
+        g.setColour(Colors::borderSubtle().brighter(0.1f));
         g.fillRoundedRectangle(trackBounds.toFloat(), 2.0f);
 
         // Unity-gain tick (small marker at 0 dB position).
         {
             const float unityFrac = (0.0f - kGainMinDb) / (kGainMaxDb - kGainMinDb);
             const int unityY = trackBounds.getBottom() - (int) std::round(unityFrac * trackBounds.getHeight());
-            g.setColour(juce::Colour(0xffa0a0a0));
+            g.setColour(Colors::faderThumbDisabled());
             g.fillRect(faderArea.getX() + 1, unityY - 1, faderArea.getWidth() - 2, 1);
         }
 
@@ -231,14 +232,14 @@ void ChainMeterCard::paint(juce::Graphics& g)
 
         // Draw the thumb. Cyan when active, mid-grey when auto-gain has the
         // manual control disabled.
-        auto thumbColour = faderEnabled ? juce::Colour(0xff0cbff2) : juce::Colour(0xffbfbfbf);
+        auto thumbColour = faderEnabled ? Colors::accent() : Colors::faderThumbDisabled();
         if (faderEnabled && sliderBounds.contains(getMouseXYRelative()))
             thumbColour = thumbColour.brighter(0.15f);
         g.setColour(thumbColour);
         g.fillRoundedRectangle(sliderBounds.toFloat(), 3.0f);
 
         // Subtle grip lines on the thumb so it reads as draggable.
-        g.setColour(juce::Colours::white.withAlpha(faderEnabled ? 0.65f : 0.35f));
+        g.setColour(Colors::textOnDark().withAlpha(faderEnabled ? 0.65f : 0.35f));
         for (int i = -1; i <= 1; ++i)
         {
             int gy = sliderBounds.getCentreY() + i * 3;
@@ -255,7 +256,7 @@ void ChainMeterCard::paint(juce::Graphics& g)
         auto leftMeterBounds  = juce::Rectangle<int>(x,                       meterArea.getY(), barWidth, meterArea.getHeight());
         auto rightMeterBounds = juce::Rectangle<int>(x + barWidth + barGap,   meterArea.getY(), barWidth, meterArea.getHeight());
 
-        g.setColour(juce::Colour(0xffeeeeee));
+        g.setColour(Colors::placeholderImage());
         g.fillRoundedRectangle(leftMeterBounds.toFloat(),  2.0f);
         g.fillRoundedRectangle(rightMeterBounds.toFloat(), 2.0f);
 
@@ -264,9 +265,9 @@ void ChainMeterCard::paint(juce::Graphics& g)
             if (level <= 0.0f) return;
             int fillH = static_cast<int>(level * b.getHeight());
             auto fillBounds = b.removeFromBottom(fillH).toFloat();
-            juce::Colour c = (level < 0.7f) ? juce::Colour(0xff00cc00)
-                           : (level < 0.9f) ? juce::Colour(0xffffaa00)
-                                            : juce::Colour(0xffcc0000);
+            juce::Colour c = (level < 0.7f) ? Colors::meterLow()
+                           : (level < 0.9f) ? Colors::meterMid()
+                                            : Colors::meterHigh();
             g.setColour(c);
             g.fillRoundedRectangle(fillBounds, 2.0f);
         };
@@ -296,14 +297,14 @@ void ChainMeterCard::paint(juce::Graphics& g)
             ? "+" + juce::String(autoGainCorrectionDb, 1)
             : juce::String(autoGainCorrectionDb, 1);
 
-        g.setColour(juce::Colour(0xff0cbff2));
+        g.setColour(Colors::accent());
         g.setFont(juce::Font(10.0f, juce::Font::bold));
         g.drawText(corrText, readoutBounds, juce::Justification::centred);
     }
     else if (gainEditable)
     {
         float gainDb = juce::Decibels::gainToDecibels(gainValue, kGainMinDb);
-        g.setColour(juce::Colour(0xff666666));
+        g.setColour(Colors::textDisabled());
         g.setFont(juce::Font(10.0f, juce::Font::bold));
         g.drawText(formatDb(gainDb), readoutBounds, juce::Justification::centred);
     }
@@ -313,7 +314,7 @@ void ChainMeterCard::paint(juce::Graphics& g)
         // the meter bars' decay so the number falls naturally with the level.
         float peak = juce::jmax(leftLevel, rightLevel);
         float peakDb = juce::Decibels::gainToDecibels(peak, kGainMinDb);
-        g.setColour(juce::Colour(0xff666666));
+        g.setColour(Colors::textDisabled());
         g.setFont(juce::Font(10.0f, juce::Font::bold));
         g.drawText(formatDb(peakDb), readoutBounds, juce::Justification::centred);
     }

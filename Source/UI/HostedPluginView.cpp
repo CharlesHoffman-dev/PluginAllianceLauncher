@@ -6,6 +6,7 @@
 */
 
 #include "HostedPluginView.h"
+#include "Colors.h"
 
 namespace PALauncher
 {
@@ -49,11 +50,11 @@ HostedPluginView::~HostedPluginView()
 
 void HostedPluginView::paint(juce::Graphics& g)
 {
-    g.fillAll(juce::Colour(0xff121212));
+    g.fillAll(Colors::appBackground());
 
     if (pluginEditor == nullptr)
     {
-        g.setColour(juce::Colour(0xfff9f9f9).withAlpha(0.5f));
+        g.setColour(Colors::gridBackground().withAlpha(0.5f));
         g.setFont(juce::Font(14.0f));
         g.drawText("No plugin loaded.\nDouble-click a plugin to load it.",
                    getLocalBounds().reduced(20), juce::Justification::centred);

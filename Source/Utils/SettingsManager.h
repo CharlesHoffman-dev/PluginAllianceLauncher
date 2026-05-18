@@ -50,6 +50,10 @@ public:
     void setRememberLastFilter(bool remember);
     bool getRememberLastFilter() const;
 
+    // Theme id ("default" or "seventies")
+    void setThemeId(const juce::String& themeId);
+    juce::String getThemeId() const;
+
     // Save/load
     void save();
     void load();

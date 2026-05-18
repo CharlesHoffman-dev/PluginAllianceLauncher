@@ -6,6 +6,7 @@
 */
 
 #include "PluginChainView.h"
+#include "Colors.h"
 
 namespace PALauncher
 {
@@ -26,7 +27,7 @@ PluginChainView::PluginChainView()
             auto bounds = button.getLocalBounds().toFloat().reduced(2.0f);
 
             // Draw card background
-            g.setColour(juce::Colours::white);
+            g.setColour(Colors::cardBackground());
             g.fillRoundedRectangle(bounds, 6.0f);
 
             // When the button is "highlighted" (toggle state on), draw a solid cyan
@@ -42,13 +43,13 @@ PluginChainView::PluginChainView()
             if (highlighted)
             {
                 // Solid cyan border, matches the selected chain-slot border.
-                g.setColour(juce::Colour(0xff0cbff2));
+                g.setColour(Colors::accent());
                 g.drawRoundedRectangle(bounds, cornerRadius, 2.0f);
             }
             else
             {
                 // Default dashed grey border drawn below.
-                g.setColour(juce::Colour(0xffc0c0c0));
+                g.setColour(Colors::textPlaceholder());
             }
 
             // Create the rounded rectangle path
@@ -160,7 +161,7 @@ PluginChainView::PluginChainView()
             auto circleX = centerX - circleDiameter / 2.0f;
             auto circleY = centerY - circleDiameter / 2.0f;
 
-            auto circleColour = juce::Colour(0xff0cbff2);
+            auto circleColour = Colors::accent();
             if (isButtonDown)
                 circleColour = circleColour.darker(0.2f);
             else if (isMouseOverButton)
@@ -176,7 +177,7 @@ PluginChainView::PluginChainView()
             // Draw + text centered in the circle, adjusted up slightly
             auto font = juce::Font(32.0f, juce::Font::bold);
             g.setFont(font);
-            g.setColour(juce::Colours::white);
+            g.setColour(Colors::cardBackground());
 
             auto bounds = button.getLocalBounds();
             // Move up by 2 pixels for better visual centering
@@ -202,11 +203,36 @@ PluginChainView::PluginChainView()
 
 void PluginChainView::paint(juce::Graphics& g)
 {
-    // Background - light gray
-    g.fillAll(juce::Colour(0xfff5f5f5));
+    // Background of the chain section. The 70s theme paints the four
+    // palette colours as horizontal bands, one each, stretched to share
+    // the full chain height equally (no repeat). Other themes get a
+    // single solid fill from their chainBackground slot.
+    if (ThemeManager::get().current().id == "seventies")
+    {
+        static const juce::Colour stripeColours[] = {
+            juce::Colour (0xffffd195),   // cream
+            juce::Colour (0xff5d9b84),   // teal
+            juce::Colour (0xffde7e44),   // orange
+            juce::Colour (0xfff2c91f),   // yellow
+        };
+        constexpr int n = 4;
+        const int h = getHeight();
+        const int w = getWidth();
+        for (int i = 0; i < n; ++i)
+        {
+            const int y      = juce::roundToInt ((float) h *  i      / n);
+            const int yNext  = juce::roundToInt ((float) h * (i + 1) / n);
+            g.setColour (stripeColours[i]);
+            g.fillRect (0, y, w, yNext - y);
+        }
+    }
+    else
+    {
+        g.fillAll (Colors::chainBackground());
+    }
 
     // Top and bottom borders
-    g.setColour(juce::Colour(0xffe0e0e0));
+    g.setColour(Colors::borderSubtle());
     g.drawHorizontalLine(0, 0.0f, static_cast<float>(getWidth()));
     g.drawHorizontalLine(getHeight() - 1, 0.0f, static_cast<float>(getWidth()));
 
@@ -227,14 +253,14 @@ void PluginChainView::paint(juce::Graphics& g)
             dropX += ChainMeterCard::cardWidth + cardSpacing;
         }
 
-        g.setColour(juce::Colour(0xff0cbff2));
+        g.setColour(Colors::accent());
         g.fillRect(dropX - 2.0f, 20.0f, 4.0f, static_cast<float>(getHeight() - 40));
     }
 
     // If empty, show help text
     if (slotCards.isEmpty())
     {
-        g.setColour(juce::Colour(0xff999999));
+        g.setColour(Colors::textOnDark());
         g.setFont(juce::Font(16.0f));
         auto textBounds = getLocalBounds().reduced(20);
         g.drawText("Add plugins from the browser to build a chain",
@@ -470,16 +496,21 @@ void PluginChainView::handleToggleAB(int slotIndex, ABSlot newSlot)
         return;
 
     processor->setSlotActiveAB(slotIndex, newSlot);
+    processor->setCurrentSelectedSlot(slotIndex);
 
-    // Update the card's A/B state
+    // Selecting + A/B-toggle updates the same cards' visuals; do it
+    // incrementally instead of forcing the editor to rebuild the entire
+    // chain via setChainState() (which would destroy and recreate all 17
+    // slot+meter components on every A/B click).
+    currentSelectedSlot = slotIndex;
     for (auto* card : slotCards)
     {
+        card->setSelected(card->getSlotIndex() == slotIndex);
         if (card->getSlotIndex() == slotIndex)
-        {
             card->setABSlot(newSlot);
-            break;
-        }
     }
+    for (int i = 0; i < meterCards.size(); ++i)
+        meterCards[i]->setSelected(i - 1 == slotIndex);
 
     // The output meter shows whichever host is active, so flip its displayed
     // gain to the now-active host's stored value.
@@ -487,7 +518,8 @@ void PluginChainView::handleToggleAB(int slotIndex, ABSlot newSlot)
     if (meterIndex >= 0 && meterIndex < meterCards.size())
         meterCards[meterIndex]->setGainValue(processor->getSlotActiveGain(slotIndex));
 
-    // Notify parent (editor) so it can sync main A/B switch
+    // Notify parent (editor) so it can swap the hosted plugin editor and
+    // sync the main A/B switch.
     if (onToggleAB)
         onToggleAB(slotIndex, newSlot);
 }

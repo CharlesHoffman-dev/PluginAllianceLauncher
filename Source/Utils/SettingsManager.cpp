@@ -113,6 +113,16 @@ bool SettingsManager::getRememberLastFilter() const
     return properties->getBoolValue("rememberLastFilter", true);  // Default: remember filters
 }
 
+void SettingsManager::setThemeId(const juce::String& themeId)
+{
+    properties->setValue("themeId", themeId);
+}
+
+juce::String SettingsManager::getThemeId() const
+{
+    return properties->getValue("themeId", "default");
+}
+
 void SettingsManager::save()
 {
     properties->saveIfNeeded();

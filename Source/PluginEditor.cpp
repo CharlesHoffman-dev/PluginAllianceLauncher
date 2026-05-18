@@ -12,6 +12,14 @@
 namespace PALauncher
 {
 
+// Details-pane layout constants shared by resized() and computeAdBounds().
+// padding + brand + gap + name + gap + image + gap + tags + gap
+static constexpr int kDetailsFixedTopBlock = 16 + 18 + 4 + 24 + 16 + 180 + 17 + 22 + 8;
+static constexpr int kDetailsSidePad       = 20;
+static constexpr int kDetailsBottomPad     = 12;
+static constexpr int kDetailsGap           = 12;
+static constexpr int kDetailsButtonHeight  = 36;
+
 // Plugin Alliance logo SVG data
 static const char* logoSvgData = R"SVG(
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 189 35" height="35" width="189">
@@ -44,19 +52,44 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     if (fileLogger != nullptr)
         juce::Logger::setCurrentLogger(fileLogger);
 
+    // Restore the user's chosen theme BEFORE building child components so
+    // every Colors:: accessor returns the right value during construction.
+    ThemeManager::get().setThemeById(processor.getSettingsManager().getThemeId());
+    ThemeManager::get().addListener(this);
+
     // Load logo
     loadLogo();
+
+    // Load promotional ad shown in the details pane. Try a few locations so it
+    // works both from the standalone in this repo and from a bundled build.
+    {
+        juce::File candidates[] = {
+            juce::File::getSpecialLocation(juce::File::currentExecutableFile)
+                .getParentDirectory().getChildFile("Resources/Images/pa_pro_ad.png"),
+            juce::File("C:/Users/charl/PluginAllianceLauncher/Resources/Images/pa_pro_ad.png"),
+            juce::File("C:/Users/charl/Downloads/PRO-1080x1080.png"),
+        };
+        for (auto& f : candidates)
+        {
+            if (f.existsAsFile())
+            {
+                promoAdImage = juce::ImageFileFormat::loadFrom(f);
+                if (promoAdImage.isValid())
+                    break;
+            }
+        }
+    }
 
     // Set up subscription banner (sticky at bottom of plugin list)
     subscriptionLabel.setText("Access all plugins for $14.99/month", juce::dontSendNotification);
     subscriptionLabel.setFont(juce::Font(16.0f, juce::Font::bold));
-    subscriptionLabel.setColour(juce::Label::textColourId, juce::Colours::white);
+    subscriptionLabel.setColour(juce::Label::textColourId, Colors::textOnDark());
     subscriptionLabel.setJustificationType(juce::Justification::centred);
     addAndMakeVisible(subscriptionLabel);
 
     subscribeButton.setButtonText("Subscribe");
-    subscribeButton.setColour(juce::TextButton::buttonColourId, juce::Colours::white);
-    subscribeButton.setColour(juce::TextButton::textColourOffId, juce::Colours::black);
+    subscribeButton.setColour(juce::TextButton::buttonColourId, Colors::cardBackground());
+    subscribeButton.setColour(juce::TextButton::textColourOffId, Colors::textOnLight());
     subscribeButton.setLookAndFeel(&buttonLookAndFeel);
     subscribeButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
     subscribeButton.onClick = []()
@@ -92,8 +125,8 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     auto setupSecondaryButton = [this](juce::TextButton& b, const juce::String& text)
     {
         b.setButtonText(text);
-        b.setColour(juce::TextButton::buttonColourId, juce::Colours::white);
-        b.setColour(juce::TextButton::textColourOffId, juce::Colours::black);
+        b.setColour(juce::TextButton::buttonColourId, Colors::cardBackground());
+        b.setColour(juce::TextButton::textColourOffId, Colors::textOnLight());
         b.setLookAndFeel(&buttonLookAndFeel);
         b.setMouseCursor(juce::MouseCursor::PointingHandCursor);
     };
@@ -107,8 +140,8 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
 
     // Set up rescan button
     rescanButton.setButtonText("Rescan");
-    rescanButton.setColour(juce::TextButton::buttonColourId, juce::Colours::white);
-    rescanButton.setColour(juce::TextButton::textColourOffId, juce::Colours::black);
+    rescanButton.setColour(juce::TextButton::buttonColourId, Colors::cardBackground());
+    rescanButton.setColour(juce::TextButton::textColourOffId, Colors::textOnLight());
     rescanButton.setLookAndFeel(&buttonLookAndFeel);
     rescanButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
     rescanButton.onClick = [this]()
@@ -120,8 +153,8 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
 
     // Set up settings button - gear icon
     settingsButton.setButtonText("");  // No text, just icon
-    settingsButton.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff2a2a2a));
-    settingsButton.setColour(juce::TextButton::textColourOffId, juce::Colours::white);
+    settingsButton.setColour(juce::TextButton::buttonColourId, Colors::toolbarBackground());
+    settingsButton.setColour(juce::TextButton::textColourOffId, Colors::textOnDark());
     settingsButton.setLookAndFeel(&settingsButtonLookAndFeel);
     settingsButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
     settingsButton.onClick = [this]() { showSettingsMenu(); };
@@ -129,8 +162,8 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
 
     // Set up toggle mode button - white with black text
     toggleModeButton.setButtonText("View Plugin");
-    toggleModeButton.setColour(juce::TextButton::buttonColourId, juce::Colours::white);
-    toggleModeButton.setColour(juce::TextButton::textColourOffId, juce::Colours::black);
+    toggleModeButton.setColour(juce::TextButton::buttonColourId, Colors::cardBackground());
+    toggleModeButton.setColour(juce::TextButton::textColourOffId, Colors::textOnLight());
     toggleModeButton.setLookAndFeel(&buttonLookAndFeel);
     toggleModeButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
     toggleModeButton.onClick = [this]() { toggleBrowserMode(); };
@@ -138,8 +171,8 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
 
     // Set up unload button - same style as toggle mode button
     unloadButton.setButtonText("Remove");
-    unloadButton.setColour(juce::TextButton::buttonColourId, juce::Colours::white);
-    unloadButton.setColour(juce::TextButton::textColourOffId, juce::Colours::black);
+    unloadButton.setColour(juce::TextButton::buttonColourId, Colors::cardBackground());
+    unloadButton.setColour(juce::TextButton::textColourOffId, Colors::textOnLight());
     unloadButton.setLookAndFeel(&buttonLookAndFeel);
     unloadButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
     unloadButton.onClick = [this]()
@@ -203,7 +236,7 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     sidebarViewport.getVerticalScrollBar().setLookAndFeel(&scrollBarLookAndFeel);
     // Sidebar lives on a dark background, so its scrollbar track stays dark.
     sidebarViewport.getVerticalScrollBar().setColour(
-        juce::ScrollBar::trackColourId, juce::Colour(0xff1f1f1f));
+        juce::ScrollBar::trackColourId, Colors::scrollTrackOnDark());
     addAndMakeVisible(sidebarViewport);
 
     // Use the constant-shade cyan scrollbar in the plugin list as well.
@@ -214,7 +247,7 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     pluginListView.setScrollBarExtraTopPad(8);
     // The plugin grid background is #f9f9f9; pick a track colour that's a touch
     // darker than that so the track reads as a subtle divider, not a black bar.
-    pluginListView.setScrollBarTrackColour(juce::Colour(0xffe8e8e8));
+    pluginListView.setScrollBarTrackColour(Colors::scrollTrackOnLight());
 
     // Set up category filter
     categoryFilter.onCategoryChanged = [this](DisplayCategory category)
@@ -247,10 +280,10 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     sortComboBox.addItem("Name A-Z", 3);
     sortComboBox.addItem("Name Z-A", 4);
     sortComboBox.setSelectedId(1, juce::dontSendNotification);
-    sortComboBox.setColour(juce::ComboBox::backgroundColourId, Colors::buttonSurface);
-    sortComboBox.setColour(juce::ComboBox::textColourId, juce::Colours::white);
-    sortComboBox.setColour(juce::ComboBox::outlineColourId, juce::Colour(0xff4a4a4a));
-    sortComboBox.setColour(juce::ComboBox::arrowColourId, juce::Colours::white);
+    sortComboBox.setColour(juce::ComboBox::backgroundColourId, Colors::buttonSurface());
+    sortComboBox.setColour(juce::ComboBox::textColourId, Colors::textOnDark());
+    sortComboBox.setColour(juce::ComboBox::outlineColourId, Colors::buttonOutline());
+    sortComboBox.setColour(juce::ComboBox::arrowColourId, Colors::textOnDark());
     sortComboBox.setLookAndFeel(&topBarComboBoxLookAndFeel);
     sortComboBox.onChange = [this]()
     {
@@ -271,10 +304,10 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     eraComboBox.addItem("2020s", 9);
     eraComboBox.addItem("Original", 10);
     eraComboBox.setSelectedId(1, juce::dontSendNotification);
-    eraComboBox.setColour(juce::ComboBox::backgroundColourId, Colors::buttonSurface);
-    eraComboBox.setColour(juce::ComboBox::textColourId, juce::Colours::white);
-    eraComboBox.setColour(juce::ComboBox::outlineColourId, juce::Colour(0xff4a4a4a));
-    eraComboBox.setColour(juce::ComboBox::arrowColourId, juce::Colours::white);
+    eraComboBox.setColour(juce::ComboBox::backgroundColourId, Colors::buttonSurface());
+    eraComboBox.setColour(juce::ComboBox::textColourId, Colors::textOnDark());
+    eraComboBox.setColour(juce::ComboBox::outlineColourId, Colors::buttonOutline());
+    eraComboBox.setColour(juce::ComboBox::arrowColourId, Colors::textOnDark());
     eraComboBox.setLookAndFeel(&topBarComboBoxLookAndFeel);
     eraComboBox.onChange = [this]()
     {
@@ -355,10 +388,10 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     brandComboBox.addItem("Unfiltered Audio", 48);
     brandComboBox.addItem("Vertigo", 49);
     brandComboBox.setSelectedId(1, juce::dontSendNotification);
-    brandComboBox.setColour(juce::ComboBox::backgroundColourId, Colors::buttonSurface);
-    brandComboBox.setColour(juce::ComboBox::textColourId, juce::Colours::white);
-    brandComboBox.setColour(juce::ComboBox::outlineColourId, juce::Colour(0xff4a4a4a));
-    brandComboBox.setColour(juce::ComboBox::arrowColourId, juce::Colours::white);
+    brandComboBox.setColour(juce::ComboBox::backgroundColourId, Colors::buttonSurface());
+    brandComboBox.setColour(juce::ComboBox::textColourId, Colors::textOnDark());
+    brandComboBox.setColour(juce::ComboBox::outlineColourId, Colors::buttonOutline());
+    brandComboBox.setColour(juce::ComboBox::arrowColourId, Colors::textOnDark());
     brandComboBox.setLookAndFeel(&brandComboBoxLookAndFeel);
     brandComboBox.onChange = [this]()
     {
@@ -372,8 +405,8 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
 
     // Set up details panel load button
     detailsLoadButton.setButtonText("Load Plugin");
-    detailsLoadButton.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff2a2a2a));  // Dark charcoal
-    detailsLoadButton.setColour(juce::TextButton::textColourOffId, juce::Colours::white);
+    detailsLoadButton.setColour(juce::TextButton::buttonColourId, Colors::ctaButton());  // Charcoal (default) / burnt orange (70s)
+    detailsLoadButton.setColour(juce::TextButton::textColourOffId, Colors::textOnDark());
     detailsLoadButton.setLookAndFeel(&buttonLookAndFeel);
     detailsLoadButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
     detailsLoadButton.onClick = [this]()
@@ -414,8 +447,8 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     // an empty A/B host on a chain slot, so the next "Load" goes to that target
     // instead of the next + slot.
     loadTargetBanner.setJustificationType(juce::Justification::centred);
-    loadTargetBanner.setColour(juce::Label::backgroundColourId, juce::Colour(0xff0cbff2));
-    loadTargetBanner.setColour(juce::Label::textColourId, juce::Colours::white);
+    loadTargetBanner.setColour(juce::Label::backgroundColourId, Colors::appBackground());  // matches sidebar
+    loadTargetBanner.setColour(juce::Label::textColourId, Colors::textOnDark());
     loadTargetBanner.setFont(juce::Font(13.0f, juce::Font::bold));
     loadTargetBanner.setVisible(false);
     addAndMakeVisible(loadTargetBanner);
@@ -426,8 +459,8 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
 
     // Set up chain button - same style as other buttons
     chainButton.setButtonText("Chain");
-    chainButton.setColour(juce::TextButton::buttonColourId, juce::Colours::white);
-    chainButton.setColour(juce::TextButton::textColourOffId, juce::Colours::black);
+    chainButton.setColour(juce::TextButton::buttonColourId, Colors::cardBackground());
+    chainButton.setColour(juce::TextButton::textColourOffId, Colors::textOnLight());
     chainButton.setLookAndFeel(&buttonLookAndFeel);
     chainButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
     chainButton.onClick = [this]()
@@ -438,13 +471,13 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
         // Change background color instead of text
         if (chainViewVisible)
         {
-            chainButton.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff0cbff2));  // Cyan when visible
-            chainButton.setColour(juce::TextButton::textColourOffId, juce::Colours::white);
+            chainButton.setColour(juce::TextButton::buttonColourId, Colors::accent());  // Cyan when visible
+            chainButton.setColour(juce::TextButton::textColourOffId, Colors::textOnDark());
         }
         else
         {
-            chainButton.setColour(juce::TextButton::buttonColourId, juce::Colours::white);
-            chainButton.setColour(juce::TextButton::textColourOffId, juce::Colours::black);
+            chainButton.setColour(juce::TextButton::buttonColourId, Colors::cardBackground());
+            chainButton.setColour(juce::TextButton::textColourOffId, Colors::textOnLight());
         }
 
         // In plugin mode, resize the window to fit chain + plugin
@@ -469,8 +502,9 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
             clearPendingLoadTarget();
 
         processor.setCurrentSelectedSlot(slot);
+        // setPluginHost() already builds the editor via refreshEditor();
+        // a redundant showPluginEditor() call would rebuild it again.
         hostedPluginView.setPluginHost(&processor.getChainSlot(slot).getActiveHost());
-        hostedPluginView.showPluginEditor();
 
         // Update A/B switch to reflect selected slot's state
         ABSlot slotAB = processor.getSlotActiveAB(slot);
@@ -545,10 +579,9 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
 
     chainView.onToggleAB = [this](int slotIndex, ABSlot newSlot)
     {
-        // Always select the slot whose A/B was clicked, so the chain card highlights it
-        // and "Load" can target it explicitly.
-        processor.setCurrentSelectedSlot(slotIndex);
-        chainView.setChainState(processor);
+        // PluginChainView::handleToggleAB has already pushed the new A/B
+        // state and selection into the processor and updated card visuals
+        // incrementally - no setChainState() needed here.
         abSwitch.setActiveSlot(newSlot == ABSlot::B);
 
         auto& slot = processor.getChainSlot(slotIndex);
@@ -556,10 +589,11 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
 
         if (activeHost.hasLoadedPlugin())
         {
-            // Slot already has a plugin in this host - show its editor.
+            // setPluginHost() internally calls refreshEditor() ->
+            // showPluginEditor(), so don't call showPluginEditor() again -
+            // doing so destroys and recreates the just-built plugin editor.
             clearPendingLoadTarget();
             hostedPluginView.setPluginHost(&activeHost);
-            hostedPluginView.showPluginEditor();
             if (!browserMode)
                 resizeForPlugin();
         }
@@ -591,8 +625,9 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
         chainView.setChainState(processor);
         clearPendingLoadTarget();
 
+        // setPluginHost() already creates the editor via refreshEditor();
+        // don't call showPluginEditor() again.
         hostedPluginView.setPluginHost(&activeHost);
-        hostedPluginView.showPluginEditor();
 
         ABSlot slotAB = processor.getSlotActiveAB(slotIndex);
         abSwitch.setActiveSlot(slotAB == ABSlot::B);
@@ -628,10 +663,10 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     // Set up preset dropdown
     presetComboBox.setTextWhenNothingSelected("Default");
     presetComboBox.setTextWhenNoChoicesAvailable("No Presets");
-    presetComboBox.setColour(juce::ComboBox::backgroundColourId, Colors::buttonSurface);
-    presetComboBox.setColour(juce::ComboBox::textColourId, juce::Colours::white);
-    presetComboBox.setColour(juce::ComboBox::outlineColourId, juce::Colour(0xff4a4a4a));
-    presetComboBox.setColour(juce::ComboBox::arrowColourId, juce::Colours::white);
+    presetComboBox.setColour(juce::ComboBox::backgroundColourId, Colors::buttonSurface());
+    presetComboBox.setColour(juce::ComboBox::textColourId, Colors::textOnDark());
+    presetComboBox.setColour(juce::ComboBox::outlineColourId, Colors::buttonOutline());
+    presetComboBox.setColour(juce::ComboBox::arrowColourId, Colors::textOnDark());
     presetComboBox.setLookAndFeel(&topBarComboBoxLookAndFeel);
     presetComboBox.onChange = [this]()
     {
@@ -648,7 +683,7 @@ PluginAllianceLauncherEditor::PluginAllianceLauncherEditor(PluginAllianceLaunche
     // Set up preset save button with floppy disk icon (no background)
     presetSaveButton.setButtonText("");  // No text, icon only
     presetSaveButton.setColour(juce::TextButton::buttonColourId, juce::Colours::transparentBlack);
-    presetSaveButton.setColour(juce::TextButton::textColourOffId, juce::Colours::white);
+    presetSaveButton.setColour(juce::TextButton::textColourOffId, Colors::textOnDark());
     presetSaveButton.setLookAndFeel(&saveButtonLookAndFeel);
     presetSaveButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
     presetSaveButton.onClick = [this]()
@@ -814,8 +849,94 @@ PluginAllianceLauncherEditor::~PluginAllianceLauncherEditor()
     chainButton.setLookAndFeel(nullptr);
     presetSaveButton.setLookAndFeel(nullptr);
 
+    ThemeManager::get().removeListener(this);
     processor.getPluginScanner().removeChangeListener(this);
     stopTimer();
+}
+
+void PluginAllianceLauncherEditor::themeChanged()
+{
+    // Re-push setColour() values that controls cache from the active theme,
+    // then ask the whole tree to repaint so paint()-time Colors:: lookups
+    // pick up new values too.
+    applyThemedControlColours();
+
+    // Recursively repaint every child.
+    std::function<void(juce::Component&)> repaintAll = [&](juce::Component& c)
+    {
+        c.repaint();
+        for (auto* child : c.getChildren())
+            if (child != nullptr)
+                repaintAll(*child);
+    };
+    repaintAll(*this);
+}
+
+void PluginAllianceLauncherEditor::applyTheme(const juce::String& themeId)
+{
+    processor.getSettingsManager().setThemeId(themeId);
+    processor.getSettingsManager().save();
+    ThemeManager::get().setThemeById(themeId);   // fires themeChanged() above
+}
+
+void PluginAllianceLauncherEditor::applyThemedControlColours()
+{
+    // Labels
+    subscriptionLabel.setColour(juce::Label::textColourId,         Colors::textOnDark());
+    loadTargetBanner .setColour(juce::Label::backgroundColourId,   Colors::appBackground());
+    loadTargetBanner .setColour(juce::Label::textColourId,         Colors::textOnDark());
+
+    // AlertWindow LookAndFeel caches its setColour() values at construction.
+    // Re-push them so the next AlertWindow popup picks up the active theme.
+    alertLookAndFeel.setColour(juce::AlertWindow::backgroundColourId, Colors::accent());
+    alertLookAndFeel.setColour(juce::AlertWindow::textColourId,       Colors::textOnDark());
+    alertLookAndFeel.setColour(juce::AlertWindow::outlineColourId,    Colors::accent());
+    alertLookAndFeel.setColour(juce::TextButton::buttonColourId,      Colors::cardBackground());
+    alertLookAndFeel.setColour(juce::TextButton::textColourOffId,     Colors::textOnLight());
+    alertLookAndFeel.setColour(juce::TextButton::textColourOnId,      Colors::textOnLight());
+
+    // "Card-style" buttons (white body, dark text in default theme)
+    auto cardButton = [](juce::TextButton& b)
+    {
+        b.setColour(juce::TextButton::buttonColourId,    Colors::cardBackground());
+        b.setColour(juce::TextButton::textColourOffId,   Colors::textOnLight());
+    };
+    cardButton(subscribeButton);
+    cardButton(undoButton);
+    cardButton(redoButton);
+    cardButton(rescanButton);
+    cardButton(toggleModeButton);
+    cardButton(unloadButton);
+    // Chain button toggles between cardBg/charcoal + cyan; reset to the
+    // default (off) appearance here. The click handler retints it when on.
+    cardButton(chainButton);
+
+    // Dark-bodied buttons
+    settingsButton    .setColour(juce::TextButton::buttonColourId,  Colors::toolbarBackground());
+    settingsButton    .setColour(juce::TextButton::textColourOffId, Colors::textOnDark());
+    detailsLoadButton .setColour(juce::TextButton::buttonColourId,  Colors::ctaButton());
+    detailsLoadButton .setColour(juce::TextButton::textColourOffId, Colors::textOnDark());
+
+    // ComboBoxes
+    auto styleCombo = [](juce::ComboBox& cb)
+    {
+        cb.setColour(juce::ComboBox::backgroundColourId, Colors::buttonSurface());
+        cb.setColour(juce::ComboBox::textColourId,       Colors::textOnDark());
+        cb.setColour(juce::ComboBox::outlineColourId,    Colors::buttonOutline());
+        cb.setColour(juce::ComboBox::arrowColourId,      Colors::textOnDark());
+    };
+    styleCombo(sortComboBox);
+    styleCombo(eraComboBox);
+    styleCombo(brandComboBox);
+    styleCombo(presetComboBox);
+
+    // Save (floppy) button stays transparent; text colour follows theme.
+    presetSaveButton.setColour(juce::TextButton::textColourOffId, Colors::textOnDark());
+
+    // Scrollbars
+    sidebarViewport.getVerticalScrollBar()
+                   .setColour(juce::ScrollBar::trackColourId, Colors::scrollTrackOnDark());
+    pluginListView.setScrollBarTrackColour(Colors::scrollTrackOnLight());
 }
 
 void PluginAllianceLauncherEditor::loadLogo()
@@ -829,10 +950,10 @@ void PluginAllianceLauncherEditor::loadLogo()
 
 void PluginAllianceLauncherEditor::paint(juce::Graphics& g)
 {
-    g.fillAll(juce::Colour(0xff121212));
+    g.fillAll(Colors::appBackground());
 
     // Top bar background
-    g.setColour(juce::Colour(0xff1a1a1a));
+    g.setColour(Colors::panelBackground());
     g.fillRect(0, 0, getWidth(), topBarHeight);
 
     // Draw logo in sidebar area (matches blue selector width in category filter)
@@ -854,7 +975,7 @@ void PluginAllianceLauncherEditor::paint(juce::Graphics& g)
         int bannerWidth = getWidth() - sidebarWidth - (hasPlugins ? detailsPanelWidth : 0);
         auto bannerBounds = juce::Rectangle<int>(sidebarWidth, getHeight() - bannerHeight,
                                                   bannerWidth, bannerHeight);
-        g.setColour(juce::Colour(0xff0cbff2));  // Brand cyan
+        g.setColour(Colors::accent());  // Brand cyan
         g.fillRect(bannerBounds);
 
         if (hasPlugins && selectedPlugin != nullptr)
@@ -876,7 +997,7 @@ void PluginAllianceLauncherEditor::paint(juce::Graphics& g)
         auto statusBounds = juce::Rectangle<int>(sidebarWidth, topBarHeight, getWidth() - sidebarWidth, progressBarHeight);
 
         // Background for status area
-        g.setColour(juce::Colour(0xff1a1a1a));
+        g.setColour(Colors::panelBackground());
         g.fillRect(statusBounds);
 
         // Use statusBounds directly since it's already positioned correctly
@@ -886,19 +1007,19 @@ void PluginAllianceLauncherEditor::paint(juce::Graphics& g)
 
         // Progress track area - align left edge with search bar (no left padding)
         auto trackBounds = contentStatusBounds.withTrimmedTop(6).withTrimmedBottom(6).withTrimmedRight(10);
-        g.setColour(juce::Colour(0xff2a2a2a));
+        g.setColour(Colors::toolbarBackground());
         g.fillRoundedRectangle(trackBounds.toFloat(), 4.0f);
 
         // Progress bar fill
         float progress = processor.getPluginScanner().getProgress();
         auto progressBounds = trackBounds.withWidth(static_cast<int>(trackBounds.getWidth() * progress));
-        g.setColour(juce::Colour(0xff0cbff2));
+        g.setColour(Colors::accent());
         g.fillRoundedRectangle(progressBounds.toFloat(), 4.0f);
 
         // Status text
         if (!statusMessage.isEmpty())
         {
-            g.setColour(juce::Colours::white);
+            g.setColour(Colors::textOnDark());
             g.setFont(juce::Font(11.0f));
             g.drawText(statusMessage, trackBounds.reduced(8, 0), juce::Justification::centredLeft);
         }
@@ -909,11 +1030,11 @@ void PluginAllianceLauncherEditor::paint(juce::Graphics& g)
     {
         // Semi-transparent overlay over the content area
         auto overlayBounds = getLocalBounds().withTop(topBarHeight);
-        g.setColour(juce::Colour(0xdd121212));  // Dark semi-transparent
+        g.setColour(Colors::appBackground().withAlpha(0.87f));  // Dark semi-transparent
         g.fillRect(overlayBounds);
 
         // Loading text
-        g.setColour(juce::Colours::white);
+        g.setColour(Colors::textOnDark());
         g.setFont(juce::Font(18.0f, juce::Font::bold));
 
         juce::String loadingText = "Loading " + loadingPluginName + "...";
@@ -1118,10 +1239,13 @@ void PluginAllianceLauncherEditor::resized()
         {
             auto detailsPanel = bounds.removeFromRight(detailsPanelWidth);
             detailsLoadButton.setVisible(true);
-            // Position load button below content area (brand + name + image + tags + description)
-            // Content starts at Y+16, then: brand(18) + gap(4) + name(24) + gap(16) + image(180) + gap(12) + tags(22) + gap(8) + description(~120) = ~420px
-            int buttonY = detailsPanel.getY() + 16 + 18 + 4 + 24 + 16 + 180 + 17 + 22 + 8 + 130;  // After description area
-            detailsLoadButton.setBounds(detailsPanel.getX() + 20, buttonY, detailsPanelWidth - 40, 36);
+            // Load button sits immediately beneath the description text;
+            // the ad fills whatever space remains at the bottom of the panel.
+            int buttonY = computeDetailsButtonY(detailsPanel);
+            detailsLoadButton.setBounds(detailsPanel.getX() + kDetailsSidePad,
+                                        buttonY,
+                                        detailsPanelWidth - 2 * kDetailsSidePad,
+                                        kDetailsButtonHeight);
         }
         else
         {
@@ -1975,8 +2099,8 @@ void PluginAllianceLauncherEditor::toggleABSlot()
         {
             chainViewVisible = true;
             chainView.setVisible(true);
-            chainButton.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff0cbff2));
-            chainButton.setColour(juce::TextButton::textColourOffId, juce::Colours::white);
+            chainButton.setColour(juce::TextButton::buttonColourId, Colors::accent());
+            chainButton.setColour(juce::TextButton::textColourOffId, Colors::textOnDark());
         }
 
         if (!browserMode)
@@ -2115,17 +2239,73 @@ void PluginAllianceLauncherEditor::updateUndoButtonStates()
     redoButton.setEnabled(!redoStack.empty());
 }
 
+juce::String PluginAllianceLauncherEditor::resolveDescriptionText() const
+{
+    if (selectedPlugin == nullptr)
+        return {};
+    juce::String text;
+    if (auto* metadata = findPluginMetadata(selectedPlugin->description.name))
+        text = metadata->description;
+    if (text.isEmpty())
+    {
+        juce::String pluginType = selectedPlugin->description.isInstrument ? "virtual instrument" : "audio effect";
+        text = "A professional " + pluginType + " from Plugin Alliance. "
+               "Part of the extensive Plugin Alliance catalog of high-quality audio processing tools. "
+               "Visit plugin-alliance.com for more information about this product.";
+    }
+    return text;
+}
+
+int PluginAllianceLauncherEditor::measureDescriptionHeight(int width) const
+{
+    auto text = resolveDescriptionText();
+    if (text.isEmpty() || width <= 0)
+        return 0;
+    juce::AttributedString attrStr;
+    attrStr.append(text, juce::Font(13.0f), juce::Colours::black);
+    attrStr.setLineSpacing(1.2f);
+    juce::TextLayout layout;
+    layout.createLayout(attrStr, static_cast<float>(width));
+    return static_cast<int>(std::ceil(layout.getHeight()));
+}
+
+int PluginAllianceLauncherEditor::computeDetailsButtonY(juce::Rectangle<int> detailsPanel) const
+{
+    const int innerWidth = detailsPanelWidth - 2 * kDetailsSidePad;
+    const int descHeight = measureDescriptionHeight(innerWidth);
+    return detailsPanel.getY() + kDetailsFixedTopBlock + descHeight + kDetailsGap;
+}
+
+juce::Rectangle<int> PluginAllianceLauncherEditor::computeAdBounds(juce::Rectangle<int> detailsPanel) const
+{
+    if (!promoAdImage.isValid())
+        return {};
+
+    const int innerWidth     = detailsPanelWidth - 2 * kDetailsSidePad;
+    const int buttonY        = computeDetailsButtonY(detailsPanel);
+    const int adAvailableTop = buttonY + kDetailsButtonHeight + kDetailsGap;
+    const int adBottom       = detailsPanel.getBottom() - kDetailsBottomPad;
+    const int available      = adBottom - adAvailableTop;
+    if (available <= 0)
+        return {};
+
+    const int adHeight = juce::jmin(innerWidth, available);   // square cap
+    return { detailsPanel.getX() + kDetailsSidePad,
+             adBottom - adHeight,
+             innerWidth, adHeight };
+}
+
 void PluginAllianceLauncherEditor::paintDetailsPanel(juce::Graphics& g, juce::Rectangle<int> bounds)
 {
     if (selectedPlugin == nullptr)
         return;
 
-    // Background - white
-    g.setColour(juce::Colours::white);
+    // Background - card surface
+    g.setColour(Colors::cardBackground());
     g.fillRect(bounds);
 
     // Left border line
-    g.setColour(juce::Colour(0xffe0e0e0));
+    g.setColour(Colors::borderSubtle());
     g.fillRect(bounds.getX(), bounds.getY(), 1, bounds.getHeight());
 
     auto contentBounds = bounds.reduced(20, 16);
@@ -2135,14 +2315,14 @@ void PluginAllianceLauncherEditor::paintDetailsPanel(juce::Graphics& g, juce::Re
     auto displayName = getDisplayName(selectedPlugin->description.name, brandName);
 
     // Brand name
-    g.setColour(juce::Colour(0xff666666));
+    g.setColour(Colors::textDisabled());
     g.setFont(juce::Font(13.0f));
     g.drawText(brandName, contentBounds.removeFromTop(18), juce::Justification::centredLeft);
 
     contentBounds.removeFromTop(4);
 
     // Plugin name
-    g.setColour(juce::Colour(0xff1a1a1a));
+    g.setColour(Colors::textOnLight());
     g.setFont(juce::Font(18.0f, juce::Font::bold));
     g.drawText(displayName, contentBounds.removeFromTop(24), juce::Justification::centredLeft);
 
@@ -2162,9 +2342,9 @@ void PluginAllianceLauncherEditor::paintDetailsPanel(juce::Graphics& g, juce::Re
     else
     {
         // Placeholder
-        g.setColour(juce::Colour(0xfff0f0f0));
+        g.setColour(Colors::cardBackgroundBypassed());
         g.fillRoundedRectangle(imageBounds.toFloat(), 6.0f);
-        g.setColour(juce::Colour(0xff999999));
+        g.setColour(Colors::textMuted());
         g.setFont(juce::Font(12.0f));
         g.drawText("Loading...", imageBounds, juce::Justification::centred);
     }
@@ -2179,12 +2359,12 @@ void PluginAllianceLauncherEditor::paintDetailsPanel(juce::Graphics& g, juce::Re
     juce::String categoryTag = getEffectCategoryName(selectedPlugin->category);
     if (!categoryTag.isEmpty() && selectedPlugin->category != EffectCategory::Unknown)
     {
-        g.setColour(juce::Colour(0xff0cbff2).withAlpha(0.15f));
+        g.setColour(Colors::accent().withAlpha(0.15f));
         int tagWidth = juce::jmax(70, static_cast<int>(g.getCurrentFont().getStringWidthFloat(categoryTag) + 16));
         auto tagBounds = juce::Rectangle<int>(tagX, tagRow.getY(), tagWidth, 20);
         g.fillRoundedRectangle(tagBounds.toFloat(), 3.0f);
 
-        g.setColour(juce::Colour(0xff0099cc));
+        g.setColour(Colors::accent().darker(0.2f));
         g.setFont(juce::Font(12.0f));
         g.drawText(categoryTag, tagBounds, juce::Justification::centred);
         tagX += tagWidth + 6;
@@ -2194,12 +2374,12 @@ void PluginAllianceLauncherEditor::paintDetailsPanel(juce::Graphics& g, juce::Re
     if (selectedPlugin->era != Era::Era_Unknown)
     {
         juce::String eraTag = getEraName(selectedPlugin->era);
-        g.setColour(juce::Colour(0xff888888).withAlpha(0.15f));
+        g.setColour(Colors::textMuted().withAlpha(0.15f));
         int eraWidth = juce::jmax(50, static_cast<int>(g.getCurrentFont().getStringWidthFloat(eraTag) + 16));
         auto eraBounds = juce::Rectangle<int>(tagX, tagRow.getY(), eraWidth, 20);
         g.fillRoundedRectangle(eraBounds.toFloat(), 3.0f);
 
-        g.setColour(juce::Colour(0xff666666));
+        g.setColour(Colors::textDisabled());
         g.setFont(juce::Font(12.0f));
         g.drawText(eraTag, eraBounds, juce::Justification::centred);
     }
@@ -2220,17 +2400,29 @@ void PluginAllianceLauncherEditor::paintDetailsPanel(juce::Graphics& g, juce::Re
         descriptionText += "Visit plugin-alliance.com for more information about this product.";
     }
 
-    g.setColour(juce::Colour(0xff444444));
+    g.setColour(Colors::textDisabled());
     g.setFont(juce::Font(13.0f));
 
     // Draw multi-line description with word wrap
     juce::AttributedString attrStr;
-    attrStr.append(descriptionText, juce::Font(13.0f), juce::Colour(0xff444444));
+    attrStr.append(descriptionText, juce::Font(13.0f), Colors::textDisabled());
     attrStr.setLineSpacing(1.2f);
 
     juce::TextLayout textLayout;
     textLayout.createLayout(attrStr, static_cast<float>(contentBounds.getWidth()));
     textLayout.draw(g, contentBounds.toFloat());
+
+    auto adBounds = computeAdBounds(bounds);
+
+    // Promotional ad pinned to the bottom of the details pane, spanning
+    // the full panel width (minus side padding). Square aspect ratio.
+    if (!adBounds.isEmpty())
+    {
+        g.drawImageWithin(promoAdImage,
+                          adBounds.getX(), adBounds.getY(),
+                          adBounds.getWidth(), adBounds.getHeight(),
+                          juce::RectanglePlacement::centred | juce::RectanglePlacement::onlyReduceInSize);
+    }
 }
 
 void PluginAllianceLauncherEditor::showSettingsMenu()
@@ -2254,6 +2446,13 @@ void PluginAllianceLauncherEditor::showSettingsMenu()
     juce::PopupMenu behaviorMenu;
     behaviorMenu.addItem(301, "Remember Last Filter", true, rememberFilter);
     menu.addSubMenu("Behavior", behaviorMenu);
+
+    // Theme submenu
+    juce::String currentThemeId = ThemeManager::get().current().id;
+    juce::PopupMenu themeMenu;
+    themeMenu.addItem(601, Themes::defaultTheme.displayName,   true, currentThemeId == Themes::defaultTheme.id);
+    themeMenu.addItem(602, Themes::seventiesTheme.displayName, true, currentThemeId == Themes::seventiesTheme.id);
+    menu.addSubMenu("Theme", themeMenu);
 
     menu.addSeparator();
 
@@ -2338,6 +2537,14 @@ void PluginAllianceLauncherEditor::showSettingsMenu()
 
                 case 502: // Check for updates
                     juce::URL("https://www.plugin-alliance.com/pages/downloads").launchInDefaultBrowser();
+                    break;
+
+                case 601: // Theme: Default
+                    applyTheme(Themes::defaultTheme.id);
+                    break;
+
+                case 602: // Theme: 70s Vibe
+                    applyTheme(Themes::seventiesTheme.id);
                     break;
 
                 default:

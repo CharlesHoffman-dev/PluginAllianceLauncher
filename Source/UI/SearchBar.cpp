@@ -6,6 +6,7 @@
 */
 
 #include "SearchBar.h"
+#include "Colors.h"
 
 namespace PALauncher
 {
@@ -18,14 +19,14 @@ SearchBar::SearchBar()
     searchField.setScrollbarsShown(false);
     searchField.setCaretVisible(true);
     searchField.setPopupMenuEnabled(true);
-    searchField.setTextToShowWhenEmpty("Search plugins...", juce::Colour(0xff999999));
+    searchField.setTextToShowWhenEmpty("Search plugins...", Colors::textMuted());
     searchField.setFont(juce::Font(14.0f));
     searchField.setColour(juce::TextEditor::backgroundColourId, juce::Colours::transparentBlack);
-    searchField.setColour(juce::TextEditor::textColourId, juce::Colour(0xff1a1a1a));
+    searchField.setColour(juce::TextEditor::textColourId, Colors::textOnLight());
     searchField.setColour(juce::TextEditor::outlineColourId, juce::Colours::transparentBlack);
     searchField.setColour(juce::TextEditor::focusedOutlineColourId, juce::Colours::transparentBlack);
-    searchField.setColour(juce::TextEditor::highlightColourId, juce::Colour(0xff0cbff2));
-    searchField.setColour(juce::TextEditor::highlightedTextColourId, juce::Colours::white);
+    searchField.setColour(juce::TextEditor::highlightColourId, Colors::accent());
+    searchField.setColour(juce::TextEditor::highlightedTextColourId, Colors::cardBackground());
     searchField.setWantsKeyboardFocus(true);
     searchField.setMouseClickGrabsKeyboardFocus(true);  // Only grab focus when clicking directly on it
     searchField.addListener(this);
@@ -41,11 +42,11 @@ void SearchBar::paint(juce::Graphics& g)
     auto bounds = getLocalBounds().toFloat();
 
     // Background - white
-    g.setColour(juce::Colours::white);
+    g.setColour(Colors::cardBackground());
     g.fillRoundedRectangle(bounds, 6.0f);
 
     // Subtle grey outline
-    g.setColour(juce::Colour(0xffcccccc));
+    g.setColour(Colors::textPlaceholder());
     g.drawRoundedRectangle(bounds.reduced(0.5f), 6.0f, 1.0f);
 
     // Draw icon on right side - X if has text, magnifying glass otherwise
@@ -56,7 +57,7 @@ void SearchBar::paint(juce::Graphics& g)
     if (hasText)
     {
         // Draw X (clear button)
-        g.setColour(juce::Colour(0xff666666));
+        g.setColour(Colors::textDisabled());
         float size = 6.0f;
         g.drawLine(cx - size, cy - size, cx + size, cy + size, 2.0f);
         g.drawLine(cx + size, cy - size, cx - size, cy + size, 2.0f);
@@ -65,7 +66,7 @@ void SearchBar::paint(juce::Graphics& g)
     {
         // Draw magnifying glass icon
         float radius = 6.0f;
-        g.setColour(juce::Colour(0xff999999));
+        g.setColour(Colors::textMuted());
 
         // Draw circle (lens)
         g.drawEllipse(cx - radius - 2, cy - radius - 2, radius * 2, radius * 2, 2.0f);

@@ -6,6 +6,7 @@
 */
 
 #include "SubcategoryFilter.h"
+#include "Colors.h"
 #include <algorithm>
 
 namespace PALauncher
@@ -94,14 +95,14 @@ void SubcategoryFilter::buildSubcategoryList()
 
 void SubcategoryFilter::paint(juce::Graphics& g)
 {
-    g.fillAll(juce::Colour(0xff121212));
+    g.fillAll(Colors::appBackground());
 
-    // Draw header with grey background and white text
+    // Draw header with charcoal/burnt-orange background and white text
     auto headerBounds = getLocalBounds().reduced(4).removeFromTop(24);
-    g.setColour(juce::Colour(0xff2a2a2a));
+    g.setColour(Colors::sidebarHeader());
     g.fillRect(headerBounds);
 
-    g.setColour(juce::Colours::white);
+    g.setColour(Colors::textOnDark());
     g.setFont(juce::Font(12.0f, juce::Font::bold));
     g.drawText("SUBCATEGORY", headerBounds.reduced(8, 0), juce::Justification::centredLeft);
 }
@@ -127,11 +128,11 @@ void SubcategoryFilter::paintListBoxItem(int rowNumber, juce::Graphics& g, int w
 
     if (rowIsSelected)
     {
-        g.setColour(juce::Colour(0xff0cbff2));
+        g.setColour(Colors::accent());
         g.fillRoundedRectangle(2.0f, 1.0f, width - 4.0f, height - 2.0f, 3.0f);
     }
 
-    g.setColour(rowIsSelected ? juce::Colours::white : juce::Colour(0xfff9f9f9));
+    g.setColour(Colors::textOnDark());
     g.setFont(juce::Font(14.0f));
     g.drawText(item.name, 8, 0, width - 16, height, juce::Justification::centredLeft);
 }

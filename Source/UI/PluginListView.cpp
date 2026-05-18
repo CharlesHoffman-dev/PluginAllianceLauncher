@@ -7,6 +7,7 @@
 
 #include "PluginListView.h"
 #include "../Utils/PluginImageCache.h"
+#include "Colors.h"
 
 namespace PALauncher
 {
@@ -44,7 +45,7 @@ PluginListView::~PluginListView()
 
 void PluginListView::paint(juce::Graphics& g)
 {
-    g.fillAll(juce::Colour(0xfff9f9f9));
+    g.fillAll(Colors::gridBackground());
 }
 
 void PluginListView::paintOverChildren(juce::Graphics& g)
@@ -53,7 +54,7 @@ void PluginListView::paintOverChildren(juce::Graphics& g)
     if (allPlugins.isEmpty())
     {
         auto textBounds = getLocalBounds().withTrimmedRight(14);
-        g.setColour(juce::Colour(0xff666666));
+        g.setColour(Colors::textDisabled());
         g.setFont(juce::Font(14.0f));
         g.drawText("No plugins found.", textBounds, juce::Justification::centred);
     }

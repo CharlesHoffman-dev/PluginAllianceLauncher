@@ -123,8 +123,8 @@ public:
         auto rightBounds = bounds.withLeft(bounds.getX() + halfWidth);
 
         // Determine colors based on active slot and hover state
-        auto activeColour = juce::Colour(0xff0cbff2);   // Cyan
-        auto inactiveColour = Colors::buttonSurface;
+        auto activeColour = Colors::accent();   // Cyan
+        auto inactiveColour = Colors::buttonSurface();
 
         if (isMouseOver())
         {
@@ -161,7 +161,7 @@ public:
 
         // Both letters white; the cyan vs charcoal background tells you
         // which side is active.
-        g.setColour(juce::Colours::white);
+        g.setColour(Colors::textOnDark());
         g.drawText("A", leftBounds.toNearestInt(), juce::Justification::centred);
         g.drawText("B", rightBounds.toNearestInt(), juce::Justification::centred);
     }
@@ -188,11 +188,11 @@ class TopBarComboBoxLookAndFeel : public juce::LookAndFeel_V4
 public:
     TopBarComboBoxLookAndFeel()
     {
-        setColour(juce::PopupMenu::backgroundColourId,           juce::Colour(0xff2a2a2a));
-        setColour(juce::PopupMenu::textColourId,                 juce::Colours::white);
-        setColour(juce::PopupMenu::highlightedBackgroundColourId, juce::Colour(0xff0cbff2));
-        setColour(juce::PopupMenu::highlightedTextColourId,      juce::Colours::white);
-        setColour(juce::PopupMenu::headerTextColourId,           juce::Colour(0xffb0b0b0));
+        setColour(juce::PopupMenu::backgroundColourId,           Colors::toolbarBackground());
+        setColour(juce::PopupMenu::textColourId,                 Colors::textOnDark());
+        setColour(juce::PopupMenu::highlightedBackgroundColourId, Colors::accent());
+        setColour(juce::PopupMenu::highlightedTextColourId,      Colors::textOnDark());
+        setColour(juce::PopupMenu::headerTextColourId,           Colors::textPlaceholder());
     }
 
     void drawComboBox(juce::Graphics& g, int width, int height, bool /*isButtonDown*/,
@@ -243,9 +243,9 @@ public:
                                             const juce::PopupMenu::Options&) override
     {
         auto bounds = juce::Rectangle<float>(0.0f, 0.0f, (float)width, (float)height).reduced(0.5f);
-        g.setColour(juce::Colour(0xff2a2a2a));
+        g.setColour(Colors::toolbarBackground());
         g.fillRoundedRectangle(bounds, 6.0f);
-        g.setColour(juce::Colour(0xff4a4a4a));
+        g.setColour(Colors::buttonOutline());
         g.drawRoundedRectangle(bounds, 6.0f, 1.0f);
     }
 
@@ -269,7 +269,7 @@ public:
 
         if (isSeparator)
         {
-            g.setColour(juce::Colour(0xff3a3a3a));
+            g.setColour(Colors::borderDivider());
             auto line = bounds.withSizeKeepingCentre(bounds.getWidth() - 8.0f, 1.0f);
             g.fillRect(line);
             return;
@@ -277,17 +277,17 @@ public:
 
         if (isHighlighted && isActive)
         {
-            g.setColour(juce::Colour(0xff0cbff2));
+            g.setColour(Colors::accent());
             g.fillRoundedRectangle(bounds, 4.0f);
-            g.setColour(juce::Colours::white);
+            g.setColour(Colors::textOnDark());
         }
         else if (! isActive)
         {
-            g.setColour(juce::Colour(0xff666666));
+            g.setColour(Colors::textDisabled());
         }
         else
         {
-            g.setColour(juce::Colours::white);
+            g.setColour(Colors::textOnDark());
         }
 
         auto textBounds = bounds.reduced(8.0f, 0.0f);
@@ -356,7 +356,7 @@ public:
         // Draw LED glow effect if glowAlpha > 0
         if (glowAlpha > 0.0f)
         {
-            auto glowColour = juce::Colour(0xff0cbff2).withAlpha(glowAlpha * 0.7f);
+            auto glowColour = Colors::accent().withAlpha(glowAlpha * 0.7f);
 
             // Outer glow
             for (int i = 0; i < 3; ++i)
@@ -381,12 +381,12 @@ class PluginAlertLookAndFeel : public ButtonLookAndFeel
 public:
     PluginAlertLookAndFeel()
     {
-        setColour(juce::AlertWindow::backgroundColourId, juce::Colour(0xff0cbff2));   // cyan accent
-        setColour(juce::AlertWindow::textColourId,       juce::Colours::white);
-        setColour(juce::AlertWindow::outlineColourId,    juce::Colour(0xff0cbff2));
-        setColour(juce::TextButton::buttonColourId,      juce::Colours::white);
-        setColour(juce::TextButton::textColourOffId,     juce::Colours::black);
-        setColour(juce::TextButton::textColourOnId,      juce::Colours::black);
+        setColour(juce::AlertWindow::backgroundColourId, Colors::accent());   // cyan accent
+        setColour(juce::AlertWindow::textColourId,       Colors::textOnDark());
+        setColour(juce::AlertWindow::outlineColourId,    Colors::accent());
+        setColour(juce::TextButton::buttonColourId,      Colors::cardBackground());
+        setColour(juce::TextButton::textColourOffId,     Colors::textOnLight());
+        setColour(juce::TextButton::textColourOnId,      Colors::textOnLight());
     }
 
     void drawAlertBox(juce::Graphics& g, juce::AlertWindow& alert,
@@ -408,7 +408,7 @@ public:
 
         auto innerW = alert.getWidth() - sidePad * 2;
 
-        g.setColour(juce::Colours::white);
+        g.setColour(Colors::textOnDark());
 
         // Title
         g.setFont(juce::Font(20.0f, juce::Font::bold));
@@ -482,7 +482,7 @@ public:
 
             juce::Rectangle<float> thumbBounds((float)(x + sidePad), (float)thumbTop,
                                                (float)(width - sidePad * 2), (float)(thumbBot - thumbTop));
-            g.setColour(juce::Colour(0xff0cbff2));
+            g.setColour(Colors::accent());
             float radius = juce::jmin(thumbBounds.getWidth(), thumbBounds.getHeight()) * 0.5f;
             g.fillRoundedRectangle(thumbBounds, radius);
         }
@@ -508,7 +508,7 @@ public:
 
             juce::Rectangle<float> thumbBounds((float)thumbLeft, (float)(y + sidePad),
                                                (float)(thumbRight - thumbLeft), (float)(height - sidePad * 2));
-            g.setColour(juce::Colour(0xff0cbff2));
+            g.setColour(Colors::accent());
             float radius = juce::jmin(thumbBounds.getWidth(), thumbBounds.getHeight()) * 0.5f;
             g.fillRoundedRectangle(thumbBounds, radius);
         }
@@ -609,7 +609,7 @@ public:
         }
         else
         {
-            g.setColour(juce::Colour(0xff1a1a1a));  // Top bar background color
+            g.setColour(Colors::panelBackground());  // Top bar background color
         }
         g.fillEllipse(cx - holeRadius, cy - holeRadius, holeRadius * 2.0f, holeRadius * 2.0f);
     }
@@ -617,7 +617,8 @@ public:
 
 class PluginAllianceLauncherEditor : public juce::AudioProcessorEditor,
                                       public juce::ChangeListener,
-                                      public juce::Timer
+                                      public juce::Timer,
+                                      public ThemeManager::Listener
 {
 public:
     explicit PluginAllianceLauncherEditor(PluginAllianceLauncherProcessor& p);
@@ -632,7 +633,20 @@ public:
     // Timer - for UI updates
     void timerCallback() override;
 
+    // ThemeManager::Listener - re-push pre-cached colours and repaint
+    void themeChanged() override;
+
 private:
+    // Switch theme: persists choice + activates via ThemeManager, which
+    // notifies all Listeners (including this editor) to repaint.
+    void applyTheme(const juce::String& themeId);
+
+    // Re-push setColour() calls on controls that cache their colours
+    // (TextButton, ComboBox, Label etc). Called from the constructor and
+    // again from themeChanged() so live theme swaps re-tint everything.
+    void applyThemedControlColours();
+
+
     void updatePluginList();
     void filterPlugins();
     void refreshPluginsPreservingScroll();  // For favorites toggle - doesn't reset scroll
@@ -687,8 +701,16 @@ private:
 
     // Plugin details panel (right side)
     void paintDetailsPanel(juce::Graphics& g, juce::Rectangle<int> bounds);
+    // Layout helpers for the details pane. The Load button sits immediately
+    // beneath the (variable-height) description text; the ad fills whatever
+    // space remains at the bottom, capped to a square at full panel width.
+    int measureDescriptionHeight(int width) const;
+    juce::String resolveDescriptionText() const;
+    int computeDetailsButtonY(juce::Rectangle<int> detailsPanel) const;
+    juce::Rectangle<int> computeAdBounds(juce::Rectangle<int> detailsPanel) const;
     juce::TextButton detailsLoadButton;
     juce::Image detailsPluginImage;
+    juce::Image promoAdImage;  // Promotional banner shown in the bottom of the details pane
     static constexpr int detailsPanelWidth = 280;
 
     // Main content area
@@ -718,7 +740,7 @@ private:
 
     // State
     bool browserMode = true;  // true = show browser, false = show hosted plugin fullscreen
-    bool chainViewVisible = true;  // true = chain view visible, false = hidden
+    bool chainViewVisible = false;  // chain hidden on launch; user reveals via Chain button
     bool wasScanning = false;  // Track scanning state for layout updates
     bool isLoadingPlugin = false;  // True while a plugin is being loaded
     juce::String loadingPluginName;  // Name of plugin being loaded

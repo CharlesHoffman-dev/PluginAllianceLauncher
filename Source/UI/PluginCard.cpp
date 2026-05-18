@@ -7,6 +7,7 @@
 
 #include "PluginCard.h"
 #include "../Utils/PluginImageCache.h"
+#include "Colors.h"
 
 namespace PALauncher
 {
@@ -56,8 +57,8 @@ PluginCard::PluginCard()
 
     // Set up Load button - white with black text, pointer cursor, no outline
     loadButton.setButtonText("Load");
-    loadButton.setColour(juce::TextButton::buttonColourId, juce::Colours::white);
-    loadButton.setColour(juce::TextButton::textColourOffId, juce::Colours::black);
+    loadButton.setColour(juce::TextButton::buttonColourId, Colors::cardBackground());
+    loadButton.setColour(juce::TextButton::textColourOffId, Colors::textOnLight());
     loadButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
     loadButton.setLookAndFeel(&cardButtonLookAndFeel);
     loadButton.onClick = [this]()
@@ -74,14 +75,14 @@ void PluginCard::paint(juce::Graphics& g)
     auto bounds = getLocalBounds().toFloat().reduced(2.0f);
 
     // Background - white with subtle shadow effect
-    juce::Colour bgColor = juce::Colours::white;
+    juce::Colour bgColor = Colors::cardBackground();
     if (selected)
-        bgColor = juce::Colour(0xffe8f4fc);  // Light blue tint when selected
+        bgColor = Colors::cardBackgroundSelected();  // Light blue tint when selected
     else if (hovered)
-        bgColor = juce::Colour(0xfffafafa);  // Slightly off-white on hover
+        bgColor = Colors::cardBackgroundHover();  // Slightly off-white on hover
 
     // Drop shadow effect
-    g.setColour(juce::Colour(0x15000000));
+    g.setColour(Colors::shadow());
     g.fillRoundedRectangle(bounds.translated(1.0f, 2.0f), 6.0f);
 
     g.setColour(bgColor);
@@ -90,13 +91,13 @@ void PluginCard::paint(juce::Graphics& g)
     // Border
     if (selected)
     {
-        g.setColour(juce::Colour(0xff0cbff2));
+        g.setColour(Colors::accent());
         g.drawRoundedRectangle(bounds, 6.0f, 2.0f);
     }
     else
     {
         // Subtle border for non-selected cards
-        g.setColour(juce::Colour(0xffe0e0e0));
+        g.setColour(Colors::borderSubtle());
         g.drawRoundedRectangle(bounds, 6.0f, 1.0f);
     }
 
@@ -111,13 +112,13 @@ void PluginCard::paint(juce::Graphics& g)
     contentBounds.removeFromTop(9);
 
     // Brand name - gray text
-    g.setColour(juce::Colour(0xff666666));
+    g.setColour(Colors::textDisabled());
     g.setFont(juce::Font(13.0f));
     auto brandBounds = contentBounds.removeFromTop(14);
     g.drawText(brandName, brandBounds, juce::Justification::centredLeft, true);
 
     // Plugin name (with brand removed) - dark text
-    g.setColour(juce::Colour(0xff1a1a1a));
+    g.setColour(Colors::textOnLight());
     g.setFont(juce::Font(16.0f, juce::Font::bold));
     g.drawText(displayName, contentBounds.removeFromTop(24),
                juce::Justification::centredLeft, true);
@@ -139,10 +140,10 @@ void PluginCard::paint(juce::Graphics& g)
     else
     {
         // Draw placeholder - light gray
-        g.setColour(juce::Colour(0xffeeeeee));
+        g.setColour(Colors::placeholderImage());
         g.fillRoundedRectangle(imageBounds.toFloat(), 4.0f);
 
-        g.setColour(juce::Colour(0xff999999));
+        g.setColour(Colors::textMuted());
         g.setFont(juce::Font(12.0f));
         g.drawText("Loading...", imageBounds, juce::Justification::centred);
     }
@@ -161,11 +162,11 @@ void PluginCard::paint(juce::Graphics& g)
 
     if (!categoryTag.isEmpty() && (pluginInfo.isInstrument || pluginInfo.category != EffectCategory::Unknown))
     {
-        g.setColour(juce::Colour(0xff0cbff2).withAlpha(0.15f));
+        g.setColour(Colors::accent().withAlpha(0.15f));
         auto tagBounds = tagRow.removeFromLeft(85);
         g.fillRoundedRectangle(tagBounds.toFloat(), 3.0f);
 
-        g.setColour(juce::Colour(0xff0099cc));
+        g.setColour(Colors::accent().darker(0.2f));
         g.setFont(juce::Font(12.0f));
         g.drawText(categoryTag, tagBounds, juce::Justification::centred);
     }
@@ -176,11 +177,11 @@ void PluginCard::paint(juce::Graphics& g)
         tagRow.removeFromLeft(4);
         juce::String eraTag = getEraName(pluginInfo.era);
 
-        g.setColour(juce::Colour(0xff888888).withAlpha(0.15f));
+        g.setColour(Colors::textMuted().withAlpha(0.15f));
         auto eraBounds = tagRow.removeFromLeft(55);
         g.fillRoundedRectangle(eraBounds.toFloat(), 3.0f);
 
-        g.setColour(juce::Colour(0xff666666));
+        g.setColour(Colors::textDisabled());
         g.setFont(juce::Font(12.0f));
         g.drawText(eraTag, eraBounds, juce::Justification::centred);
     }
@@ -210,12 +211,12 @@ void PluginCard::paint(juce::Graphics& g)
 
     if (pluginInfo.isFavorite)
     {
-        g.setColour(juce::Colour(0xffffc107));  // Yellow/gold color
+        g.setColour(Colors::accentSecondary());  // Yellow/gold color
         g.fillPath(starPath);
     }
     else
     {
-        g.setColour(juce::Colour(0xffcccccc));  // Light gray outline
+        g.setColour(Colors::textPlaceholder());  // Light gray outline
         g.strokePath(starPath, juce::PathStrokeType(1.5f));
     }
 
@@ -224,7 +225,7 @@ void PluginCard::paint(juce::Graphics& g)
     // the same plugin into another slot or the B host without the card looking unavailable.)
     if (hovered)
     {
-        g.setColour(juce::Colour(0x40000000));  // Subtle semi-transparent black overlay
+        g.setColour(Colors::appBackground().withAlpha(0.25f));  // Subtle semi-transparent black overlay
         g.fillRoundedRectangle(bounds, 6.0f);
     }
 }

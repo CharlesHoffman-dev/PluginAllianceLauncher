@@ -60,9 +60,9 @@ void ChainSlotCard::paint(juce::Graphics& g)
 
     // Background colour - white; selection is signaled by the cyan border
     // alone (no body tint). Bypass and hover still tint subtly.
-    juce::Colour bgColor = juce::Colours::white;
-    if (bypassed)     bgColor = juce::Colour(0xfff0f0f0);
-    else if (hovered) bgColor = juce::Colour(0xfffafafa);
+    juce::Colour bgColor = Colors::cardBackground();
+    if (bypassed)     bgColor = Colors::cardBackgroundBypassed();
+    else if (hovered) bgColor = Colors::cardBackgroundHover();
 
     constexpr float cardRadius = 6.0f;
 
@@ -77,7 +77,7 @@ void ChainSlotCard::paint(juce::Graphics& g)
                                  true,  false);  // bottom-left rounded, bottom-right flat
 
     // Drop shadow under just the slot's half.
-    g.setColour(juce::Colour(0x15000000));
+    g.setColour(Colors::shadow());
     {
         juce::Path shadow;
         auto sb = bounds.translated(1.0f, 2.0f);
@@ -92,7 +92,7 @@ void ChainSlotCard::paint(juce::Graphics& g)
 
     // Border: 3-sided horseshoe (no right edge) so the slot's outline merges
     // seamlessly with the meter's mirror horseshoe at the seam.
-    g.setColour(selected ? juce::Colour(0xff0cbff2) : juce::Colour(0xffe0e0e0));
+    g.setColour(selected ? Colors::accent() : Colors::borderSubtle());
     g.strokePath(horseshoeLeftPath(bounds, cardRadius),
                  juce::PathStrokeType(selected ? 2.0f : 1.0f));
 
@@ -115,14 +115,14 @@ void ChainSlotCard::paint(juce::Graphics& g)
                                     3.0f, 3.0f,
                                     true,  false,   // top-left rounded, top-right flat
                                     false, false);  // bottom corners flat
-    g.setColour(juce::Colour(0xff2a2a2a));
+    g.setColour(Colors::toolbarBackground());
     g.fillPath(toolbarPath);
 
     // All four header-button rects come from ModuleHeaderLayout so the layout
     // lives in one file. The slot card owns Power, A/B, and AUTO; X lives in
     // the meter card and reads the same constants.
     bypassButtonBounds = ModuleHeader::toSlotRect(ModuleHeader::power, toolbarBounds.getY());
-    g.setColour(bypassed ? juce::Colour(0xff0cbff2) : juce::Colours::white);
+    g.setColour(bypassed ? Colors::accent() : Colors::cardBackground());
     g.fillRoundedRectangle(bypassButtonBounds.toFloat(), 2.5f);
 
     auto iconBounds = bypassButtonBounds.toFloat().reduced(3.0f);
@@ -131,7 +131,7 @@ void ChainSlotCard::paint(juce::Graphics& g)
     float radius = iconBounds.getWidth() * 0.42f;
     float strokeWidth = 1.4f;
 
-    g.setColour(bypassed ? juce::Colours::white : juce::Colours::black);
+    g.setColour(bypassed ? Colors::textOnDark() : Colors::textOnLight());
 
     const float halfGap = 0.42f;  // ~24° half-gap → ~48° total gap at top
     juce::Path powerArc;
@@ -160,8 +160,8 @@ void ChainSlotCard::paint(juce::Graphics& g)
     auto leftBounds = abBounds.withWidth(halfWidth);
     auto rightBounds = abBounds.withLeft(abBounds.getX() + halfWidth);
 
-    auto activeColour = juce::Colour(0xff0cbff2);   // Cyan
-    auto inactiveColour = Colors::buttonSurface;
+    auto activeColour = Colors::accent();   // Cyan
+    auto inactiveColour = Colors::buttonSurface();
 
     // Draw left side (A) - rounded on left, flat on right
     juce::Path leftPath;
@@ -185,7 +185,7 @@ void ChainSlotCard::paint(juce::Graphics& g)
     // tells you which side is active.
     auto font = juce::Font(8.0f, juce::Font::bold);
     g.setFont(font);
-    g.setColour(juce::Colours::white);
+    g.setColour(Colors::textOnDark());
     g.drawText("A", leftBounds.toNearestInt(), juce::Justification::centred);
     g.drawText("B", rightBounds.toNearestInt(), juce::Justification::centred);
 
@@ -196,19 +196,19 @@ void ChainSlotCard::paint(juce::Graphics& g)
     {
         g.setColour(autoFlashOn ? activeColour : inactiveColour);
         g.fillRoundedRectangle(autoBoundsF, 2.5f);
-        g.setColour(autoFlashOn ? juce::Colours::white : juce::Colours::grey);
+        g.setColour(autoFlashOn ? Colors::textOnDark() : Colors::textMuted());
     }
     else if (autoGainEnabled)
     {
         g.setColour(activeColour);
         g.fillRoundedRectangle(autoBoundsF, 2.5f);
-        g.setColour(juce::Colours::white);
+        g.setColour(Colors::textOnDark());
     }
     else
     {
         g.setColour(inactiveColour);
         g.fillRoundedRectangle(autoBoundsF, 2.5f);
-        g.setColour(juce::Colours::white);
+        g.setColour(Colors::textOnDark());
     }
     g.setFont(juce::Font(8.0f, juce::Font::bold));
     g.drawText("AUTO", autoButtonBounds, juce::Justification::centred);
@@ -240,7 +240,7 @@ void ChainSlotCard::paint(juce::Graphics& g)
     else
     {
         // Placeholder
-        g.setColour(juce::Colour(0xffeeeeee));
+        g.setColour(Colors::placeholderImage());
         g.fillRoundedRectangle(imageBounds.toFloat(), 4.0f);
     }
 
@@ -248,10 +248,10 @@ void ChainSlotCard::paint(juce::Graphics& g)
     if (bypassed)
     {
         auto overlayBounds = imageBounds;
-        g.setColour(juce::Colour(0x99000000));
+        g.setColour(Colors::appBackground().withAlpha(0.6f));
         g.fillRoundedRectangle(overlayBounds.toFloat(), 3.5f);
 
-        g.setColour(juce::Colours::white);
+        g.setColour(Colors::textOnDark());
         g.setFont(juce::Font(10.0f, juce::Font::bold));
         g.drawText("BYPASSED", overlayBounds, juce::Justification::centred);
     }
